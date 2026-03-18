@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: 4 Zampe – CTA Banner – Sfondo Blu
- * Slug: 4zampe/cta-banner
- * Categories: 4zampe-sections
+ * Slug: theme/cta-banner
+ * Categories: theme-sections
  * Keywords: cta, call to action, blu, prenota, contatti, consulenza
  * Description: Banner call-to-action con sfondo blu primario (#3E80C4), pattern geometrico, titolo, sottotitolo e pulsanti di contatto (booking, telefono, WhatsApp, email).
  * Viewport Width: 1440
@@ -40,7 +40,7 @@
 			<p class="has-white-color has-text-color has-lg-font-size">💬 <a href="https://wa.me/393000000000" target="_blank" rel="noopener">WhatsApp</a></p>
 			<!-- /wp:paragraph -->
 			<!-- wp:paragraph {"textColor":"white","fontSize":"lg"} -->
-			<p class="has-white-color has-text-color has-lg-font-size">✉️ <a href="mailto:info@4zampe.it">info@4zampe.it</a></p>
+			<p class="has-white-color has-text-color has-lg-font-size">✉️ <a href="mailto:info@theme.it">info@theme.it</a></p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:group -->

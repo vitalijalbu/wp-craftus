@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Page Hero – Intestazione Pagina
- * Slug: 4zampe/page-hero
- * Categories: 4zampe-sections
+ * Slug: theme/page-hero
+ * Categories: theme-sections
  * Keywords: page hero, intestazione, pagina, titolo, breadcrumb
  * Description: Intestazione pagina con sfondo scuro, titolo centrato e sottotitolo opzionale. Altezza 40vh. Ideale per pagine interne (Servizi, Chi Siamo, Portfolio, Blog).
  * Viewport Width: 1440

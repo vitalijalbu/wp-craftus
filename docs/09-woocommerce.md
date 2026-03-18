@@ -298,8 +298,8 @@ Il tema include pattern specifici per WooCommerce:
 
 | Pattern | Slug | Uso |
 |---------|------|-----|
-| `shop-hero.php` | `4zampe/shop-hero` | Hero per la pagina shop |
-| `product-categories.php` | `4zampe/product-categories` | Griglia categorie in homepage |
+| `shop-hero.php` | `theme/shop-hero` | Hero per la pagina shop |
+| `product-categories.php` | `theme/product-categories` | Griglia categorie in homepage |
 
 Questi pattern usano blocchi core WooCommerce (`woocommerce/product-query`, `woocommerce/product-category`, ecc.) pre-configurati.
 

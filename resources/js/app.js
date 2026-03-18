@@ -1,20 +1,19 @@
 import.meta.glob(['../images/**', '../fonts/**']);
 
-// ── Alpine.js ────────────────────────────────────────────────────────────────
-import Alpine   from 'alpinejs';
 import Collapse  from '@alpinejs/collapse';
 import Focus     from '@alpinejs/focus';
+// ── Alpine.js ────────────────────────────────────────────────────────────────
+import Alpine   from 'alpinejs';
 
 // ── GSAP ─────────────────────────────────────────────────────────────────────
 import { gsap }        from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+import { initCarousels }         from './modules/carousel.js';
 // ── Modules ───────────────────────────────────────────────────────────────────
 import { initLocomotiveScroll, updateLocomotiveScroll } from './modules/locomotive-scroll.js';
 import { initLuxuryAnimations }  from './modules/luxury-animations.js';
-import { initScrollEffects }     from './modules/scroll-effects.js';
-import { initCarousels }         from './modules/carousel.js';
 import { initMagneticHover }     from './modules/magnetic-hover.js';
+import { initScrollEffects }     from './modules/scroll-effects.js';
 
 // ── Accessibility: reduced motion ─────────────────────────────────────────────
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

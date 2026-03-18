@@ -8,7 +8,7 @@ Il Customizer WP espone opzioni tema configurabili da **WP Admin → Aspetto →
 
 ## Sezioni disponibili
 
-### Social Media (`4zampe_social`)
+### Social Media (`theme_social`)
 
 Priorità: 120 (dopo le sezioni core).
 
@@ -21,7 +21,7 @@ Priorità: 120 (dopo le sezioni core).
 
 Le icone appaiono nel footer **solo se l'URL è compilato**. Se vuoto → icona nascosta.
 
-### Opzioni Tema (`4zampe_theme`)
+### Opzioni Tema (`theme_theme`)
 
 Priorità: 125.
 
@@ -76,7 +76,7 @@ $wp_customize->add_setting('footer_phone', [
 ]);
 $wp_customize->add_control('footer_phone', [
     'label'    => __('Telefono footer', 'sage'),
-    'section'  => '4zampe_theme',
+    'section'  => 'theme_theme',
     'type'     => 'text',
     'priority' => 40,
 ]);
@@ -99,7 +99,7 @@ $wp_customize->add_setting('logo_dark', [
 ]);
 $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'logo_dark', [
     'label'     => __('Logo versione scura', 'sage'),
-    'section'   => '4zampe_theme',
+    'section'   => 'theme_theme',
     'mime_type' => 'image',
     'priority'  => 5,
 ]));

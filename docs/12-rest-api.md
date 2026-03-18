@@ -5,7 +5,7 @@
 Definito in `app/filters.php`.
 
 ```
-POST /wp-json/4zampe/v1/newsletter
+POST /wp-json/theme/v1/newsletter
 Content-Type: application/json
 X-WP-Nonce: <nonce wp_rest>
 
@@ -29,7 +29,7 @@ X-WP-Nonce: <nonce wp_rest>
 L'endpoint **non salva l'email** direttamente — lancia un'action WordPress:
 
 ```php
-do_action('4zampe_newsletter_subscribe', $email);
+do_action('theme_newsletter_subscribe', $email);
 ```
 
 Aggancia il tuo ESP (Mailchimp, Klaviyo, Brevo…) a questo hook:
@@ -37,7 +37,7 @@ Aggancia il tuo ESP (Mailchimp, Klaviyo, Brevo…) a questo hook:
 ```php
 // In app/filters.php o in un file dedicato integrations.php
 
-add_action('4zampe_newsletter_subscribe', function (string $email): void {
+add_action('theme_newsletter_subscribe', function (string $email): void {
     // Mailchimp
     $mc = new \MailchimpMarketing\ApiClient();
     $mc->setConfig(['apiKey' => getenv('MAILCHIMP_API_KEY'), 'server' => 'us1']);
@@ -50,7 +50,7 @@ add_action('4zampe_newsletter_subscribe', function (string $email): void {
 
 ```php
 // Klaviyo
-add_action('4zampe_newsletter_subscribe', function (string $email): void {
+add_action('theme_newsletter_subscribe', function (string $email): void {
     wp_remote_post('https://a.klaviyo.com/api/v2/list/LIST_ID/subscribe', [
         'headers' => ['Content-Type' => 'application/json'],
         'body'    => wp_json_encode([
@@ -63,7 +63,7 @@ add_action('4zampe_newsletter_subscribe', function (string $email): void {
 
 ```php
 // Salva solo nel DB (opzione minimal)
-add_action('4zampe_newsletter_subscribe', function (string $email): void {
+add_action('theme_newsletter_subscribe', function (string $email): void {
     $subscribers = get_option('theme_newsletter_subscribers', []);
     if (!in_array($email, $subscribers, true)) {
         $subscribers[] = $email;
@@ -203,10 +203,10 @@ Per accesso solo da utenti loggati:
 
 | Integrazione | Package / Plugin | Hook da usare |
 |-------------|-----------------|---------------|
-| Mailchimp | `mailchimp/marketing` (Composer) | `4zampe_newsletter_subscribe` |
-| Klaviyo | HTTP diretto | `4zampe_newsletter_subscribe` |
-| Brevo (ex Sendinblue) | HTTP diretto | `4zampe_newsletter_subscribe` |
-| ConvertKit | HTTP API v3 | `4zampe_newsletter_subscribe` |
+| Mailchimp | `mailchimp/marketing` (Composer) | `theme_newsletter_subscribe` |
+| Klaviyo | HTTP diretto | `theme_newsletter_subscribe` |
+| Brevo (ex Sendinblue) | HTTP diretto | `theme_newsletter_subscribe` |
+| ConvertKit | HTTP API v3 | `theme_newsletter_subscribe` |
 | Contact Form 7 | plugin CF7 | `wpcf7_mail_sent` |
 | Gravity Forms | plugin GF | `gform_after_submission` |
 | Google Analytics | script in `wp_head` | — |

@@ -10,7 +10,7 @@
   // ── Resolve data once ────────────────────────────────────────────────────
   $wc_cats = [];
   if (function_exists('get_terms')) {
-    $wc_cats = wp_cache_get('4zampe_header_wc_cats');
+    $wc_cats = wp_cache_get('theme_header_wc_cats');
     if ($wc_cats === false) {
       $wc_cats = get_terms([
         'taxonomy'   => 'product_cat',
@@ -20,7 +20,7 @@
         'exclude'    => get_option('default_product_cat'),
       ]);
       $wc_cats = is_array($wc_cats) ? array_values($wc_cats) : [];
-      wp_cache_set('4zampe_header_wc_cats', $wc_cats, '', 5 * MINUTE_IN_SECONDS);
+      wp_cache_set('theme_header_wc_cats', $wc_cats, '', 5 * MINUTE_IN_SECONDS);
     }
   }
 
@@ -39,6 +39,8 @@
     ? \App\theme_cta_url()
     : esc_url(home_url('/contatti'));
 @endphp
+
+@include('partials.announcement-bar')
 
 <header
   id="site-header"
@@ -129,11 +131,12 @@
 
           {{-- Cart --}}
           @if(function_exists('WC'))
-            <a
-              href="{{ esc_url(wc_get_cart_url()) }}"
+            <button
+              type="button"
+              @click="$dispatch('open-cart')"
               class="icon-btn relative"
               :class="hasHero && !scrolled ? 'text-white/70 hover:text-white' : ''"
-              aria-label="{{ __('Carrello', 'sage') }}"
+              aria-label="{{ __('Apri carrello', 'sage') }}"
             >
               <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/></svg>
               <span
@@ -142,7 +145,7 @@
                 :class="cartCount === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'"
                 x-text="cartCount"
               >{{ $cart_count }}</span>
-            </a>
+            </button>
           @endif
 
           {{-- CTA --}}
@@ -160,11 +163,12 @@
       {{-- Mobile toggle (visible only on mobile) ──────────────────────────── --}}
       <div class="flex lg:hidden items-center gap-3">
         @if(function_exists('WC'))
-          <a
-            href="{{ esc_url(wc_get_cart_url()) }}"
+          <button
+            type="button"
+            @click="$dispatch('open-cart')"
             class="icon-btn relative"
             :class="hasHero && !scrolled && !mobileOpen ? 'text-white/70' : 'text-ink'"
-            aria-label="{{ __('Carrello', 'sage') }}"
+            aria-label="{{ __('Apri carrello', 'sage') }}"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/></svg>
             <span
@@ -173,7 +177,7 @@
               :class="cartCount === 0 ? 'hidden' : 'flex'"
               x-text="cartCount"
             >{{ $cart_count }}</span>
-          </a>
+          </button>
         @endif
         <button
           type="button"

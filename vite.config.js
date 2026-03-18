@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite';
+import { wordpressPlugin, wordpressThemeJson } from '@roots/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import laravel from 'laravel-vite-plugin';
-import { wordpressPlugin, wordpressThemeJson } from '@roots/vite-plugin';
+import { defineConfig } from 'vite';
 
 if (!process.env.APP_URL) {
   process.env.APP_URL = 'http://example.test';

@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Intro – Due Colonne (Testo + Titolo)
- * Slug: 4zampe/intro-two-cols
- * Categories: 4zampe-sections
+ * Slug: theme/intro-two-cols
+ * Categories: theme-sections
  * Keywords: intro, due colonne, testo, titolo, presentazione, agenzia
  * Description: Sezione introduttiva a due colonne. Sinistra: rich text + pulsante CTA. Destra: titolo evidenziato in blu con riga decorativa.
  * Viewport Width: 1440

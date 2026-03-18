@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Sezione Contatti – Form + Info
- * Slug: 4zampe/contact-section
- * Categories: 4zampe-sections
+ * Slug: theme/contact-section
+ * Categories: theme-sections
  * Keywords: contatti, form, email, telefono, indirizzo, messaggio
  * Description: Sezione contatti a due colonne: sinistra con informazioni di contatto (tel, email, WhatsApp, indirizzo), destra con form di contatto via CF7 o HTML nativo.
  * Viewport Width: 1440
@@ -65,7 +65,7 @@
 						<p class="theme-section-label">Email</p>
 						<!-- /wp:paragraph -->
 						<!-- wp:paragraph {"fontSize":"lg"} -->
-						<p class="has-lg-font-size"><a href="mailto:info@4zampe.it">info@4zampe.it</a></p>
+						<p class="has-lg-font-size"><a href="mailto:info@theme.it">info@theme.it</a></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:group -->

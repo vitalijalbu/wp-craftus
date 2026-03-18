@@ -122,7 +122,7 @@ Visibile solo se ci sono categorie WooCommerce (`$wc_cats` non vuoto).
 Le categorie sono recuperate con cache di oggetti (5 minuti):
 
 ```php
-$wc_cats = wp_cache_get('4zampe_header_wc_cats');
+$wc_cats = wp_cache_get('theme_header_wc_cats');
 if ($wc_cats === false) {
     $wc_cats = get_terms([
         'taxonomy'   => 'product_cat',
@@ -131,7 +131,7 @@ if ($wc_cats === false) {
         'number'     => 6,
         'exclude'    => get_option('default_product_cat'),
     ]);
-    wp_cache_set('4zampe_header_wc_cats', $wc_cats, '', 5 * MINUTE_IN_SECONDS);
+    wp_cache_set('theme_header_wc_cats', $wc_cats, '', 5 * MINUTE_IN_SECONDS);
 }
 ```
 

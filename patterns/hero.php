@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Hero – Immagine di Sfondo con CTA
- * Slug: 4zampe/hero
- * Categories: 4zampe-sections
+ * Slug: theme/hero
+ * Categories: theme-sections
  * Keywords: hero, banner, sfondo, immagine, titolo, cta, principale
  * Description: Sezione hero con immagine di sfondo, overlay scuro, titolo in Cormorant Garamond, sottotitolo e due pulsanti CTA. Altezza 76vh.
  * Block Types: core/cover

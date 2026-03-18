@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Griglia Servizi – 3 Colonne
- * Slug: 4zampe/services-grid
- * Categories: 4zampe-sections, 4zampe-cards
+ * Slug: theme/services-grid
+ * Categories: theme-sections, theme-cards
  * Keywords: servizi, griglia, card, 3 colonne, icona, link
  * Description: Griglia di 3 card servizio con icona emoji, titolo, descrizione e link. Include titolo sezione e pulsante "Vedi tutti i servizi".
  * Viewport Width: 1440

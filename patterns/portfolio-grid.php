@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Portfolio – Griglia Case Study
- * Slug: 4zampe/portfolio-grid
- * Categories: 4zampe-sections, 4zampe-cards
+ * Slug: theme/portfolio-grid
+ * Categories: theme-sections, theme-cards
  * Keywords: portfolio, case study, lavori, progetti, griglia
  * Description: Sezione portfolio con titolo, griglia 3 colonne (query loop CPT portfolio) e pulsante "Vedi tutti i progetti".
  * Viewport Width: 1440

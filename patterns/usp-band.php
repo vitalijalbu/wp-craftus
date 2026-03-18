@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Barra USP – Vantaggi
- * Slug: 4zampe/usp-band
- * Categories: 4zampe-sections
+ * Slug: theme/usp-band
+ * Categories: theme-sections
  * Keywords: usp, vantaggi, icone, spedizione, garanzia
  * Viewport Width: 1440
  */

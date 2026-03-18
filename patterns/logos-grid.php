@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Loghi Partner / Clienti
- * Slug: 4zampe/logos-grid
- * Categories: 4zampe-sections
+ * Slug: theme/logos-grid
+ * Categories: theme-sections
  * Keywords: loghi, partner, clienti, brand, trust, showcase
  * Description: Sezione con riga di loghi clienti/partner su sfondo bianco. Include titolo introduttivo e griglia responsiva di immagini logo.
  * Viewport Width: 1440

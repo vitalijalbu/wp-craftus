@@ -4,9 +4,9 @@
  */
 
 import Swiper from 'swiper';
-import {
-  Navigation, Pagination, Autoplay,
-  EffectFade, FreeMode, Thumbs, Scrollbar, A11y,
+import {A11y,Autoplay,
+  EffectFade, FreeMode, 
+  Navigation, Pagination, Scrollbar, Thumbs, 
 } from 'swiper/modules';
 
 export function initCarousels() {

@@ -2,8 +2,8 @@
   // Parameters
   $style        = $style        ?? 'dark'; // 'dark' | 'cream' | 'image' | 'primary'
   $label        = $label        ?? '';
-  $title        = $title        ?? __('Pronto a prenderti cura del tuo animale?', 'sage');
-  $subtitle     = $subtitle     ?? __('Scopri la nostra selezione di prodotti premium, scelti con amore per il benessere dei tuoi amici a quattro zampe.', 'sage');
+  $title        = $title        ?? __('Cosa possiamo fare per te?', 'sage');
+  $subtitle     = $subtitle     ?? __('Scopri la nostra selezione di prodotti e servizi premium.', 'sage');
   $cta_label    = $cta_label    ?? __('Scopri i prodotti', 'sage');
   $cta_url      = $cta_url      ?? '/shop';
   $cta2_label   = $cta2_label   ?? __('Contattaci', 'sage');

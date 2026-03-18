@@ -14,31 +14,31 @@ Registrate in `app/setup.php`:
 
 | ID | Label admin | Descrizione |
 |----|-------------|-------------|
-| `4zampe-sections` | 4 Zampe – Sezioni | Hero, CTA, intro, layout |
-| `4zampe-cards` | 4 Zampe – Card | Prodotti, servizi, blog |
-| `4zampe-carousel` | 4 Zampe – Carousel | Slider e caroselli |
+| `theme-sections` | 4 Zampe – Sezioni | Hero, CTA, intro, layout |
+| `theme-cards` | 4 Zampe – Card | Prodotti, servizi, blog |
+| `theme-carousel` | 4 Zampe – Carousel | Slider e caroselli |
 
 ### Elenco pattern disponibili
 
 | File | Slug | Categoria | Descrizione |
 |------|------|-----------|-------------|
-| `hero.php` | `4zampe/hero` | sections | Hero con sfondo, overlay, 2 CTA |
-| `cta-banner.php` | `4zampe/cta-banner` | sections | Banner CTA con sfondo scuro |
-| `stats.php` | `4zampe/stats` | sections | Contatori/statistiche a griglia |
-| `testimonials.php` | `4zampe/testimonials` | sections | Citazioni clienti |
-| `services-grid.php` | `4zampe/services-grid` | sections | Griglia 3 col con icone |
-| `media-text.php` | `4zampe/media-text` | sections | Immagine a sinistra + testo |
-| `media-text-right.php` | `4zampe/media-text-right` | sections | Immagine a destra + testo |
-| `brand-logos.php` | `4zampe/brand-logos` | sections | Loghi partner/brand |
-| `logos-grid.php` | `4zampe/logos-grid` | sections | Griglia loghi |
-| `portfolio-grid.php` | `4zampe/portfolio-grid` | sections | Griglia portfolio |
-| `contact-section.php` | `4zampe/contact-section` | sections | Sezione contatti |
-| `intro-two-cols.php` | `4zampe/intro-two-cols` | sections | Intro 2 colonne |
-| `page-hero.php` | `4zampe/page-hero` | sections | Hero interno pagine |
-| `shop-hero.php` | `4zampe/shop-hero` | sections | Hero shop WooCommerce |
-| `product-categories.php` | `4zampe/product-categories` | sections | Categorie prodotto |
-| `usp-band.php` | `4zampe/usp-band` | sections | Barra USP/benefit |
-| `newsletter-cta.php` | `4zampe/newsletter-cta` | sections | CTA newsletter |
+| `hero.php` | `theme/hero` | sections | Hero con sfondo, overlay, 2 CTA |
+| `cta-banner.php` | `theme/cta-banner` | sections | Banner CTA con sfondo scuro |
+| `stats.php` | `theme/stats` | sections | Contatori/statistiche a griglia |
+| `testimonials.php` | `theme/testimonials` | sections | Citazioni clienti |
+| `services-grid.php` | `theme/services-grid` | sections | Griglia 3 col con icone |
+| `media-text.php` | `theme/media-text` | sections | Immagine a sinistra + testo |
+| `media-text-right.php` | `theme/media-text-right` | sections | Immagine a destra + testo |
+| `brand-logos.php` | `theme/brand-logos` | sections | Loghi partner/brand |
+| `logos-grid.php` | `theme/logos-grid` | sections | Griglia loghi |
+| `portfolio-grid.php` | `theme/portfolio-grid` | sections | Griglia portfolio |
+| `contact-section.php` | `theme/contact-section` | sections | Sezione contatti |
+| `intro-two-cols.php` | `theme/intro-two-cols` | sections | Intro 2 colonne |
+| `page-hero.php` | `theme/page-hero` | sections | Hero interno pagine |
+| `shop-hero.php` | `theme/shop-hero` | sections | Hero shop WooCommerce |
+| `product-categories.php` | `theme/product-categories` | sections | Categorie prodotto |
+| `usp-band.php` | `theme/usp-band` | sections | Barra USP/benefit |
+| `newsletter-cta.php` | `theme/newsletter-cta` | sections | CTA newsletter |
 
 ---
 
@@ -76,7 +76,7 @@ Registrate in `app/setup.php`:
 /**
  * Title: La Mia Sezione
  * Slug: theme/mia-sezione
- * Categories: 4zampe-sections
+ * Categories: theme-sections
  * Keywords: sezione, custom
  * Viewport Width: 1440
  */
@@ -185,7 +185,7 @@ I pattern PHP possono contenere logica PHP per dati dinamici:
 /**
  * Title: Ultimi Prodotti
  * Slug: theme/ultimi-prodotti
- * Categories: 4zampe-sections
+ * Categories: theme-sections
  */
 
 $products = wc_get_products(['limit' => 3, 'status' => 'publish']);

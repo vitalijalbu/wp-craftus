@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Stats – Numeri in Evidenza
- * Slug: 4zampe/stats
- * Categories: 4zampe-sections
+ * Slug: theme/stats
+ * Categories: theme-sections
  * Keywords: stats, numeri, statistiche, risultati, contatori, metriche
  * Description: Sezione con 4 colonne di statistiche/numeri. Sfondo scuro (#0f0f0f) con numeri grandi in blu primario e etichette in bianco. Ideale per evidenziare risultati aziendali.
  * Viewport Width: 1440

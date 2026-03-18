@@ -10,7 +10,7 @@
   // ── Shop categories — re-use object cache set by header ──────────────────
   $shop_cats = [];
   if (function_exists('get_terms')) {
-    $cached = wp_cache_get('4zampe_header_wc_cats');
+    $cached = wp_cache_get('theme_header_wc_cats');
     if ($cached === false) {
       $cached = get_terms([
         'taxonomy'   => 'product_cat',
@@ -20,7 +20,7 @@
         'exclude'    => get_option('default_product_cat'),
       ]);
       $cached = is_array($cached) ? array_values($cached) : [];
-      wp_cache_set('4zampe_header_wc_cats', $cached, '', 5 * MINUTE_IN_SECONDS);
+      wp_cache_set('theme_header_wc_cats', $cached, '', 5 * MINUTE_IN_SECONDS);
     }
     $shop_cats = $cached;
   }
@@ -40,14 +40,14 @@
         <p class="font-serif text-xl font-light text-white/90">{{ esc_html($newsletter_heading) }}</p>
       </div>
 
-      {{-- Newsletter form — submits to REST API /wp-json/4zampe/v1/newsletter --}}
+      {{-- Newsletter form — submits to REST API /wp-json/theme/v1/newsletter --}}
       <form
         class="flex w-full max-w-sm gap-0"
         x-data="{ email: '', state: 'idle', message: '' }"
         @submit.prevent="
           if (!email) return;
           state = 'loading';
-          fetch('{{ esc_url(rest_url('4zampe/v1/newsletter')) }}', {
+          fetch('{{ esc_url(rest_url('theme/v1/newsletter')) }}', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': '{{ wp_create_nonce('wp_rest') }}' },
             body: JSON.stringify({ email }),

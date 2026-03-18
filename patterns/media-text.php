@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Media + Testo – Immagine a Sinistra
- * Slug: 4zampe/media-text
- * Categories: 4zampe-sections
+ * Slug: theme/media-text
+ * Categories: theme-sections
  * Keywords: media text, immagine, testo, due colonne, feature
  * Description: Sezione a due colonne con immagine a sinistra e contenuto testuale a destra: titolo grande, testo e pulsante CTA.
  * Viewport Width: 1440

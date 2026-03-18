@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Testimonial – Citazione Singola
- * Slug: 4zampe/testimonials
- * Categories: 4zampe-sections
+ * Slug: theme/testimonials
+ * Categories: theme-sections
  * Keywords: testimonial, recensione, citazione, cliente, review, stelle
  * Description: Sezione testimonial con sfondo chiaro, stelle di valutazione, citazione in evidenza, avatar e nome cliente.
  * Viewport Width: 1440

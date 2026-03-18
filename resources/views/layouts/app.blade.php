@@ -85,6 +85,10 @@
       </div>
     </div>
 
+    @include('partials.cart-drawer')
+    @include('partials.back-to-top')
+    @include('partials.cookie-banner')
+
     @php(do_action('get_footer'))
     @php(wp_footer())
   </body>

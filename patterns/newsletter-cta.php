@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: CTA Newsletter – Dark
- * Slug: 4zampe/newsletter-cta
- * Categories: 4zampe-sections
+ * Slug: theme/newsletter-cta
+ * Categories: theme-sections
  * Keywords: newsletter, email, iscrizione, cta
  * Viewport Width: 1440
  */

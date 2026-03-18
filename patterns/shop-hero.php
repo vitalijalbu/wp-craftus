@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Hero Shop – Fullscreen con CTA
- * Slug: 4zampe/shop-hero
- * Categories: 4zampe-sections
+ * Slug: theme/shop-hero
+ * Categories: theme-sections
  * Keywords: hero, shop, ecommerce, fullscreen, cta
  * Viewport Width: 1440
  */

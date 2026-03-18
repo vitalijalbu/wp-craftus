@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Griglia Brand – Loghi Marchi
- * Slug: 4zampe/brand-logos
- * Categories: 4zampe-sections
+ * Slug: theme/brand-logos
+ * Categories: theme-sections
  * Keywords: brand, marchi, loghi, partner, fornitori
  * Viewport Width: 1440
  */

@@ -159,15 +159,15 @@ add_action('after_setup_theme', function () {
     /**
      * Register block pattern categories.
      */
-    register_block_pattern_category('4zampe-sections', [
+    register_block_pattern_category('theme-sections', [
         'label'       => __('4 Zampe – Sezioni', 'sage'),
         'description' => __('Sezioni hero, CTA, intro e layout.', 'sage'),
     ]);
-    register_block_pattern_category('4zampe-cards', [
+    register_block_pattern_category('theme-cards', [
         'label'       => __('4 Zampe – Card', 'sage'),
         'description' => __('Card per prodotti, servizi e blog.', 'sage'),
     ]);
-    register_block_pattern_category('4zampe-carousel', [
+    register_block_pattern_category('theme-carousel', [
         'label'       => __('4 Zampe – Carousel', 'sage'),
         'description' => __('Sezioni con slider e caroselli.', 'sage'),
     ]);
@@ -185,13 +185,19 @@ add_filter('loop_shop_per_page', fn() => 12);
 add_filter('loop_shop_columns', fn() => 3);
 
 /**
- * Preconnect to Google Fonts CDN for faster font loading.
- * The actual @import is handled inside resources/css/app.css (bundled by Vite).
- * We only add the preconnect hints here — no duplicate enqueue.
+ * Load Google Fonts asynchronously (non-render-blocking).
+ * Uses the print/onload trick: browser downloads as print, swaps to all on load.
+ * A <noscript> fallback ensures fonts load without JS.
+ * preconnect hints reduce DNS + TLS handshake latency.
  */
 add_action('wp_head', function () {
+    $font_url = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap';
+    $url      = esc_url($font_url);
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    echo '<link rel="preload" as="style" href="' . $url . '">' . "\n";
+    echo '<link rel="stylesheet" media="print" onload="this.media=\'all\'" href="' . $url . '">' . "\n";
+    echo '<noscript><link rel="stylesheet" href="' . $url . '"></noscript>' . "\n";
 }, 1);
 
 /**

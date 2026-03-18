@@ -1,13 +1,55 @@
 @extends('layouts.app')
 
 @section('content')
-  @include('partials.page-header')
+<section class="min-h-[70vh] flex items-center bg-surface" aria-labelledby="error-heading">
+  <div class="max-w-360 mx-auto px-6 lg:px-10 py-24 text-center">
 
-  @if (! have_posts())
-    <x-alert type="warning">
-      {!! __('Sorry, but the page you are trying to view does not exist.', 'sage') !!}
-    </x-alert>
+    {{-- 404 number --}}
+    <p class="font-serif text-[clamp(6rem,20vw,14rem)] font-light leading-none text-border select-none" aria-hidden="true">
+      404
+    </p>
 
-    {!! get_search_form(false) !!}
-  @endif
+    <div class="w-12 h-px bg-gold mx-auto my-8" aria-hidden="true"></div>
+
+    <h1 id="error-heading" class="font-serif text-[clamp(1.75rem,4vw,3rem)] font-light text-ink mb-4">
+      {{ __('Pagina non trovata', 'sage') }}
+    </h1>
+    <p class="font-sans text-base text-muted max-w-md mx-auto mb-10">
+      {{ __('La pagina che stai cercando potrebbe essere stata spostata, rinominata o non esiste più.', 'sage') }}
+    </p>
+
+    {{-- Search --}}
+    <form role="search" method="get" action="{{ home_url('/') }}" class="flex max-w-sm mx-auto mb-10 gap-0">
+      <label for="search-404" class="sr-only">{{ __('Cerca nel sito', 'sage') }}</label>
+      <input
+        id="search-404"
+        type="search"
+        name="s"
+        value="{{ get_search_query() }}"
+        placeholder="{{ __('Cerca nel sito…', 'sage') }}"
+        class="flex-1 border border-border border-r-0 px-4 py-3 text-sm font-sans text-ink bg-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
+      >
+      <button
+        type="submit"
+        class="bg-ink text-white px-5 py-3 text-xs font-sans font-semibold tracking-wider uppercase hover:bg-primary transition-colors"
+      >{{ __('Cerca', 'sage') }}</button>
+    </form>
+
+    {{-- Quick links --}}
+    <nav aria-label="{{ __('Link utili', 'sage') }}" class="flex flex-wrap justify-center gap-4">
+      <a href="{{ home_url('/') }}" class="btn-primary text-sm">
+        {{ __('← Torna in Homepage', 'sage') }}
+      </a>
+      @if(function_exists('wc_get_page_permalink'))
+        <a href="{{ esc_url(wc_get_page_permalink('shop')) }}" class="btn-ghost text-sm">
+          {{ __('Vai allo Shop', 'sage') }}
+        </a>
+      @endif
+      <a href="{{ home_url('/contatti') }}" class="btn-ghost text-sm">
+        {{ __('Contattaci', 'sage') }}
+      </a>
+    </nav>
+
+  </div>
+</section>
 @endsection

@@ -22,7 +22,7 @@ File: `resources/views/sections/footer.blade.php`
 
 ## Newsletter band
 
-Il form invia una POST a `/wp-json/4zampe/v1/newsletter` via `fetch()` Alpine.js.
+Il form invia una POST a `/wp-json/theme/v1/newsletter` via `fetch()` Alpine.js.
 
 ### Stati Alpine
 
@@ -134,11 +134,11 @@ Per disabilitare la newsletter band:
 
 ## Cache categorie footer
 
-Il footer riusa la cache impostata dall'header (`wp_cache_get('4zampe_header_wc_cats')`). Se l'header non è stato renderizzato (es. footer in una chiamata REST), fa una query di fallback.
+Il footer riusa la cache impostata dall'header (`wp_cache_get('theme_header_wc_cats')`). Se l'header non è stato renderizzato (es. footer in una chiamata REST), fa una query di fallback.
 
 Per invalidare la cache manualmente:
 ```php
-wp_cache_delete('4zampe_header_wc_cats');
+wp_cache_delete('theme_header_wc_cats');
 ```
 
 ---

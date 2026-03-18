@@ -14,7 +14,7 @@ namespace App;
 add_action('customize_register', function (\WP_Customize_Manager $wp_customize): void {
 
     // ── Section: Social Media ─────────────────────────────────────────────────
-    $wp_customize->add_section('4zampe_social', [
+    $wp_customize->add_section('theme_social', [
         'title'       => __('Social Media', 'sage'),
         'description' => __('URL dei profili social. Lascia vuoto per nascondere l\'icona.', 'sage'),
         'priority'    => 120,
@@ -35,7 +35,7 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
         ]);
         $wp_customize->add_control("social_{$slug}", [
             'label'       => $config['label'],
-            'section'     => '4zampe_social',
+            'section'     => 'theme_social',
             'type'        => 'url',
             'priority'    => $config['priority'],
             'input_attrs' => ['placeholder' => "https://www.{$slug}.com/nomepagina"],
@@ -43,7 +43,7 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
     }
 
     // ── Section: Theme Options ────────────────────────────────────────────────
-    $wp_customize->add_section('4zampe_theme', [
+    $wp_customize->add_section('theme_theme', [
         'title'    => __('Opzioni Tema', 'sage'),
         'priority' => 125,
     ]);
@@ -57,7 +57,7 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
     $wp_customize->add_control('cta_url', [
         'label'       => __('URL pulsante "Contattaci"', 'sage'),
         'description' => __('Lascia vuoto per usare /contatti.', 'sage'),
-        'section'     => '4zampe_theme',
+        'section'     => 'theme_theme',
         'type'        => 'url',
         'priority'    => 10,
     ]);
@@ -70,7 +70,7 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
     ]);
     $wp_customize->add_control('footer_tagline', [
         'label'    => __('Tagline footer', 'sage'),
-        'section'  => '4zampe_theme',
+        'section'  => 'theme_theme',
         'type'     => 'textarea',
         'priority' => 20,
     ]);
@@ -83,9 +83,57 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
     ]);
     $wp_customize->add_control('newsletter_heading', [
         'label'    => __('Titolo newsletter footer', 'sage'),
-        'section'  => '4zampe_theme',
+        'section'  => 'theme_theme',
         'type'     => 'text',
         'priority' => 30,
+    ]);
+    // ── Section: Announcement Bar ────────────────────────────────────────────
+    $wp_customize->add_section('theme_announcement', [
+        'title'    => __('Barra Annunci', 'sage'),
+        'priority' => 115,
+    ]);
+
+    $wp_customize->add_setting('announcement_bar_active', [
+        'default'           => false,
+        'sanitize_callback' => 'rest_sanitize_boolean',
+    ]);
+    $wp_customize->add_control('announcement_bar_active', [
+        'label'   => __('Mostra barra annunci', 'sage'),
+        'section' => 'theme_announcement',
+        'type'    => 'checkbox',
+    ]);
+
+    $wp_customize->add_setting('announcement_bar_text', [
+        'default'           => '',
+        'sanitize_callback' => 'wp_kses_post',
+        'transport'         => 'postMessage',
+    ]);
+    $wp_customize->add_control('announcement_bar_text', [
+        'label'       => __('Testo annuncio', 'sage'),
+        'description' => __('Puoi usare <strong> e <em>.', 'sage'),
+        'section'     => 'theme_announcement',
+        'type'        => 'textarea',
+    ]);
+
+    $wp_customize->add_setting('announcement_bar_cta_text', [
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ]);
+    $wp_customize->add_control('announcement_bar_cta_text', [
+        'label'   => __('Testo CTA', 'sage'),
+        'section' => 'theme_announcement',
+        'type'    => 'text',
+    ]);
+
+    $wp_customize->add_setting('announcement_bar_cta_url', [
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    $wp_customize->add_control('announcement_bar_cta_url', [
+        'label'   => __('URL CTA', 'sage'),
+        'section' => 'theme_announcement',
+        'type'    => 'url',
     ]);
 });
 

@@ -26,9 +26,7 @@
       "homepage": "https://github.com/log1x"
     }
   ],
-  "keywords": [
-    "wordpress"
-  ],
+  "keywords": ["wordpress"],
   "support": {
     "issues": "https://github.com/roots/sage/issues",
     "forum": "https://discourse.roots.io/"
@@ -56,8 +54,6 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
-    "post-autoload-dump": [
-      "Roots\\Acorn\\ComposerScripts::postAutoloadDump"
-    ]
+    "post-autoload-dump": ["Roots\\Acorn\\ComposerScripts::postAutoloadDump"]
   }
 }

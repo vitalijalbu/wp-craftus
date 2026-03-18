@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: Griglia Categorie Prodotti
- * Slug: 4zampe/product-categories
- * Categories: 4zampe-sections
+ * Slug: theme/product-categories
+ * Categories: theme-sections
  * Keywords: categorie, prodotti, shop, grid, ecommerce
  * Viewport Width: 1440
  */
