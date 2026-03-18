@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "theme/stat",
+  "title": "Statistica / Numero",
+  "category": "theme",
+  "description": "Singolo blocco di statistica con numero grande, etichetta e descrizione opzionale. Da usare in gruppi/colonne.",
+  "keywords": ["statistica", "numero", "kpi", "dato", "cifra"],
+  "textdomain": "sage",
+  "style": "file:../../public/build/app.css",
+  "render": "file:render.php",
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "color": false,
+    "align": false
+  },
+  "attributes": {
+    "value": {
+      "type": "string",
+      "default": "100+"
+    },
+    "label": {
+      "type": "string",
+      "default": "Clienti soddisfatti"
+    },
+    "description": {
+      "type": "string",
+      "default": ""
+    },
+    "bg": {
+      "type": "string",
+      "default": "surface",
+      "enum": ["surface", "cream", "ink"]
+    },
+    "prefix": {
+      "type": "string",
+      "default": ""
+    },
+    "suffix": {
+      "type": "string",
+      "default": ""
+    },
+    "align": {
+      "type": "string",
+      "default": "left",
+      "enum": ["left", "center"]
+    }
+  }
+}

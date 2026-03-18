@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "theme/testimonial",
+  "title": "Testimonianza",
+  "category": "theme",
+  "description": "Singola card di testimonianza con citazione, nome, ruolo e immagine opzionale.",
+  "keywords": ["testimonianza", "recensione", "citazione", "review"],
+  "textdomain": "sage",
+  "style": "file:../../public/build/app.css",
+  "render": "file:render.php",
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "color": false
+  },
+  "attributes": {
+    "quote": {
+      "type": "string",
+      "default": "Un prodotto di qualità eccezionale. Lo consiglio a tutti."
+    },
+    "authorName": {
+      "type": "string",
+      "default": "Nome Cognome"
+    },
+    "authorRole": {
+      "type": "string",
+      "default": "Cliente verificato"
+    },
+    "authorImageId": {
+      "type": "integer",
+      "default": 0
+    },
+    "authorImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "rating": {
+      "type": "integer",
+      "default": 5
+    },
+    "bg": {
+      "type": "string",
+      "default": "surface",
+      "enum": ["surface", "cream", "ink"]
+    },
+    "style": {
+      "type": "string",
+      "default": "card",
+      "enum": ["card", "minimal", "large"]
+    }
+  }
+}

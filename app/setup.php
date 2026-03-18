@@ -263,6 +263,20 @@ add_action('wp_head', function () {
 }, 5);
 
 /**
+ * Register custom blocks (server-side rendered via render.php).
+ * Each block lives in blocks/{name}/ with a block.json + render.php.
+ */
+add_action('init', function () {
+    $blocks = ['hero', 'testimonial', 'stat', 'icon-box'];
+    foreach ($blocks as $name) {
+        $dir = get_template_directory() . "/blocks/{$name}";
+        if (is_dir($dir)) {
+            register_block_type($dir);
+        }
+    }
+});
+
+/**
  * Register the theme sidebars.
  *
  * @return void

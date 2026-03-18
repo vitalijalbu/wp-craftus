@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "theme/hero",
+  "title": "Hero – Sezione Principale",
+  "category": "theme",
+  "description": "Hero a schermo intero con immagine di sfondo, titolo, sottotitolo e doppio CTA.",
+  "keywords": ["hero", "banner", "principale", "cta"],
+  "textdomain": "sage",
+  "editorScript": "file:../../public/build/editor.js",
+  "style": "file:../../public/build/app.css",
+  "render": "file:render.php",
+  "supports": {
+    "anchor": true,
+    "align": ["full", "wide"],
+    "html": false,
+    "color": false
+  },
+  "attributes": {
+    "imageId": {
+      "type": "integer",
+      "default": 0
+    },
+    "imageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "imageAlt": {
+      "type": "string",
+      "default": ""
+    },
+    "label": {
+      "type": "string",
+      "default": ""
+    },
+    "heading": {
+      "type": "string",
+      "default": "Il titolo del tuo brand"
+    },
+    "subtext": {
+      "type": "string",
+      "default": ""
+    },
+    "ctaLabel": {
+      "type": "string",
+      "default": "Scopri di più"
+    },
+    "ctaUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "cta2Label": {
+      "type": "string",
+      "default": ""
+    },
+    "cta2Url": {
+      "type": "string",
+      "default": ""
+    },
+    "overlayOpacity": {
+      "type": "integer",
+      "default": 40
+    },
+    "minHeight": {
+      "type": "string",
+      "default": "100svh"
+    },
+    "contentAlign": {
+      "type": "string",
+      "default": "center",
+      "enum": ["left", "center", "right"]
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "theme/icon-box",
+  "title": "Icon Box / Feature Card",
+  "category": "theme",
+  "description": "Card con immagine/icona, titolo, testo e link opzionale. Da usare in colonne per presentare features o servizi.",
+  "keywords": ["icona", "feature", "card", "box", "servizio", "vantaggio"],
+  "textdomain": "sage",
+  "style": "file:../../public/build/app.css",
+  "render": "file:render.php",
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "color": false
+  },
+  "attributes": {
+    "iconImageId": {
+      "type": "integer",
+      "default": 0
+    },
+    "iconImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "iconSize": {
+      "type": "integer",
+      "default": 48
+    },
+    "title": {
+      "type": "string",
+      "default": "Titolo Feature"
+    },
+    "text": {
+      "type": "string",
+      "default": "Breve descrizione della feature o del servizio offerto."
+    },
+    "linkLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "linkUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "bg": {
+      "type": "string",
+      "default": "surface",
+      "enum": ["surface", "cream", "ink"]
+    },
+    "layout": {
+      "type": "string",
+      "default": "vertical",
+      "enum": ["vertical", "horizontal"]
+    },
+    "bordered": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
