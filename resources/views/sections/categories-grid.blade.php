@@ -1,0 +1,125 @@
+@php
+  // Parameters
+  $section_label    = $section_label    ?? __('Esplora', 'sage');
+  $section_title    = $section_title    ?? __('Le nostre categorie', 'sage');
+  $section_subtitle = $section_subtitle ?? '';
+  $parent           = $parent           ?? 0;    // 0 = top-level, or parent term ID
+  $number           = $number           ?? 8;
+  $cols             = $cols             ?? 4;    // 2 | 3 | 4
+  $bg               = $bg               ?? 'surface';
+
+  $categories = [];
+  if (function_exists('get_terms')) {
+    $raw = get_terms([
+      'taxonomy'   => 'product_cat',
+      'hide_empty' => true,
+      'number'     => (int) $number,
+      'parent'     => (int) $parent,
+      'orderby'    => 'count',
+      'order'      => 'DESC',
+    ]);
+    if (!is_wp_error($raw)) {
+      $categories = $raw;
+    }
+  }
+
+  $cols_class = match((int) $cols) {
+    2 => 'grid-cols-2',
+    3 => 'grid-cols-2 md:grid-cols-3',
+    default => 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+  };
+
+  $bg_class = $bg === 'cream' ? 'bg-cream' : ($bg === 'ink' ? 'bg-ink' : 'bg-surface');
+@endphp
+
+@if(!empty($categories))
+<section
+  class="section-luxury {{ $bg_class }}"
+  aria-label="{{ $section_title }}"
+>
+  <div class="max-w-360 mx-auto px-6 lg:px-10">
+
+    {{-- Header --}}
+    @if($section_label || $section_title)
+      <div class="text-center mb-14">
+        @if($section_label)
+          <span class="section-label {{ $bg === 'ink' ? 'text-gold' : '' }}" data-scroll="fade">
+            {{ $section_label }}
+          </span>
+        @endif
+        <h2
+          class="section-title {{ $bg === 'ink' ? 'text-white' : '' }}"
+          data-scroll="text-reveal"
+        >{!! $section_title !!}</h2>
+        @if($section_subtitle)
+          <p
+            class="section-subtitle mx-auto mt-4 {{ $bg === 'ink' ? 'text-white/60' : '' }}"
+            data-scroll="slide-up"
+          >{{ $section_subtitle }}</p>
+        @endif
+      </div>
+    @endif
+
+    {{-- Categories grid --}}
+    <div
+      class="grid {{ $cols_class }} gap-4 lg:gap-6"
+      data-scroll="stagger"
+    >
+      @foreach($categories as $cat)
+        @php
+          $cat_link  = get_term_link($cat);
+          $cat_img   = '';
+          $cat_thumb = '';
+          // WooCommerce category thumbnail
+          if (function_exists('get_woocommerce_term_meta')) {
+            $thumbnail_id = get_woocommerce_term_meta($cat->term_id, 'thumbnail_id', true);
+          } elseif (function_exists('get_term_meta')) {
+            $thumbnail_id = get_term_meta($cat->term_id, 'thumbnail_id', true);
+          } else {
+            $thumbnail_id = 0;
+          }
+          if ($thumbnail_id) {
+            $cat_img  = wp_get_attachment_image_url($thumbnail_id, 'large');
+            $cat_thumb = wp_get_attachment_image_url($thumbnail_id, 'medium');
+          }
+        @endphp
+        <a
+          href="{{ is_wp_error($cat_link) ? '#' : $cat_link }}"
+          class="category-card group"
+          data-scroll-item
+        >
+          {{-- Image: alt="" because <h3> below provides the visible name --}}
+          @if($cat_img)
+            <img
+              src="{{ $cat_img }}"
+              alt=""
+              class="category-card__image"
+              loading="lazy"
+              decoding="async"
+            >
+          @else
+            <div
+              class="category-card__image bg-linear-to-br from-cream via-gold-light to-border flex items-center justify-center"
+              aria-hidden="true"
+            >
+              <svg class="w-12 h-12 text-gold/40" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/>
+              </svg>
+            </div>
+          @endif
+
+          <div class="category-card__overlay" aria-hidden="true"></div>
+
+          <div class="category-card__body">
+            <h3 class="category-card__name">{{ $cat->name }}</h3>
+            <p class="category-card__count">
+              {{ sprintf(_n('%d prodotto', '%d prodotti', $cat->count, 'sage'), $cat->count) }}
+            </p>
+          </div>
+        </a>
+      @endforeach
+    </div>
+
+  </div>
+</section>
+@endif

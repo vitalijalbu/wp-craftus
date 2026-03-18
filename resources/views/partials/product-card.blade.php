@@ -1,0 +1,158 @@
+@php
+  /**
+   * Product Card partial
+   *
+   * @param WC_Product $product  WooCommerce product object
+   * @param bool       $show_cta Whether to show the add-to-cart overlay (default: true)
+   */
+  if (!isset($product) || !($product instanceof WC_Product)) {
+    return;
+  }
+
+  $product_id    = $product->get_id();
+  $product_link  = get_permalink($product_id);
+  $product_name  = $product->get_name();
+  $product_price = $product->get_price_html();
+  $product_sku   = $product->get_sku();
+  $is_on_sale    = $product->is_on_sale();
+  $is_featured   = $product->is_featured();
+  $is_virtual    = $product->is_virtual();
+  $stock_status  = $product->get_stock_status(); // 'instock' | 'outofstock' | 'onbackorder'
+
+  // Thumbnail
+  $thumb_id  = $product->get_image_id();
+  $thumb_url = $thumb_id
+    ? wp_get_attachment_image_url($thumb_id, 'woocommerce_thumbnail')
+    : wc_placeholder_img_src('woocommerce_thumbnail');
+  $thumb_srcset = $thumb_id
+    ? wp_get_attachment_image_srcset($thumb_id, 'woocommerce_thumbnail')
+    : '';
+  $thumb_alt = $thumb_id
+    ? (get_post_meta($thumb_id, '_wp_attachment_image_alt', true) ?: $product_name)
+    : $product_name;
+
+  // Category
+  $categories = wc_get_product_category_list($product_id, ', ');
+  $first_cat  = '';
+  $terms = get_the_terms($product_id, 'product_cat');
+  if ($terms && !is_wp_error($terms)) {
+    $first_cat = $terms[0]->name ?? '';
+  }
+
+  // Add to cart
+  $add_to_cart_url  = $product->add_to_cart_url();
+  $add_to_cart_text = $product->add_to_cart_text();
+  $is_purchasable   = $product->is_purchasable() && $product->is_in_stock();
+@endphp
+
+<article
+  class="product-card"
+  aria-label="{{ esc_attr($product_name) }}"
+  itemscope
+  itemtype="https://schema.org/Product"
+>
+  {{-- Image wrap --}}
+  <div class="product-card__image-wrap">
+    <a
+      href="{{ $product_link }}"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <img
+        src="{{ $thumb_url }}"
+        alt="{{ esc_attr($thumb_alt) }}"
+        @if($thumb_srcset) srcset="{{ $thumb_srcset }}" @endif
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        class="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+        itemprop="image"
+      >
+    </a>
+
+    {{-- Badges --}}
+    <div class="product-card__badge flex flex-col gap-1">
+      @if($is_on_sale)
+        <span class="badge badge-gold">{{ __('Offerta', 'sage') }}</span>
+      @endif
+      @if($is_featured && !$is_on_sale)
+        <span class="badge">{{ __('In evidenza', 'sage') }}</span>
+      @endif
+      @if($stock_status === 'outofstock')
+        <span class="badge bg-muted/80">{{ __('Esaurito', 'sage') }}</span>
+      @endif
+    </div>
+
+    {{-- Wishlist button (placeholder — activate with YITH Wishlist) --}}
+    <button
+      type="button"
+      class="product-card__wishlist"
+      aria-label="{{ sprintf(__('Aggiungi %s alla wishlist', 'sage'), esc_attr($product_name)) }}"
+      data-product-id="{{ $product_id }}"
+    >
+      <svg class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+      </svg>
+    </button>
+
+    {{-- Add to cart overlay --}}
+    @if($is_purchasable)
+      <div class="product-card__overlay bg-white/95">
+        <a
+          href="{{ $add_to_cart_url }}"
+          data-product_id="{{ $product_id }}"
+          data-product_sku="{{ $product_sku }}"
+          class="btn-primary w-full justify-center add_to_cart_button ajax_add_to_cart text-xs py-3"
+          rel="nofollow"
+          aria-label="{{ sprintf(__('Aggiungi %s al carrello', 'sage'), esc_attr($product_name)) }}"
+        >
+          {{ $add_to_cart_text }}
+        </a>
+      </div>
+    @endif
+  </div>
+
+  {{-- Card body --}}
+  <div class="product-card__body">
+
+    @if($first_cat)
+      <p class="product-card__category">{{ $first_cat }}</p>
+    @endif
+
+    <a
+      href="{{ $product_link }}"
+      class="product-card__title"
+      itemprop="name"
+    >{{ $product_name }}</a>
+
+    {{-- Rating --}}
+    @if($product->get_rating_count() > 0)
+      <div
+        class="flex items-center gap-1.5 mb-2"
+        aria-label="{{ sprintf(__('Valutazione: %.1f su 5', 'sage'), $product->get_average_rating()) }}"
+      >
+        @php $rating = round($product->get_average_rating()); @endphp
+        @for($i = 0; $i < 5; $i++)
+          <svg class="w-3 h-3 {{ $i < $rating ? 'fill-gold text-gold' : 'fill-border text-border' }}" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        @endfor
+        <span class="font-sans text-[11px] text-muted">({{ $product->get_rating_count() }})</span>
+      </div>
+    @endif
+
+    {{-- Price --}}
+    <div
+      class="product-card__price mt-auto pt-3"
+      itemprop="offers"
+      itemscope
+      itemtype="https://schema.org/Offer"
+    >
+      {!! $product_price !!}
+      <meta itemprop="price" content="{{ $product->get_price() }}">
+      <meta itemprop="priceCurrency" content="{{ get_woocommerce_currency() }}">
+      <link itemprop="availability" href="{{ $stock_status === 'instock' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }}">
+    </div>
+
+  </div>
+</article>

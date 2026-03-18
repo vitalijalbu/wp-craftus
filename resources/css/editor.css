@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+body {
+  font-family: 'Poppins', system-ui, sans-serif;
+  color: #111111;
+}
+
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6 {
+  font-family: 'Poppins', sans-serif;
+  color: #111111;
+  line-height: 1.2;
+}
+
+.editor-styles-wrapper .wp-block-button__link {
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  background-color: #3E80C4;
+  color: #ffffff;
+}
+
+.editor-styles-wrapper .wp-block-cover {
+  min-height: 400px;
+}
+
+.editor-styles-wrapper .wp-block-separator {
+  border-color: #e2e8f0;
+}
+
+.editor-styles-wrapper a {
+  color: #3E80C4;
+  text-decoration: none;
+}
+
+.editor-styles-wrapper a:hover {
+  color: #2d69a8;
+}
