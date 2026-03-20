@@ -171,6 +171,76 @@ add_action('woocommerce_after_add_to_cart_button', function () {
     echo '</div>';
 }, 25);
 
+// ── Performance: rimuovi asset inutili di WordPress ──────────────────────────
+
+/**
+ * Rimuovi emoji script/style di WordPress.
+ * Risparmia ~15 KB e una DNS lookup a s.w.org per ogni pagina.
+ */
+add_action('init', function () {
+    remove_action('wp_head',             'print_emoji_detection_script', 7);
+    remove_action('admin_print_scripts', 'print_emoji_detection_script');
+    remove_action('wp_print_styles',     'print_emoji_styles');
+    remove_action('admin_print_styles',  'print_emoji_styles');
+    remove_filter('the_content_feed',    'wp_staticize_emoji');
+    remove_filter('comment_text_rss',    'wp_staticize_emoji');
+    remove_filter('wp_mail',             'wp_staticize_emoji_for_email');
+    add_filter('tiny_mce_plugins',       fn($p) => array_diff($p ?? [], ['wpemoji']));
+    add_filter('wp_resource_hints',      fn($hints, $relation_type) =>
+        $relation_type === 'dns-prefetch'
+            ? array_filter($hints, fn($h) => !str_contains($h['href'] ?? '', 's.w.org'))
+            : $hints,
+    10, 2);
+});
+
+/**
+ * Rimuovi jQuery Migrate dal frontend.
+ * Il tema usa Alpine.js e non ha codice legacy che richieda jQuery Migrate.
+ * Risparmia ~10 KB minificati.
+ */
+add_action('wp_default_scripts', function (\WP_Scripts $scripts) {
+    if (! is_admin() && isset($scripts->registered['jquery'])) {
+        $script = $scripts->registered['jquery'];
+        if ($script->deps) {
+            $script->deps = array_diff($script->deps, ['jquery-migrate']);
+        }
+    }
+});
+
+/**
+ * Aggiungi fetchpriority="high" al logo/hero image (LCP hint).
+ * WordPress 6.3+ già gestisce fetchpriority automaticamente per le immagini
+ * al primo posto nel DOM, ma questo assicura il logo nel header.
+ */
+add_filter('wp_get_attachment_image_attributes', function (array $attr, \WP_Post $attachment): array {
+    if (
+        isset($attr['class']) &&
+        str_contains($attr['class'], 'custom-logo')
+    ) {
+        $attr['fetchpriority'] = 'high';
+        $attr['decoding']      = 'async';
+    }
+    return $attr;
+}, 10, 2);
+
+/**
+ * Aggiungi defer/async ai script di terze parti non critici.
+ * Gli script del tema (Vite) sono già gestiti con type="module" (implicitamente defer).
+ */
+add_filter('script_loader_tag', function (string $tag, string $handle): string {
+    $defer_handles = [
+        'wc-add-to-cart',
+        'wc-cart-fragments',
+        'jquery-blockui',
+        'woocommerce',
+        'wc-single-product',
+    ];
+    if (in_array($handle, $defer_handles, true) && ! str_contains($tag, 'defer')) {
+        $tag = str_replace(' src=', ' defer src=', $tag);
+    }
+    return $tag;
+}, 10, 2);
+
 // ── Security hardening ───────────────────────────────────────────────────────
 
 // Remove WordPress version from head and feeds (information disclosure)

@@ -1,56 +1,78 @@
 # 03 — Design System
 
-Il design system è definito in `theme.json` (sorgente) e sincronizzato con Tailwind CSS durante la build. WordPress legge la versione compilata in `public/build/assets/theme.json`.
+Il design system è definito in `theme.json` (sorgente nella root del tema).
+Viene compilato da Vite in `public/build/assets/theme.json` e sincronizzato con:
+- **Gutenberg Global Styles** (colori, font, spacing nel pannello editor)
+- **Tailwind CSS v4** (via `@theme {}` in `resources/css/app.css`)
+
+Il cliente può modificare colori, font e spacing da **Aspetto → Editor → icona paintbrush (Global Styles)** senza toccare codice. Le modifiche vengono salvate nel DB e sovrascrivono i valori di `theme.json`.
 
 ---
 
 ## Colori
 
-### Palette (`theme.json` → `settings.color.palette`)
+### Palette attuale (`theme.json → settings.color.palette`)
 
-| Slug | Hex | Nome | Uso tipico |
-|------|-----|------|-----------|
-| `black` | `#111111` | Nero | Testo principale (`text-ink`) |
-| `dark` | `#1a1a2e` | Dark Navy | Sfondi header/footer |
-| `dark-900` | `#1e293b` | Dark 900 | Card overlay |
-| `dark-50` | `#f0f6ff` | Blu 50 | Sfondi sezioni chiare |
-| `primary` | `#3E80C4` | Blu Primary | CTA, link hover, accenti |
-| `primary-dark` | `#2d69a8` | Blu Scuro | Hover button |
-| `primary-light` | `#bfdbfe` | Blu Chiaro | Badge, highlight |
-| `white` | `#ffffff` | Bianco | - |
-| `off-white` | `#f8fafc` | Off White | Body background |
-| `gray-100` | `#f1f5f9` | Grigio 100 | Border light |
-| `gray-200` | `#e2e8f0` | Grigio 200 | Separatori |
-| `gray-500` | `#64748b` | Grigio 500 | Testo secondario |
-| `gray-600` | `#475569` | Grigio 600 | Testo muted |
+| Slug | Hex | Tailwind | Uso |
+|------|-----|----------|-----|
+| `ink` | `#0a0a0a` | `text-ink` / `bg-ink` | Testo principale, sfondi scuri |
+| `ink-light` | `#1a1a1a` | `bg-ink-light` | Card scure, overlay |
+| `white` | `#ffffff` | `text-white` / `bg-white` | — |
+| `surface` | `#ffffff` | `bg-surface` | Sfondo sezioni chiare |
+| `surface-alt` | `#f5f5f5` | `bg-surface-alt` | Sfondo alternativo |
+| `cream` | `#f5f5f5` | `bg-cream` | Sezioni neutre |
+| `muted` | `#6b6b6b` | `text-muted` | Testo secondario |
+| `border` | `#e0e0e0` | `border-border` | Separatori, bordi |
+| `accent` | `#0074C7` | `text-accent` / `bg-accent` | CTA, link hover, highlights |
+| `accent-light` | `#eff6ff` | `bg-accent-light` | Badge, sfondi hover |
+| `gold` | `#0074C7` | `text-gold` | Icone trust badge, stelle |
 
-### Usare i colori in Tailwind
+### Usare i colori
 
-I token WP vengono resi disponibili come CSS custom properties:
+**In Tailwind (Blade/PHP):**
+```html
+<div class="bg-ink text-white">Sezione scura</div>
+<a class="text-accent hover:text-ink">Link</a>
+<div class="border border-border">Card</div>
+```
 
+**In Gutenberg (blocchi):**
+```html
+class="has-ink-color has-text-color"
+class="has-accent-background-color has-background"
+```
+
+**Come attributo JSON blocco:**
+```json
+{ "textColor": "ink", "backgroundColor": "cream" }
+```
+
+**Come CSS custom property:**
 ```css
-/* Generato automaticamente da WordPress */
---wp--preset--color--primary: #3E80C4;
---wp--preset--color--dark: #1a1a2e;
+color: var(--wp--preset--color--accent);
+background: var(--wp--preset--color--ink);
 ```
 
-In Tailwind (via `theme.json` sync):
-```html
-<div class="bg-primary text-white">...</div>
-<div class="text-gray-500">...</div>
+### Aggiungere un colore
+
+In `theme.json → settings.color.palette`:
+```json
+{ "slug": "brand-red", "color": "#e4002b", "name": "Brand Red" }
 ```
 
-Nei blocchi Gutenberg si usa la classe utility WP:
-```html
-<p class="has-primary-color has-text-color">...</p>
+In `resources/css/app.css` dentro `@theme {}`:
+```css
+--color-brand-red: #e4002b;
 ```
+
+Dopo `npm run build` è disponibile come `bg-brand-red` in Tailwind e nel color picker dell'editor.
 
 ### Gradienti
 
-| Slug | Definizione |
+| Slug | Descrizione |
 |------|-------------|
-| `primary-to-dark` | `linear-gradient(135deg, #3E80C4 0%, #1a1a2e 100%)` |
-| `dark-overlay` | `linear-gradient(180deg, rgba(26,26,46,0.5) 0%, rgba(26,26,46,0.7) 100%)` |
+| `ink-overlay` | `linear-gradient(180deg, transparent → rgba(10,10,10,0.65))` — overlay hero |
+| `ink-overlay-strong` | Versione più scura — hero con testo bianco garantito |
 
 ---
 
@@ -60,99 +82,128 @@ Nei blocchi Gutenberg si usa la classe utility WP:
 
 | Slug | Font | Uso |
 |------|------|-----|
-| `sans` | Poppins | Corpo, UI, label, button |
-| `serif` | Cormorant Garamond | Titoli hero, display |
+| `sans` | Poppins | Corpo, UI, label, button, caption |
+| `serif` | Inter | Titoli H1–H3, display, heading hero |
 
-**Caricamento font:** Google Fonts via `@import` in `resources/css/app.css`. Il preconnect hint è aggiunto in `app/setup.php` via `wp_head`.
+Entrambi caricati da Google Fonts in modo asincrono (non-render-blocking) via `app/setup.php`.
+
+**In Tailwind:** `font-sans`, `font-serif`
+**In Gutenberg:** selezionabili dal pannello Tipografia del blocco
+**CSS:** `var(--wp--preset--font-family--sans)`, `var(--wp--preset--font-family--serif)`
 
 ### Font sizes
 
-| Slug | Valore | Note |
-|------|--------|-------|
-| `sm` | `0.875rem` (14px) | Caption, meta |
-| `base` | `1rem` (16px) | Corpo |
-| `lg` | `1.125rem` (18px) | Lead |
-| `xl` | `1.25rem` (20px) | - |
-| `2xl` | `1.5rem` (24px) | H4 |
-| `3xl` | `1.875rem` (30px) | H3 |
-| `4xl` | `2.25rem` (36px) | H2 |
-| `5xl` | `3rem` (48px) | H1 |
-| `hero` | `clamp(2.5rem, 5vw, 4.5rem)` | Hero display (fluid) |
+| Slug | Valore | px approx | Uso |
+|------|--------|-----------|-----|
+| `xs` | `0.75rem` | 12px | Caption, meta, label piccole |
+| `sm` | `0.875rem` | 14px | Testo secondario |
+| `base` | `1rem` | 16px | Corpo testo |
+| `lg` | `1.125rem` | 18px | Lead paragraph |
+| `xl` | `1.25rem` | 20px | — |
+| `2xl` | `1.5rem` | 24px | H4 |
+| `3xl` | `1.875rem` | 30px | H3 |
+| `4xl` | `2.25rem` | 36px | H2 |
+| `5xl` | `3rem` | 48px | H1 |
+| `hero` | `clamp(2.5rem, 5vw, 4.5rem)` | ~40–72px | Hero display (fluid) |
 
-**In Gutenberg:** selezionabili dal pannello tipografia.
+**In Tailwind:** `text-xs`, `text-sm`, `text-base`, `text-hero`, ecc.
+**In Gutenberg:** selezionabili dal pannello Tipografia
 
-**In Blade/Tailwind:**
-```html
-<h1 class="text-5xl font-serif font-light">Titolo</h1>
-<p class="text-hero font-serif">Hero display</p>
-```
+### Stili heading globali (da `styles.elements`)
 
-**CSS custom property:**
-```css
-font-size: var(--wp--preset--font-size--hero);
-```
+| Elemento | Font | Weight | Line height |
+|----------|------|--------|-------------|
+| H1 | serif (Inter) | 300 | 1.05 |
+| H2 | serif (Inter) | 300 | 1.1 |
+| H3 | serif (Inter) | 400 | 1.2 |
+| H4 | sans (Poppins) | 500 | 1.3 |
 
 ---
 
 ## Layout
 
-| Setting | Valore |
-|---------|--------|
-| `contentSize` | `1200px` — larghezza contenuto standard |
-| `wideSize` | `1440px` — larghezza wide/full |
+| Setting | Valore | Uso |
+|---------|--------|-----|
+| `contentSize` | `1200px` | Larghezza testo/contenuto standard |
+| `wideSize` | `1440px` | Blocchi con `align: wide` |
+| `align: full` | `100vw` | Blocchi a tutta larghezza |
 
-In Tailwind il container principale usa `max-w-360` (1440px) con padding laterale `px-6 lg:px-10`.
-
----
-
-## Spacing
-
-Unità disponibili per i blocchi: `px`, `%`, `em`, `rem`, `vw`, `vh`.
-
-Padding e margini sono abilitati via `"padding": true` in `settings.spacing`.
+**Nota:** `align-wide` è abilitato (`add_theme_support('align-wide')`), quindi i pulsanti ampio/pieno appaiono nell'editor su tutti i blocchi che lo supportano.
 
 ---
 
-## Stili elementi globali (`styles.elements`)
+## Spacing scale
 
-Definiti in `theme.json`, si applicano automaticamente a tutti i blocchi:
+Definita in `theme.json → settings.spacing.spacingSizes`. Disponibile nei controlli padding/margin dell'editor.
 
-```json
-"elements": {
-  "h1": { "fontWeight": "700", "lineHeight": "1.1" },
-  "h2": { "fontWeight": "700", "lineHeight": "1.2" },
-  "h3": { "fontWeight": "600", "lineHeight": "1.3" },
-  "link": {
-    "color": "#111111",
-    ":hover": { "color": "#3E80C4" }
-  },
-  "button": {
-    "backgroundColor": "#3E80C4",
-    "color": "#ffffff",
-    "borderRadius": "4px",
-    "padding": "0.75rem 1.5rem"
-  }
-}
-```
+| Slug | Valore | px approx |
+|------|--------|-----------|
+| `1` | `0.25rem` | 4px |
+| `2` | `0.5rem` | 8px |
+| `3` | `0.75rem` | 12px |
+| `4` | `1rem` | 16px |
+| `5` | `1.5rem` | 24px |
+| `6` | `2rem` | 32px |
+| `7` | `3rem` | 48px |
+| `8` | `4rem` | 64px |
+| `9` | `6rem` | 96px |
+| `10` | `8rem` | 128px |
+| `11` | `12rem` | 192px |
+
+**CSS:** `var(--wp--preset--spacing--7)` (48px)
+**In blocco JSON:** `"padding": { "top": "var:preset|spacing|7" }`
 
 ---
 
-## Personalizzare il design system per un nuovo sito
+## Stili blocchi core (`styles.blocks`)
 
-1. **Colori:** aggiorna `settings.color.palette` in `theme.json`
-2. **Font:** cambia `fontFamilies` in `theme.json` + aggiorna l'`@import` in `app.css`
+`theme.json` include stili default per i blocchi core, così l'editor rispecchia fedelmente il frontend:
+
+| Blocco | Cosa viene stilizzato |
+|---|---|
+| `core/button` | Font, peso, spacing, bordo radius 0, colore ink |
+| `core/heading` | Font family serif |
+| `core/paragraph` | Font sans, line-height 1.7 |
+| `core/quote` | Bordo sinistro accent, font corsivo Inter |
+| `core/pullquote` | Bordo top/bottom ink, font Grande |
+| `core/separator` | Colore border `#e0e0e0` |
+| `core/image` | border-radius 0 |
+| `core/cover` | Padding verticale da spacing scale |
+| `core/group` | Padding default da spacing scale |
+| `core/columns` | Gap da spacing scale |
+| `core/code` | Sfondo cream, bordo, font-size sm |
+
+---
+
+## Global Styles — controllo dal cliente
+
+Il pannello **Global Styles** (Aspetto → Editor → paintbrush) permette al cliente di:
+
+- Sovrascrivere colori della palette
+- Cambiare i font e le dimensioni
+- Modificare spacing globale
+- Cambiare stili di elementi (heading, link, button)
+
+Le modifiche vengono salvate nel DB come `wp_global_styles` — non toccano `theme.json`.
+Per **resettare al default del tema**: Global Styles → menu → "Ripristina predefiniti del tema".
+
+---
+
+## Personalizzare per un nuovo sito
+
+1. **Colori:** aggiorna `settings.color.palette` in `theme.json` + variabili `@theme {}` in `app.css`
+2. **Font:** cambia `fontFamilies` in `theme.json` + aggiorna l'URL Google Fonts in `app/setup.php`
 3. **Dimensioni layout:** modifica `contentSize` / `wideSize`
-4. **Rebuild:** `npm run build`
-
-I token Tailwind vengono rigenerati automaticamente dal plugin `wordpressThemeJson`.
+4. **Stili heading:** aggiorna `styles.elements` in `theme.json`
+5. **Rebuild:** `npm run build`
 
 ---
 
 ## Editor CSS (`resources/css/editor.css`)
 
-Stili aggiuntivi iniettati nell'editor Gutenberg. Qui puoi:
-- Stilizzare blocchi core nel contesto editor
-- Aggiungere stili `.wp-block-*` che rispecchiano il frontend
-- Definire classi CSS custom per blocchi avanzati
+Stili iniettati nell'editor Gutenberg per WYSIWYG accurato. Contiene:
+- Stili base (font, colori, heading)
+- CSS per tutte le **Block Style Variations** (`is-style-outline`, `is-style-display`, ecc.)
+- Stili blocchi core (`wp-block-button__link`, `wp-block-quote`, ecc.)
 
-Viene caricato via `block_editor_settings_all` filter in `app/setup.php`.
+Vedere [05 — Blocchi & Pattern](./05-blocks-patterns.md) per la lista completa delle Style Variations.

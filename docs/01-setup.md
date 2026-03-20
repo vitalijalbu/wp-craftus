@@ -1,20 +1,23 @@
-# 01 — Setup & Development
+# 01 — Setup & Sviluppo
 
 ## Installazione
 
 ```bash
-# Clone / copia il tema in wp-content/themes/sage-theme
-composer install          # installa Acorn + dipendenze PHP
-npm install               # installa Tailwind, Vite, Alpine, GSAP, Swiper…
-```
+# 1. Copia il tema in wp-content/themes/sage-theme
+# 2. Installa dipendenze PHP
+composer install
 
-Attiva il tema da **WP Admin → Aspetto → Temi**.
+# 3. Installa dipendenze Node
+npm install
+
+# 4. Attiva il tema da WP Admin → Aspetto → Temi
+```
 
 ---
 
 ## Variabili d'ambiente
 
-`vite.config.js` usa `process.env.APP_URL` come base URL del proxy. Puoi impostarlo in due modi:
+`vite.config.js` usa `APP_URL` come base URL del proxy. Impostalo prima di `npm run dev`:
 
 **Opzione A — file `.env` nella root del tema (consigliato)**
 ```ini
@@ -31,75 +34,112 @@ Il fallback di default è `http://example.test`.
 
 ---
 
-## Comandi npm
+## Comandi di sviluppo
 
 | Comando | Descrizione |
 |---------|-------------|
-| `npm run dev` | Avvia Vite dev server con HMR |
-| `npm run build` | Build di produzione in `public/build/` |
-| `npm run translate` | Genera tutti i file di traduzione |
-| `npm run translate:pot` | Crea/aggiorna il file `.pot` |
-| `npm run translate:update` | Aggiorna i file `.po` |
-| `npm run translate:compile` | Compila `.po` → `.mo` e `.json` |
+| `npm run dev` | Vite dev server con HMR (hot reload CSS + JS) |
+| `npm run build` | Build produzione → `public/build/` |
+| `npm run lint` | Controlla JS con Biome |
+| `npm run fix-all` | Auto-fix Biome |
+| `composer install` | Installa dipendenze PHP |
+
+**Quando fare `npm run build`:**
+- Dopo aver modificato `editor.js` o `editor.css` (cambiano blocchi/stili nell'editor)
+- Dopo aver modificato `theme.json` (cambia il design system)
+- Prima di andare in produzione
 
 ---
 
-## Struttura output build
+## Struttura directory
+
+```
+sage-theme/
+│
+├── app/                          # PHP backend (namespace App\)
+│   ├── setup.php                 # theme supports, menu, font, registrazione blocchi
+│   ├── filters.php               # filtri WP, REST API, performance, WC
+│   ├── ajax.php                  # handler AJAX: search, form contatti, wishlist
+│   ├── customizer.php            # pannello Customizer (social, CTA, annuncio)
+│   ├── post-types.php            # CPT: portfolio, team, faq
+│   ├── Providers/
+│   │   └── ThemeServiceProvider.php   # boot Acorn
+│   └── View/Composers/               # View Composers (dati iniettati in Blade)
+│
+├── blocks/                       # Custom Gutenberg blocks
+│   ├── hero/                     # ── block.json + render.php per blocco
+│   ├── testimonial/
+│   ├── stat/
+│   └── icon-box/
+│
+├── patterns/                     # Block patterns (auto-registrati da WP)
+│   └── *.php                     # ogni file = un pattern
+│
+├── resources/
+│   ├── css/
+│   │   ├── app.css               # Tailwind v4 + @theme design tokens
+│   │   └── editor.css            # stili Gutenberg (WYSIWYG + Style Variations)
+│   ├── js/
+│   │   ├── app.js                # Alpine.js boot + GSAP + Swiper
+│   │   ├── editor.js             # blocchi React + Style Variations + Block Variations
+│   │   └── modules/              # moduli JS
+│   │       ├── carousel.js
+│   │       ├── luxury-animations.js
+│   │       ├── scroll-effects.js
+│   │       ├── magnetic-hover.js
+│   │       └── locomotive-scroll.js
+│   └── views/                    # Blade templates
+│       ├── layouts/
+│       │   └── app.blade.php     # layout principale
+│       ├── sections/             # header, footer, hero, announcement…
+│       ├── partials/             # componenti riutilizzabili
+│       └── *.blade.php           # index, single, archive, front-page…
+│
+├── woocommerce/                  # override PHP template WooCommerce
+├── public/build/                 # output Vite — NON modificare
+├── theme.json                    # design tokens (sorgente)
+├── functions.php                 # entry point PHP — NON modificare
+├── vite.config.js
+├── package.json
+└── composer.json
+```
+
+---
+
+## Output build
 
 ```
 public/build/
 ├── assets/
-│   ├── app-[hash].css        # Stili Tailwind compilati
-│   ├── app-[hash].js         # Bundle JS principale (Alpine boot)
-│   ├── editor-[hash].css     # Stili editor blocchi
-│   ├── editor-[hash].js      # JS editor blocchi
-│   ├── vendor-alpine-[hash].js
-│   ├── vendor-gsap-[hash].js
-│   ├── vendor-loco-[hash].js
-│   ├── vendor-swiper-[hash].js
-│   └── theme.json            # theme.json generato con token Tailwind
-└── manifest.json             # Mappa asset per Vite helper
+│   ├── app-[hash].css            # Tailwind compilato
+│   ├── app-[hash].js             # Alpine boot
+│   ├── editor-[hash].css         # stili editor
+│   ├── editor-[hash].js          # blocchi React + Variations
+│   ├── vendor-alpine-[hash].js   # Alpine (chunk separato → cache)
+│   ├── vendor-gsap-[hash].js     # GSAP
+│   ├── vendor-swiper-[hash].js   # Swiper
+│   ├── vendor-loco-[hash].js     # Locomotive Scroll
+│   └── theme.json                # design system per WP
+└── manifest.json                 # mappa asset per Vite helper
 ```
 
-I chunk vendor sono separati per ottimizzare il cache busting.
-
----
-
-## Alias Vite
-
-Definiti in `vite.config.js`:
-
-```js
-resolve: {
-  alias: {
-    '~':        '/resources/js',
-    '@scripts': '/resources/js',
-    '@styles':  '/resources/css',
-    '@fonts':   '/resources/fonts',
-    '@images':  '/resources/images',
-  }
-}
-```
-
-Uso in JS/CSS:
-```js
-import MyModule from '@scripts/modules/my-module'
-```
-```css
-@import '@styles/partials/_buttons.css';
-```
+I chunk vendor sono separati per ottimizzare il cache busting — se aggiorni solo il codice del tema, i vendor rimangono cachati nel browser.
 
 ---
 
 ## Integrazione theme.json + Tailwind
 
-Il plugin `wordpressThemeJson` di `@roots/vite-plugin` sincronizza i token di Tailwind con il theme.json durante la build. Il `theme.json` nella root è il **sorgente**, quello in `public/build/assets/theme.json` è quello caricato da WordPress.
+Il plugin `wordpressThemeJson` di `@roots/vite-plugin` sincronizza i token di `theme.json` con Tailwind durante la build.
 
-Per disabilitare la sincronizzazione di categorie specifiche:
+Il `theme.json` nella root è il **sorgente**.
+Quello in `public/build/assets/theme.json` è quello letto da WordPress.
 
+**Non modificare mai** `public/build/assets/theme.json` direttamente — viene sovrascritto ad ogni build.
+
+Per disabilitare la sincronizzazione di categorie specifiche in `vite.config.js`:
 ```js
 wordpressThemeJson({
-  disableTailwindColors:       false,  // true = non esporta colori Tailwind
+  disableTailwindColors:       false,
   disableTailwindFonts:        false,
   disableTailwindFontSizes:    false,
   disableTailwindBorderRadius: false,
@@ -108,37 +148,13 @@ wordpressThemeJson({
 
 ---
 
-## Struttura directory tema
+## File da non modificare mai
 
-```
-sage-theme/
-├── app/                    # PHP: hooks, filtri, provider
-│   ├── Providers/
-│   │   └── ThemeServiceProvider.php
-│   ├── setup.php           # after_setup_theme, sidebar, menus
-│   ├── filters.php         # WooCommerce, body_class, REST API
-│   └── customizer.php      # Customizer settings
-├── resources/
-│   ├── css/
-│   │   ├── app.css         # Entry point CSS (Tailwind @import)
-│   │   └── editor.css      # Stili editor Gutenberg
-│   ├── js/
-│   │   ├── app.js          # Entry point JS (Alpine boot)
-│   │   ├── editor.js       # JS editor blocchi
-│   │   └── modules/        # Moduli JS (GSAP, Swiper, ecc.)
-│   ├── fonts/              # Font locali (se non da Google)
-│   ├── images/             # Immagini statiche del tema
-│   └── views/              # Template Blade
-│       ├── layouts/
-│       ├── sections/       # Header, footer, hero, CTA…
-│       ├── partials/       # Frammenti riusabili
-│       ├── components/     # Blade components (@component)
-│       └── forms/
-├── patterns/               # Block patterns PHP
-├── public/build/           # Output Vite (gitignored)
-├── vendor/                 # Composer packages (gitignored)
-├── functions.php           # Entry point PHP → boot Acorn
-├── style.css               # Intestazione tema WP
-├── theme.json              # Design system (sorgente)
-└── vite.config.js
-```
+| Path | Motivo |
+|---|---|
+| `vendor/` | Gestito da Composer |
+| `node_modules/` | Gestito da npm |
+| `public/build/` | Generato da Vite |
+| `functions.php` | Solo boot Acorn — nessuna logica qui |
+| `composer.lock` | Aggiorna solo con `composer update` intenzionale |
+| `package-lock.json` | Aggiorna solo con `npm install` intenzionale |

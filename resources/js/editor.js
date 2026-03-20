@@ -12,7 +12,7 @@ import {
   MediaUploadCheck,
   useBlockProps,
 } from '@wordpress/block-editor'
-import { registerBlockType } from '@wordpress/blocks'
+import { registerBlockStyle, registerBlockType, registerBlockVariation, unregisterBlockStyle } from '@wordpress/blocks'
 import {
   Button,
   PanelBody,
@@ -25,6 +25,170 @@ import {
 import { createElement as el, Fragment } from '@wordpress/element'
 import { __ } from '@wordpress/i18n'
 import ServerSideRender from '@wordpress/server-side-render'
+
+// ── Block Style Variations ─────────────────────────────────────────────────────
+// Registrate dopo il caricamento dei blocchi per evitare race conditions.
+
+window.addEventListener('DOMContentLoaded', () => {
+  // ── core/button ─────────────────────────────────────────────────────────────
+  registerBlockStyle('core/button', {
+    name: 'outline',
+    label: __('Outline', 'sage'),
+  })
+  registerBlockStyle('core/button', {
+    name: 'accent',
+    label: __('Accent (Blue)', 'sage'),
+  })
+  registerBlockStyle('core/button', {
+    name: 'ghost',
+    label: __('Ghost', 'sage'),
+  })
+
+  // ── core/heading ────────────────────────────────────────────────────────────
+  registerBlockStyle('core/heading', {
+    name: 'display',
+    label: __('Display', 'sage'),
+  })
+  registerBlockStyle('core/heading', {
+    name: 'overline',
+    label: __('Overline', 'sage'),
+  })
+
+  // ── core/separator ──────────────────────────────────────────────────────────
+  registerBlockStyle('core/separator', {
+    name: 'thick',
+    label: __('Spesso', 'sage'),
+  })
+  registerBlockStyle('core/separator', {
+    name: 'accent',
+    label: __('Accent', 'sage'),
+  })
+
+  // ── core/quote ──────────────────────────────────────────────────────────────
+  registerBlockStyle('core/quote', {
+    name: 'minimal',
+    label: __('Minimal', 'sage'),
+  })
+  registerBlockStyle('core/quote', {
+    name: 'large',
+    label: __('Grande', 'sage'),
+  })
+
+  // ── core/image ──────────────────────────────────────────────────────────────
+  registerBlockStyle('core/image', {
+    name: 'rounded',
+    label: __('Arrotondato', 'sage'),
+  })
+  registerBlockStyle('core/image', {
+    name: 'framed',
+    label: __('Con cornice', 'sage'),
+  })
+
+  // ── core/group ──────────────────────────────────────────────────────────────
+  registerBlockStyle('core/group', {
+    name: 'card',
+    label: __('Card', 'sage'),
+  })
+  registerBlockStyle('core/group', {
+    name: 'bordered',
+    label: __('Bordo', 'sage'),
+  })
+
+  // ── Block Variations ──────────────────────────────────────────────────────────
+  // Preset di blocchi core preconfigurati con il design system del tema.
+
+  // Variation: Cover → "Hero Section"
+  registerBlockVariation('core/cover', {
+    name: 'theme-hero',
+    title: __('Hero Section', 'sage'),
+    description: __('Cover preconfigurata come sezione hero con overlay scuro.', 'sage'),
+    category: 'theme',
+    icon: 'cover-image',
+    attributes: {
+      minHeight: 80,
+      minHeightUnit: 'vh',
+      dimRatio: 50,
+      overlayColor: 'ink',
+      align: 'full',
+      contentPosition: 'center center',
+    },
+    scope: ['inserter'],
+  })
+
+  // Variation: Group → "Content Card"
+  registerBlockVariation('core/group', {
+    name: 'theme-card',
+    title: __('Content Card', 'sage'),
+    description: __('Gruppo con sfondo, padding e bordo — ideale per card di contenuto.', 'sage'),
+    category: 'theme',
+    icon: 'id-alt',
+    attributes: {
+      backgroundColor: 'surface-alt',
+      style: {
+        border: { width: '1px', style: 'solid', color: '#e0e0e0' },
+        spacing: {
+          padding: { top: '2rem', bottom: '2rem', left: '2rem', right: '2rem' },
+        },
+      },
+    },
+    scope: ['inserter'],
+  })
+
+  // Variation: Group → "Dark Section"
+  registerBlockVariation('core/group', {
+    name: 'theme-dark-section',
+    title: __('Sezione Scura', 'sage'),
+    description: __('Gruppo a larghezza piena con sfondo ink e testo chiaro.', 'sage'),
+    category: 'theme',
+    icon: 'shield',
+    attributes: {
+      backgroundColor: 'ink',
+      textColor: 'white',
+      align: 'full',
+      style: {
+        spacing: {
+          padding: { top: '6rem', bottom: '6rem', left: '2rem', right: '2rem' },
+        },
+      },
+    },
+    scope: ['inserter'],
+  })
+
+  // Variation: Columns → "2 Colonne 60/40"
+  registerBlockVariation('core/columns', {
+    name: 'theme-cols-60-40',
+    title: __('Colonne 60/40', 'sage'),
+    description: __('Layout a due colonne asimmetriche (60% + 40%).', 'sage'),
+    category: 'theme',
+    icon: 'columns',
+    attributes: {
+      align: 'wide',
+    },
+    innerBlocks: [
+      ['core/column', { width: '60%' }],
+      ['core/column', { width: '40%' }],
+    ],
+    scope: ['inserter'],
+  })
+
+  // Variation: Columns → "3 Colonne uguali"
+  registerBlockVariation('core/columns', {
+    name: 'theme-cols-thirds',
+    title: __('3 Colonne uguali', 'sage'),
+    description: __('Tre colonne di larghezza identica.', 'sage'),
+    category: 'theme',
+    icon: 'columns',
+    attributes: {
+      align: 'wide',
+    },
+    innerBlocks: [
+      ['core/column', { width: '33.33%' }],
+      ['core/column', { width: '33.33%' }],
+      ['core/column', { width: '33.33%' }],
+    ],
+    scope: ['inserter'],
+  })
+})
 
 // ── Shared helpers ────────────────────────────────────────────────────────────
 

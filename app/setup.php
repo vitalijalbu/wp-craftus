@@ -73,11 +73,14 @@ add_filter('theme_file_path', function ($path, $file) {
 }, 10, 2);
 
 /**
- * Disable on-demand block asset loading.
+ * Enable on-demand block asset loading (per-block CSS).
+ * WordPress loads only the CSS for blocks actually rendered on each page,
+ * instead of dumping all block styles in one file.
+ * Bug in WP <6.7 (ticket/61965) is fixed — safe to enable.
  *
  * @link https://core.trac.wordpress.org/ticket/61965
  */
-add_filter('should_load_separate_core_block_assets', '__return_false');
+add_filter('should_load_separate_core_block_assets', '__return_true');
 
 /**
  * Register the initial theme setup.
@@ -86,11 +89,23 @@ add_filter('should_load_separate_core_block_assets', '__return_false');
  */
 add_action('after_setup_theme', function () {
     /**
-     * Disable full-site editing support.
+     * Enable Global Styles panel (Site Editor → paintbrush icon).
+     * Allows the client to change colors, fonts, and spacing from the WP admin
+     * without touching code. block-templates support is intentionally kept active
+     * so the Site Editor and Global Styles are fully available.
+     * Blade templates still take precedence over block templates when no matching
+     * HTML template exists in /templates/.
      *
-     * @link https://wptavern.com/gutenberg-10-5-embeds-pdfs-adds-verse-block-color-options-and-introduces-new-patterns
+     * @link https://developer.wordpress.org/news/2024/12/bridging-the-gap-hybrid-themes/
      */
-    remove_theme_support('block-templates');
+
+    /**
+     * Apply WordPress's built-in block CSS defaults (gaps, margins, etc.).
+     * Required for consistent styling of core blocks without custom overrides.
+     *
+     * @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/#default-block-styles
+     */
+    add_theme_support('wp-block-styles');
 
     /**
      * Register the navigation menus.
@@ -142,11 +157,27 @@ add_action('after_setup_theme', function () {
     add_theme_support('post-thumbnails');
 
     /**
+     * Enable wide and full-width block alignment.
+     *
+     * @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/#wide-alignment
+     */
+    add_theme_support('align-wide');
+
+    /**
      * Enable responsive embed support.
      *
      * @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/#responsive-embedded-content
      */
     add_theme_support('responsive-embeds');
+
+    /**
+     * Enable editor stylesheet support (hybrid theme pattern).
+     * Lets WordPress know this theme has an editor stylesheet
+     * so it can apply it to the block editor properly.
+     *
+     * @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/#editor-styles
+     */
+    add_theme_support('editor-styles');
 
     /**
      * Enable HTML5 markup support.

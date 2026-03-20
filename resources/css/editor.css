@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
+/* ── Base editor ────────────────────────────────────────────────────────────── */
+
 body {
   font-family: "Poppins", system-ui, sans-serif;
-  color: #111111;
+  color: #0a0a0a;
 }
 
 .editor-styles-wrapper h1,
@@ -11,32 +13,157 @@ body {
 .editor-styles-wrapper h4,
 .editor-styles-wrapper h5,
 .editor-styles-wrapper h6 {
-  font-family: "Poppins", sans-serif;
-  color: #111111;
+  font-family: "Inter", sans-serif;
+  color: #0a0a0a;
   line-height: 1.2;
 }
 
-.editor-styles-wrapper .wp-block-button__link {
-  border-radius: 4px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  background-color: #3e80c4;
-  color: #ffffff;
+.editor-styles-wrapper a {
+  color: #0a0a0a;
+  text-decoration: none;
+}
+
+.editor-styles-wrapper a:hover {
+  color: #0074C7;
 }
 
 .editor-styles-wrapper .wp-block-cover {
   min-height: 400px;
 }
 
-.editor-styles-wrapper .wp-block-separator {
-  border-color: #e2e8f0;
-}
+/* ── core/button — base ─────────────────────────────────────────────────────── */
 
-.editor-styles-wrapper a {
-  color: #3e80c4;
+.editor-styles-wrapper .wp-block-button__link {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   text-decoration: none;
+  border-radius: 0;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  padding: 0.875rem 2rem;
 }
 
-.editor-styles-wrapper a:hover {
-  color: #2d69a8;
+/* Button — Outline */
+.editor-styles-wrapper .wp-block-button.is-style-outline .wp-block-button__link {
+  background-color: transparent;
+  color: #0a0a0a;
+  border: 1px solid #0a0a0a;
+  box-shadow: none;
+}
+
+/* Button — Accent */
+.editor-styles-wrapper .wp-block-button.is-style-accent .wp-block-button__link {
+  background-color: #0074C7;
+  color: #ffffff;
+  border: none;
+}
+
+/* Button — Ghost */
+.editor-styles-wrapper .wp-block-button.is-style-ghost .wp-block-button__link {
+  background-color: transparent;
+  color: #0074C7;
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ── core/heading — Style Variations ────────────────────────────────────────── */
+
+/* Heading — Display: grande, leggero, lettera stretta */
+.editor-styles-wrapper .wp-block-heading.is-style-display {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 200;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* Heading — Overline: piccolo, maiuscolo, spaziato */
+.editor-styles-wrapper .wp-block-heading.is-style-overline {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #0074C7;
+}
+
+/* ── core/separator — Style Variations ──────────────────────────────────────── */
+
+.editor-styles-wrapper .wp-block-separator {
+  border-color: #e0e0e0;
+  border-width: 1px;
+}
+
+/* Separator — Spesso */
+.editor-styles-wrapper .wp-block-separator.is-style-thick {
+  border-width: 3px;
+  border-color: #0a0a0a;
+}
+
+/* Separator — Accent */
+.editor-styles-wrapper .wp-block-separator.is-style-accent {
+  border-width: 2px;
+  border-color: #0074C7;
+}
+
+/* ── core/quote — Style Variations ──────────────────────────────────────────── */
+
+.editor-styles-wrapper .wp-block-quote {
+  border-left: 3px solid #0074C7;
+  padding-left: 1.5rem;
+  font-family: "Inter", serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+/* Quote — Minimal: nessun bordo, solo corsivo */
+.editor-styles-wrapper .wp-block-quote.is-style-minimal {
+  border-left: none;
+  padding-left: 0;
+  font-size: 1rem;
+  color: #6b6b6b;
+}
+
+/* Quote — Grande */
+.editor-styles-wrapper .wp-block-quote.is-style-large,
+.editor-styles-wrapper .wp-block-quote.is-style-large p {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 300;
+  border-left: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+/* ── core/image — Style Variations ──────────────────────────────────────────── */
+
+/* Image — Arrotondato */
+.editor-styles-wrapper .wp-block-image.is-style-rounded img {
+  border-radius: 50%;
+}
+
+/* Image — Con cornice */
+.editor-styles-wrapper .wp-block-image.is-style-framed img {
+  border: 4px solid #e0e0e0;
+  padding: 8px;
+  background: #ffffff;
+}
+
+/* ── core/group — Style Variations ──────────────────────────────────────────── */
+
+/* Group — Card */
+.editor-styles-wrapper .wp-block-group.is-style-card {
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  padding: 2rem;
+}
+
+/* Group — Bordered */
+.editor-styles-wrapper .wp-block-group.is-style-bordered {
+  border: 1px solid #e0e0e0;
+  padding: 2rem;
 }

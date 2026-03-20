@@ -1,14 +1,40 @@
 # 02 — Architettura
 
-## Stack overview
+## Tema ibrido — tre layer sovrapposti
+
+```
+┌─────────────────────────────────────────────┐
+│  CLIENTE                                    │
+│  Global Styles (colori, font, spacing)      │
+│  Editor Gutenberg (blocchi e pattern)       │
+└────────────────────┬────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────┐
+│  EDITOR LAYER                               │
+│  theme.json      → design tokens            │
+│  editor.js       → blocchi React + Variations│
+│  editor.css      → WYSIWYG stili            │
+│  blocks/*/       → blocchi SSR custom       │
+│  patterns/*/     → layout preconfigurati    │
+└────────────────────┬────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────┐
+│  FRONTEND LAYER                             │
+│  Blade templates → PHP server-side render   │
+│  Tailwind CSS    → utility classes          │
+│  Alpine.js       → reattività leggera       │
+│  GSAP + Swiper   → animazioni e carousel    │
+└─────────────────────────────────────────────┘
+```
 
 ```
 WordPress Core
-  └── Roots Acorn 5          (container Laravel + service provider)
+  └── Roots Acorn 5          (Laravel container + service provider)
         └── Sage 11          (routing Blade, view composers)
               ├── Blade      (templating engine)
               ├── Vite       (asset bundling)
-              └── Tailwind   (utility CSS)
+              ├── Tailwind   (utility CSS)
+              └── Gutenberg  (blocchi + Global Styles via theme.json)
 ```
 
 ---
@@ -16,39 +42,34 @@ WordPress Core
 ## Entry point PHP: `functions.php`
 
 ```php
-// functions.php
+// functions.php — non modificare
 require_once __DIR__ . '/vendor/autoload.php';
 \Roots\bootloader()->boot();
 ```
 
-Acorn bootstrappa il container Laravel dentro WordPress. Da questo momento in poi hai accesso a service provider, facade, config, e il sistema di view Blade.
+Acorn avvia il container Laravel dentro WordPress. Da questo momento hai service provider, facade, Blade, e Vite helper.
 
 ---
 
 ## ThemeServiceProvider
 
-`app/Providers/ThemeServiceProvider.php` è il service provider principale. Estende `SageServiceProvider` di Acorn.
+`app/Providers/ThemeServiceProvider.php` — estende `SageServiceProvider`.
 
 ```php
 class ThemeServiceProvider extends SageServiceProvider
 {
     public function register() { parent::register(); }
-    public function boot()     { parent::boot(); }
-}
-```
 
-**Dove aggiungere logica custom:**
+    public function boot()
+    {
+        parent::boot();
 
-```php
-public function boot()
-{
-    parent::boot();
+        // Bind nel container
+        $this->app->singleton(MyService::class, fn() => new MyService());
 
-    // Bind di una classe nel container
-    $this->app->singleton(MyService::class, fn() => new MyService());
-
-    // Condivisione di dati a tutte le view
-    View::share('siteName', get_bloginfo('name'));
+        // Dati condivisi a tutte le view Blade
+        View::share('siteName', get_bloginfo('name'));
+    }
 }
 ```
 
@@ -56,27 +77,24 @@ public function boot()
 
 ## Namespace PHP: `App\`
 
-Tutte le classi in `app/` sono nel namespace `App\` (PSR-4 via Composer):
+Tutti i file in `app/` usano il namespace `App\` (PSR-4 via Composer):
 
-```json
-// composer.json
-"autoload": {
-  "psr-4": { "App\\": "app/" }
-}
+```php
+// Inizio di ogni file in app/
+<?php
+namespace App;
 ```
 
-I file `setup.php`, `filters.php`, `customizer.php` usano `namespace App;` e sono caricati automaticamente da Acorn.
+Acorn carica automaticamente ogni file in `app/` — non servono `require_once` manuali.
 
 ---
 
 ## Sistema di template Blade
 
-### Gerarchia base
+Sage intercetta la gerarchia template WordPress e risolve i file Blade da `resources/views/`.
 
-Sage intercetta la gerarchia template di WordPress e risolve i template Blade da `resources/views/`.
-
-| WP cerca | Blade corrisponde |
-|----------|-------------------|
+| WordPress cerca | Blade risolve |
+|----------------|---------------|
 | `front-page.php` | `front-page.blade.php` |
 | `page.php` | `page.blade.php` |
 | `single.php` | `single.blade.php` |
@@ -86,91 +104,74 @@ Sage intercetta la gerarchia template di WordPress e risolve i template Blade da
 
 ### Layout base
 
-Tutti i template estendono `layouts.app`:
-
 ```blade
 {{-- resources/views/page.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
   @while(have_posts()) @php(the_post())
-    @php the_content() @endphp
+    @php(the_content())
   @endwhile
 @endsection
 ```
 
-### Layout app.blade.php
+### Struttura di `layouts/app.blade.php`
 
 ```
-layouts/app.blade.php
-├── <head> + wp_head() + @vite([...])
-├── @include('sections.header')
-├── <main> @yield('content') </main>
-├── @hasSection('sidebar') <aside>... </aside>
-├── @include('sections.footer')
-└── wp_footer()
+<html>
+  <head> + wp_head() + @vite([...])
+  @include('sections.header')        ← header sticky con Alpine
+  <main> @yield('content') </main>
+  @hasSection('sidebar')
+    <aside>...</aside>
+  @include('sections.footer')
+  wp_footer()
+</html>
 ```
 
 ---
 
 ## View Composers
 
-I View Composer passano dati PHP alle view Blade senza inquinare i template.
+Iniettano dati PHP nelle view Blade senza inquinare i template.
 
-**Registrazione** in `ThemeServiceProvider::boot()`:
-
+**Inline in ThemeServiceProvider:**
 ```php
-use Illuminate\Support\Facades\View;
-
 View::composer('sections.header', function ($view) {
     $view->with('cartCount', WC()->cart->get_cart_contents_count());
 });
 ```
 
-**Oppure con una classe dedicata:**
-
+**Con classe dedicata** in `app/View/Composers/`:
 ```php
-// app/View/Composers/HeaderComposer.php
 namespace App\View\Composers;
+use Roots\Acorn\View\Composer;
 
-use Illuminate\View\View;
-
-class HeaderComposer
+class FrontPage extends Composer
 {
-    public function compose(View $view): void
+    protected static $views = ['front-page'];
+
+    public function with(): array
     {
-        $view->with('cartCount', WC()->cart->get_cart_contents_count());
+        return [
+            'featuredPosts' => get_posts(['posts_per_page' => 3]),
+        ];
     }
 }
-
-// In ThemeServiceProvider::boot():
-View::composer('sections.header', HeaderComposer::class);
 ```
 
 ---
 
-## Blade Directives personalizzate
-
-Puoi registrare directive Blade custom in `ThemeServiceProvider::boot()`:
-
-```php
-Blade::directive('icon', function ($name) {
-    return "<?php echo get_template_part('resources/views/icons/' . {$name}); ?>";
-});
-```
-
----
-
-## Façade Vite in PHP
+## Facade Vite in PHP
 
 ```php
 use Illuminate\Support\Facades\Vite;
 
 // URL di un asset compilato
-$url = Vite::asset('resources/images/logo.svg');
+$url  = Vite::asset('resources/images/logo.svg');
 
-// Controlla se il dev server è attivo
-$isHot = Vite::isRunningHot();
+// Dev server attivo?
+$hot  = Vite::isRunningHot();
 
 // Legge il contenuto di un file build
 $deps = json_decode(Vite::content('editor.deps.json'));
@@ -178,29 +179,68 @@ $deps = json_decode(Vite::content('editor.deps.json'));
 
 ---
 
-## Struttura `app/`
+## Aggiungere logica PHP
 
-```
-app/
-├── Providers/
-│   └── ThemeServiceProvider.php   # Boot principale
-├── View/
-│   └── Composers/                 # View composers (crea qui nuovi)
-├── setup.php                      # after_setup_theme, menus, sidebar
-├── filters.php                    # Filtri WP, WC, body_class
-└── customizer.php                 # Customizer API + theme_cta_url()
+**Hook e filtri semplici** → aggiungi in `app/filters.php` o `app/setup.php`.
+
+**Nuovo file PHP** → crea `app/mio-file.php` con `namespace App;`. Acorn lo carica automaticamente via PSR-4.
+
+**Servizio con DI** → crea un Service Provider:
+```bash
+wp acorn make:provider NomeServiceProvider
 ```
 
 ---
 
-## Aggiungere un nuovo file PHP
+## Blocchi Gutenberg — architettura
 
-1. Crea `app/mio-file.php` con `namespace App;`
-2. Acorn lo scopre automaticamente via PSR-4 — non serve `require_once`
+Ogni custom block ha:
 
-In alternativa, per file di configurazione o servizi:
-
-```bash
-# Crea un Service Provider dedicato
-wp acorn make:provider NomeServiceProvider
 ```
+blocks/nome-blocco/
+├── block.json     → metadati, attributi, supports (letto da WP)
+└── render.php     → output PHP (eseguito ad ogni render, lato server)
+```
+
+Il file `editor.js` contiene:
+- `registerBlockType()` per ogni blocco (UI React nell'editor)
+- `registerBlockStyle()` per le Style Variations
+- `registerBlockVariation()` per le Block Variations
+
+**Flusso quando il cliente salva un blocco:**
+1. React (editor.js) serializza gli attributi in JSON nel post content
+2. WordPress salva il post
+3. Al render frontend, WP chiama `render.php` passando `$attributes`
+4. PHP genera l'HTML con Tailwind
+
+---
+
+## Global Styles — architettura
+
+```
+theme.json (sorgente)
+    ↓ Vite build
+public/build/assets/theme.json (caricato da WP)
+    ↓
+Global Styles panel (Aspetto → Editor → paintbrush)
+    ↓ il cliente modifica
+wp_global_styles (DB — sovrascrive theme.json)
+    ↓
+CSS custom properties su :root (generate da WP)
+```
+
+Le modifiche del cliente nel pannello Global Styles vengono salvate nel DB e hanno priorità sui valori di `theme.json`. Per resettare: Global Styles → menu ⋮ → "Ripristina predefiniti del tema".
+
+---
+
+## Performance — scelte architetturali
+
+| Scelta | Effetto |
+|---|---|
+| `should_load_separate_core_block_assets → true` | CSS blocchi caricato on-demand (solo i blocchi usati nella pagina) |
+| Emoji script rimossi | -15 KB + 1 DNS lookup |
+| jQuery Migrate rimosso | -10 KB |
+| Script WC con `defer` | Non bloccano il rendering |
+| Google Fonts con `preload` + `print/onload` | Non bloccano il rendering |
+| Chunk vendor separati (Alpine, GSAP, Swiper) | Cache browser ottimale |
+| `fetchpriority="high"` sul logo | LCP migliorato |
