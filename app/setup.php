@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Vite;
  */
 function get_placeholder_url(): string
 {
-    return get_template_directory_uri() . '/public/placeholder.png';
+    return get_template_directory_uri().'/public/placeholder.png';
 }
 
 /**
@@ -43,9 +43,9 @@ add_action('admin_head', function () {
 
     // Load Google Fonts for the block editor via <link> (avoids CSS @import order warnings).
     $font_url = esc_url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
-    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
-    echo '<link rel="stylesheet" href="' . $font_url . '">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">'."\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'."\n";
+    echo '<link rel="stylesheet" href="'.$font_url.'">'."\n";
 
     if (! Vite::isRunningHot()) {
         $dependencies = json_decode(Vite::content('editor.deps.json'));
@@ -114,7 +114,9 @@ add_action('after_setup_theme', function () {
      */
     register_nav_menus([
         'primary_navigation' => __('Menu Principale', 'sage'),
-        'footer_navigation'  => __('Menu Footer', 'sage'),
+        'footer_navigation' => __('Menu Footer — Esplora', 'sage'),
+        'footer_info_navigation' => __('Menu Footer — Informazioni', 'sage'),
+        'footer_legal_navigation' => __('Menu Footer — Legal (Privacy, Cookie, Termini)', 'sage'),
     ]);
 
     /**
@@ -122,13 +124,13 @@ add_action('after_setup_theme', function () {
      */
     add_theme_support('woocommerce', [
         'thumbnail_image_width' => 600,
-        'single_image_width'    => 800,
-        'product_grid'          => [
-            'default_rows'    => 3,
-            'min_rows'        => 1,
+        'single_image_width' => 800,
+        'product_grid' => [
+            'default_rows' => 3,
+            'min_rows' => 1,
             'default_columns' => 3,
-            'min_columns'     => 1,
-            'max_columns'     => 4,
+            'min_columns' => 1,
+            'max_columns' => 4,
         ],
     ]);
     add_theme_support('wc-product-gallery-zoom');
@@ -205,15 +207,15 @@ add_action('after_setup_theme', function () {
      * Register block pattern categories.
      */
     register_block_pattern_category('theme-sections', [
-        'label'       => __('Theme – Sezioni', 'sage'),
+        'label' => __('Theme – Sezioni', 'sage'),
         'description' => __('Sezioni hero, CTA, intro e layout.', 'sage'),
     ]);
     register_block_pattern_category('theme-cards', [
-        'label'       => __('Theme – Card', 'sage'),
+        'label' => __('Theme – Card', 'sage'),
         'description' => __('Card per prodotti, servizi e blog.', 'sage'),
     ]);
     register_block_pattern_category('theme-carousel', [
-        'label'       => __('Theme – Carousel', 'sage'),
+        'label' => __('Theme – Carousel', 'sage'),
         'description' => __('Sezioni con slider e caroselli.', 'sage'),
     ]);
 }, 20);
@@ -226,8 +228,8 @@ add_filter('woocommerce_enqueue_styles', '__return_empty_array');
 /**
  * WooCommerce: products per page and columns.
  */
-add_filter('loop_shop_per_page', fn() => 12);
-add_filter('loop_shop_columns', fn() => 3);
+add_filter('loop_shop_per_page', fn () => 12);
+add_filter('loop_shop_columns', fn () => 3);
 
 /**
  * Load Google Fonts asynchronously (non-render-blocking).
@@ -237,12 +239,12 @@ add_filter('loop_shop_columns', fn() => 3);
  */
 add_action('wp_head', function () {
     $font_url = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap';
-    $url      = esc_url($font_url);
-    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
-    echo '<link rel="preload" as="style" href="' . $url . '">' . "\n";
-    echo '<link rel="stylesheet" media="print" onload="this.media=\'all\'" href="' . $url . '">' . "\n";
-    echo '<noscript><link rel="stylesheet" href="' . $url . '"></noscript>' . "\n";
+    $url = esc_url($font_url);
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">'."\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'."\n";
+    echo '<link rel="preload" as="style" href="'.$url.'">'."\n";
+    echo '<link rel="stylesheet" media="print" onload="this.media=\'all\'" href="'.$url.'">'."\n";
+    echo '<noscript><link rel="stylesheet" href="'.$url.'"></noscript>'."\n";
 }, 1);
 
 /**
@@ -269,26 +271,26 @@ add_action('wp_head', function () {
 
     $post_type = get_post_type($post);
     $schema_type = match ($post_type) {
-        'post'      => 'Article',
+        'post' => 'Article',
         'portfolio' => 'CreativeWork',
-        'team'      => 'Person',
-        default     => 'WebPage',
+        'team' => 'Person',
+        default => 'WebPage',
     };
 
     $data = [
         '@context' => 'https://schema.org',
-        '@type'    => $schema_type,
+        '@type' => $schema_type,
         'headline' => get_the_title($post),
-        'url'      => get_permalink($post),
+        'url' => get_permalink($post),
     ];
 
     if (in_array($schema_type, ['Article', 'CreativeWork'], true)) {
         $data['datePublished'] = get_the_date('c', $post);
-        $data['dateModified']  = get_the_modified_date('c', $post);
+        $data['dateModified'] = get_the_modified_date('c', $post);
         $author_id = (int) get_post_field('post_author', $post);
         $data['author'] = [
             '@type' => 'Person',
-            'name'  => get_the_author_meta('display_name', $author_id),
+            'name' => get_the_author_meta('display_name', $author_id),
         ];
     }
 
@@ -306,8 +308,8 @@ add_action('wp_head', function () {
 
     $site = [
         '@type' => 'Organization',
-        'name'  => get_bloginfo('name'),
-        'url'   => home_url('/'),
+        'name' => get_bloginfo('name'),
+        'url' => home_url('/'),
     ];
     $logo_id = get_theme_mod('custom_logo');
     if ($logo_id) {
@@ -319,7 +321,7 @@ add_action('wp_head', function () {
     $data['publisher'] = $site;
 
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-    echo '<script type="application/ld+json">' . wp_json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+    echo '<script type="application/ld+json">'.wp_json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE).'</script>'."\n";
 }, 5);
 
 /**
@@ -339,16 +341,16 @@ add_action('wp_head', function () {
 
     global $post;
 
-    $site_name   = esc_attr(get_bloginfo('name'));
-    $site_url    = esc_url(home_url('/'));
-    $og_type     = is_singular() ? 'article' : 'website';
-    $og_url      = esc_url(is_singular() ? get_permalink() : $site_url);
-    $og_title    = esc_attr(wp_get_document_title());
-    $og_desc     = '';
-    $og_image    = '';
+    $site_name = esc_attr(get_bloginfo('name'));
+    $site_url = esc_url(home_url('/'));
+    $og_type = is_singular() ? 'article' : 'website';
+    $og_url = esc_url(is_singular() ? get_permalink() : $site_url);
+    $og_title = esc_attr(wp_get_document_title());
+    $og_desc = '';
+    $og_image = '';
 
     if (is_singular() && isset($post)) {
-        $og_desc  = has_excerpt($post) ? esc_attr(get_the_excerpt($post)) : esc_attr(wp_trim_words(strip_shortcodes($post->post_content), 30, ''));
+        $og_desc = has_excerpt($post) ? esc_attr(get_the_excerpt($post)) : esc_attr(wp_trim_words(strip_shortcodes($post->post_content), 30, ''));
         $thumb_id = get_post_thumbnail_id($post);
         if ($thumb_id) {
             $og_image = esc_url(wp_get_attachment_image_url($thumb_id, 'large'));
@@ -359,28 +361,28 @@ add_action('wp_head', function () {
 
     if (! $og_image) {
         // Fallback: use custom logo if set
-        $logo_id  = get_theme_mod('custom_logo');
+        $logo_id = get_theme_mod('custom_logo');
         $og_image = $logo_id ? esc_url(wp_get_attachment_image_url($logo_id, 'large')) : '';
     }
 
-    echo '<meta property="og:site_name" content="' . $site_name . '">' . "\n";
-    echo '<meta property="og:type"      content="' . $og_type . '">' . "\n";
-    echo '<meta property="og:url"       content="' . $og_url . '">' . "\n";
-    echo '<meta property="og:title"     content="' . $og_title . '">' . "\n";
+    echo '<meta property="og:site_name" content="'.$site_name.'">'."\n";
+    echo '<meta property="og:type"      content="'.$og_type.'">'."\n";
+    echo '<meta property="og:url"       content="'.$og_url.'">'."\n";
+    echo '<meta property="og:title"     content="'.$og_title.'">'."\n";
     if ($og_desc) {
-        echo '<meta property="og:description" content="' . $og_desc . '">' . "\n";
-        echo '<meta name="description"         content="' . $og_desc . '">' . "\n";
+        echo '<meta property="og:description" content="'.$og_desc.'">'."\n";
+        echo '<meta name="description"         content="'.$og_desc.'">'."\n";
     }
     if ($og_image) {
-        echo '<meta property="og:image" content="' . $og_image . '">' . "\n";
+        echo '<meta property="og:image" content="'.$og_image.'">'."\n";
     }
-    echo '<meta name="twitter:card"  content="summary_large_image">' . "\n";
-    echo '<meta name="twitter:title" content="' . $og_title . '">' . "\n";
+    echo '<meta name="twitter:card"  content="summary_large_image">'."\n";
+    echo '<meta name="twitter:title" content="'.$og_title.'">'."\n";
     if ($og_desc) {
-        echo '<meta name="twitter:description" content="' . $og_desc . '">' . "\n";
+        echo '<meta name="twitter:description" content="'.$og_desc.'">'."\n";
     }
     if ($og_image) {
-        echo '<meta name="twitter:image" content="' . $og_image . '">' . "\n";
+        echo '<meta name="twitter:image" content="'.$og_image.'">'."\n";
     }
 }, 5);
 
@@ -391,9 +393,9 @@ add_action('wp_head', function () {
 add_filter('block_categories_all', function (array $categories): array {
     return array_merge(
         [[
-            'slug'  => 'theme',
+            'slug' => 'theme',
             'title' => __('Theme', 'sage'),
-            'icon'  => null,
+            'icon' => null,
         ]],
         $categories
     );
@@ -406,7 +408,7 @@ add_filter('block_categories_all', function (array $categories): array {
 add_action('init', function () {
     $blocks = ['hero', 'testimonial', 'stat', 'icon-box'];
     foreach ($blocks as $name) {
-        $dir = get_template_directory() . "/blocks/{$name}";
+        $dir = get_template_directory()."/blocks/{$name}";
         if (is_dir($dir)) {
             register_block_type($dir);
         }

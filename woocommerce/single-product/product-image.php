@@ -3,19 +3,17 @@
  * Single product image — overrides WooCommerce default.
  * Uses <picture> component via wp_get_attachment_image with srcset/WebP.
  *
- * @package WooCommerce\Templates
  * @version 3.5.1 (WC reference version)
  */
-
 defined('ABSPATH') || exit;
 
 global $product;
 
 $attachment_ids = $product->get_gallery_image_ids();
-$main_id        = $product->get_image_id();
-$all_ids        = array_merge([$main_id], $attachment_ids);
-$all_ids        = array_filter(array_unique($all_ids));
-$has_gallery    = count($all_ids) > 1;
+$main_id = $product->get_image_id();
+$all_ids = array_merge([$main_id], $attachment_ids);
+$all_ids = array_filter(array_unique($all_ids));
+$has_gallery = count($all_ids) > 1;
 ?>
 
 <div
@@ -30,40 +28,40 @@ $has_gallery    = count($all_ids) > 1;
     role="img"
     :aria-label="currentAlt"
   >
-    <?php foreach ($all_ids as $index => $img_id) :
-      $full_url  = wp_get_attachment_image_url($img_id, 'woocommerce_single');
-      $srcset    = wp_get_attachment_image_srcset($img_id, 'woocommerce_single');
-      $alt       = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
+    <?php foreach ($all_ids as $index => $img_id) {
+        $full_url = wp_get_attachment_image_url($img_id, 'woocommerce_single');
+        $srcset = wp_get_attachment_image_srcset($img_id, 'woocommerce_single');
+        $alt = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
 
-      // Build WebP srcset
-      $meta        = wp_get_attachment_metadata($img_id);
-      $upload      = wp_get_upload_dir();
-      $webp_srcset = '';
-      if (!empty($meta['file']) && !empty($meta['sizes'])) {
-          $file_dir   = $upload['baseurl'] . '/' . dirname($meta['file']);
-          $webp_parts = [];
-          foreach ($meta['sizes'] as $size_data) {
-              $wf = $size_data['sources']['image/webp']['file'] ?? '';
-              $ww = (int) ($size_data['width'] ?? 0);
-              if ($wf && $ww) {
-                  $webp_parts[] = esc_url($file_dir . '/' . $wf) . ' ' . $ww . 'w';
-              }
-          }
-          $webp_srcset = implode(', ', $webp_parts);
-      }
-    ?>
+        // Build WebP srcset
+        $meta = wp_get_attachment_metadata($img_id);
+        $upload = wp_get_upload_dir();
+        $webp_srcset = '';
+        if (! empty($meta['file']) && ! empty($meta['sizes'])) {
+            $file_dir = $upload['baseurl'].'/'.dirname($meta['file']);
+            $webp_parts = [];
+            foreach ($meta['sizes'] as $size_data) {
+                $wf = $size_data['sources']['image/webp']['file'] ?? '';
+                $ww = (int) ($size_data['width'] ?? 0);
+                if ($wf && $ww) {
+                    $webp_parts[] = esc_url($file_dir.'/'.$wf).' '.$ww.'w';
+                }
+            }
+            $webp_srcset = implode(', ', $webp_parts);
+        }
+        ?>
       <picture
         class="absolute inset-0 w-full h-full transition-opacity duration-400"
         :class="active === <?php echo $index; ?> ? 'opacity-100' : 'opacity-0 pointer-events-none'"
         :aria-hidden="active !== <?php echo $index; ?>"
         data-alt="<?php echo $alt; ?>"
       >
-        <?php if ($webp_srcset) : ?>
+        <?php if ($webp_srcset) { ?>
           <source type="image/webp" srcset="<?php echo esc_attr($webp_srcset); ?>" sizes="(max-width: 768px) 100vw, 50vw">
-        <?php endif; ?>
-        <?php if ($srcset) : ?>
+        <?php } ?>
+        <?php if ($srcset) { ?>
           <source srcset="<?php echo esc_attr($srcset); ?>" sizes="(max-width: 768px) 100vw, 50vw">
-        <?php endif; ?>
+        <?php } ?>
         <img
           src="<?php echo esc_url($full_url); ?>"
           alt="<?php echo $alt; ?>"
@@ -72,9 +70,9 @@ $has_gallery    = count($all_ids) > 1;
           decoding="async"
         >
       </picture>
-    <?php endforeach; ?>
+    <?php } ?>
 
-    <?php if ($has_gallery) : ?>
+    <?php if ($has_gallery) { ?>
       {{-- Prev / Next arrows --}}
       <button
         type="button"
@@ -92,10 +90,10 @@ $has_gallery    = count($all_ids) > 1;
       >
         <svg class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
       </button>
-    <?php endif; ?>
+    <?php } ?>
   </div>
 
-  <?php if ($has_gallery) : ?>
+  <?php if ($has_gallery) { ?>
     {{-- Thumbnails strip --}}
     <div
       class="product-gallery__thumbs grid gap-2"
@@ -103,10 +101,10 @@ $has_gallery    = count($all_ids) > 1;
       role="list"
       aria-label="<?php esc_attr_e('Galleria immagini prodotto', 'sage'); ?>"
     >
-      <?php foreach ($all_ids as $index => $img_id) :
-        $thumb_url = wp_get_attachment_image_url($img_id, 'thumbnail');
-        $alt       = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
-      ?>
+      <?php foreach ($all_ids as $index => $img_id) {
+          $thumb_url = wp_get_attachment_image_url($img_id, 'thumbnail');
+          $alt = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
+          ?>
         <button
           type="button"
           @click="setActive(<?php echo $index; ?>)"
@@ -124,9 +122,9 @@ $has_gallery    = count($all_ids) > 1;
             decoding="async"
           >
         </button>
-      <?php endforeach; ?>
+      <?php } ?>
     </div>
-  <?php endif; ?>
+  <?php } ?>
 
 </div>
 

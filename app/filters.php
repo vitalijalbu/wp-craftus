@@ -15,7 +15,7 @@ add_filter('woocommerce_add_to_cart_fragments', function (array $fragments): arr
     }
 
     $count = (int) WC()->cart->get_cart_contents_count();
-    $html  = sprintf(
+    $html = sprintf(
         '<span class="cart-count-fragment absolute -top-1 -right-1 min-w-4 h-4 bg-gold text-ink     font-bold rounded-full flex items-center justify-center px-0.5 leading-none transition-opacity %s" data-cart-count="%d">%d</span>',
         $count === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100',
         $count,
@@ -34,15 +34,15 @@ add_filter('woocommerce_add_to_cart_fragments', function (array $fragments): arr
 // (Mailchimp, Klaviyo, etc.) can hook in without touching this file.
 add_action('rest_api_init', function () {
     register_rest_route('theme/v1', '/newsletter', [
-        'methods'             => 'POST',
-        'callback'            => __NAMESPACE__ . '\\newsletter_subscribe',
+        'methods' => 'POST',
+        'callback' => __NAMESPACE__.'\\newsletter_subscribe',
         'permission_callback' => '__return_true',
-        'args'                => [
+        'args' => [
             'email' => [
-                'required'          => true,
-                'type'              => 'string',
+                'required' => true,
+                'type' => 'string',
                 'sanitize_callback' => 'sanitize_email',
-                'validate_callback' => fn($v) => is_email($v),
+                'validate_callback' => fn ($v) => is_email($v),
             ],
         ],
     ]);
@@ -51,10 +51,10 @@ add_action('rest_api_init', function () {
 /**
  * Handle newsletter subscription.
  *
- * @param \WP_REST_Request $request
  * @return \WP_REST_Response|\WP_Error
  */
-function newsletter_subscribe(\WP_REST_Request $request) {
+function newsletter_subscribe(\WP_REST_Request $request)
+{
     $email = sanitize_email($request->get_param('email'));
 
     if (! is_email($email)) {
@@ -65,7 +65,7 @@ function newsletter_subscribe(\WP_REST_Request $request) {
      * Fires when a user subscribes to the newsletter.
      * Hook here to integrate with Mailchimp, Klaviyo, or any other ESP.
      *
-     * @param string $email The subscriber email address.
+     * @param  string  $email  The subscriber email address.
      */
     do_action('theme_newsletter_subscribe', $email);
 
@@ -88,6 +88,7 @@ add_filter('body_class', function (array $classes): array {
     // Front page always has a hero section (assembled in front-page.blade.php)
     if (is_front_page() && ! is_home()) {
         $classes[] = 'has-hero';
+
         return $classes;
     }
 
@@ -96,13 +97,14 @@ add_filter('body_class', function (array $classes): array {
     }
 
     // Singular: detect hero via first Gutenberg block
-    $post   = get_post();
+    $post = get_post();
     $blocks = $post ? parse_blocks($post->post_content) : [];
-    $first  = $blocks[0]['blockName'] ?? '';
+    $first = $blocks[0]['blockName'] ?? '';
     $hero_blocks = ['core/cover', 'core/group', 'theme/hero'];
     if (in_array($first, $hero_blocks, true)) {
         $classes[] = 'has-hero';
     }
+
     return $classes;
 });
 
@@ -118,6 +120,7 @@ add_filter('woocommerce_shortcode_products_query', function (array $query): arra
     if (empty($query['posts_per_page']) || (int) $query['posts_per_page'] < 0) {
         $query['posts_per_page'] = 12;
     }
+
     return $query;
 });
 
@@ -135,10 +138,15 @@ add_filter('pre_render_block', function ($pre_render, array $block) {
     ];
     if (in_array($block['blockName'] ?? '', $wc_product_blocks, true)) {
         if (empty($block['attrs']['perPage']) || $block['attrs']['perPage'] > 24) {
-            add_filter('query_vars', function ($vars) { return $vars; }); // noop to force re-read
-            add_filter('posts_per_page', function () { return 12; });
+            add_filter('query_vars', function ($vars) {
+                return $vars;
+            }); // noop to force re-read
+            add_filter('posts_per_page', function () {
+                return 12;
+            });
         }
     }
+
     return $pre_render;
 }, 5, 2);
 
@@ -148,18 +156,18 @@ add_filter('pre_render_block', function ($pre_render, array $block) {
 remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
 
 // Change default columns: 2-col gallery on single product (WC default = 1/2 split via flex)
-add_filter('woocommerce_product_thumbnails_columns', fn() => 4);
+add_filter('woocommerce_product_thumbnails_columns', fn () => 4);
 
 // Trust badges below add-to-cart
 add_action('woocommerce_after_add_to_cart_button', function () {
     echo '<div class="trust-badges flex flex-wrap gap-4 mt-5 text-muted text-xs">';
     $badges = [
         ['icon' => 'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
-              'label' => __('Pagamento sicuro', 'sage')],
+            'label' => __('Pagamento sicuro', 'sage')],
         ['icon' => 'M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12',
-              'label' => __('Spedizione rapida', 'sage')],
+            'label' => __('Spedizione rapida', 'sage')],
         ['icon' => 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99',
-              'label' => __('Resi gratuiti 30gg', 'sage')],
+            'label' => __('Resi gratuiti 30gg', 'sage')],
     ];
     foreach ($badges as $b) {
         printf(
@@ -178,19 +186,18 @@ add_action('woocommerce_after_add_to_cart_button', function () {
  * Risparmia ~15 KB e una DNS lookup a s.w.org per ogni pagina.
  */
 add_action('init', function () {
-    remove_action('wp_head',             'print_emoji_detection_script', 7);
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
     remove_action('admin_print_scripts', 'print_emoji_detection_script');
-    remove_action('wp_print_styles',     'print_emoji_styles');
-    remove_action('admin_print_styles',  'print_emoji_styles');
-    remove_filter('the_content_feed',    'wp_staticize_emoji');
-    remove_filter('comment_text_rss',    'wp_staticize_emoji');
-    remove_filter('wp_mail',             'wp_staticize_emoji_for_email');
-    add_filter('tiny_mce_plugins',       fn($p) => array_diff($p ?? [], ['wpemoji']));
-    add_filter('wp_resource_hints',      fn($hints, $relation_type) =>
-        $relation_type === 'dns-prefetch'
-            ? array_filter($hints, fn($h) => !str_contains($h['href'] ?? '', 's.w.org'))
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    remove_action('admin_print_styles', 'print_emoji_styles');
+    remove_filter('the_content_feed', 'wp_staticize_emoji');
+    remove_filter('comment_text_rss', 'wp_staticize_emoji');
+    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+    add_filter('tiny_mce_plugins', fn ($p) => array_diff($p ?? [], ['wpemoji']));
+    add_filter('wp_resource_hints', fn ($hints, $relation_type) => $relation_type === 'dns-prefetch'
+            ? array_filter($hints, fn ($h) => ! str_contains($h['href'] ?? '', 's.w.org'))
             : $hints,
-    10, 2);
+        10, 2);
 });
 
 /**
@@ -218,8 +225,9 @@ add_filter('wp_get_attachment_image_attributes', function (array $attr, \WP_Post
         str_contains($attr['class'], 'custom-logo')
     ) {
         $attr['fetchpriority'] = 'high';
-        $attr['decoding']      = 'async';
+        $attr['decoding'] = 'async';
     }
+
     return $attr;
 }, 10, 2);
 
@@ -238,6 +246,7 @@ add_filter('script_loader_tag', function (string $tag, string $handle): string {
     if (in_array($handle, $defer_handles, true) && ! str_contains($tag, 'defer')) {
         $tag = str_replace(' src=', ' defer src=', $tag);
     }
+
     return $tag;
 }, 10, 2);
 
@@ -257,23 +266,34 @@ add_filter('xmlrpc_enabled', '__return_false');
 // Remove shortlink from head
 remove_action('wp_head', 'wp_shortlink_wp_head');
 
-// Rate-limit newsletter REST endpoint: max 5 requests per IP per minute.
+// Rate-limit REST endpoints: newsletter (5/min) and search (30/min per IP).
 // Uses transients as a lightweight counter — no extra plugin needed.
 add_filter('rest_pre_dispatch', function ($result, $server, \WP_REST_Request $request) {
-    if ($request->get_route() !== '/theme/v1/newsletter') {
+    $route = $request->get_route();
+
+    $limits = [
+        '/theme/v1/newsletter' => ['max' => 5,  'prefix' => 'nl_rl_',     'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/search' => ['max' => 30, 'prefix' => 'srch_rl_',   'window' => MINUTE_IN_SECONDS],
+    ];
+
+    if (! isset($limits[$route])) {
         return $result;
     }
-    $ip  = sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
-    $key = 'nl_rl_' . md5($ip);
+
+    $cfg = $limits[$route];
+    $ip = sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+    $key = $cfg['prefix'].md5($ip);
     $hits = (int) get_transient($key);
-    if ($hits >= 5) {
+
+    if ($hits >= $cfg['max']) {
         return new \WP_Error(
             'rate_limit',
             __('Troppe richieste. Riprova tra un minuto.', 'sage'),
             ['status' => 429]
         );
     }
-    set_transient($key, $hits + 1, MINUTE_IN_SECONDS);
+    set_transient($key, $hits + 1, $cfg['window']);
+
     return $result;
 }, 10, 3);
 
@@ -287,6 +307,7 @@ add_filter('rest_endpoints', function (array $endpoints): array {
         unset($endpoints['/wp/v2/users']);
         unset($endpoints['/wp/v2/users/(?P<id>[\d]+)']);
     }
+
     return $endpoints;
 });
 
@@ -304,16 +325,17 @@ add_filter('rest_endpoints', function (array $endpoints): array {
 add_filter('template_include', function (string $template): string {
     if (
         function_exists('is_woocommerce') && (
-            is_woocommerce()       ||
-            is_product_category()  ||
-            is_product_tag()       ||
-            is_product_taxonomy()  ||
-            is_cart()              ||
-            is_checkout()          ||
+            is_woocommerce() ||
+            is_product_category() ||
+            is_product_tag() ||
+            is_product_taxonomy() ||
+            is_cart() ||
+            is_checkout() ||
             is_account_page()
         )
     ) {
         \Roots\app()->instance('sage.view', 'woocommerce');
     }
+
     return $template;
 }, 101);

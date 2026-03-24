@@ -30,7 +30,12 @@
         { "slug": "border", "color": "#e0e0e0", "name": "Border" },
         { "slug": "accent", "color": "#0074C7", "name": "Accent (Blue)" },
         { "slug": "accent-light", "color": "#eff6ff", "name": "Accent Light" },
-        { "slug": "gold", "color": "#0074C7", "name": "Gold (Blue)" }
+        { "slug": "primary", "color": "#0074C7", "name": "Primary" },
+        { "slug": "contrast", "color": "#0a0a0a", "name": "Contrast" },
+        { "slug": "base", "color": "#ffffff", "name": "Base" },
+        { "slug": "success", "color": "#16a34a", "name": "Success" },
+        { "slug": "warning", "color": "#d97706", "name": "Warning" },
+        { "slug": "error", "color": "#dc2626", "name": "Error" }
       ],
       "gradients": [
         {
@@ -46,10 +51,21 @@
       ]
     },
     "custom": {
-      "spacing": {},
+      "spacing": {
+        "header-height": "72px",
+        "section-sm":    "clamp(3rem, 6vw, 5rem)",
+        "section-lg":    "clamp(4rem, 8vw, 7rem)",
+        "container-px":  "clamp(1.5rem, 4vw, 2.5rem)"
+      },
       "typography": {
         "font-size": {},
-        "line-height": {}
+        "line-height": {
+          "tight":    "1.05",
+          "snug":     "1.2",
+          "normal":   "1.5",
+          "relaxed":  "1.75",
+          "loose":    "2"
+        }
       }
     },
     "spacing": {
@@ -79,9 +95,9 @@
         { "slug": "lg", "size": "1.125rem", "name": "LG" },
         { "slug": "xl", "size": "1.25rem", "name": "XL" },
         { "slug": "2xl", "size": "1.5rem", "name": "2XL" },
-        { "slug": "3xl", "size": "1.875rem", "name": "3XL" },
-        { "slug": "4xl", "size": "2.25rem", "name": "4XL" },
-        { "slug": "5xl", "size": "3rem", "name": "5XL" },
+        { "slug": "3xl", "size": "clamp(1.5rem, 2.5vw, 1.875rem)", "name": "3XL" },
+        { "slug": "4xl", "size": "clamp(1.75rem, 3.5vw, 2.25rem)", "name": "4XL" },
+        { "slug": "5xl", "size": "clamp(2rem, 4.5vw, 3rem)", "name": "5XL" },
         { "slug": "hero", "size": "clamp(2.5rem, 5vw, 4.5rem)", "name": "Hero" }
       ]
     },

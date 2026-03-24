@@ -3,10 +3,8 @@
  * Single Product tabs — overrides WooCommerce default.
  * Renders product tabs (Description, Reviews, Additional Info) as Alpine.js tabs.
  *
- * @package WooCommerce\Templates
  * @version 3.8.0 (WC reference version)
  */
-
 defined('ABSPATH') || exit;
 
 /**
@@ -21,7 +19,7 @@ if (empty($product_tabs)) {
 }
 
 $tab_keys = array_keys($product_tabs);
-$first    = $tab_keys[0];
+$first = $tab_keys[0];
 ?>
 
 <section
@@ -36,10 +34,10 @@ $first    = $tab_keys[0];
     role="tablist"
     aria-label="<?php esc_attr_e('Schede informazioni', 'sage'); ?>"
   >
-    <?php foreach ($product_tabs as $key => $tab) :
-      $tab_id    = 'tab-' . esc_attr($key);
-      $panel_id  = 'panel-' . esc_attr($key);
-    ?>
+    <?php foreach ($product_tabs as $key => $tab) {
+        $tab_id = 'tab-'.esc_attr($key);
+        $panel_id = 'panel-'.esc_attr($key);
+        ?>
       <button
         type="button"
         id="<?php echo $tab_id; ?>"
@@ -66,14 +64,14 @@ $first    = $tab_keys[0];
       >
         <?php echo wp_kses_post($tab['title']); ?>
       </button>
-    <?php endforeach; ?>
+    <?php } ?>
   </div>
 
   {{-- Tab panels --}}
-  <?php foreach ($product_tabs as $key => $tab) :
-    $panel_id = 'panel-' . esc_attr($key);
-    $tab_id   = 'tab-' . esc_attr($key);
-  ?>
+  <?php foreach ($product_tabs as $key => $tab) {
+      $panel_id = 'panel-'.esc_attr($key);
+      $tab_id = 'tab-'.esc_attr($key);
+      ?>
     <div
       id="<?php echo $panel_id; ?>"
       role="tabpanel"
@@ -82,11 +80,11 @@ $first    = $tab_keys[0];
       class="product-tab-panel prose max-w-none py-8 lg:py-10"
     >
       <?php
-        if (isset($tab['callback'])) {
-            call_user_func($tab['callback'], $key, $tab);
-        }
+            if (isset($tab['callback'])) {
+                call_user_func($tab['callback'], $key, $tab);
+            }
       ?>
     </div>
-  <?php endforeach; ?>
+  <?php } ?>
 
 </section>

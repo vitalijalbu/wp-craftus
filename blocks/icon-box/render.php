@@ -2,25 +2,24 @@
 /**
  * Block: theme/icon-box
  */
+$icon_id = (int) ($attributes['iconImageId'] ?? 0);
+$icon_url = esc_url($attributes['iconImageUrl'] ?? ($icon_id ? wp_get_attachment_image_url($icon_id, 'thumbnail') : '')) ?: esc_url(\App\get_placeholder_url());
+$icon_size = (int) ($attributes['iconSize'] ?? 48);
+$title = wp_kses_post($attributes['title'] ?? '');
+$text = wp_kses_post($attributes['text'] ?? '');
+$link_label = esc_html($attributes['linkLabel'] ?? '');
+$link_url = esc_url($attributes['linkUrl'] ?? '');
+$bg = $attributes['bg'] ?? 'surface';
+$layout = $attributes['layout'] ?? 'vertical';
+$bordered = (bool) ($attributes['bordered'] ?? false);
 
-$icon_id    = (int) ($attributes['iconImageId']  ?? 0);
-$icon_url   = esc_url($attributes['iconImageUrl'] ?? ($icon_id ? wp_get_attachment_image_url($icon_id, 'thumbnail') : '')) ?: esc_url(\App\get_placeholder_url());
-$icon_size  = (int) ($attributes['iconSize']     ?? 48);
-$title      = wp_kses_post($attributes['title']  ?? '');
-$text       = wp_kses_post($attributes['text']   ?? '');
-$link_label = esc_html($attributes['linkLabel']  ?? '');
-$link_url   = esc_url($attributes['linkUrl']     ?? '');
-$bg         = $attributes['bg']     ?? 'surface';
-$layout     = $attributes['layout'] ?? 'vertical';
-$bordered   = (bool) ($attributes['bordered']    ?? false);
-
-$title_class = $bg === 'ink' ? 'text-white'    : 'text-ink';
-$text_class  = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-$link_class  = $bg === 'ink' ? 'text-gold'     : 'text-primary';
+$title_class = $bg === 'ink' ? 'text-white' : 'text-ink';
+$text_class = $bg === 'ink' ? 'text-white/60' : 'text-muted';
+$link_class = $bg === 'ink' ? 'text-gold' : 'text-primary';
 $border_class = $bordered ? ($bg === 'ink' ? 'border border-white/10 p-6' : 'border border-border p-6') : '';
 
 $is_horizontal = $layout === 'horizontal';
-$wrap_flex     = $is_horizontal
+$wrap_flex = $is_horizontal
     ? 'flex flex-row gap-4 items-start'
     : 'flex flex-col gap-4';
 ?>
@@ -41,16 +40,16 @@ $wrap_flex     = $is_horizontal
   >
 
   <div>
-    <?php if ($title) : ?>
+    <?php if ($title) { ?>
       <h3 class="font-serif text-xl font-light <?= $title_class ?> leading-snug"><?= $title ?></h3>
-    <?php endif; ?>
-    <?php if ($text) : ?>
+    <?php } ?>
+    <?php if ($text) { ?>
       <p class="text-sm <?= $text_class ?> mt-2 leading-relaxed"><?= $text ?></p>
-    <?php endif; ?>
-    <?php if ($link_label && $link_url) : ?>
+    <?php } ?>
+    <?php if ($link_label && $link_url) { ?>
       <a href="<?= $link_url ?>" class="mt-3 inline-block text-xs font-semibold tracking-[0.12em] uppercase <?= $link_class ?> hover:underline">
         <?= $link_label ?> →
       </a>
-    <?php endif; ?>
+    <?php } ?>
   </div>
 </div>

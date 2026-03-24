@@ -9,8 +9,8 @@ namespace App;
 
 // ── Contact form (admin-post.php) ─────────────────────────────────────────────
 
-add_action('admin_post_theme_contact',        __NAMESPACE__ . '\\handle_contact_form');
-add_action('admin_post_nopriv_theme_contact', __NAMESPACE__ . '\\handle_contact_form');
+add_action('admin_post_theme_contact', __NAMESPACE__.'\\handle_contact_form');
+add_action('admin_post_nopriv_theme_contact', __NAMESPACE__.'\\handle_contact_form');
 
 /**
  * Process the contact form submission.
@@ -19,7 +19,7 @@ add_action('admin_post_nopriv_theme_contact', __NAMESPACE__ . '\\handle_contact_
 function handle_contact_form(): void
 {
     // Honeypot check
-    if (!empty($_POST['honeypot'])) {
+    if (! empty($_POST['honeypot'])) {
         wp_send_json(['success' => false, 'message' => ''], 400);
     }
 
@@ -34,11 +34,11 @@ function handle_contact_form(): void
         ], 403);
     }
 
-    $name    = sanitize_text_field(wp_unslash($_POST['contact_name']    ?? ''));
-    $email   = sanitize_email(wp_unslash($_POST['contact_email']        ?? ''));
+    $name = sanitize_text_field(wp_unslash($_POST['contact_name'] ?? ''));
+    $email = sanitize_email(wp_unslash($_POST['contact_email'] ?? ''));
     $subject = sanitize_text_field(wp_unslash($_POST['contact_subject'] ?? __('Nuovo messaggio dal sito', 'sage')));
     $message = sanitize_textarea_field(wp_unslash($_POST['contact_message'] ?? ''));
-    $privacy = !empty($_POST['contact_privacy']);
+    $privacy = ! empty($_POST['contact_privacy']);
 
     if (! $name || ! is_email($email) || ! $message || ! $privacy) {
         wp_send_json([
@@ -47,14 +47,14 @@ function handle_contact_form(): void
         ], 422);
     }
 
-    $to      = sanitize_email(get_option('admin_email'));
+    $to = sanitize_email(get_option('admin_email'));
     $headers = [
         'Content-Type: text/html; charset=UTF-8',
         sprintf('Reply-To: %s <%s>', $name, $email),
     ];
 
     $body = sprintf(
-        "<p><strong>Nome:</strong> %s</p><p><strong>Email:</strong> %s</p><p><strong>Messaggio:</strong></p><p>%s</p>",
+        '<p><strong>Nome:</strong> %s</p><p><strong>Email:</strong> %s</p><p><strong>Messaggio:</strong></p><p>%s</p>',
         esc_html($name),
         esc_html($email),
         nl2br(esc_html($message))
@@ -66,7 +66,7 @@ function handle_contact_form(): void
      */
     $send = apply_filters('theme_before_contact_mail', true, compact('name', 'email', 'subject', 'message'));
 
-    $sent = $send ? wp_mail($to, '[' . get_bloginfo('name') . '] ' . $subject, $body, $headers) : true;
+    $sent = $send ? wp_mail($to, '['.get_bloginfo('name').'] '.$subject, $body, $headers) : true;
 
     if ($sent) {
         do_action('theme_contact_form_sent', compact('name', 'email', 'subject', 'message'));
@@ -87,24 +87,24 @@ function handle_contact_form(): void
 
 add_action('rest_api_init', function () {
     register_rest_route('theme/v1', '/search', [
-        'methods'             => 'GET',
-        'callback'            => __NAMESPACE__ . '\\live_search',
+        'methods' => 'GET',
+        'callback' => __NAMESPACE__.'\\live_search',
         'permission_callback' => '__return_true',
-        'args'                => [
+        'args' => [
             'q' => [
-                'required'          => true,
-                'type'              => 'string',
+                'required' => true,
+                'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
-                'validate_callback' => fn($v) => strlen(trim($v)) >= 2,
+                'validate_callback' => fn ($v) => strlen(trim($v)) >= 2,
             ],
             'per_page' => [
-                'default'           => 6,
-                'type'              => 'integer',
+                'default' => 6,
+                'type' => 'integer',
                 'sanitize_callback' => 'absint',
             ],
             'type' => [
-                'default'           => 'any',
-                'type'              => 'string',
+                'default' => 'any',
+                'type' => 'string',
                 'sanitize_callback' => 'sanitize_key',
             ],
         ],
@@ -113,15 +113,12 @@ add_action('rest_api_init', function () {
 
 /**
  * Live search handler — returns posts + products matching query.
- *
- * @param \WP_REST_Request $request
- * @return \WP_REST_Response
  */
 function live_search(\WP_REST_Request $request): \WP_REST_Response
 {
-    $query    = sanitize_text_field($request->get_param('q'));
+    $query = sanitize_text_field($request->get_param('q'));
     $per_page = min((int) $request->get_param('per_page'), 12);
-    $type     = sanitize_key($request->get_param('type'));
+    $type = sanitize_key($request->get_param('type'));
 
     $post_types = ['post', 'page'];
     if (function_exists('WC') && in_array($type, ['any', 'product'], true)) {
@@ -132,43 +129,237 @@ function live_search(\WP_REST_Request $request): \WP_REST_Response
     }
 
     $wp_query = new \WP_Query([
-        's'              => $query,
-        'post_type'      => $post_types,
+        's' => $query,
+        'post_type' => $post_types,
         'posts_per_page' => $per_page,
-        'post_status'    => 'publish',
-        'no_found_rows'  => true,
-        'fields'         => 'ids',
+        'post_status' => 'publish',
+        'no_found_rows' => true,
+        'fields' => 'ids',
     ]);
 
     $results = [];
     foreach ($wp_query->posts as $pid) {
-        $pid       = (int) $pid;
-        $thumb_id  = get_post_thumbnail_id($pid);
+        $pid = (int) $pid;
+        $thumb_id = get_post_thumbnail_id($pid);
         $thumb_url = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'thumbnail') : '';
         $post_type = get_post_type($pid);
 
         $price = '';
         if ($post_type === 'product' && function_exists('wc_get_product')) {
             $product = wc_get_product($pid);
-            $price   = $product ? wp_strip_all_tags($product->get_price_html()) : '';
+            $price = $product ? wp_strip_all_tags($product->get_price_html()) : '';
         }
 
         $results[] = [
-            'id'        => $pid,
-            'title'     => esc_html(get_the_title($pid)),
-            'url'       => esc_url(get_permalink($pid)),
-            'thumb'     => esc_url($thumb_url),
-            'type'      => $post_type,
-            'price'     => $price,
-            'excerpt'   => wp_trim_words(get_the_excerpt($pid), 12, '…'),
+            'id' => $pid,
+            'title' => esc_html(get_the_title($pid)),
+            'url' => esc_url(get_permalink($pid)),
+            'thumb' => esc_url($thumb_url),
+            'type' => $post_type,
+            'price' => $price,
+            'excerpt' => wp_trim_words(get_the_excerpt($pid), 12, '…'),
         ];
     }
 
     return rest_ensure_response([
-        'query'   => $query,
-        'count'   => count($results),
+        'query' => $query,
+        'count' => count($results),
         'results' => $results,
-        'more_url' => esc_url(home_url('/?s=' . urlencode($query))),
+        'more_url' => esc_url(home_url('/?s='.urlencode($query))),
+    ]);
+}
+
+// ── Quick View — REST endpoint ────────────────────────────────────────────────
+// GET /wp-json/theme/v1/quick-view/{id}
+
+add_action('rest_api_init', function () {
+    register_rest_route('theme/v1', '/quick-view/(?P<id>[\d]+)', [
+        'methods' => 'GET',
+        'callback' => __NAMESPACE__.'\\quick_view',
+        'permission_callback' => '__return_true',
+        'args' => [
+            'id' => [
+                'required' => true,
+                'type' => 'integer',
+                'sanitize_callback' => 'absint',
+            ],
+        ],
+    ]);
+});
+
+/**
+ * Quick view product data — gallery, price, attributes, add-to-cart.
+ */
+function quick_view(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
+{
+    if (! function_exists('wc_get_product')) {
+        return new \WP_Error('wc_missing', 'WooCommerce required.', ['status' => 503]);
+    }
+
+    $product_id = (int) $request->get_param('id');
+    $product = wc_get_product($product_id);
+
+    if (! $product || $product->get_status() !== 'publish') {
+        return new \WP_Error('not_found', __('Prodotto non trovato.', 'sage'), ['status' => 404]);
+    }
+
+    // Gallery images
+    $gallery_ids = array_filter(array_merge(
+        [$product->get_image_id()],
+        $product->get_gallery_image_ids()
+    ));
+    $gallery = array_values(array_map(
+        fn ($id) => esc_url(wp_get_attachment_image_url($id, 'woocommerce_single') ?: ''),
+        $gallery_ids
+    ));
+
+    // Category
+    $terms = get_the_terms($product_id, 'product_cat');
+    $category = ($terms && ! is_wp_error($terms)) ? esc_html($terms[0]->name) : '';
+
+    // Attributes for variable products
+    $attributes = [];
+    if ($product->is_type('variable')) {
+        foreach ($product->get_variation_attributes() as $attr_name => $options) {
+            $label = wc_attribute_label($attr_name, $product);
+            $attributes[] = [
+                'name' => esc_attr($attr_name),
+                'label' => esc_html($label),
+                'options' => array_map('esc_html', $options),
+            ];
+        }
+    }
+
+    return rest_ensure_response([
+        'id' => $product_id,
+        'title' => esc_html($product->get_name()),
+        'url' => esc_url(get_permalink($product_id)),
+        'price_html' => wp_strip_all_tags($product->get_price_html()),
+        'thumb' => esc_url(wp_get_attachment_image_url($product->get_image_id(), 'woocommerce_thumbnail') ?: ''),
+        'gallery' => $gallery,
+        'short_desc' => wp_kses_post(apply_filters('woocommerce_short_description', $product->get_short_description())),
+        'category' => $category,
+        'in_stock' => $product->is_in_stock(),
+        'on_sale' => $product->is_on_sale(),
+        'rating' => (float) $product->get_average_rating(),
+        'rating_count' => (int) $product->get_rating_count(),
+        'add_to_cart_url' => esc_url($product->add_to_cart_url()),
+        'attributes' => $attributes,
+    ]);
+}
+
+// ── Products — REST endpoint (faceted filter) ─────────────────────────────────
+// GET /wp-json/theme/v1/products?cats[]=1&cats[]=2&min_price=0&max_price=100&orderby=date&page=1
+
+add_action('rest_api_init', function () {
+    register_rest_route('theme/v1', '/products', [
+        'methods' => 'GET',
+        'callback' => __NAMESPACE__.'\\filtered_products',
+        'permission_callback' => '__return_true',
+        'args' => [
+            'cats' => ['default' => [], 'type' => 'array',   'sanitize_callback' => fn ($v) => array_map('absint', (array) $v)],
+            'min_price' => ['default' => 0,   'type' => 'number',  'sanitize_callback' => fn ($v) => max(0, (float) $v)],
+            'max_price' => ['default' => 0,   'type' => 'number',  'sanitize_callback' => fn ($v) => max(0, (float) $v)],
+            'in_stock' => ['default' => false, 'type' => 'boolean'],
+            'orderby' => ['default' => 'date', 'type' => 'string', 'sanitize_callback' => 'sanitize_key',
+                'validate_callback' => fn ($v) => in_array($v, ['date', 'price', 'price-desc', 'popularity', 'rating', 'title'], true)],
+            'per_page' => ['default' => 12,  'type' => 'integer', 'sanitize_callback' => fn ($v) => min(48, max(1, (int) $v))],
+            'page' => ['default' => 1,   'type' => 'integer', 'sanitize_callback' => fn ($v) => max(1, (int) $v)],
+        ],
+    ]);
+});
+
+/**
+ * Filtered product list for AJAX faceted search.
+ */
+function filtered_products(\WP_REST_Request $request): \WP_REST_Response
+{
+    if (! function_exists('wc_get_product')) {
+        return rest_ensure_response(['products' => [], 'total' => 0, 'pages' => 0]);
+    }
+
+    $cats = $request->get_param('cats') ?: [];
+    $min_price = (float) $request->get_param('min_price');
+    $max_price = (float) $request->get_param('max_price');
+    $in_stock = (bool) $request->get_param('in_stock');
+    $orderby = sanitize_key($request->get_param('orderby'));
+    $per_page = (int) $request->get_param('per_page');
+    $page = (int) $request->get_param('page');
+
+    $args = [
+        'post_type' => 'product',
+        'post_status' => 'publish',
+        'posts_per_page' => $per_page,
+        'paged' => $page,
+        'meta_query' => [],
+        'tax_query' => [],
+    ];
+
+    // Category filter
+    if (! empty($cats)) {
+        $args['tax_query'][] = [
+            'taxonomy' => 'product_cat',
+            'field' => 'term_id',
+            'terms' => $cats,
+            'operator' => 'IN',
+        ];
+    }
+
+    // Price filter
+    if ($min_price > 0 || $max_price > 0) {
+        $args['meta_query'][] = [
+            'key' => '_price',
+            'value' => [$min_price ?: 0, $max_price ?: PHP_INT_MAX],
+            'compare' => 'BETWEEN',
+            'type' => 'NUMERIC',
+        ];
+    }
+
+    // Stock filter
+    if ($in_stock) {
+        $args['meta_query'][] = ['key' => '_stock_status', 'value' => 'instock'];
+    }
+
+    // Ordering
+    match ($orderby) {
+        'price' => ($args += ['meta_key' => '_price', 'orderby' => 'meta_value_num', 'order' => 'ASC']),
+        'price-desc' => ($args += ['meta_key' => '_price', 'orderby' => 'meta_value_num', 'order' => 'DESC']),
+        'popularity' => ($args += ['meta_key' => 'total_sales', 'orderby' => 'meta_value_num', 'order' => 'DESC']),
+        'rating' => ($args += ['meta_key' => '_wc_average_rating', 'orderby' => 'meta_value_num', 'order' => 'DESC']),
+        'title' => ($args += ['orderby' => 'title', 'order' => 'ASC']),
+        default => ($args += ['orderby' => 'date',  'order' => 'DESC']),
+    };
+
+    $query = new \WP_Query($args);
+    $products = [];
+
+    foreach ($query->posts as $post) {
+        $product = wc_get_product($post->ID);
+        if (! $product) {
+            continue;
+        }
+
+        $thumb_id = $product->get_image_id();
+        $products[] = [
+            'id' => $post->ID,
+            'title' => esc_html($product->get_name()),
+            'url' => esc_url(get_permalink($post->ID)),
+            'thumb' => esc_url(wp_get_attachment_image_url($thumb_id, 'woocommerce_thumbnail') ?: ''),
+            'price_html' => wp_strip_all_tags($product->get_price_html()),
+            'price' => (float) $product->get_price(),
+            'on_sale' => $product->is_on_sale(),
+            'in_stock' => $product->is_in_stock(),
+            'rating' => (float) $product->get_average_rating(),
+            'add_to_cart_url' => esc_url($product->add_to_cart_url()),
+            'add_to_cart_text' => esc_html($product->add_to_cart_text()),
+        ];
+    }
+
+    return rest_ensure_response([
+        'products' => $products,
+        'total' => (int) $query->found_posts,
+        'pages' => (int) $query->max_num_pages,
+        'page' => $page,
     ]);
 }
 
@@ -177,18 +368,18 @@ function live_search(\WP_REST_Request $request): \WP_REST_Response
 
 add_action('rest_api_init', function () {
     register_rest_route('theme/v1', '/wishlist', [
-        'methods'             => 'POST',
-        'callback'            => __NAMESPACE__ . '\\wishlist_toggle',
+        'methods' => 'POST',
+        'callback' => __NAMESPACE__.'\\wishlist_toggle',
         'permission_callback' => '__return_true',
-        'args'                => [
+        'args' => [
             'product_id' => [
-                'required'          => true,
-                'type'              => 'integer',
+                'required' => true,
+                'type' => 'integer',
                 'sanitize_callback' => 'absint',
             ],
             'action' => [
-                'default'           => 'toggle',
-                'type'              => 'string',
+                'default' => 'toggle',
+                'type' => 'string',
                 'sanitize_callback' => 'sanitize_key',
             ],
         ],
@@ -198,9 +389,6 @@ add_action('rest_api_init', function () {
 /**
  * Server-side wishlist — stores in user meta for logged-in users.
  * Guests use client-side localStorage; this syncs on login.
- *
- * @param \WP_REST_Request $request
- * @return \WP_REST_Response|\WP_Error
  */
 function wishlist_toggle(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 {
@@ -209,9 +397,9 @@ function wishlist_toggle(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
         return rest_ensure_response(['success' => true, 'guest' => true]);
     }
 
-    $user_id    = get_current_user_id();
+    $user_id = get_current_user_id();
     $product_id = (int) $request->get_param('product_id');
-    $action     = sanitize_key($request->get_param('action'));
+    $action = sanitize_key($request->get_param('action'));
 
     if (! $product_id || ! get_post($product_id)) {
         return new \WP_Error('invalid_product', __('Prodotto non trovato.', 'sage'), ['status' => 404]);
@@ -221,18 +409,18 @@ function wishlist_toggle(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 
     if ($action === 'add' || ($action === 'toggle' && ! in_array($product_id, $wishlist, true))) {
         $wishlist[] = $product_id;
-        $added      = true;
+        $added = true;
     } else {
-        $wishlist = array_values(array_filter($wishlist, fn($id) => $id !== $product_id));
-        $added    = false;
+        $wishlist = array_values(array_filter($wishlist, fn ($id) => $id !== $product_id));
+        $added = false;
     }
 
     update_user_meta($user_id, '_theme_wishlist', array_unique($wishlist));
     do_action('theme_wishlist_updated', $user_id, $product_id, $added);
 
     return rest_ensure_response([
-        'success'  => true,
-        'added'    => $added,
+        'success' => true,
+        'added' => $added,
         'wishlist' => array_values(array_unique($wishlist)),
     ]);
 }

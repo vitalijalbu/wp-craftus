@@ -129,12 +129,46 @@
 
     {{-- Footer: totals + CTA --}}
     @if(!empty($cart_items))
+      @php
+        $threshold  = (float) get_theme_mod('free_shipping_threshold', 0);
+        $cart_total = (float) (WC()->cart ? WC()->cart->get_cart_contents_total() : 0);
+        $remaining  = max(0, $threshold - $cart_total);
+        $progress   = $threshold > 0 ? min(100, round(($cart_total / $threshold) * 100)) : 0;
+      @endphp
+
+      {{-- Free shipping progress bar --}}
+      @if($threshold > 0)
+        <div class="free-shipping-bar shrink-0 bg-cream border-t border-border px-6 py-3">
+          @if($remaining > 0)
+            <p class="text-xs text-muted text-center mb-2">
+              {{ sprintf(__('Aggiungi %s per la spedizione gratuita', 'sage'), '<strong class="text-ink">' . wc_price($remaining) . '</strong>') }}
+            </p>
+          @else
+            <p class="text-xs text-success font-semibold text-center mb-2">
+              ✓ {{ __('Hai ottenuto la spedizione gratuita!', 'sage') }}
+            </p>
+          @endif
+          <div class="h-1 bg-border rounded-full overflow-hidden">
+            <div
+              class="h-full transition-all duration-500 ease-out {{ $remaining <= 0 ? 'bg-success' : 'bg-accent' }}"
+              style="width: {{ $progress }}%"
+              role="progressbar"
+              aria-valuenow="{{ $progress }}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+          </div>
+        </div>
+      @endif
+
       <div class="shrink-0 border-t border-border px-6 py-5 space-y-3 bg-white">
         <div class="flex justify-between text-sm">
           <span class="text-muted">{{ __('Subtotale', 'sage') }}</span>
           <span class="font-semibold text-ink">{!! WC()->cart->get_cart_subtotal() !!}</span>
         </div>
-        <p class="text-xs text-muted">{{ __('Spese di spedizione calcolate al checkout.', 'sage') }}</p>
+        @if($threshold <= 0)
+          <p class="text-xs text-muted">{{ __('Spese di spedizione calcolate al checkout.', 'sage') }}</p>
+        @endif
         <a href="{{ esc_url(wc_get_checkout_url()) }}"
            class="btn-primary w-full text-center block">
           {{ __('Vai al checkout', 'sage') }}

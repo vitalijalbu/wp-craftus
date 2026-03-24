@@ -15,313 +15,210 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
 
     // ── Section: Social Media ─────────────────────────────────────────────────
     $wp_customize->add_section('theme_social', [
-        'title'       => __('Social Media', 'sage'),
+        'title' => __('Social Media', 'sage'),
         'description' => __('URL dei profili social. Lascia vuoto per nascondere l\'icona.', 'sage'),
-        'priority'    => 120,
+        'priority' => 120,
     ]);
 
     $social_networks = [
         'instagram' => ['label' => 'Instagram', 'priority' => 10],
-        'facebook'  => ['label' => 'Facebook',  'priority' => 20],
-        'tiktok'    => ['label' => 'TikTok',    'priority' => 30],
-        'youtube'   => ['label' => 'YouTube',   'priority' => 40],
+        'facebook' => ['label' => 'Facebook',  'priority' => 20],
+        'tiktok' => ['label' => 'TikTok',    'priority' => 30],
+        'youtube' => ['label' => 'YouTube',   'priority' => 40],
     ];
 
     foreach ($social_networks as $slug => $config) {
         $wp_customize->add_setting("social_{$slug}", [
-            'default'           => '',
+            'default' => '',
             'sanitize_callback' => 'esc_url_raw',
-            'transport'         => 'refresh',
+            'transport' => 'refresh',
         ]);
         $wp_customize->add_control("social_{$slug}", [
-            'label'       => $config['label'],
-            'section'     => 'theme_social',
-            'type'        => 'url',
-            'priority'    => $config['priority'],
+            'label' => $config['label'],
+            'section' => 'theme_social',
+            'type' => 'url',
+            'priority' => $config['priority'],
             'input_attrs' => ['placeholder' => "https://www.{$slug}.com/nomepagina"],
         ]);
     }
 
     // ── Section: Theme Options ────────────────────────────────────────────────
     $wp_customize->add_section('theme_theme', [
-        'title'    => __('Opzioni Tema', 'sage'),
+        'title' => __('Opzioni Tema', 'sage'),
         'priority' => 125,
     ]);
 
     // CTA button label + URL
     $wp_customize->add_setting('header_cta_label', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
+        'transport' => 'postMessage',
     ]);
     $wp_customize->add_control('header_cta_label', [
-        'label'       => __('Testo pulsante CTA header', 'sage'),
+        'label' => __('Testo pulsante CTA header', 'sage'),
         'description' => __('Lascia vuoto per nascondere il pulsante.', 'sage'),
-        'section'     => 'theme_theme',
-        'type'        => 'text',
-        'priority'    => 10,
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 10,
     ]);
 
     $wp_customize->add_setting('cta_url', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'esc_url_raw',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control('cta_url', [
-        'label'       => __('URL pulsante CTA header', 'sage'),
+        'label' => __('URL pulsante CTA header', 'sage'),
         'description' => __('Lascia vuoto per usare /contatti.', 'sage'),
-        'section'     => 'theme_theme',
-        'type'        => 'url',
-        'priority'    => 11,
+        'section' => 'theme_theme',
+        'type' => 'url',
+        'priority' => 11,
     ]);
 
     // Footer tagline
     $wp_customize->add_setting('footer_tagline', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
+        'transport' => 'postMessage',
     ]);
     $wp_customize->add_control('footer_tagline', [
-        'label'       => __('Tagline footer', 'sage'),
+        'label' => __('Tagline footer', 'sage'),
         'description' => __('Lascia vuoto per nascondere.', 'sage'),
-        'section'     => 'theme_theme',
-        'type'        => 'textarea',
-        'priority'    => 20,
+        'section' => 'theme_theme',
+        'type' => 'textarea',
+        'priority' => 20,
     ]);
 
     // Newsletter heading
     $wp_customize->add_setting('newsletter_heading', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
+        'transport' => 'postMessage',
     ]);
     $wp_customize->add_control('newsletter_heading', [
-        'label'       => __('Titolo newsletter footer', 'sage'),
+        'label' => __('Titolo newsletter footer', 'sage'),
         'description' => __('Visibile solo se newsletter attiva.', 'sage'),
-        'section'     => 'theme_theme',
-        'type'        => 'text',
-        'priority'    => 30,
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 30,
+    ]);
+
+    // Free shipping threshold
+    $wp_customize->add_setting('free_shipping_threshold', [
+        'default' => 0,
+        'sanitize_callback' => 'absint',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control('free_shipping_threshold', [
+        'label' => __('Soglia spedizione gratuita (€)', 'sage'),
+        'description' => __('0 = barra nascosta. Mostra una progress bar nel carrello verso la spedizione gratuita.', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'number',
+        'priority' => 22,
+        'input_attrs' => ['min' => 0, 'step' => 1],
     ]);
 
     // Newsletter active toggle
     $wp_customize->add_setting('newsletter_active', [
-        'default'           => false,
+        'default' => false,
         'sanitize_callback' => 'rest_sanitize_boolean',
     ]);
     $wp_customize->add_control('newsletter_active', [
-        'label'   => __('Mostra newsletter nel footer', 'sage'),
+        'label' => __('Mostra newsletter nel footer', 'sage'),
         'section' => 'theme_theme',
-        'type'    => 'checkbox',
+        'type' => 'checkbox',
         'priority' => 25,
-    ]);
-
-    // ── Section: Homepage ────────────────────────────────────────────────────
-    $wp_customize->add_section('theme_homepage', [
-        'title'    => __('Homepage', 'sage'),
-        'priority' => 110,
-    ]);
-
-    // Hero image
-    $wp_customize->add_setting('home_hero_image_id', [
-        'default'           => 0,
-        'sanitize_callback' => 'absint',
-    ]);
-    $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'home_hero_image_id', [
-        'label'      => __('Immagine hero homepage', 'sage'),
-        'section'    => 'theme_homepage',
-        'mime_type'  => 'image',
-        'priority'   => 10,
-    ]));
-
-    // Hero heading
-    $wp_customize->add_setting('home_hero_heading', [
-        'default'           => get_bloginfo('name'),
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ]);
-    $wp_customize->add_control('home_hero_heading', [
-        'label'    => __('Titolo hero', 'sage'),
-        'section'  => 'theme_homepage',
-        'type'     => 'text',
-        'priority' => 20,
-    ]);
-
-    // Hero subtext
-    $wp_customize->add_setting('home_hero_subtext', [
-        'default'           => get_bloginfo('description'),
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ]);
-    $wp_customize->add_control('home_hero_subtext', [
-        'label'    => __('Sottotitolo hero', 'sage'),
-        'section'  => 'theme_homepage',
-        'type'     => 'textarea',
-        'priority' => 30,
-    ]);
-
-    // Hero CTA
-    $wp_customize->add_setting('home_hero_cta_label', [
-        'default'           => __('Esplora la collezione', 'sage'),
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ]);
-    $wp_customize->add_control('home_hero_cta_label', [
-        'label'    => __('Testo CTA hero', 'sage'),
-        'section'  => 'theme_homepage',
-        'type'     => 'text',
-        'priority' => 40,
-    ]);
-    $wp_customize->add_setting('home_hero_cta_url', [
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ]);
-    $wp_customize->add_control('home_hero_cta_url', [
-        'label'    => __('URL CTA hero', 'sage'),
-        'section'  => 'theme_homepage',
-        'type'     => 'url',
-        'priority' => 50,
-    ]);
-
-    // Brand story
-    $wp_customize->add_setting('home_story_image_id', [
-        'default'           => 0,
-        'sanitize_callback' => 'absint',
-    ]);
-    $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'home_story_image_id', [
-        'label'      => __('Immagine sezione "La nostra storia"', 'sage'),
-        'section'    => 'theme_homepage',
-        'mime_type'  => 'image',
-        'priority'   => 60,
-    ]));
-    $wp_customize->add_setting('home_story_heading', [
-        'default'           => __('Qualità e passione, ogni giorno', 'sage'),
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ]);
-    $wp_customize->add_control('home_story_heading', [
-        'label'    => __('Titolo brand story', 'sage'),
-        'section'  => 'theme_homepage',
-        'type'     => 'text',
-        'priority' => 70,
-    ]);
-    $wp_customize->add_setting('home_story_body', [
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_textarea_field',
-        'transport'         => 'postMessage',
-    ]);
-    $wp_customize->add_control('home_story_body', [
-        'label'    => __('Testo brand story', 'sage'),
-        'section'  => 'theme_homepage',
-        'type'     => 'textarea',
-        'priority' => 80,
-    ]);
-    $wp_customize->add_setting('home_story_cta_label', [
-        'default'           => __('Scopri di più', 'sage'),
-        'sanitize_callback' => 'sanitize_text_field',
-    ]);
-    $wp_customize->add_control('home_story_cta_label', [
-        'label'    => __('Testo CTA brand story', 'sage'),
-        'section'  => 'theme_homepage',
-        'type'     => 'text',
-        'priority' => 90,
-    ]);
-    $wp_customize->add_setting('home_story_cta_url', [
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ]);
-    $wp_customize->add_control('home_story_cta_url', [
-        'label'    => __('URL CTA brand story', 'sage'),
-        'section'  => 'theme_homepage',
-        'type'     => 'url',
-        'priority' => 100,
     ]);
 
     // ── Section: Contatti ────────────────────────────────────────────────────
     $wp_customize->add_section('theme_contact', [
-        'title'    => __('Informazioni di contatto', 'sage'),
+        'title' => __('Informazioni di contatto', 'sage'),
         'priority' => 128,
     ]);
 
     foreach ([
-        ['contact_address',        __('Indirizzo',        'sage'), 'textarea', 'sanitize_textarea_field'],
-        ['contact_phone',          __('Telefono',         'sage'), 'text',     'sanitize_text_field'],
-        ['contact_email',          __('Email',            'sage'), 'email',    'sanitize_email'],
-        ['contact_hours',          __('Orari apertura',   'sage'), 'textarea', 'sanitize_textarea_field'],
-        ['contact_map_embed_url',  __('URL embed mappa',  'sage'), 'url',      'esc_url_raw'],
+        ['contact_address',        __('Indirizzo', 'sage'), 'textarea', 'sanitize_textarea_field'],
+        ['contact_phone',          __('Telefono', 'sage'), 'text',     'sanitize_text_field'],
+        ['contact_email',          __('Email', 'sage'), 'email',    'sanitize_email'],
+        ['contact_hours',          __('Orari apertura', 'sage'), 'textarea', 'sanitize_textarea_field'],
+        ['contact_map_embed_url',  __('URL embed mappa', 'sage'), 'url',      'esc_url_raw'],
     ] as [$key, $label, $type, $sanitize]) {
         $wp_customize->add_setting($key, [
-            'default'           => '',
+            'default' => '',
             'sanitize_callback' => $sanitize,
-            'transport'         => 'refresh',
+            'transport' => 'refresh',
         ]);
         $wp_customize->add_control($key, [
-            'label'   => $label,
+            'label' => $label,
             'section' => 'theme_contact',
-            'type'    => $type,
+            'type' => $type,
         ]);
     }
 
     // ── Section: Announcement Bar ────────────────────────────────────────────
     $wp_customize->add_section('theme_announcement', [
-        'title'    => __('Barra Annunci', 'sage'),
+        'title' => __('Barra Annunci', 'sage'),
         'priority' => 115,
     ]);
 
     $wp_customize->add_setting('announcement_bar_active', [
-        'default'           => false,
+        'default' => false,
         'sanitize_callback' => 'rest_sanitize_boolean',
     ]);
     $wp_customize->add_control('announcement_bar_active', [
-        'label'   => __('Mostra barra annunci', 'sage'),
+        'label' => __('Mostra barra annunci', 'sage'),
         'section' => 'theme_announcement',
-        'type'    => 'checkbox',
+        'type' => 'checkbox',
     ]);
 
     $wp_customize->add_setting('announcement_bar_text', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'wp_kses_post',
-        'transport'         => 'postMessage',
+        'transport' => 'postMessage',
     ]);
     $wp_customize->add_control('announcement_bar_text', [
-        'label'       => __('Testo annuncio', 'sage'),
+        'label' => __('Testo annuncio', 'sage'),
         'description' => __('Puoi usare <strong> e <em>.', 'sage'),
-        'section'     => 'theme_announcement',
-        'type'        => 'textarea',
+        'section' => 'theme_announcement',
+        'type' => 'textarea',
     ]);
 
     $wp_customize->add_setting('announcement_bar_cta_text', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
+        'transport' => 'postMessage',
     ]);
     $wp_customize->add_control('announcement_bar_cta_text', [
-        'label'   => __('Testo CTA', 'sage'),
+        'label' => __('Testo CTA', 'sage'),
         'section' => 'theme_announcement',
-        'type'    => 'text',
+        'type' => 'text',
     ]);
 
     $wp_customize->add_setting('announcement_bar_cta_url', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'esc_url_raw',
     ]);
     $wp_customize->add_control('announcement_bar_cta_url', [
-        'label'   => __('URL CTA', 'sage'),
+        'label' => __('URL CTA', 'sage'),
         'section' => 'theme_announcement',
-        'type'    => 'url',
+        'type' => 'url',
     ]);
 });
 
 /**
  * Helper: return the CTA URL, falling back to /contatti.
  */
-function theme_cta_url(): string {
+function theme_cta_url(): string
+{
     $override = get_theme_mod('cta_url', '');
+
     return $override ? esc_url($override) : esc_url(home_url('/contatti'));
 }
 
 /**
  * Helper: return the CTA button label.
  */
-function theme_cta_label(): string {
+function theme_cta_label(): string
+{
     return sanitize_text_field(get_theme_mod('header_cta_label', __('Contattaci', 'sage')));
 }

@@ -181,23 +181,25 @@
         </ul>
       </div>
 
-      {{-- Info links --}}
+      {{-- Info links — Menu Footer — Informazioni (Aspetto → Menu) --}}
       <div class="col-span-2 lg:col-span-2">
         <p class="    font-semibold tracking-[0.25em] uppercase text-white/30 mb-5">{{ __('Informazioni', 'sage') }}</p>
-        <ul class="space-y-3">
-          @foreach([
-            [home_url('/chi-siamo'), __('Chi siamo', 'sage')],
-            [home_url('/contatti'),  __('Contatti',  'sage')],
-            [home_url('/blog'),      __('Blog',      'sage')],
-            [home_url('/faq'),       __('FAQ',       'sage')],
-          ] as [$url, $label])
-            <li>
-              <a href="{{ esc_url($url) }}" class="text-white/40 hover:text-white transition-colors duration-150">
-                {{ $label }}
-              </a>
-            </li>
-          @endforeach
-        </ul>
+        @if(has_nav_menu('footer_info_navigation'))
+          @php
+            $info_loc   = get_nav_menu_locations()['footer_info_navigation'] ?? 0;
+            $info_items = $info_loc ? (wp_get_nav_menu_items($info_loc) ?: []) : [];
+            $info_items = array_filter($info_items, fn($i) => !$i->menu_item_parent);
+          @endphp
+          <ul class="space-y-3">
+            @foreach($info_items as $item)
+              <li>
+                <a href="{{ esc_url($item->url) }}" class="text-white/40 hover:text-white transition-colors duration-150">
+                  {{ esc_html($item->title) }}
+                </a>
+              </li>
+            @endforeach
+          </ul>
+        @endif
       </div>
 
     </div>
@@ -211,17 +213,21 @@
     <p class="    text-white/20">
       © {{ date('Y') }} {{ get_bloginfo('name') }}. {{ __('Tutti i diritti riservati.', 'sage') }}
     </p>
-    <div class="flex items-center gap-5">
-      @foreach([
-        [home_url('/privacy-policy'),       __('Privacy Policy', 'sage')],
-        [home_url('/cookie-policy'),        __('Cookie Policy',  'sage')],
-        [home_url('/termini-e-condizioni'), __('Termini',        'sage')],
-      ] as [$url, $label])
-        <a href="{{ esc_url($url) }}" class="    text-white/20 hover:text-white/50 transition-colors">
-          {{ $label }}
-        </a>
-      @endforeach
-    </div>
+    {{-- Legal links — Menu Footer — Legal (Aspetto → Menu) --}}
+    @if(has_nav_menu('footer_legal_navigation'))
+      @php
+        $legal_loc   = get_nav_menu_locations()['footer_legal_navigation'] ?? 0;
+        $legal_items = $legal_loc ? (wp_get_nav_menu_items($legal_loc) ?: []) : [];
+        $legal_items = array_filter($legal_items, fn($i) => !$i->menu_item_parent);
+      @endphp
+      <div class="flex items-center gap-5">
+        @foreach($legal_items as $item)
+          <a href="{{ esc_url($item->url) }}" class="    text-white/20 hover:text-white/50 transition-colors">
+            {{ esc_html($item->title) }}
+          </a>
+        @endforeach
+      </div>
+    @endif
   </div>
 
 </footer>
