@@ -40,10 +40,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-alpine':    ['alpinejs', '@alpinejs/collapse', '@alpinejs/focus'],
-          'vendor-gsap':      ['gsap', 'gsap/ScrollTrigger'],
-          'vendor-swiper':    ['swiper'],
+        manualChunks(id) {
+          if (id.includes('alpinejs') || id.includes('@alpinejs/')) return 'vendor-alpine'
+          if (id.includes('gsap')) return 'vendor-gsap'
+          if (id.includes('swiper')) return 'vendor-swiper'
         },
       },
     },
