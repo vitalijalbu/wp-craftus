@@ -24,7 +24,7 @@
 	<!-- /wp:group -->
 
 	<!-- Due colonne: info + form -->
-	<!-- wp:columns {"verticalAlignment":"top"} -->
+	<!-- wp:columns {"verticalAlignment":"top","isStackedOnMobile":true} -->
 	<div class="wp-block-columns are-vertically-aligned-top">
 
 		<!-- Colonna info contatti -->
@@ -46,7 +46,7 @@
 						<p class="theme-section-label">Telefono</p>
 						<!-- /wp:paragraph -->
 						<!-- wp:paragraph {"fontSize":"lg"} -->
-						<p class="has-lg-font-size"><a href="tel:+39030000000">030 000 000</a></p>
+						<p class="has-lg-font-size"><a href="tel:<?php echo esc_attr(get_theme_mod('contact_phone', '+39030000000')); ?>"><?php echo esc_html(get_theme_mod('contact_phone', '030 000 000')); ?></a></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:group -->
@@ -65,7 +65,7 @@
 						<p class="theme-section-label">Email</p>
 						<!-- /wp:paragraph -->
 						<!-- wp:paragraph {"fontSize":"lg"} -->
-						<p class="has-lg-font-size"><a href="mailto:info@theme.it">info@theme.it</a></p>
+						<p class="has-lg-font-size"><a href="mailto:<?php echo esc_attr(get_theme_mod('contact_email', 'info@theme.it')); ?>"><?php echo esc_html(get_theme_mod('contact_email', 'info@theme.it')); ?></a></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:group -->

@@ -24,7 +24,7 @@
 	<!-- /wp:group -->
 
 	<!-- 3 colonne di card servizi -->
-	<!-- wp:columns -->
+	<!-- wp:columns {"isStackedOnMobile":true} -->
 	<div class="wp-block-columns">
 
 		<!-- Card 1 -->

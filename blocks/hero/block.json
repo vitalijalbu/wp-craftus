@@ -67,6 +67,10 @@
       "type": "string",
       "default": "center",
       "enum": ["left", "center", "right"]
+    },
+    "scrollEffect": {
+      "type": "string",
+      "default": ""
     }
   }
 }

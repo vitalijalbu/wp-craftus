@@ -203,6 +203,21 @@ const bgOptions = [
   { label: __('Scuro (ink)', 'sage'), value: 'ink' },
 ]
 
+// Static list mirrors the EFFECTS registry in scroll-effects.js.
+// Update both files if you add/remove an effect.
+const scrollEffectOptions = [
+  { label: __('Nessuno', 'sage'),          value: '' },
+  { label: __('Slide Up', 'sage'),         value: 'slide-up' },
+  { label: __('Slide Down', 'sage'),       value: 'slide-down' },
+  { label: __('Slide Left', 'sage'),       value: 'slide-left' },
+  { label: __('Slide Right', 'sage'),      value: 'slide-right' },
+  { label: __('Fade', 'sage'),             value: 'fade' },
+  { label: __('Zoom In', 'sage'),          value: 'zoom-in' },
+  { label: __('Text Reveal', 'sage'),      value: 'text-reveal' },
+  { label: __('Line In', 'sage'),          value: 'line-in' },
+  { label: __('Parallax Immagine', 'sage'), value: 'anim-image-parallax' },
+]
+
 function MediaPanel({ imageId, imageUrl, onSelect, onRemove }) {
   return el(
     MediaUploadCheck,
@@ -263,6 +278,7 @@ registerBlockType('theme/hero', {
       overlayOpacity,
       minHeight,
       contentAlign,
+      scrollEffect,
     } = attributes
 
     return el(
@@ -362,6 +378,12 @@ registerBlockType('theme/hero', {
             help: __('es. 100svh, 600px, 80vh', 'sage'),
             onChange: (val) => setAttributes({ minHeight: val }),
           }),
+          el(SelectControl, {
+            label: __('Effetto scroll', 'sage'),
+            value: scrollEffect ?? '',
+            options: scrollEffectOptions,
+            onChange: (val) => setAttributes({ scrollEffect: val }),
+          }),
         ),
       ),
 
@@ -384,6 +406,7 @@ registerBlockType('theme/testimonial', {
       rating,
       bg,
       style: cardStyle,
+      scrollEffect,
     } = attributes
 
     return el(
@@ -452,6 +475,12 @@ registerBlockType('theme/testimonial', {
             options: bgOptions,
             onChange: (val) => setAttributes({ bg: val }),
           }),
+          el(SelectControl, {
+            label: __('Effetto scroll', 'sage'),
+            value: scrollEffect ?? '',
+            options: scrollEffectOptions,
+            onChange: (val) => setAttributes({ scrollEffect: val }),
+          }),
         ),
       ),
 
@@ -465,7 +494,7 @@ registerBlockType('theme/testimonial', {
 
 registerBlockType('theme/stat', {
   edit({ attributes, setAttributes }) {
-    const { value, label, description, prefix, suffix, align, bg } = attributes
+    const { value, label, description, prefix, suffix, align, bg, scrollEffect } = attributes
 
     return el(
       Fragment,
@@ -523,6 +552,12 @@ registerBlockType('theme/stat', {
             options: bgOptions,
             onChange: (val) => setAttributes({ bg: val }),
           }),
+          el(SelectControl, {
+            label: __('Effetto scroll', 'sage'),
+            value: scrollEffect ?? '',
+            options: scrollEffectOptions,
+            onChange: (val) => setAttributes({ scrollEffect: val }),
+          }),
         ),
       ),
 
@@ -547,6 +582,7 @@ registerBlockType('theme/icon-box', {
       bg,
       layout,
       bordered,
+      scrollEffect,
     } = attributes
 
     return el(
@@ -623,6 +659,12 @@ registerBlockType('theme/icon-box', {
             label: __('Bordo card', 'sage'),
             checked: bordered ?? false,
             onChange: (val) => setAttributes({ bordered: val }),
+          }),
+          el(SelectControl, {
+            label: __('Effetto scroll', 'sage'),
+            value: scrollEffect ?? '',
+            options: scrollEffectOptions,
+            onChange: (val) => setAttributes({ scrollEffect: val }),
           }),
         ),
       ),

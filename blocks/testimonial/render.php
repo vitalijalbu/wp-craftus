@@ -10,6 +10,7 @@ $author_img_url = esc_url($attributes['authorImageUrl'] ?? ($author_img_id ? wp_
 $rating = min(5, max(0, (int) ($attributes['rating'] ?? 5)));
 $bg = $attributes['bg'] ?? 'surface';
 $style = $attributes['style'] ?? 'card';
+$scroll_effect = esc_attr($attributes['scrollEffect'] ?? '');
 
 $bg_class = match ($bg) {
     'cream' => 'bg-cream', 'ink' => 'bg-ink', default => 'bg-surface'
@@ -33,7 +34,7 @@ if ($style === 'large') {
 ?>
 <figure
   class="testimonial-block <?= $wrap_class ?>"
-  <?= get_block_wrapper_attributes() ?>
+  <?= get_block_wrapper_attributes($scroll_effect ? ['data-scroll' => $scroll_effect] : []) ?>
 >
   <?php if ($rating > 0) { ?>
     <div class="flex gap-0.5 mb-4 <?= $style === 'large' ? 'justify-center' : '' ?>" aria-label="<?= esc_attr(sprintf(__('%d stelle su 5', 'sage'), $rating)) ?>" role="img">

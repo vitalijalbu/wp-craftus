@@ -7,7 +7,7 @@
 --}}
 @if(function_exists('WC'))
 <div
-  x-data="cartDrawer()"
+  x-data="cartDrawer"
   x-init="init()"
   @open-cart.window="open()"
   @keydown.escape.window="close()"
@@ -183,52 +183,4 @@
   </div>
 </div>
 
-<script>
-function cartDrawer() {
-  return {
-    isOpen: false,
-    count:  {{ (function_exists('WC') && WC()->cart) ? (int) WC()->cart->get_cart_contents_count() : 0 }},
-    loading: false,
-
-    init() {
-      // WooCommerce fires added_to_cart as a jQuery custom event, not a native DOM event
-      jQuery(document.body).on('added_to_cart', (e, fragments, cart_hash) => {
-        if (fragments) {
-          jQuery.each(fragments, (selector, html) => jQuery(selector).replaceWith(html));
-          const countEl = document.querySelector('[data-cart-count]');
-          if (countEl) this.count = parseInt(countEl.dataset.cartCount || '0', 10);
-          this.loading = false;
-        } else {
-          this.refreshFragment();
-        }
-        this.open();
-      });
-
-      // WC fragment refresh
-      jQuery(document.body).on('wc_fragment_refresh', () => this.refreshFragment());
-    },
-
-    open()  { this.isOpen = true; },
-    close() { this.isOpen = false; },
-
-    refreshFragment() {
-      if (typeof jQuery === 'undefined') return;
-      this.loading = true;
-      jQuery.post(
-        wc_cart_fragments_params?.ajax_url ?? '/wp-admin/admin-ajax.php',
-        { action: 'woocommerce_get_refreshed_fragments' },
-        (res) => {
-          if (res?.fragments) {
-            jQuery.each(res.fragments, (key, val) => {
-              jQuery(key).replaceWith(val);
-            });
-          }
-          this.count   = res?.cart_hash ? (parseInt(jQuery('.cart-count-fragment').first().text()) || 0) : this.count;
-          this.loading = false;
-        }
-      );
-    },
-  };
-}
-</script>
 @endif

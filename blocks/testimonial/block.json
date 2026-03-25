@@ -47,6 +47,10 @@
       "type": "string",
       "default": "card",
       "enum": ["card", "minimal", "large"]
+    },
+    "scrollEffect": {
+      "type": "string",
+      "default": ""
     }
   }
 }

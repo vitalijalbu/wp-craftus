@@ -20,6 +20,7 @@ $cta2_url = esc_url($attributes['cta2Url'] ?? '');
 $opacity = (int) ($attributes['overlayOpacity'] ?? 40);
 $min_height = esc_attr($attributes['minHeight'] ?? '100svh');
 $align = $attributes['contentAlign'] ?? 'center';
+$scroll_effect = esc_attr($attributes['scrollEffect'] ?? '');
 
 $align_class = match ($align) {
     'left' => 'items-start text-left',
@@ -31,7 +32,7 @@ $align_class = match ($align) {
   class="theme-hero relative flex flex-col justify-center overflow-hidden"
   style="min-height: <?= $min_height ?>"
   aria-label="<?= esc_attr(wp_strip_all_tags($heading)) ?>"
-  <?= get_block_wrapper_attributes() ?>
+  <?= get_block_wrapper_attributes($scroll_effect ? ['data-scroll' => $scroll_effect] : []) ?>
 >
   {{-- Background image --}}
   <?php if ($image_id) { ?>

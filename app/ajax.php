@@ -363,6 +363,60 @@ function filtered_products(\WP_REST_Request $request): \WP_REST_Response
     ]);
 }
 
+// ── Wishlist Products — REST endpoint ────────────────────────────────────────
+// GET /wp-json/theme/v1/wishlist-products?ids=1,2,3
+
+add_action('rest_api_init', function () {
+    register_rest_route('theme/v1', '/wishlist-products', [
+        'methods'             => 'GET',
+        'callback'            => __NAMESPACE__ . '\\get_wishlist_products',
+        'permission_callback' => '__return_true',
+        'args'                => [
+            'ids' => [
+                'required'          => true,
+                'type'              => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+        ],
+    ]);
+});
+
+/**
+ * Return product data for a comma-separated list of IDs (max 50).
+ * Used by the wishlist-products custom element on the frontend.
+ */
+function get_wishlist_products(\WP_REST_Request $request): \WP_REST_Response
+{
+    if (! function_exists('wc_get_product')) {
+        return rest_ensure_response(['products' => []]);
+    }
+
+    $raw_ids  = sanitize_text_field($request->get_param('ids'));
+    $ids      = array_filter(array_map('absint', explode(',', $raw_ids)));
+    $ids      = array_slice(array_values($ids), 0, 50);
+
+    $products = [];
+    foreach ($ids as $id) {
+        $product = wc_get_product($id);
+        if (! $product || $product->get_status() !== 'publish') {
+            continue;
+        }
+
+        $thumb_id   = $product->get_image_id();
+        $products[] = [
+            'id'         => $id,
+            'title'      => esc_html($product->get_name()),
+            'url'        => esc_url(get_permalink($id)),
+            'thumb'      => esc_url(wp_get_attachment_image_url($thumb_id, 'woocommerce_thumbnail') ?: ''),
+            'price_html' => wp_strip_all_tags($product->get_price_html()),
+            'in_stock'   => $product->is_in_stock(),
+            'on_sale'    => $product->is_on_sale(),
+        ];
+    }
+
+    return rest_ensure_response(['products' => $products]);
+}
+
 // ── Wishlist — REST endpoint ──────────────────────────────────────────────────
 // POST /wp-json/theme/v1/wishlist  { "product_id": 123, "action": "add"|"remove" }
 

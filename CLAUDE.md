@@ -1,7 +1,7 @@
 # CLAUDE.md — sage-theme
 
 > Documentazione tecnica completa del tema. Leggila prima di qualsiasi modifica.
-> Aggiornata: 2026-03-20
+> Aggiornata: 2026-03-24 — Enterprise Edition 2.1
 
 ---
 
@@ -20,9 +20,13 @@
 11. [Alpine.js — componenti reattivi](#11-alpinejs--componenti-reattivi)
 12. [Custom Post Types](#12-custom-post-types)
 13. [REST API endpoints custom](#13-rest-api-endpoints-custom)
-14. [Regole di codice](#14-regole-di-codice)
-15. [Customizer keys](#15-customizer-keys)
-16. [File da NON toccare](#16-file-da-non-toccare)
+14. [Wishlist System](#14-wishlist-system)
+15. [WooCommerce — Integrazione](#15-woocommerce--integrazione)
+16. [Regole di codice](#16-regole-di-codice)
+17. [Customizer keys](#17-customizer-keys)
+18. [File da NON toccare](#18-file-da-non-toccare)
+19. [Audit — Correzioni applicate](#19-audit--correzioni-applicate)
+20. [Pattern mancanti — backlog](#20-pattern-mancanti--backlog)
 
 ---
 
@@ -33,11 +37,11 @@
 | Framework    | Roots Sage + Acorn (Laravel per WP)               | 11 / 5   |
 | Template FE  | Laravel Blade (`.blade.php`)                      | —        |
 | CSS          | Tailwind CSS v4 + design tokens `@theme {}`       | 4.x      |
-| Build        | Vite + @roots/vite-plugin                         | 7.x      |
-| JS reattivo  | Alpine.js 3                                       | 3.x      |
+| Build        | Vite + @roots/vite-plugin                         | 8.x      |
+| JS reattivo  | Alpine.js 3 + Collapse + Focus plugins            | 3.x      |
 | Animazioni   | GSAP 3 + ScrollTrigger                            | 3.x      |
-| Carousel     | Swiper 12 + Locomotive Scroll 5                   | —        |
-| Backend      | WordPress 6.x + WooCommerce                       | —        |
+| Carousel     | Swiper 12                                         | 12.x     |
+| Backend      | WordPress 6.x + WooCommerce 9.x                   | —        |
 | PHP          | 8.2+ strict types                                 | —        |
 | Linting      | Biome                                             | 2.x      |
 
@@ -57,7 +61,7 @@ sage-theme/
 ├── app/                          # PHP backend (namespace App\)
 │   ├── setup.php                 # theme supports, menu, font, blocchi, pattern categories
 │   ├── filters.php               # WP filters, REST API, performance, WC tweaks
-│   ├── ajax.php                  # handler AJAX / REST (search, form contatti, wishlist)
+│   ├── ajax.php                  # REST endpoints: search, quick-view, products, wishlist, contact
 │   ├── customizer.php            # Pannello Customizer (colori social, CTA, annuncio)
 │   ├── post-types.php            # CPT: portfolio, team, faq
 │   ├── Providers/
@@ -65,41 +69,40 @@ sage-theme/
 │   └── View/Composers/               # iniettano dati nelle view Blade
 │
 ├── blocks/                       # Custom Gutenberg blocks (uno per cartella)
-│   ├── hero/
-│   │   ├── block.json            # metadati, attributi, supports
-│   │   └── render.php            # template PHP lato frontend
-│   ├── testimonial/
-│   ├── stat/
-│   └── icon-box/
+│   ├── hero/                     # Block hero full-width con overlay e CTA
+│   ├── testimonial/              # Citazione cliente con rating e foto autore
+│   ├── stat/                     # Numero/statistica con prefisso e suffisso
+│   └── icon-box/                 # Feature card con icona, titolo, testo, link
 │
-├── patterns/                     # Block patterns (layout preconfigurati)
-│   └── *.php                     # ogni file = un pattern
+├── patterns/                     # Block patterns (22 layout preconfigurati)
+│   └── *.php
 │
 ├── resources/
 │   ├── css/
 │   │   ├── app.css               # Tailwind v4 + @theme design tokens
-│   │   └── editor.css            # stili editor Gutenberg (WYSIWYG)
+│   │   └── editor.css            # Stili editor Gutenberg (WYSIWYG)
 │   ├── js/
-│   │   ├── app.js                # Alpine.js bootstrap + GSAP + Swiper
-│   │   ├── editor.js             # blocchi Gutenberg (React) + Style/Block Variations
-│   │   └── modules/              # moduli JS separati
-│   │       ├── carousel.js
-│   │       ├── luxury-animations.js
-│   │       ├── scroll-effects.js
-│   │       ├── magnetic-hover.js
-│   │       └── locomotive-scroll.js
+│   │   ├── app.js                # Alpine.js bootstrap + GSAP + store + components
+│   │   ├── editor.js             # Blocchi Gutenberg (React) + Style/Block Variations
+│   │   └── modules/
+│   │       ├── carousel.js       # Swiper initialization
+│   │       ├── luxury-animations.js  # GSAP complex timelines
+│   │       ├── scroll-effects.js     # ScrollTrigger effects
+│   │       ├── magnetic-hover.js     # Hover animations
+│   │       ├── locomotive-scroll.js  # Smooth scroll
+│   │       └── wishlist.js       # Wishlist localStorage + custom element
 │   └── views/                    # Blade templates
 │       ├── layouts/
-│       │   └── app.blade.php     # layout principale (html, head, body, footer)
-│       ├── sections/             # header, hero, footer, announcement bar
-│       ├── partials/             # componenti riutilizzabili (card, button, ecc.)
-│       ├── woocommerce/          # override Blade per WooCommerce
+│       │   └── app.blade.php     # Layout principale (html, head, body, footer)
+│       ├── sections/             # header, hero, footer, ecc.
+│       ├── partials/             # Componenti riutilizzabili (card, wishlist-drawer, ecc.)
+│       ├── woocommerce/          # Override Blade per WooCommerce
 │       └── *.blade.php           # index, single, archive, search, front-page, ecc.
 │
-├── woocommerce/                  # override PHP template WooCommerce
-├── public/build/                 # output Vite (NON modificare)
-├── theme.json                    # design tokens → Global Styles + Tailwind
-├── functions.php                 # entry point (boot Acorn, non modificare)
+├── woocommerce/                  # Override PHP template WooCommerce
+├── public/build/                 # Output Vite (NON modificare)
+├── theme.json                    # Design tokens → Global Styles + Tailwind
+├── functions.php                 # Entry point (boot Acorn, non modificare)
 ├── vite.config.js
 ├── package.json
 └── composer.json
@@ -125,9 +128,9 @@ npm run fix-all      # auto-fix Biome
 **Ordine di sviluppo consigliato per una nuova feature:**
 1. Definisci attributi in `block.json`
 2. Scrivi il render in `render.php` (Tailwind)
-3. Scrivi i controlli React in `editor.js`
+3. Scrivi i controlli React in `editor.js` (`registerBlockType`)
 4. Aggiungi CSS editor in `editor.css` (per WYSIWYG)
-5. Registra il blocco in `app/setup.php`
+5. Registra il blocco in `app/setup.php` → array `$blocks`
 6. `npm run build` → testa nell'editor
 
 ---
@@ -139,40 +142,86 @@ Viene compilato da Vite in `public/build/assets/theme.json` e sincronizzato auto
 - Gutenberg Global Styles (colori, font, spacing nell'editor)
 - Tailwind v4 (via `@theme {}` in `app.css`)
 
-### Token disponibili
+### 4.1 Font
 
-| Token | Come usarlo in Tailwind | Come usarlo in PHP/CSS |
-|---|---|---|
-| `--color-ink` | `text-ink`, `bg-ink` | `var(--wp--preset--color--ink)` |
-| `--color-accent` | `text-accent`, `bg-accent` | `var(--wp--preset--color--accent)` |
-| `--color-cream` | `bg-cream` | `var(--wp--preset--color--cream)` |
-| `--font-sans` (Poppins) | `font-sans` | `var(--wp--preset--font-family--sans)` |
-| `--font-serif` (Inter) | `font-serif` | `var(--wp--preset--font-family--serif)` |
-| `--font-size-hero` | `text-hero` | `var(--wp--preset--font-size--hero)` |
-| Spacing slug `7` | — | `var(--wp--preset--spacing--7)` |
+**Solo Poppins** — un unico font per tutto il tema (body + headings).
 
-### Come aggiungere un colore
+| Slug | Font | Tailwind | CSS var |
+|------|------|----------|---------|
+| `sans` | Poppins | `font-sans` | `var(--wp--preset--font-family--sans)` |
+| `serif` | Poppins (Titoli) | `font-serif` | `var(--wp--preset--font-family--serif)` |
 
+> `serif` è un alias di `sans` — entrambi Poppins. Mantiene compatibilità con tutte le classi `font-serif` esistenti nel codice.
+
+Caricato da Google Fonts in `app/setup.php` (admin_head + wp_head):
+```
+Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400
+```
+
+### 4.2 Token colori
+
+| Token | Tailwind | Hex | Uso |
+|-------|----------|-----|-----|
+| `--color-accent` | `text-accent`, `bg-accent` | `#0074C7` | Blu principale — buttons, link hover |
+| `--color-accent-light` | `bg-accent-light` | `#eff6ff` | Tint blu per badge/bg |
+| `--color-gold` | `text-gold`, `bg-gold` | `#0074C7` | Alias accent per compatibilità legacy |
+| `--color-primary` | `text-primary`, `bg-primary` | `#0074C7` | Alias accent per WooCommerce |
+| `--color-ink` | `text-ink`, `bg-ink` | `#0a0a0a` | Testo scuro principale |
+| `--color-ink-light` | `bg-ink-light` | `#1a1a1a` | Hover su ink |
+| `--color-muted` | `text-muted` | `#6b6b6b` | Testo secondario/caption |
+| `--color-border` | `border-border` | `#e0e0e0` | Divisori, bordi card |
+| `--color-surface` | `bg-surface` | `#ffffff` | Background principale |
+| `--color-surface-alt` | `bg-surface-alt` | `#f5f5f5` | Background alternativo |
+| `--color-cream` | `bg-cream` | `#f5f5f5` | Background sezioni (alias surface-alt) |
+| `--color-success` | `text-success`, `bg-success` | `#16a34a` | Stato success |
+| `--color-warning` | `text-warning` | `#d97706` | Stato warning |
+| `--color-error` | `text-error` | `#dc2626` | Stato error |
+
+**Come aggiungere un colore:**
 In `theme.json` → `settings.color.palette`:
 ```json
 { "slug": "brand-red", "color": "#e4002b", "name": "Brand Red" }
 ```
-
 Poi in `app.css` dentro `@theme {}`:
 ```css
 --color-brand-red: #e4002b;
 ```
 
-Da quel momento è disponibile sia come `bg-brand-red` in Tailwind che nel color picker dell'editor.
+### 4.3 Font sizes
 
-### Come aggiungere una dimensione font
+| Slug | Size | Tailwind |
+|------|------|----------|
+| `xs` | 0.75rem | `text-xs` |
+| `sm` | 0.875rem | `text-sm` |
+| `base` | 1rem | `text-base` |
+| `lg` | 1.125rem | `text-lg` |
+| `xl` | 1.25rem | `text-xl` |
+| `2xl` | 1.5rem | `text-2xl` |
+| `3xl` | clamp(1.5rem, 2.5vw, 1.875rem) | `text-3xl` |
+| `4xl` | clamp(1.75rem, 3.5vw, 2.25rem) | `text-4xl` |
+| `5xl` | clamp(2rem, 4.5vw, 3rem) | `text-5xl` |
+| `hero` | clamp(2.5rem, 5vw, 4.5rem) | `text-hero` |
 
-In `theme.json` → `settings.typography.fontSizes`:
-```json
-{ "slug": "display", "size": "clamp(3rem, 7vw, 6rem)", "name": "Display" }
-```
+### 4.4 Spacing
 
-### Il cliente può modificare tutto da WP
+11 preset (slug numerico 1–11):
+`4px → 8px → 12px → 16px → 24px → 32px → 48px → 64px → 96px → 128px → 192px`
+
+Uso: `var(--wp--preset--spacing--7)` = 48px
+
+### 4.5 Button palette (theme.json)
+
+I button WordPress Gutenberg usano l'accent blu per default:
+
+| Stile | BG | Testo | Bordo |
+|-------|----|-------|-------|
+| Default (filled) | `#0074C7` (accent) | `#ffffff` | — |
+| Outline | `transparent` | `#0074C7` | `1px solid #0074C7` |
+| Accent | `#0074C7` | `#ffffff` | — |
+
+Il cliente può scegliere stile dal pannello Stili del blocco button nell'editor.
+
+### 4.6 Il cliente può modificare tutto da WP
 
 **Aspetto → Editor → icona paintbrush (Global Styles)**
 Le modifiche del cliente vengono salvate nel DB e sovrascrivono theme.json senza toccare il codice.
@@ -181,9 +230,9 @@ Le modifiche del cliente vengono salvate nel DB e sovrascrivono theme.json senza
 
 ## 5. Come creare un Custom Block
 
-I blocchi custom vivono in `blocks/{nome}/`. Ogni blocco ha tre file:
+I blocchi custom vivono in `blocks/{nome}/`. Ogni blocco ha tre file obbligatori.
 
-### 5.1 `block.json` — metadati e attributi
+### 5.1 `block.json`
 
 ```json
 {
@@ -192,8 +241,6 @@ I blocchi custom vivono in `blocks/{nome}/`. Ogni blocco ha tre file:
   "name": "theme/nome-blocco",
   "title": "Nome Blocco",
   "category": "theme",
-  "description": "Descrizione breve per il cliente.",
-  "keywords": ["parola", "chiave"],
   "textdomain": "sage",
   "render": "file:render.php",
   "supports": {
@@ -203,98 +250,49 @@ I blocchi custom vivono in `blocks/{nome}/`. Ogni blocco ha tre file:
     "color": false
   },
   "attributes": {
-    "titolo": {
-      "type": "string",
-      "default": "Titolo di esempio"
-    },
-    "testo": {
-      "type": "string",
-      "default": ""
-    },
-    "layout": {
-      "type": "string",
-      "default": "vertical",
-      "enum": ["vertical", "horizontal"]
-    },
-    "imageId": {
-      "type": "integer",
-      "default": 0
-    },
-    "imageUrl": {
-      "type": "string",
-      "default": ""
-    },
-    "abilitato": {
-      "type": "boolean",
-      "default": true
-    }
+    "titolo":   { "type": "string",  "default": "Titolo" },
+    "testo":    { "type": "string",  "default": "" },
+    "imageId":  { "type": "integer", "default": 0 },
+    "imageUrl": { "type": "string",  "default": "" },
+    "bg":       { "type": "string",  "default": "surface", "enum": ["surface","cream","ink"] },
+    "abilitato":{ "type": "boolean", "default": true }
   }
 }
 ```
 
-**Tipi di attributo supportati:** `string`, `integer`, `boolean`, `number`, `array`, `object`
-
-**`supports` più utili:**
-- `"anchor": true` — aggiunge campo ID (per link interni)
-- `"align": ["wide", "full"]` — abilita larghezza piena/ampia
-- `"html": false` — disabilita modifica HTML diretta (consigliato per SSR)
-- `"color": false` — usa palette tua invece dei controlli colore default WP
-
-### 5.2 `render.php` — template lato frontend
+### 5.2 `render.php`
 
 ```php
 <?php
-/**
- * Block: theme/nome-blocco
- *
- * @var array    $attributes  Attributi del blocco.
- * @var string   $content     Inner blocks HTML (se il blocco ha InnerBlocks).
- * @var WP_Block $block       Istanza del blocco.
- */
-
-// Sempre sanitizzare in output
-$titolo  = esc_html($attributes['titolo'] ?? '');
-$testo   = wp_kses_post($attributes['testo'] ?? '');
-$layout  = $attributes['layout'] ?? 'vertical';
-$image_id  = (int) ($attributes['imageId'] ?? 0);
+$titolo    = esc_html($attributes['titolo']    ?? '');
+$testo     = wp_kses_post($attributes['testo'] ?? '');
+$image_id  = (int)($attributes['imageId']      ?? 0);
 $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'large') : '';
-$abilitato = (bool) ($attributes['abilitato'] ?? true);
+$bg        = $attributes['bg'] ?? 'surface';
 
-if (! $abilitato) {
-    return; // Non renderizzare se disabilitato
-}
-
-$layout_class = $layout === 'horizontal' ? 'flex-row gap-8' : 'flex-col gap-4';
+$bg_class = match($bg) {
+    'ink'   => 'bg-ink text-white',
+    'cream' => 'bg-cream',
+    default => 'bg-surface',
+};
 ?>
-<div <?= get_block_wrapper_attributes(['class' => 'theme-nome-blocco']) ?>>
-  <div class="flex <?= esc_attr($layout_class) ?> items-start">
-
-    <?php if ($image_url) : ?>
-      <?= wp_get_attachment_image($image_id, 'medium', false, [
-          'class'   => 'w-16 h-16 object-cover',
-          'loading' => 'lazy',
-      ]) ?>
-    <?php endif; ?>
-
-    <div>
-      <?php if ($titolo) : ?>
-        <h3 class="font-serif text-2xl font-light text-ink"><?= $titolo ?></h3>
-      <?php endif; ?>
-
-      <?php if ($testo) : ?>
-        <div class="mt-2 text-muted leading-relaxed"><?= $testo ?></div>
-      <?php endif; ?>
-    </div>
-
-  </div>
+<div <?= get_block_wrapper_attributes(['class' => "theme-nome-blocco {$bg_class}"]) ?>>
+  <?php if ($image_url): ?>
+    <?= wp_get_attachment_image($image_id, 'medium', false, ['class' => 'w-full', 'loading' => 'lazy']) ?>
+  <?php endif; ?>
+  <?php if ($titolo): ?>
+    <h3 class="font-sans text-2xl font-semibold"><?= $titolo ?></h3>
+  <?php endif; ?>
+  <?php if ($testo): ?>
+    <div class="mt-2 text-muted"><?= $testo ?></div>
+  <?php endif; ?>
 </div>
 ```
 
 **Regole render.php:**
-- Usa sempre `get_block_wrapper_attributes()` sul tag wrapper — aggiunge classi, id, anchor
-- `esc_html()` per testo semplice, `wp_kses_post()` per HTML fidato, `esc_url()` per URL
-- `wp_get_attachment_image()` invece di `<img>` dirette (gestisce srcset, lazy loading)
-- Non usare mai `echo $_GET[...]` o variabili non sanitizzate
+- `get_block_wrapper_attributes()` sempre sul tag wrapper (aggiunge id, anchor, classi extra)
+- `esc_html()` testo semplice, `wp_kses_post()` HTML fidato, `esc_url()` URL
+- `wp_get_attachment_image()` (mai `<img>` diretti — srcset + lazy loading automatici)
 
 ### 5.3 Controlli editor in `editor.js`
 
@@ -303,19 +301,11 @@ Aggiungi in fondo a `resources/js/editor.js`:
 ```js
 registerBlockType('theme/nome-blocco', {
   edit({ attributes, setAttributes }) {
-    const { titolo, testo, layout, imageId, imageUrl, abilitato } = attributes
-
+    const { titolo, testo, imageId, imageUrl, bg, abilitato } = attributes
     return el(
-      Fragment,
-      null,
-
-      el(
-        InspectorControls,
-        null,
-
-        el(
-          PanelBody,
-          { title: __('Contenuto', 'sage'), initialOpen: true },
+      Fragment, null,
+      el(InspectorControls, null,
+        el(PanelBody, { title: __('Contenuto', 'sage'), initialOpen: true },
           el(TextControl, {
             label: __('Titolo', 'sage'),
             value: titolo ?? '',
@@ -327,29 +317,19 @@ registerBlockType('theme/nome-blocco', {
             onChange: (val) => setAttributes({ testo: val }),
           }),
         ),
-
-        el(
-          PanelBody,
-          { title: __('Immagine', 'sage'), initialOpen: false },
-          el(MediaPanel, {    // componente helper già definito nel file
-            imageId,
-            imageUrl,
-            onSelect: (media) => setAttributes({ imageId: media.id, imageUrl: media.url }),
+        el(PanelBody, { title: __('Immagine', 'sage'), initialOpen: false },
+          el(MediaPanel, {
+            imageId, imageUrl,
+            onSelect: (m) => setAttributes({ imageId: m.id, imageUrl: m.url }),
             onRemove: () => setAttributes({ imageId: 0, imageUrl: '' }),
           }),
         ),
-
-        el(
-          PanelBody,
-          { title: __('Layout', 'sage'), initialOpen: false },
+        el(PanelBody, { title: __('Stile', 'sage'), initialOpen: false },
           el(SelectControl, {
-            label: __('Orientamento', 'sage'),
-            value: layout ?? 'vertical',
-            options: [
-              { label: __('Verticale', 'sage'), value: 'vertical' },
-              { label: __('Orizzontale', 'sage'), value: 'horizontal' },
-            ],
-            onChange: (val) => setAttributes({ layout: val }),
+            label: __('Sfondo', 'sage'),
+            value: bg ?? 'surface',
+            options: bgOptions,   // helper già definito nel file
+            onChange: (val) => setAttributes({ bg: val }),
           }),
           el(ToggleControl, {
             label: __('Abilitato', 'sage'),
@@ -358,8 +338,6 @@ registerBlockType('theme/nome-blocco', {
           }),
         ),
       ),
-
-      // Anteprima nel editor (server-side render via REST)
       el('div', useBlockProps(),
         el(ServerSideRender, { block: 'theme/nome-blocco', attributes })
       ),
@@ -370,35 +348,23 @@ registerBlockType('theme/nome-blocco', {
 ```
 
 **Componenti disponibili da `@wordpress/components`:**
-- `TextControl` — input testo singola riga
-- `TextareaControl` — textarea multiriga
-- `SelectControl` — select/dropdown
-- `RangeControl` — slider numerico (min/max/step)
-- `ToggleControl` — on/off switch
-- `CheckboxControl` — checkbox
-- `ColorPicker` — selettore colore
-- `MediaUpload` + `MediaUploadCheck` — upload/selezione media (usa `MediaPanel` helper già nel file)
+`TextControl`, `TextareaControl`, `SelectControl`, `RangeControl`, `ToggleControl`, `CheckboxControl`, `Button`, `PanelBody`
+
+**Helper già disponibili in editor.js:**
+- `bgOptions` — array SelectControl per sfondo (surface/cream/ink)
+- `MediaPanel({imageId, imageUrl, onSelect, onRemove})` — upload/selezione media
 
 ### 5.4 Registrazione in `app/setup.php`
 
 ```php
-add_action('init', function () {
-    $blocks = ['hero', 'testimonial', 'stat', 'icon-box', 'nome-blocco']; // aggiungi qui
-    foreach ($blocks as $name) {
-        $dir = get_template_directory() . "/blocks/{$name}";
-        if (is_dir($dir)) {
-            register_block_type($dir);
-        }
-    }
-});
+$blocks = ['hero', 'testimonial', 'stat', 'icon-box', 'nome-blocco']; // aggiungi qui
 ```
 
-### 5.5 CSS editor in `editor.css` (opzionale, per WYSIWYG)
+### 5.5 CSS editor in `editor.css` (per WYSIWYG)
 
 ```css
-/* Stile base del blocco nell'editor */
 .editor-styles-wrapper .wp-block-theme-nome-blocco {
-  border: 1px solid #e0e0e0;
+  border: 1px dashed #e0e0e0;
   padding: 1.5rem;
 }
 ```
@@ -407,10 +373,9 @@ add_action('init', function () {
 
 ## 6. Come creare un Pattern
 
-I pattern sono layout preconfigurati che il cliente inserisce con un click dall'inserter.
-Vivono in `patterns/*.php`.
+I pattern vivono in `patterns/*.php`. WordPress li carica automaticamente.
 
-### 6.1 Struttura di un pattern
+### Struttura header PHP
 
 ```php
 <?php
@@ -419,205 +384,84 @@ Vivono in `patterns/*.php`.
  * Slug: theme/nome-sezione
  * Categories: theme-sections
  * Keywords: parola, chiave, sezione
- * Description: Descrizione breve per il cliente.
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"6rem","bottom":"6rem"}}},"backgroundColor":"cream","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull has-cream-background-color has-background" style="padding-top:6rem;padding-bottom:6rem">
-
-  <!-- wp:heading {"textAlign":"center","level":2,"fontFamily":"serif"} -->
-  <h2 class="wp-block-heading has-text-align-center has-serif-font-family">Titolo della sezione</h2>
-  <!-- /wp:heading -->
-
-  <!-- wp:paragraph {"align":"center","textColor":"muted"} -->
-  <p class="has-text-align-center has-muted-color has-text-color">Sottotitolo descrittivo della sezione.</p>
-  <!-- /wp:paragraph -->
-
-</div>
-<!-- /wp:group -->
 ```
 
-### 6.2 Come ottenere il blocco HTML
-
-Il modo più semplice per creare pattern è:
-1. Costruire il layout nell'editor di Gutenberg
-2. Selezionare i blocchi → **Opzioni (⋮) → Copia come HTML**
-3. Incollare il codice nel file `.php` del pattern
-
-### 6.3 Categorie disponibili
+### Categorie disponibili
 
 | Slug | Etichetta | Uso |
-|---|---|---|
-| `theme-sections` | Theme – Sezioni | Hero, CTA, intro, media-text |
+|------|-----------|-----|
+| `theme-sections` | Theme – Sezioni | Hero, CTA, intro, media-text, stats |
 | `theme-cards` | Theme – Card | Product, team, testimonial card |
-| `theme-carousel` | Theme – Carousel | Swiper, related, scroll orizzontale |
 
-Per aggiungere una nuova categoria, in `app/setup.php`:
-```php
-register_block_pattern_category('theme-nuova', [
-    'label'       => __('Theme – Nuova', 'sage'),
-    'description' => __('Descrizione categoria.', 'sage'),
-]);
-```
+### Pattern inventory (22 pattern)
 
-### 6.4 I pattern NON si registrano — WordPress li rileva automaticamente
+| Slug | Title | Categoria |
+|------|-------|-----------|
+| `theme/hero` | Hero – Immagine di Sfondo con CTA | theme-sections |
+| `theme/page-hero` | Page Hero – Intestazione Pagina | theme-sections |
+| `theme/shop-hero` | Hero Shop – Fullscreen con CTA | theme-sections |
+| `theme/intro-two-cols` | Intro – Due Colonne | theme-sections |
+| `theme/media-text` | Media + Testo – Immagine a Sinistra | theme-sections |
+| `theme/media-text-right` | Media + Testo – Immagine a Destra | theme-sections |
+| `theme/image-text-list` | Immagine con Lista di Benefici | theme-sections |
+| `theme/stats` | Stats – Numeri in Evidenza | theme-sections |
+| `theme/testimonials` | Testimonial – Citazione Singola | theme-sections |
+| `theme/full-width-quote` | Citazione Full Width | theme-sections |
+| `theme/cta-banner` | CTA Banner | theme-sections |
+| `theme/newsletter-cta` | CTA Newsletter – Dark | theme-sections |
+| `theme/contact-section` | Sezione Contatti – Form + Info | theme-sections |
+| `theme/usp-band` | Barra USP – Vantaggi | theme-sections |
+| `theme/brand-logos` | Griglia Brand – Loghi Marchi | theme-sections |
+| `theme/logos-grid` | Loghi Partner / Clienti | theme-sections |
+| `theme/product-categories` | Griglia Categorie Prodotti | theme-sections |
+| `theme/product-spotlight` | Prodotto in Evidenza | theme-sections |
+| `theme/services-grid` | Griglia Servizi – 3 Colonne | theme-sections, theme-cards |
+| `theme/portfolio-grid` | Portfolio – Griglia Case Study | theme-sections, theme-cards |
+| `theme/team-member-card` | Scheda Membro del Team | theme-sections, theme-cards |
+| `theme/text-with-aside` | Testo con Colonna Laterale | theme-sections |
 
-WordPress carica automaticamente tutti i file in `/patterns/*.php`.
-L'header PHP (commenti `Title:`, `Slug:`, ecc.) è sufficiente per la registrazione.
-
-### 6.5 Pattern con blocchi custom del tema
-
-```php
-<?php
-/**
- * Title: Sezione Statistiche
- * Slug: theme/stats-section
- * Categories: theme-sections
- */
-?>
-<!-- wp:group {"align":"full","backgroundColor":"ink"} -->
-<div class="wp-block-group alignfull has-ink-background-color has-background">
-
-  <!-- wp:columns {"align":"wide"} -->
-  <div class="wp-block-columns alignwide">
-
-    <!-- wp:column -->
-    <div class="wp-block-column">
-      <!-- wp:theme/stat {"value":"500+","label":"Clienti","prefix":"","suffix":"","bg":"ink"} /-->
-    </div>
-    <!-- /wp:column -->
-
-    <!-- wp:column -->
-    <div class="wp-block-column">
-      <!-- wp:theme/stat {"value":"12","label":"Anni di esperienza","suffix":"","bg":"ink"} /-->
-    </div>
-    <!-- /wp:column -->
-
-  </div>
-  <!-- /wp:columns -->
-
-</div>
-<!-- /wp:group -->
-```
+**Il modo più rapido per creare un pattern:**
+1. Costruisci il layout nell'editor
+2. Seleziona blocchi → **Opzioni (⋮) → Copia come HTML**
+3. Incolla nel file `.php` del pattern
 
 ---
 
 ## 7. Come creare un Template (block template)
 
-I block template permettono di definire la struttura di pagine specifiche usando blocchi HTML.
-Vivono in `/templates/*.html`.
+I block template HTML vivono in `/templates/*.html` e sono modificabili dal cliente tramite **Aspetto → Editor → Template**.
 
-> **Nota:** I Blade template (in `resources/views/`) hanno PRIORITÀ sui block template HTML.
-> Se esiste `resources/views/front-page.blade.php`, quello viene usato, non `templates/front-page.html`.
-> Usa i block template per pagine dove vuoi che il cliente possa modificare la struttura dall'editor.
+> **Priorità:** I Blade template hanno precedenza. Se esiste `resources/views/single.blade.php`, Sage usa quello e ignora `templates/single.html`.
 
-### 7.1 Template slugs standard WordPress
+### Template slugs standard
 
 | File | Quando viene usato |
-|---|---|
+|------|--------------------|
 | `templates/index.html` | Fallback generale |
 | `templates/front-page.html` | Homepage |
 | `templates/single.html` | Singolo post |
 | `templates/page.html` | Singola pagina |
-| `templates/archive.html` | Archivi (category, tag, CPT) |
-| `templates/search.html` | Risultati ricerca |
-| `templates/404.html` | Pagina non trovata |
-| `templates/single-portfolio.html` | Singolo CPT `portfolio` |
+| `templates/archive.html` | Archivi |
+| `templates/404.html` | Pagina 404 |
 
-### 7.2 Struttura di un block template
+### Template parts
 
-```html
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-
-<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
-<main class="wp-block-group">
-
-  <!-- wp:post-title {"level":1} /-->
-  <!-- wp:post-featured-image /-->
-  <!-- wp:post-content /-->
-
-</main>
-<!-- /wp:group -->
-
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
-```
-
-### 7.3 Template parts
-
-I template parts (header, footer, sidebar) vivono in `/parts/*.html`:
-
-```
-parts/
-  header.html
-  footer.html
-  sidebar.html
-```
-
-Esempio `parts/header.html`:
-```html
-<!-- wp:group {"tagName":"header","className":"site-header"} -->
-<header class="wp-block-group site-header">
-  <!-- wp:site-logo /-->
-  <!-- wp:navigation /-->
-</header>
-<!-- /wp:group -->
-```
-
-### 7.4 Il cliente può modificare i template
-
-Da **Aspetto → Editor → Template** il cliente può:
-- Vedere e modificare i template
-- Creare template per pagine specifiche
-- Ripristinare il template originale
+Le parti di layout (header/footer) vivono in `/parts/*.html` e sono editabili dal Site Editor.
 
 ---
 
 ## 8. Block Style Variations
 
-Le Style Variations aggiungono stili alternativi ai blocchi core (senza creare blocchi nuovi).
-Appaiono nel pannello "Stili" del blocco nell'editor.
-
-### Dove si registrano
-
-In `resources/js/editor.js`, nel listener `DOMContentLoaded`:
-
-```js
-// Registrazione
-registerBlockStyle('core/button', {
-  name: 'mio-stile',
-  label: __('Mio Stile', 'sage'),
-})
-
-// Rimozione di uno stile esistente (es. lo stile "fill" di default)
-unregisterBlockStyle('core/button', 'fill')
-```
-
-### CSS in `editor.css` e `app.css`
-
-La classe aggiunta da WordPress è `is-style-{name}`:
-
-```css
-/* In editor.css — per WYSIWYG nell'editor */
-.editor-styles-wrapper .wp-block-button.is-style-mio-stile .wp-block-button__link {
-  background: transparent;
-  border: 2px solid currentColor;
-}
-
-/* In app.css — per il frontend */
-.wp-block-button.is-style-mio-stile .wp-block-button__link {
-  background: transparent;
-  border: 2px solid currentColor;
-}
-```
-
-### Style Variations registrate nel tema
+Registrate in `resources/js/editor.js` nel listener `DOMContentLoaded`.
 
 | Blocco | Stile | Classe CSS |
-|---|---|---|
+|--------|-------|-----------|
 | `core/button` | Outline | `.is-style-outline` |
-| `core/button` | Accent (Blue) | `.is-style-accent` |
-| `core/button` | Ghost | `.is-style-ghost` |
+| `core/button` | Accent (Blue filled) | `.is-style-accent` |
+| `core/button` | Ghost (underline) | `.is-style-ghost` |
 | `core/heading` | Display | `.is-style-display` |
 | `core/heading` | Overline | `.is-style-overline` |
 | `core/separator` | Spesso | `.is-style-thick` |
@@ -629,47 +473,18 @@ La classe aggiunta da WordPress è `is-style-{name}`:
 | `core/group` | Card | `.is-style-card` |
 | `core/group` | Bordered | `.is-style-bordered` |
 
+**CSS:** in `editor.css` (editor) e `app.css` (frontend) con `.is-style-{name}`.
+
 ---
 
 ## 9. Block Variations
 
-Le Block Variations sono preset di blocchi core con attributi preconfigurati.
-Appaiono nel block inserter con nome e icona propri.
-
-### Dove si registrano
-
-In `resources/js/editor.js`, nel listener `DOMContentLoaded`:
-
-```js
-registerBlockVariation('core/group', {
-  name: 'theme-mia-variazione',
-  title: __('Mia Variazione', 'sage'),
-  description: __('Descrizione per il cliente.', 'sage'),
-  category: 'theme',
-  icon: 'layout',                    // icona dashicon
-  attributes: {
-    backgroundColor: 'cream',
-    align: 'wide',
-    style: {
-      spacing: {
-        padding: { top: '4rem', bottom: '4rem', left: '2rem', right: '2rem' },
-      },
-    },
-  },
-  innerBlocks: [                     // opzionale: blocchi interni preconfigurati
-    ['core/heading', { level: 2, placeholder: 'Titolo sezione' }],
-    ['core/paragraph', { placeholder: 'Testo descrittivo…' }],
-  ],
-  scope: ['inserter'],               // dove appare: 'inserter', 'transform', 'block'
-})
-```
-
-### Variations registrate nel tema
+Preset preconfigurati con il design system. Appaiono nell'inserter sotto la categoria "Theme".
 
 | Variazione | Blocco base | Descrizione |
-|---|---|---|
+|------------|------------|-------------|
 | Hero Section | `core/cover` | Cover full-width 80vh con overlay ink |
-| Content Card | `core/group` | Group con padding + bordo su sfondo cream |
+| Content Card | `core/group` | Group con padding + bordo su sfondo surface-alt |
 | Sezione Scura | `core/group` | Group full-width sfondo ink, testo white |
 | Colonne 60/40 | `core/columns` | Due colonne asimmetriche, align wide |
 | 3 Colonne uguali | `core/columns` | Tre colonne 33.33% |
@@ -678,242 +493,317 @@ registerBlockVariation('core/group', {
 
 ## 10. Blade Templates (frontend PHP)
 
-### Struttura base di una view
+### Gerarchia template key
+
+| File | Quando viene usato |
+|------|--------------------|
+| `layouts/app.blade.php` | Layout master (html, head, header, footer) |
+| `front-page.blade.php` | Homepage |
+| `page.blade.php` | Pagine generiche |
+| `page-{slug}.blade.php` | Pagina specifica per slug (es. `page-wishlist.blade.php`) |
+| `single.blade.php` | Singolo post |
+| `single-{post-type}.blade.php` | Singolo CPT |
+| `archive.blade.php` | Archivi |
+| `archive-{post-type}.blade.php` | Archivio CPT |
+| `woocommerce.blade.php` | Tutte le pagine WooCommerce |
+| `template-*.blade.php` | Template di pagina selezionabile dall'editor |
+
+> **WooCommerce:** `woocommerce.blade.php` usa `the_content()` per cart/checkout/account (supporta WC Cart Block di WC 9.x) e `woocommerce_content()` per shop/archivi.
+
+### Includere una sezione
 
 ```blade
-{{-- resources/views/single.blade.php --}}
-@extends('layouts.app')
-
-@section('content')
-  @while(have_posts())
-    @php(the_post())
-    <article @php(post_class('max-w-3xl mx-auto py-16 px-6'))>
-      <h1 class="font-serif text-4xl font-light">{!! get_the_title() !!}</h1>
-      <div class="mt-8 prose">
-        @php(the_content())
-      </div>
-    </article>
-  @endwhile
-@endsection
+@include('sections.header')
+@include('partials.cart-drawer')
+@include('partials.product-card', ['product' => $product])
 ```
 
-### Includere un partial
+### View Composers
 
-```blade
-@include('partials.card-post', ['post' => $post])
-```
-
-### View Composers — iniettare dati
-
-I Composers vivono in `app/View/Composers/`. Iniettano dati in una view specifica:
+Iniettano dati in view specifiche. Vivono in `app/View/Composers/`.
 
 ```php
-// app/View/Composers/FrontPage.php
-namespace App\View\Composers;
-
-use Roots\Acorn\View\Composer;
-
 class FrontPage extends Composer
 {
     protected static $views = ['front-page'];
-
-    public function with(): array
-    {
-        return [
-            'featuredPosts' => $this->getFeaturedPosts(),
-        ];
-    }
-
-    private function getFeaturedPosts(): array
-    {
-        return get_posts(['posts_per_page' => 3, 'post_status' => 'publish']);
-    }
+    public function with(): array { return ['featuredPosts' => ...]; }
 }
-```
-
-Nella view:
-```blade
-@foreach($featuredPosts as $post)
-  @include('partials.card-post', compact('post'))
-@endforeach
 ```
 
 ### Output sicuro in Blade
 
 ```blade
-{{-- Testo puro: ESCAPATO automaticamente --}}
-{{ get_the_title() }}
-
-{{-- HTML fidato da WP (già escapato da WP): usa {!! !!} --}}
-{!! get_the_content() !!}
-{!! wp_nav_menu(['echo' => false]) !!}
-
-{{-- MAI: {!! $_GET['input'] !!}  ← XSS --}}
+{{ get_the_title() }}          {{-- escapato automaticamente --}}
+{!! get_the_content() !!}      {{-- HTML fidato da WP --}}
+{{-- MAI: {!! $_GET['input'] !!} ← XSS --}}
 ```
 
 ---
 
 ## 11. Alpine.js — componenti reattivi
 
-I componenti Alpine vivono in `resources/js/app.js`.
+### Store globale (`app.js`)
+
+```js
+Alpine.store('layout', {
+  hasHero: false,    // true se la pagina ha un hero (transparent header)
+  cartCount: 0,      // badge carrello WooCommerce
+})
+```
+
+### Componenti registrati
+
+| Componente | x-data | Descrizione |
+|------------|--------|-------------|
+| `siteHeader` | `x-data="siteHeader"` | Header scrolled/expanded, mega menu, mobile drawer |
+| `searchOverlay` | `x-data="searchOverlay"` | Overlay ricerca live con REST API |
+| `cartDrawer()` | `x-data="cartDrawer()"` | Drawer carrello WooCommerce off-canvas |
 
 ### Aggiungere un componente
 
 ```js
-// In app.js, dentro il blocco Alpine.data(...)
+// In app.js
 Alpine.data('mioComponente', () => ({
   aperto: false,
-  valore: '',
-
-  toggle() {
-    this.aperto = !this.aperto
-  },
-
-  async caricaDati() {
-    const res = await fetch('/wp-json/theme/v1/search?q=' + this.valore)
-    const data = await res.json()
-    // ...
-  },
+  toggle() { this.aperto = !this.aperto },
 }))
 ```
 
-Nella view Blade:
+Nel Blade:
 ```blade
 <div x-data="mioComponente">
-  <button @click="toggle" :aria-expanded="aperto">Apri</button>
-  <div x-show="aperto" x-transition>
-    Contenuto
-  </div>
+  <button @click="toggle">Apri</button>
+  <div x-show="aperto" x-transition>Contenuto</div>
 </div>
-```
-
-### Alpine Store (stato globale)
-
-```js
-Alpine.store('layout', {
-  cartCount: 0,
-  mobileMenuOpen: false,
-})
-```
-
-Usato da qualsiasi componente:
-```html
-<span x-text="$store.layout.cartCount"></span>
 ```
 
 ---
 
 ## 12. Custom Post Types
 
-Registrati in `app/post-types.php`. Tutti `show_in_rest: true`.
+Registrati in `app/post-types.php`. Tutti `show_in_rest: true` per compatibilità Gutenberg.
 
-| CPT | Slug | Taxonomy | Meta keys |
-|---|---|---|---|
-| `portfolio` | `/portfolio/*` | `portfolio_category` | `_portfolio_client`, `_portfolio_year`, `_portfolio_services`, `_portfolio_url` |
-| `team` | `/team/*` | `team_department` | `_team_role`, `_team_email`, `_team_linkedin` |
-| `faq` | `/faq/*` | `faq_category` | — |
+| CPT | Slug | Archive | Taxonomy | Template Blade |
+|-----|------|---------|----------|----------------|
+| `portfolio` | `/portfolio/*` | ✅ | `portfolio_category` | `single-portfolio.blade.php`, `archive-portfolio.blade.php` |
+| `team` | `/team/*` | ❌ | `team_department` | `single-team.blade.php`, `archive-team.blade.php` |
+| `faq` | `/faq/*` | ❌ | `faq_category` | `archive-faq.blade.php` |
 
-### Aggiungere un CPT
+### Meta keys
 
-In `app/post-types.php`:
-```php
-register_post_type('progetto', [
-    'labels'       => ['name' => 'Progetti', 'singular_name' => 'Progetto'],
-    'public'       => true,
-    'show_in_rest' => true,           // obbligatorio per Gutenberg
-    'supports'     => ['title', 'editor', 'thumbnail', 'excerpt'],
-    'has_archive'  => true,
-    'rewrite'      => ['slug' => 'progetti'],
-    'menu_icon'    => 'dashicons-portfolio',
-]);
-```
-
-Poi aggiungi il template Blade `resources/views/single-progetto.blade.php`.
+| CPT | Meta key | Tipo |
+|-----|----------|------|
+| portfolio | `_portfolio_client`, `_portfolio_year`, `_portfolio_services`, `_portfolio_url` | string |
+| team | `_team_role`, `_team_email`, `_team_linkedin` | string |
 
 ---
 
 ## 13. REST API endpoints custom
 
-Definiti in `app/filters.php` e `app/ajax.php`.
+Tutti definiti in `app/ajax.php` e `app/filters.php`. Tutti pubblici (`permission_callback: __return_true`).
 
-| Metodo | Route | Descrizione |
-|---|---|---|
-| `POST` | `/wp-json/theme/v1/newsletter` | Iscrizione newsletter (action hook `theme_newsletter_subscribe`) |
-| `GET` | `/wp-json/theme/v1/search` | Ricerca live (post + prodotti) |
-| `POST` | `/wp-json/theme/v1/wishlist` | Toggle wishlist prodotto |
+| Metodo | Route | File | Descrizione |
+|--------|-------|------|-------------|
+| `GET` | `/wp-json/theme/v1/search` | ajax.php | Live search (post + prodotti) |
+| `GET` | `/wp-json/theme/v1/quick-view/{id}` | ajax.php | Dati prodotto per quick view |
+| `GET` | `/wp-json/theme/v1/products` | ajax.php | Prodotti filtrati (faceted search) |
+| `GET` | `/wp-json/theme/v1/wishlist-products` | ajax.php | Prodotti per ID (wishlist page) |
+| `POST` | `/wp-json/theme/v1/wishlist` | ajax.php | Toggle wishlist (utenti loggati) |
+| `POST` | `/wp-json/theme/v1/newsletter` | filters.php | Iscrizione newsletter |
+| `POST` | `/wp-json/theme/v1/contact` | ajax.php | Form contatti (legacy: admin_post) |
 
-### Aggiungere un endpoint
+### Parametri chiave
 
-```php
-add_action('rest_api_init', function () {
-    register_rest_route('theme/v1', '/mio-endpoint', [
-        'methods'             => 'GET',
-        'callback'            => 'App\\mio_callback',
-        'permission_callback' => '__return_true',
-        'args'                => [
-            'id' => [
-                'required'          => true,
-                'type'              => 'integer',
-                'sanitize_callback' => 'absint',
-            ],
-        ],
-    ]);
-});
-```
+**GET /search** — `q` (min 2 char), `per_page` (default 6, max 12), `type` (any/post/product)
+
+**GET /products** — `cats[]`, `min_price`, `max_price`, `in_stock`, `orderby` (date/price/price-desc/popularity/rating/title), `per_page` (max 48), `page`
+
+**GET /wishlist-products** — `ids` (comma-separated product IDs, max 50)
+→ Risposta: `{ products: [{ id, title, url, thumb, price_html, in_stock, on_sale }] }`
+
+**GET /quick-view/{id}** — nessun param
+→ Risposta: `{ id, title, url, price_html, thumb, gallery, short_desc, category, in_stock, on_sale, rating, attributes, add_to_cart_url }`
 
 ---
 
-## 14. Regole di codice
+## 14. Wishlist System
+
+Sistema wishlist completo basato su localStorage per ospiti, user meta per utenti loggati.
+
+### Architettura
+
+```
+localStorage("theme:wishlist")  ←→  wishlist.js  ←→  .wishlist-btn[data-product-id]
+                                          ↓
+                               /wp-json/theme/v1/wishlist-products?ids=...
+                                          ↓
+                               <wishlist-products> custom element
+```
+
+### Frontend (wishlist.js)
+
+**Funzioni esposte:**
+- `window.initWishlistButtons()` — re-inizializza i pulsanti (usare dopo AJAX/load dinamico)
+
+**Classi CSS riconosciute:**
+- `.wishlist-btn[data-product-id="123"]` — toggle button (aggiunge/rimuove da wishlist)
+- `.wishlist-count-bubble` — badge con conteggio (aggiornato automaticamente)
+- `.wishlist-dot` — punto indicatore (`.is-visible` se wishlist non vuota)
+
+**Stato active:**
+- `.wishlist-btn.active` → prodotto nella wishlist
+
+### Custom element `<wishlist-products>`
+
+Renderizza i prodotti della wishlist sulla pagina dedicata.
+
+```html
+<wishlist-products
+  products-limit="50"
+  empty-label="La tua wishlist è vuota."
+  class="grid grid-cols-2 lg:grid-cols-4 gap-6"
+></wishlist-products>
+```
+
+Fetch automatico da `/wp-json/theme/v1/wishlist-products?ids=...` al mount.
+
+### Pagina wishlist
+
+La pagina con slug `/wishlist` usa `resources/views/page-wishlist.blade.php` automaticamente (Sage template hierarchy).
+
+**Setup:** Crea una pagina WordPress con slug `wishlist` — il template viene applicato automaticamente.
+
+### Aggiungere un pulsante wishlist su una product card
+
+```blade
+<button
+  class="wishlist-btn"
+  data-product-id="{{ $product->get_id() }}"
+  aria-label="{{ __('Aggiungi alla wishlist', 'sage') }}"
+  aria-pressed="false"
+>
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+  </svg>
+</button>
+```
+
+Stile `.wishlist-btn.active` → imposta `fill="currentColor"` via CSS in `app.css`.
+
+---
+
+## 15. WooCommerce — Integrazione
+
+### Theme support (setup.php)
+
+```php
+add_theme_support('woocommerce', [
+    'thumbnail_image_width' => 600,
+    'single_image_width'    => 800,
+    'product_grid' => ['default_rows' => 3, 'default_columns' => 3, 'max_columns' => 4],
+]);
+add_theme_support('wc-product-gallery-zoom');
+add_theme_support('wc-product-gallery-lightbox');
+add_theme_support('wc-product-gallery-slider');
+```
+
+### PHP Template overrides (woocommerce/)
+
+| File | Scopo |
+|------|-------|
+| `content-product.php` | Loop item card (griglia prodotti) |
+| `single-product/product-image.php` | Gallery principale single product |
+| `single-product/tabs.php` | Description/Reviews/Related tabs |
+| `single-product/related.php` | Prodotti correlati |
+| `emails/email-header.php` | Header email transazionale |
+| `emails/email-footer.php` | Footer email transazionale |
+| `emails/email-styles.php` | CSS inline email |
+
+### Filtri WC applicati (filters.php)
+
+- `woocommerce_add_to_cart_fragments` — aggiorna badge carrello `.cart-count-fragment` via AJAX
+- `woocommerce_shortcode_products_query` — limita a 12 prodotti max (evita memory exhaustion)
+- `woocommerce_before_main_content` — rimuove breadcrumb default
+
+### Cart page fix (woocommerce.blade.php)
+
+Per compatibilità con **WC Cart Block (WC 9.x+)**:
+```blade
+@if(is_cart() || is_checkout() || is_account_page())
+  @while(have_posts()) @php the_post() @endphp
+    @php the_content() @endphp
+  @endwhile
+@else
+  @php woocommerce_content() @endphp
+@endif
+```
+
+### Cart Drawer
+
+`partials/cart-drawer.blade.php` — drawer off-canvas con:
+- Fragment WC per aggiornamento automatico add-to-cart
+- Free shipping progress bar (soglia configurabile via `get_theme_mod('free_shipping_threshold')`)
+- Alpine component `cartDrawer()` con jQuery WC events
+
+---
+
+## 16. Regole di codice
 
 ### PHP
 - **Namespace:** `App\` in tutti i file in `app/`
 - **Output:** sempre `esc_html()`, `esc_url()`, `esc_attr()`, `wp_kses_post()`
-- **Input:** sempre `sanitize_text_field()`, `sanitize_email()`, `absint()`, ecc.
+- **Input:** sempre `sanitize_text_field()`, `sanitize_email()`, `absint()`
 - **Query:** sempre `WP_Query` o `$wpdb->prepare()` — mai SQL raw
-- **Strict types:** aggiungi `declare(strict_types=1);` nei nuovi file
+- **Strict types:** `declare(strict_types=1)` nei nuovi file
 
 ### JavaScript
 - **ES modules** — no jQuery nel frontend (solo dove WC lo richiede)
 - **Alpine** — tutti i componenti reattivi in `app.js`
-- **Import** — i pacchetti `@wordpress/*` sono external (window.wp.*), non importarli da npm
+- **Import** — `@wordpress/*` sono external (window.wp.*), non importare da npm
+- **Biome** — linting con `npm run lint`, fix con `npm run fix-all`
 
 ### CSS / Tailwind
 - **Utility-first** — usa classi Tailwind, non stili inline
-- **Design tokens** — aggiungi variabili in `@theme {}` di `app.css`, non hardcodare colori
+- **Design tokens** — aggiungi variabili in `@theme {}` di `app.css`, non hardcodare colori o font
+- **Font:** usa solo `font-sans` (body) e `font-serif` (titoli) — entrambi Poppins
 - **Editor** — duplica gli stili importanti in `editor.css` per WYSIWYG accurato
 
 ### Accessibilità
 - Ogni elemento interattivo: `aria-label` o label visibile
 - Immagini decorative: `alt=""` + `aria-hidden="true"`
-- Carousels: pattern ARIA completo (`role="region"`, `aria-roledescription="carousel"`)
+- Carousels: `role="region"`, `aria-roledescription="carousel"`
 - Modal/drawer: `x-trap.inert` (Alpine Focus plugin)
 
 ---
 
-## 15. Customizer keys
+## 17. Customizer keys
 
 Accessibili con `get_theme_mod('chiave')`. Definite in `app/customizer.php`.
 
-| Key | Sezione | Default |
-|---|---|---|
-| `social_instagram` | theme_social | `''` |
-| `social_facebook` | theme_social | `''` |
-| `social_tiktok` | theme_social | `''` |
-| `social_youtube` | theme_social | `''` |
-| `cta_url` | theme_theme | `''` |
-| `footer_tagline` | theme_theme | testo default |
-| `newsletter_heading` | theme_theme | testo default |
-| `announcement_bar_active` | theme_announcement | `false` |
-| `announcement_bar_text` | theme_announcement | `''` |
-| `announcement_bar_cta_text` | theme_announcement | `''` |
-| `announcement_bar_cta_url` | theme_announcement | `''` |
+| Key | Sezione | Default | Uso |
+|-----|---------|---------|-----|
+| `social_instagram` | theme_social | `''` | Link Instagram nel footer/mobile drawer |
+| `social_facebook` | theme_social | `''` | Link Facebook |
+| `social_tiktok` | theme_social | `''` | Link TikTok |
+| `social_youtube` | theme_social | `''` | Link YouTube |
+| `cta_url` | theme_theme | `''` | URL del pulsante CTA header |
+| `header_cta_label` | theme_theme | `''` | Testo del pulsante CTA header |
+| `footer_tagline` | theme_theme | testo default | Tagline nel footer |
+| `newsletter_heading` | theme_theme | testo default | Titolo sezione newsletter |
+| `announcement_bar_active` | theme_announcement | `false` | Mostra/nascondi barra annunci |
+| `announcement_bar_text` | theme_announcement | `''` | Testo barra annunci |
+| `announcement_bar_cta_text` | theme_announcement | `''` | Testo CTA barra |
+| `announcement_bar_cta_url` | theme_announcement | `''` | URL CTA barra |
+| `free_shipping_threshold` | theme_wc | `0` | Soglia spedizione gratuita (€) nel cart drawer |
+
+> **Header CTA:** Viene mostrato solo se `cta_url` O `header_cta_label` sono impostati nel Customizer.
 
 ---
 
-## 16. File da NON toccare
+## 18. File da NON toccare
 
 | Path | Motivo |
-|---|---|
+|------|--------|
 | `vendor/` | Gestito da Composer |
 | `node_modules/` | Gestito da npm |
 | `public/build/` | Generato da Vite — sovrascritto ad ogni build |
@@ -928,8 +818,8 @@ Accessibili con `get_theme_mod('chiave')`. Definite in `app/customizer.php`.
 ```
 [ ] Crea cartella  blocks/nome-blocco/
 [ ] Crea           blocks/nome-blocco/block.json   (name, attributes, render)
-[ ] Crea           blocks/nome-blocco/render.php   (output PHP + Tailwind)
-[ ] Aggiungi       registerBlockType() in app/setup.php → array $blocks
+[ ] Crea           blocks/nome-blocco/render.php   (output PHP + Tailwind, font-sans per body)
+[ ] Aggiungi       'nome-blocco' in app/setup.php → array $blocks
 [ ] Aggiungi       registerBlockType('theme/nome-blocco', { edit, save }) in editor.js
 [ ] Aggiungi CSS   editor.css  (per WYSIWYG)
 [ ] npm run build
@@ -946,3 +836,92 @@ Accessibili con `get_theme_mod('chiave')`. Definite in `app/customizer.php`.
 [ ] Incolla blocchi nel file .php
 [ ] Ricarica l'editor WP → il pattern appare nell'inserter
 ```
+
+## Quick reference — checklist nuova pagina custom
+
+```
+[ ] Crea           resources/views/page-{slug}.blade.php  (per slug specifico)
+[ ] OPPURE         resources/views/template-nome.blade.php (selezionabile da editor)
+[ ] Crea la pagina in WP Admin con lo slug corretto
+[ ] Se serve un endpoint: aggiungi in app/ajax.php con sanitize + permission_callback
+```
+
+---
+
+## 19. Audit — Correzioni applicate
+
+Risultati dell'audit deep 2026-03-24 e fix applicati al codebase.
+
+### 19.1 Bug critici risolti
+
+| File | Problema | Fix |
+|------|----------|-----|
+| `resources/css/editor.css` | `font-family: "Inter"` hardcoded su h1-h6 (r.16) e `core/quote` (r.118) | Sostituito con `"Poppins"` |
+| `resources/css/app.css` | Classe `.container` assente — tutte le Blade view la usano senza definizione | Aggiunta con `max-width:1200px`, `margin-inline:auto`, padding fluid |
+| `resources/css/app.css` | `.theme-form`, `.theme-form__row/label/input/textarea/privacy/checkbox-label/submit/feedback` assenti — form contatti completamente non stilizzato | Aggiunte tutte le classi |
+| `resources/css/app.css` | `.theme-btn`, `.theme-btn--primary/outline/ink/full` assenti — bottoni del pattern contatti senza stile | Aggiunte |
+| `resources/css/app.css` | `.wishlist-btn`, `.wishlist-count-bubble`, `.wishlist-dot` assenti — wishlist.js li usa ma CSS non le definisce | Aggiunte con stati `.active` e `.is-visible` |
+| `theme.json` | `useRootPaddingAwareAlignments` assente — allineamenti full-width imprecisi | Aggiunto `true` |
+| `theme.json` | `settings.dimensions` assente — nessuna scelta aspect ratio nell'editor | Aggiunti 4 preset (portrait, landscape, square, wide) |
+| `theme.json` | `settings.shadow` assente — nessun shadow preset per i blocchi | Aggiunti 3 preset (subtle, medium, large) |
+| `theme.json` | `styles.spacing.blockGap` assente — gap verticale tra blocchi non definito | Impostato a spacing-6 (32px) |
+| `theme.json` | `styles.elements.link.:focus` assente — violazione WCAG 2.1 AA | Aggiunto `:focus` con colore accent + underline |
+| `theme.json` | `styles.blocks.core/list` assente — liste senza font/spacing coerente | Aggiunto con font-sans e padding-left |
+| `theme.json` | `styles.blocks.core/table` assente — tabelle senza bordi/font | Aggiunto con border e font-sm |
+| `theme.json` | `styles.blocks.core/gallery` assente — gap gallery non definito | Aggiunto con blockGap: spacing-4 |
+
+### 19.2 Problemi nei pattern (da correggere manualmente)
+
+| Pattern | Problema | Azione consigliata |
+|---------|----------|---------------------|
+| Vari pattern con colonne | `isStackedOnMobile` non impostato su `core/columns` | Aggiungere `"isStackedOnMobile": true` nell'HTML del blocco |
+| `contact-section.php` | URL tel/email hardcoded (`href="tel:+39..."`) | Sostituire con valori da Customizer (`get_theme_mod()`) |
+| Pattern con sfondi (`hero`, `newsletter-cta`, ecc.) | Colore `#f6f4f2` hardcoded invece di token `cream` | Sostituire con `var(--wp--preset--color--cream)` |
+| Pattern con testi scuri | `#0f0f0f` invece di token `ink` | Sostituire con `var(--wp--preset--color--ink)` |
+
+### 19.3 Pattern: come aggiungere `isStackedOnMobile`
+
+Nei file pattern `.php`, cerca blocchi `core/columns` e aggiungi l'attributo:
+
+```html
+<!-- wp:columns {"isStackedOnMobile":true} -->
+```
+
+---
+
+## 20. Pattern mancanti — backlog
+
+7 pattern ad alta priorità non ancora creati. Aggiungerli in `patterns/`.
+
+| Slug | Titolo | Categoria | Priorità |
+|------|--------|-----------|----------|
+| `theme/pricing-table` | Tabella Prezzi — 3 Piani | theme-sections | Alta |
+| `theme/timeline` | Timeline / Processo — Verticale | theme-sections | Alta |
+| `theme/faq-accordion` | FAQ — Accordion | theme-sections | Alta |
+| `theme/before-after` | Before/After — Slider Confronto | theme-sections | Media |
+| `theme/video-section` | Sezione Video — Sfondo o Inline | theme-sections | Media |
+| `theme/map-contact` | Mappa + Contatti — Split | theme-sections | Media |
+| `theme/review-aggregate` | Recensioni Aggregate — Rating + Badge | theme-sections | Media |
+
+### Schema header per nuovo pattern
+
+```php
+<?php
+/**
+ * Title: Pricing Table — 3 Piani
+ * Slug: theme/pricing-table
+ * Categories: theme-sections
+ * Keywords: prezzi, pricing, piani, abbonamento
+ * Viewport Width: 1440
+ */
+?>
+```
+
+### Classi CSS già disponibili per i nuovi pattern
+
+| Pattern | Classi pronte in app.css |
+|---------|--------------------------|
+| FAQ Accordion | `.faq-item`, `.faq-item__trigger`, `.faq-item__icon`, `.faq-item__answer`, `.faq-item--dark` |
+| Timeline | `.process-step`, `.process-step--v`, `.process-step--h`, `.process-step__icon-wrap`, `.process-step__title` |
+| Before/After | `.before-after`, `.before-after__before`, `.before-after__handle`, `.before-after__label` |
+| Countdown | `.countdown-unit`, `.countdown-num`, `.countdown-label` |

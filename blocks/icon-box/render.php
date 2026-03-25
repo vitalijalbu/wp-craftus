@@ -12,6 +12,7 @@ $link_url = esc_url($attributes['linkUrl'] ?? '');
 $bg = $attributes['bg'] ?? 'surface';
 $layout = $attributes['layout'] ?? 'vertical';
 $bordered = (bool) ($attributes['bordered'] ?? false);
+$scroll_effect = esc_attr($attributes['scrollEffect'] ?? '');
 
 $title_class = $bg === 'ink' ? 'text-white' : 'text-ink';
 $text_class = $bg === 'ink' ? 'text-white/60' : 'text-muted';
@@ -25,7 +26,7 @@ $wrap_flex = $is_horizontal
 ?>
 <div
   class="icon-box <?= $wrap_flex ?> <?= $border_class ?>"
-  <?= get_block_wrapper_attributes() ?>
+  <?= get_block_wrapper_attributes($scroll_effect ? ['data-scroll' => $scroll_effect] : []) ?>
 >
   <img
     src="<?= $icon_url ?>"

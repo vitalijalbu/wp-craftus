@@ -55,6 +55,10 @@
     "bordered": {
       "type": "boolean",
       "default": false
+    },
+    "scrollEffect": {
+      "type": "string",
+      "default": ""
     }
   }
 }

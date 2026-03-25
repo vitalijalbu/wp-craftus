@@ -9,6 +9,7 @@ $bg = $attributes['bg'] ?? 'surface';
 $prefix = esc_html($attributes['prefix'] ?? '');
 $suffix = esc_html($attributes['suffix'] ?? '');
 $align = $attributes['align'] ?? 'left';
+$scroll_effect = esc_attr($attributes['scrollEffect'] ?? '');
 
 $value_class = $bg === 'ink' ? 'text-white' : 'text-ink';
 $label_class = $bg === 'ink' ? 'text-white/40' : 'text-muted';
@@ -18,7 +19,7 @@ $line_class = $bg === 'ink' ? 'bg-white/10' : 'bg-border';
 ?>
 <div
   class="stat-block <?= $align_class ?> py-8 <?= $align !== 'center' ? "border-l-2 pl-6 {$line_class}" : '' ?>"
-  <?= get_block_wrapper_attributes() ?>
+  <?= get_block_wrapper_attributes($scroll_effect ? ['data-scroll' => $scroll_effect] : []) ?>
 >
   <?php if ($prefix) { ?>
     <span class="font-serif text-2xl font-light <?= $value_class ?> opacity-60"><?= $prefix ?></span>

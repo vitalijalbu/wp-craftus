@@ -160,6 +160,8 @@ const EFFECTS = {
 }
 
 export function initScrollEffects() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
   document.querySelectorAll('[data-scroll]').forEach((el) => {
     const effect = el.dataset.scroll
     const fn = EFFECTS[effect]

@@ -132,7 +132,8 @@ Alpine.data('siteHeader', () => ({
 
   // ── Init: scroll + keyboard + GSAP dual-state watcher ──────────────────────
   init() {
-    // Scroll detection
+    // Scroll detection — AbortController enables cleanup if component is destroyed
+    this._scrollCtrl = new AbortController()
     window.addEventListener(
       'scroll',
       () => {
@@ -144,19 +145,25 @@ Alpine.data('siteHeader', () => ({
           this.scrolled = false
         }
       },
-      { passive: true },
+      { passive: true, signal: this._scrollCtrl.signal },
     )
 
     // Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape') {
-        return
-      }
-      this.closeMenu()
-      this.closeMobile()
-    })
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key !== 'Escape') return
+        this.closeMenu()
+        this.closeMobile()
+      },
+      { signal: this._scrollCtrl.signal },
+    )
 
     // no GSAP swap — background change is handled by Alpine :class binding
+  },
+
+  destroy() {
+    this._scrollCtrl?.abort()
   },
 }))
 
@@ -224,6 +231,57 @@ Alpine.data('searchOverlay', () => ({
 
   init() {
     window.addEventListener('open-search', () => this.show())
+  },
+}))
+
+// ── Alpine component: cart drawer (WooCommerce off-canvas) ────────────────────
+Alpine.data('cartDrawer', () => ({
+  isOpen: false,
+  count: 0,
+  loading: false,
+
+  init() {
+    // Read initial count from the fragment span rendered server-side
+    const countEl = document.querySelector('[data-cart-count]')
+    if (countEl) this.count = parseInt(countEl.dataset.cartCount || '0', 10)
+
+    // WooCommerce fires added_to_cart as a jQuery custom event, not a native DOM event
+    if (typeof jQuery !== 'undefined') {
+      jQuery(document.body).on('added_to_cart', (e, fragments, cart_hash) => {
+        if (fragments) {
+          jQuery.each(fragments, (selector, html) => jQuery(selector).replaceWith(html))
+          const el = document.querySelector('[data-cart-count]')
+          if (el) this.count = parseInt(el.dataset.cartCount || '0', 10)
+          this.loading = false
+        } else {
+          this.refreshFragment()
+        }
+        this.open()
+      })
+
+      // WC fragment refresh (e.g. after removing an item)
+      jQuery(document.body).on('wc_fragment_refresh', () => this.refreshFragment())
+    }
+  },
+
+  open() { this.isOpen = true },
+  close() { this.isOpen = false },
+
+  refreshFragment() {
+    if (typeof jQuery === 'undefined') return
+    this.loading = true
+    jQuery.post(
+      window.wc_cart_fragments_params?.ajax_url ?? '/wp-admin/admin-ajax.php',
+      { action: 'woocommerce_get_refreshed_fragments' },
+      (res) => {
+        if (res?.fragments) {
+          jQuery.each(res.fragments, (key, val) => jQuery(key).replaceWith(val))
+        }
+        const el = document.querySelector('[data-cart-count]')
+        if (el) this.count = parseInt(el.dataset.cartCount || '0', 10)
+        this.loading = false
+      },
+    )
   },
 }))
 

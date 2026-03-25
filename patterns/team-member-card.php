@@ -22,7 +22,7 @@
 	</div>
 	<!-- /wp:group -->
 
-	<!-- wp:columns {"columns":3,"style":{"spacing":{"blockGap":{"left":"2rem","top":"2rem"}}}} -->
+	<!-- wp:columns {"columns":3,"isStackedOnMobile":true,"style":{"spacing":{"blockGap":{"left":"2rem","top":"2rem"}}}} -->
 	<div class="wp-block-columns">
 
 		<!-- wp:column -->

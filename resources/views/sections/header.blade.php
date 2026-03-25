@@ -225,6 +225,17 @@
             >{{ $cart_count }}</span>
           </button>
         @endif
+        {{-- Wishlist (mobile) --}}
+        <a
+          href="{{ esc_url(home_url('/wishlist')) }}"
+          class="icon-btn relative"
+          :class="hasHero && !scrolled && !mobileOpen ? 'text-white/70' : 'text-ink'"
+          aria-label="{{ __('Wishlist', 'sage') }}"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
+          <span class="wishlist-count-bubble absolute -top-1 -right-1 min-w-4 h-4 bg-gold text-ink font-bold rounded-full flex items-center justify-center px-0.5 leading-none text-[10px]" style="display:none"></span>
+        </a>
+
         <button
           type="button"
           class="icon-btn"
@@ -383,7 +394,7 @@
     x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="opacity-100 translate-x-0"
     x-transition:leave-end="opacity-0 translate-x-full"
-    class="fixed inset-0 top-[72px] bg-primary z-40 overflow-y-auto flex flex-col lg:hidden"
+    class="fixed inset-0 top-18 bg-primary z-40 overflow-y-auto flex flex-col lg:hidden"
     style="display:none"
     role="dialog"
     aria-modal="true"
@@ -497,7 +508,7 @@
 
 {{-- Spacer: compensates for fixed header on non-hero pages --}}
 <div
-  class="h-[72px]"
+  class="h-18"
   :class="$store.layout.hasHero ? 'hidden' : 'block'"
   aria-hidden="true"
 ></div>

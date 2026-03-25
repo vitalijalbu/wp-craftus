@@ -11,7 +11,7 @@
 <!-- wp:group {"backgroundColor":"white","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group has-white-background-color has-background">
 
-	<!-- wp:columns {"verticalAlignment":"center"} -->
+	<!-- wp:columns {"verticalAlignment":"center","isStackedOnMobile":true} -->
 	<div class="wp-block-columns are-vertically-aligned-center">
 
 		<!-- Colonna sinistra: Testo + pulsante -->

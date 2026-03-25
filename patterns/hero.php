@@ -11,7 +11,7 @@
 ?>
 <!-- wp:cover {"url":"","id":0,"dimRatio":45,"style":{"dimensions":{"minHeight":"76vh"}},"contentPosition":"center center","className":"theme-hero","isUserOverlayColor":true} -->
 <div class="wp-block-cover theme-hero" style="min-height:76vh">
-	<span aria-hidden="true" class="wp-block-cover__background has-background-dim" style="background-color:#0f0f0f;opacity:0.45"></span>
+	<span aria-hidden="true" class="wp-block-cover__background has-background-dim has-ink-background-color" style="opacity:0.45"></span>
 	<img class="wp-block-cover__image-background" src="" alt="" style="object-position:50% 50%" data-object-fit="cover"/>
 	<div class="wp-block-cover__inner-container">
 

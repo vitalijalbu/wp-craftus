@@ -266,6 +266,34 @@ add_filter('xmlrpc_enabled', '__return_false');
 // Remove shortlink from head
 remove_action('wp_head', 'wp_shortlink_wp_head');
 
+/**
+ * Detect the real client IP, honouring Cloudflare and common reverse-proxy headers.
+ * REMOTE_ADDR is always the last hop (trusted), used as final fallback.
+ *
+ * @return string Sanitized IP address.
+ */
+function theme_get_client_ip(): string
+{
+    // Cloudflare passes the original IP in CF-Connecting-IP
+    if (! empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+        $ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_CF_CONNECTING_IP']));
+        if (filter_var($ip, FILTER_VALIDATE_IP)) {
+            return $ip;
+        }
+    }
+
+    // Standard reverse-proxy header (first entry is the client)
+    if (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $first = trim(explode(',', wp_unslash($_SERVER['HTTP_X_FORWARDED_FOR']))[0]);
+        $ip = sanitize_text_field($first);
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            return $ip;
+        }
+    }
+
+    return sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+}
+
 // Rate-limit REST endpoints: newsletter (5/min) and search (30/min per IP).
 // Uses transients as a lightweight counter — no extra plugin needed.
 add_filter('rest_pre_dispatch', function ($result, $server, \WP_REST_Request $request) {
@@ -281,7 +309,7 @@ add_filter('rest_pre_dispatch', function ($result, $server, \WP_REST_Request $re
     }
 
     $cfg = $limits[$route];
-    $ip = sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+    $ip = theme_get_client_ip();
     $key = $cfg['prefix'].md5($ip);
     $hits = (int) get_transient($key);
 
