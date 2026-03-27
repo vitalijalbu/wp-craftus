@@ -18,8 +18,8 @@
 		</figure>
 		<div class="wp-block-media-text__content">
 
-			<!-- wp:heading {"level":2,"textColor":"dark","fontFamily":"serif","fontSize":"hero","className":"theme-hero-title"} -->
-			<h2 class="wp-block-heading has-dark-color has-text-color has-serif-font-family has-hero-font-size theme-hero-title">Un'agenzia che lavora<br>per i tuoi obiettivi</h2>
+			<!-- wp:heading {"level":2,"textColor":"ink","fontFamily":"serif","fontSize":"hero","className":"theme-hero-title"} -->
+			<h2 class="wp-block-heading has-ink-color has-text-color has-serif-font-family has-hero-font-size theme-hero-title">Un'agenzia che lavora<br>per i tuoi obiettivi</h2>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph {"fontSize":"lg"} -->

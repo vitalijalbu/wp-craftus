@@ -44,7 +44,7 @@
   };
   $title_class  = $bg === 'ink' ? 'text-white'   : 'text-ink';
   $sub_class    = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-  $label_class  = $bg === 'ink' ? 'text-gold'    : 'text-muted';
+  $label_class  = $bg === 'ink' ? 'text-accent'    : 'text-muted';
   $item_class   = $bg === 'ink' ? 'faq-item faq-item--dark' : 'faq-item';
 @endphp
 

@@ -8,14 +8,14 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"backgroundColor":"off-white","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-off-white-background-color has-background">
+<!-- wp:group {"backgroundColor":"surface-alt","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group has-surface-alt-background-color has-background">
 
 	<!-- Titolo sezione -->
 	<!-- wp:group {"layout":{"type":"constrained","contentSize":"40rem"}} -->
 	<div class="wp-block-group">
-		<!-- wp:heading {"level":2,"textAlign":"center","textColor":"dark","fontSize":"2xl","className":"theme-section-title"} -->
-		<h2 class="wp-block-heading has-text-align-center has-dark-color has-text-color has-2-xl-font-size theme-section-title">I Nostri Progetti</h2>
+		<!-- wp:heading {"level":2,"textAlign":"center","textColor":"ink","fontSize":"2xl","className":"theme-section-title"} -->
+		<h2 class="wp-block-heading has-text-align-center has-ink-color has-text-color has-2-xl-font-size theme-section-title">I Nostri Progetti</h2>
 		<!-- /wp:heading -->
 		<!-- wp:paragraph {"align":"center","fontSize":"lg"} -->
 		<p class="has-text-align-center has-lg-font-size">Case study e risultati concreti per i nostri clienti.</p>
@@ -52,8 +52,8 @@
 	<!-- CTA -->
 	<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
 	<div class="wp-block-buttons">
-		<!-- wp:button {"backgroundColor":"dark","textColor":"primary"} -->
-		<div class="wp-block-button"><a class="wp-block-button__link has-dark-background-color has-primary-color has-background has-text-color wp-element-button" href="/portfolio">Vedi tutti i progetti →</a></div>
+		<!-- wp:button {"backgroundColor":"ink","textColor":"primary"} -->
+		<div class="wp-block-button"><a class="wp-block-button__link has-ink-background-color has-primary-color has-background has-text-color wp-element-button" href="/portfolio">Vedi tutti i progetti →</a></div>
 		<!-- /wp:button -->
 	</div>
 	<!-- /wp:buttons -->

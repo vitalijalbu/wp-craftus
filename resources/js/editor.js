@@ -206,15 +206,15 @@ const bgOptions = [
 // Static list mirrors the EFFECTS registry in scroll-effects.js.
 // Update both files if you add/remove an effect.
 const scrollEffectOptions = [
-  { label: __('Nessuno', 'sage'),          value: '' },
-  { label: __('Slide Up', 'sage'),         value: 'slide-up' },
-  { label: __('Slide Down', 'sage'),       value: 'slide-down' },
-  { label: __('Slide Left', 'sage'),       value: 'slide-left' },
-  { label: __('Slide Right', 'sage'),      value: 'slide-right' },
-  { label: __('Fade', 'sage'),             value: 'fade' },
-  { label: __('Zoom In', 'sage'),          value: 'zoom-in' },
-  { label: __('Text Reveal', 'sage'),      value: 'text-reveal' },
-  { label: __('Line In', 'sage'),          value: 'line-in' },
+  { label: __('Nessuno', 'sage'), value: '' },
+  { label: __('Slide Up', 'sage'), value: 'slide-up' },
+  { label: __('Slide Down', 'sage'), value: 'slide-down' },
+  { label: __('Slide Left', 'sage'), value: 'slide-left' },
+  { label: __('Slide Right', 'sage'), value: 'slide-right' },
+  { label: __('Fade', 'sage'), value: 'fade' },
+  { label: __('Zoom In', 'sage'), value: 'zoom-in' },
+  { label: __('Text Reveal', 'sage'), value: 'text-reveal' },
+  { label: __('Line In', 'sage'), value: 'line-in' },
   { label: __('Parallax Immagine', 'sage'), value: 'anim-image-parallax' },
 ]
 

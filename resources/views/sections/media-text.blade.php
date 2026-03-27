@@ -21,7 +21,7 @@
     default => 'bg-surface',
   };
   $text_class  = $bg === 'ink' ? 'text-white'   : 'text-ink';
-  $label_class = $bg === 'ink' ? 'text-gold'     : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-accent'     : 'text-muted';
   $muted_class = $bg === 'ink' ? 'text-white/60' : 'text-muted';
 
   // Reverse column order when image is right
@@ -62,7 +62,7 @@
           {{-- Decorative corner accent --}}
           @if($accent)
             <div
-              class="absolute -bottom-4 {{ $image_position === 'right' ? '-left-4' : '-right-4' }} w-24 h-24 border-2 border-gold z-10 pointer-events-none"
+              class="absolute -bottom-4 {{ $image_position === 'right' ? '-left-4' : '-right-4' }} w-24 h-24 border-2 border-accent z-10 pointer-events-none"
               aria-hidden="true"
             ></div>
           @endif

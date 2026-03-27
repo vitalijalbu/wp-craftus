@@ -13,8 +13,8 @@
 <div class="wp-block-columns">
 <!-- wp:column {"className":"theme-usp-item"} -->
 <div class="wp-block-column theme-usp-item">
-<!-- wp:paragraph {"align":"center","textColor":"gold","fontSize":"sm","className":"theme-section-label"} -->
-<p class="has-text-align-center has-gold-color has-text-color has-sm-font-size theme-section-label">🚚 Spedizione gratuita</p>
+<!-- wp:paragraph {"align":"center","textColor":"accent","fontSize":"sm","className":"theme-section-label"} -->
+<p class="has-text-align-center has-accent-color has-text-color has-sm-font-size theme-section-label">🚚 Spedizione gratuita</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph {"align":"center","textColor":"white","fontSize":"sm"} -->
 <p class="has-text-align-center has-white-color has-text-color has-sm-font-size">Ordini sopra €49</p>
@@ -23,8 +23,8 @@
 <!-- /wp:column -->
 <!-- wp:column {"className":"theme-usp-item"} -->
 <div class="wp-block-column theme-usp-item">
-<!-- wp:paragraph {"align":"center","textColor":"gold","fontSize":"sm","className":"theme-section-label"} -->
-<p class="has-text-align-center has-gold-color has-text-color has-sm-font-size theme-section-label">⭐ Prodotti certificati</p>
+<!-- wp:paragraph {"align":"center","textColor":"accent","fontSize":"sm","className":"theme-section-label"} -->
+<p class="has-text-align-center has-accent-color has-text-color has-sm-font-size theme-section-label">⭐ Prodotti certificati</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph {"align":"center","textColor":"white","fontSize":"sm"} -->
 <p class="has-text-align-center has-white-color has-text-color has-sm-font-size">Qualità garantita</p>
@@ -33,8 +33,8 @@
 <!-- /wp:column -->
 <!-- wp:column {"className":"theme-usp-item"} -->
 <div class="wp-block-column theme-usp-item">
-<!-- wp:paragraph {"align":"center","textColor":"gold","fontSize":"sm","className":"theme-section-label"} -->
-<p class="has-text-align-center has-gold-color has-text-color has-sm-font-size theme-section-label">↩️ Resi facili</p>
+<!-- wp:paragraph {"align":"center","textColor":"accent","fontSize":"sm","className":"theme-section-label"} -->
+<p class="has-text-align-center has-accent-color has-text-color has-sm-font-size theme-section-label">↩️ Resi facili</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph {"align":"center","textColor":"white","fontSize":"sm"} -->
 <p class="has-text-align-center has-white-color has-text-color has-sm-font-size">30 giorni senza problemi</p>
@@ -43,8 +43,8 @@
 <!-- /wp:column -->
 <!-- wp:column {"className":"theme-usp-item"} -->
 <div class="wp-block-column theme-usp-item">
-<!-- wp:paragraph {"align":"center","textColor":"gold","fontSize":"sm","className":"theme-section-label"} -->
-<p class="has-text-align-center has-gold-color has-text-color has-sm-font-size theme-section-label">🩺 Consiglio veterinario</p>
+<!-- wp:paragraph {"align":"center","textColor":"accent","fontSize":"sm","className":"theme-section-label"} -->
+<p class="has-text-align-center has-accent-color has-text-color has-sm-font-size theme-section-label">🩺 Consiglio veterinario</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph {"align":"center","textColor":"white","fontSize":"sm"} -->
 <p class="has-text-align-center has-white-color has-text-color has-sm-font-size">Team esperto disponibile</p>

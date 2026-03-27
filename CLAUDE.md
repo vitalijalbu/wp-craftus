@@ -61,7 +61,7 @@ sage-theme/
 ├── app/                          # PHP backend (namespace App\)
 │   ├── setup.php                 # theme supports, menu, font, blocchi, pattern categories
 │   ├── filters.php               # WP filters, REST API, performance, WC tweaks
-│   ├── ajax.php                  # REST endpoints: search, quick-view, products, wishlist, contact
+│   ├── ajax.php                  # REST endpoints: search, quick-view, products, wishlist + admin_post: contact
 │   ├── customizer.php            # Pannello Customizer (colori social, CTA, annuncio)
 │   ├── post-types.php            # CPT: portfolio, team, faq
 │   ├── Providers/
@@ -433,23 +433,30 @@ I pattern vivono in `patterns/*.php`. WordPress li carica automaticamente.
 ## 7. Come creare un Template (block template)
 
 I block template HTML vivono in `/templates/*.html` e sono modificabili dal cliente tramite **Aspetto → Editor → Template**.
+I template parts (header/footer) vivono in `/parts/*.html` e sono editabili dal Site Editor (**Aspetto → Editor → Template parts**).
 
-> **Priorità:** I Blade template hanno precedenza. Se esiste `resources/views/single.blade.php`, Sage usa quello e ignora `templates/single.html`.
+> **Priorità:** I Blade template hanno precedenza. Se esiste `resources/views/single.blade.php`, Sage usa quello e ignora `templates/single.html`. I template HTML servono come fallback e come base modificabile dal cliente nel Site Editor.
 
-### Template slugs standard
+### Template slugs disponibili
 
-| File | Quando viene usato |
-|------|--------------------|
-| `templates/index.html` | Fallback generale |
-| `templates/front-page.html` | Homepage |
-| `templates/single.html` | Singolo post |
-| `templates/page.html` | Singola pagina |
-| `templates/archive.html` | Archivi |
-| `templates/404.html` | Pagina 404 |
+| File | Quando viene usato | Stato |
+|------|--------------------|-------|
+| `templates/index.html` | Fallback blog/homepage | ✅ Creato |
+| `templates/page.html` | Pagine generiche | ✅ Creato |
+| `templates/single.html` | Singolo post | ✅ Creato |
+| `templates/archive.html` | Archivi e categorie | ✅ Creato |
+| `templates/404.html` | Pagina 404 | ✅ Creato |
+| `templates/front-page.html` | Homepage dedicata | ➕ Da creare se necessario |
 
-### Template parts
+### Template parts disponibili
 
-Le parti di layout (header/footer) vivono in `/parts/*.html` e sono editabili dal Site Editor.
+| File | Descrizione | Stato |
+|------|-------------|-------|
+| `parts/header.html` | Header con logo + navigazione | ✅ Creato |
+| `parts/footer.html` | Footer con logo + nav + tagline | ✅ Creato |
+
+> **Nota:** Il cliente può modificare header/footer dal Site Editor tramite i template parts.
+> Per modifiche strutturali avanzate, intervenire su `resources/views/sections/header.blade.php` e `footer.blade.php`.
 
 ---
 
@@ -610,7 +617,7 @@ Tutti definiti in `app/ajax.php` e `app/filters.php`. Tutti pubblici (`permissio
 | `GET` | `/wp-json/theme/v1/wishlist-products` | ajax.php | Prodotti per ID (wishlist page) |
 | `POST` | `/wp-json/theme/v1/wishlist` | ajax.php | Toggle wishlist (utenti loggati) |
 | `POST` | `/wp-json/theme/v1/newsletter` | filters.php | Iscrizione newsletter |
-| `POST` | `/wp-json/theme/v1/contact` | ajax.php | Form contatti (legacy: admin_post) |
+| `POST` | `/wp-admin/admin-post.php?action=theme_contact` | ajax.php | Form contatti (admin_post — nonce + honeypot) |
 
 ### Parametri chiave
 
@@ -889,19 +896,41 @@ Nei file pattern `.php`, cerca blocchi `core/columns` e aggiungi l'attributo:
 
 ---
 
-## 20. Pattern mancanti — backlog
+## 20. Pattern — inventario completo (29 pattern)
 
-7 pattern ad alta priorità non ancora creati. Aggiungerli in `patterns/`.
+Tutti e 29 i pattern sono stati creati e sono disponibili nell'inserter.
 
-| Slug | Titolo | Categoria | Priorità |
-|------|--------|-----------|----------|
-| `theme/pricing-table` | Tabella Prezzi — 3 Piani | theme-sections | Alta |
-| `theme/timeline` | Timeline / Processo — Verticale | theme-sections | Alta |
-| `theme/faq-accordion` | FAQ — Accordion | theme-sections | Alta |
-| `theme/before-after` | Before/After — Slider Confronto | theme-sections | Media |
-| `theme/video-section` | Sezione Video — Sfondo o Inline | theme-sections | Media |
-| `theme/map-contact` | Mappa + Contatti — Split | theme-sections | Media |
-| `theme/review-aggregate` | Recensioni Aggregate — Rating + Badge | theme-sections | Media |
+| Slug | File | Categoria |
+|------|------|-----------|
+| `theme/hero` | `patterns/hero.php` | theme-sections |
+| `theme/page-hero` | `patterns/page-hero.php` | theme-sections |
+| `theme/shop-hero` | `patterns/shop-hero.php` | theme-sections |
+| `theme/intro-two-cols` | `patterns/intro-two-cols.php` | theme-sections |
+| `theme/media-text` | `patterns/media-text.php` | theme-sections |
+| `theme/media-text-right` | `patterns/media-text-right.php` | theme-sections |
+| `theme/image-text-list` | `patterns/image-text-list.php` | theme-sections |
+| `theme/stats` | `patterns/stats.php` | theme-sections |
+| `theme/testimonials` | `patterns/testimonials.php` | theme-sections |
+| `theme/full-width-quote` | `patterns/full-width-quote.php` | theme-sections |
+| `theme/cta-banner` | `patterns/cta-banner.php` | theme-sections |
+| `theme/newsletter-cta` | `patterns/newsletter-cta.php` | theme-sections |
+| `theme/contact-section` | `patterns/contact-section.php` | theme-sections |
+| `theme/usp-band` | `patterns/usp-band.php` | theme-sections |
+| `theme/brand-logos` | `patterns/brand-logos.php` | theme-sections |
+| `theme/logos-grid` | `patterns/logos-grid.php` | theme-sections |
+| `theme/product-categories` | `patterns/product-categories.php` | theme-sections |
+| `theme/product-spotlight` | `patterns/product-spotlight.php` | theme-sections |
+| `theme/services-grid` | `patterns/services-grid.php` | theme-sections, theme-cards |
+| `theme/portfolio-grid` | `patterns/portfolio-grid.php` | theme-sections, theme-cards |
+| `theme/team-member-card` | `patterns/team-member-card.php` | theme-sections, theme-cards |
+| `theme/text-with-aside` | `patterns/text-with-aside.php` | theme-sections |
+| `theme/faq-accordion` | `patterns/faq-accordion.php` | theme-sections |
+| `theme/pricing-table` | `patterns/pricing-table.php` | theme-sections |
+| `theme/timeline` | `patterns/timeline.php` | theme-sections |
+| `theme/video-section` | `patterns/video-section.php` | theme-sections |
+| `theme/before-after` | `patterns/before-after.php` | theme-sections |
+| `theme/map-contact` | `patterns/map-contact.php` | theme-sections |
+| `theme/review-aggregate` | `patterns/review-aggregate.php` | theme-sections |
 
 ### Schema header per nuovo pattern
 

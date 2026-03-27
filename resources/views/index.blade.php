@@ -19,7 +19,7 @@
 
     @if($is_archive)
       @if($is_category || $is_tag)
-        <p class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-3">
+        <p class="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">
           {{ $is_category ? __('Categoria', 'sage') : __('Tag', 'sage') }}
         </p>
       @endif
@@ -31,7 +31,7 @@
       @endif
     @else
       {{-- Blog index --}}
-      <p class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-3">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">
         {{ __('Blog', 'sage') }}
       </p>
       <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink">

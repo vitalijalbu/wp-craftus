@@ -46,7 +46,7 @@
   $number_class  = $bg === 'ink' ? 'text-white'       : 'text-ink';
   $label_class   = $bg === 'ink' ? 'text-white/50'    : 'text-muted';
   $section_title_class = $bg === 'ink' ? 'text-white' : 'text-ink';
-  $section_label_class = $bg === 'ink' ? 'text-gold'  : 'text-muted';
+  $section_label_class = $bg === 'ink' ? 'text-accent'  : 'text-muted';
   $grid_cols           = match(count($stats)) {
     2       => 'grid-cols-2',
     3       => 'grid-cols-2 lg:grid-cols-3',
@@ -94,7 +94,7 @@
           </div>
 
           {{-- Gold accent --}}
-          <div class="w-6 h-px bg-gold mx-auto my-3" aria-hidden="true"></div>
+          <div class="w-6 h-px bg-accent mx-auto my-3" aria-hidden="true"></div>
 
           <p class="stat-item__label {{ $label_class }}">{{ $stat['label'] ?? '' }}</p>
         </div>

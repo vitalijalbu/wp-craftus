@@ -29,7 +29,7 @@
   $bg_class    = match($bg) { 'cream' => 'bg-cream', 'ink' => 'bg-ink', default => 'bg-surface' };
   $title_class = $bg === 'ink' ? 'text-white'    : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-gold'     : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-accent'     : 'text-muted';
 @endphp
 
 @if($before_url && $after_url)

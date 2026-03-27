@@ -38,7 +38,7 @@
   };
   $title_class = $bg === 'ink' ? 'text-white'   : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-gold'    : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-accent'    : 'text-muted';
   $step_count  = count($steps);
 
   $grid_class  = match(true) {
@@ -97,7 +97,7 @@
           <div class="process-step__icon-wrap {{ $bg === 'ink' ? 'border-white/20' : 'border-border' }}">
             @if($icon_path)
               <svg
-                class="w-5 h-5 {{ $bg === 'ink' ? 'text-gold' : 'text-primary' }}"
+                class="w-5 h-5 {{ $bg === 'ink' ? 'text-accent' : 'text-primary' }}"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -105,7 +105,7 @@
                 aria-hidden="true"
               >{!! $icon_path !!}</svg>
             @else
-              <span class="process-step__num {{ $bg === 'ink' ? 'text-gold' : 'text-primary' }}"
+              <span class="process-step__num {{ $bg === 'ink' ? 'text-accent' : 'text-primary' }}"
                     aria-hidden="{{ $numbered ? 'false' : 'true' }}">
                 {{ $num }}
               </span>

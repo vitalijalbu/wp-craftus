@@ -23,7 +23,7 @@
     default  => 'bg-surface border-border',
   };
   $text_class = $bg === 'ink' ? 'text-white' : 'text-ink';
-  $dot_class  = 'text-gold';
+  $dot_class  = 'text-accent';
 
   $font_size = match($size) {
     'sm' => 'text-sm',
@@ -49,7 +49,7 @@
           <span class="font-serif font-light tracking-widest uppercase {{ $font_size }} {{ $text_class }}">
             {{ $item }}
           </span>
-          <svg class="w-2 h-2 fill-gold shrink-0" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4"/></svg>
+          <svg class="w-2 h-2 fill-accent shrink-0" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4"/></svg>
         </span>
       @endforeach
     </div>

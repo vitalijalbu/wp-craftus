@@ -10,7 +10,7 @@
 <div class="bg-cream border-b border-border pt-20 pb-10">
   <div class="max-w-360 mx-auto px-6 lg:px-10">
     @include('partials.breadcrumb')
-    <p class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-3">
+    <p class="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">
       {{ __('Chi siamo', 'sage') }}
     </p>
     <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
@@ -49,7 +49,7 @@
           </a>
 
           @if($dept_name)
-            <p class="text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-gold mb-1">
+            <p class="text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-accent mb-1">
               {{ $dept_name }}
             </p>
           @endif

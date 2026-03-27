@@ -3,6 +3,7 @@
 @import "tailwindcss" theme(static);
 
 @source "../../app/**/*.php";
+@source "../../woocommerce/**/*.php";
 @source "../**/*.blade.php";
 @source "../**/*.js";
 
@@ -20,9 +21,6 @@
   /* ── Accent (blue) ────────────────────────────────────────────── */
   --color-accent:       #0074C7;   /* Blue — buttons, labels, hover cues      */
   --color-accent-light: #eff6ff;   /* Tint for backgrounds/badges             */
-  /* Keep gold as alias so legacy Tailwind classes (text-gold) still compile  */
-  --color-gold:         #0074C7;
-  --color-gold-light:   #eff6ff;
 
   /* ── Primary (alias → accent for WC notices/buttons) ────────── */
   --color-primary:      #0074C7;
@@ -51,6 +49,13 @@
   --section-lg:    clamp(4rem, 8vw, 7rem);
 }
 
+/* ── Legacy CSS aliases (no Tailwind utilities generated) ───────────────── */
+/* --color-gold is used by CSS component classes (.btn-gold, .badge-gold etc.) */
+:root {
+  --color-gold:       var(--color-accent);
+  --color-gold-light: var(--color-accent-light);
+}
+
 /* ── Base ────────────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
@@ -72,7 +77,8 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 300;
 }
 
-p {
+/* Default paragraph style — does NOT apply when Gutenberg sets an explicit color */
+p:not(.has-text-color) {
   line-height: 1.75;
   color: var(--color-muted);
 }

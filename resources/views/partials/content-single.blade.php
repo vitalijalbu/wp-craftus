@@ -30,7 +30,7 @@
     @php($cats = get_the_category($post_id))
     @if($cats)
       <a href="{{ esc_url(get_category_link($cats[0]->term_id)) }}"
-         class="text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-gold hover:text-primary transition-colors mb-4 inline-block">
+         class="text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-accent hover:text-primary transition-colors mb-4 inline-block">
         {{ esc_html($cats[0]->name) }}
       </a>
     @endif
@@ -41,7 +41,7 @@
 
     @include('partials.entry-meta')
 
-    <div class="w-12 h-px bg-gold mt-8" aria-hidden="true"></div>
+    <div class="w-12 h-px bg-accent mt-8" aria-hidden="true"></div>
 
   </header>
 

@@ -33,7 +33,7 @@
   $bg_class    = match($bg) { 'cream' => 'bg-cream', 'ink' => 'bg-ink', default => 'bg-surface' };
   $title_class = $bg === 'ink' ? 'text-white'   : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/50' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-gold'    : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-accent'    : 'text-muted';
   $cols_class  = match((int) $cols) {
     2 => 'grid-cols-1 sm:grid-cols-2',
     default => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
@@ -126,9 +126,9 @@
           </a>
           <div>
             @if($cat_name)
-              <span class="text-[0.625rem] font-semibold tracking-[0.2em] uppercase {{ $bg === 'ink' ? 'text-gold' : 'text-muted' }}">{{ $cat_name }}</span>
+              <span class="text-[0.625rem] font-semibold tracking-[0.2em] uppercase {{ $bg === 'ink' ? 'text-accent' : 'text-muted' }}">{{ $cat_name }}</span>
             @endif
-            <h3 class="font-serif text-xl font-light mt-1 {{ $bg === 'ink' ? 'text-white group-hover:text-gold' : 'text-ink group-hover:text-primary' }} transition-colors leading-snug">
+            <h3 class="font-serif text-xl font-light mt-1 {{ $bg === 'ink' ? 'text-white group-hover:text-accent' : 'text-ink group-hover:text-primary' }} transition-colors leading-snug">
               <a href="{{ $perma }}" class="relative after:absolute after:inset-0">{{ esc_html(get_the_title($pid)) }}</a>
             </h3>
             @if($client)

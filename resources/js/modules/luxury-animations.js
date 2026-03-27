@@ -99,15 +99,16 @@ export function initLuxuryAnimations() {
   })
 
   // ── Infinite marquee ──────────────────────────────────────────────────────
+  // Clone items inside the track (so track has 2× content), then animate
+  // the track by -50% — the loop resets exactly where the next cycle begins.
   document.querySelectorAll('.js-marquee-track').forEach((track) => {
-    const items = track.querySelectorAll('.js-marquee-item')
+    const items = Array.from(track.querySelectorAll('.js-marquee-item'))
     if (!items.length) {
       return
     }
-    const clone = track.cloneNode(true)
-    track.parentElement.appendChild(clone)
+    items.forEach((item) => track.appendChild(item.cloneNode(true)))
     const speed = parseFloat(track.dataset.marqueeSpeed ?? '20')
-    gsap.to([track, clone], { xPercent: -50, ease: 'none', duration: speed, repeat: -1 })
+    gsap.to(track, { xPercent: -50, ease: 'none', duration: speed, repeat: -1 })
   })
 
   // ── Horizontal scroll section ─────────────────────────────────────────────

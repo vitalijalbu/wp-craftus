@@ -32,7 +32,7 @@
   };
   $title_class = $bg === 'ink' ? 'text-white'   : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-gold'    : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-accent'    : 'text-muted';
 
   $cols_class = match((int) $cols) {
     2 => 'grid-cols-1 sm:grid-cols-2',
@@ -124,7 +124,7 @@
           </div>
 
           {{-- Title --}}
-          <h3 class="font-serif text-xl font-light leading-snug mb-3 {{ $bg === 'ink' ? 'text-white group-hover:text-gold' : 'text-ink group-hover:text-primary' }} transition-colors">
+          <h3 class="font-serif text-xl font-light leading-snug mb-3 {{ $bg === 'ink' ? 'text-white group-hover:text-accent' : 'text-ink group-hover:text-primary' }} transition-colors">
             <a href="{{ $perma }}" class="relative after:absolute after:inset-0">
               {!! esc_html(get_the_title($pid)) !!}
             </a>

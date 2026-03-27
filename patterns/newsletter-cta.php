@@ -7,12 +7,12 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"backgroundColor":"dark","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"5rem","bottom":"5rem"}}}} -->
-<div class="wp-block-group has-dark-background-color has-background" style="padding-top:5rem;padding-bottom:5rem">
+<!-- wp:group {"backgroundColor":"ink","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"5rem","bottom":"5rem"}}}} -->
+<div class="wp-block-group has-ink-background-color has-background" style="padding-top:5rem;padding-bottom:5rem">
 <!-- wp:group {"layout":{"type":"constrained","contentSize":"40rem"}} -->
 <div class="wp-block-group">
-<!-- wp:paragraph {"align":"center","textColor":"gold","fontSize":"sm","className":"theme-section-label"} -->
-<p class="has-text-align-center has-gold-color has-text-color has-sm-font-size theme-section-label">Newsletter</p>
+<!-- wp:paragraph {"align":"center","textColor":"accent","fontSize":"sm","className":"theme-section-label"} -->
+<p class="has-text-align-center has-accent-color has-text-color has-sm-font-size theme-section-label">Newsletter</p>
 <!-- /wp:paragraph -->
 <!-- wp:heading {"level":2,"textAlign":"center","textColor":"white","fontSize":"4xl","fontFamily":"serif","className":"theme-section-title"} -->
 <h2 class="wp-block-heading has-text-align-center has-white-color has-text-color has-4-xl-font-size has-serif-font-family theme-section-title">Offerte esclusive per<br>chi ama i propri animali</h2>

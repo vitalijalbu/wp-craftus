@@ -8,8 +8,8 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"backgroundColor":"dark","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-dark-background-color has-background">
+<!-- wp:group {"backgroundColor":"ink","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group has-ink-background-color has-background">
 
 	<!-- Titolo -->
 	<!-- wp:heading {"level":2,"textAlign":"center","textColor":"white","fontSize":"2xl","className":"theme-section-title"} -->
@@ -17,7 +17,7 @@
 	<!-- /wp:heading -->
 
 	<!-- 4 colonne statistiche -->
-	<!-- wp:columns -->
+	<!-- wp:columns {"isStackedOnMobile":true} -->
 	<div class="wp-block-columns">
 
 		<!-- Stat 1 -->

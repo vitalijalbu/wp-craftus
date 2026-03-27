@@ -1,0 +1,53 @@
+{
+  "_vendor-alpine-C-Df5laJ.js": {
+    "file": "assets/vendor-alpine-C-Df5laJ.js",
+    "name": "vendor-alpine"
+  },
+  "_vendor-gsap-BOhTbr05.js": {
+    "file": "assets/vendor-gsap-BOhTbr05.js",
+    "name": "vendor-gsap"
+  },
+  "_vendor-swiper-Czb7wm2A.js": {
+    "file": "assets/vendor-swiper-Czb7wm2A.js",
+    "name": "vendor-swiper"
+  },
+  "editor.deps.json": {
+    "file": "assets/editor.deps-2xX8_dVz.json",
+    "src": "editor.deps.json"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-Do_6krxY.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/editor.css": {
+    "file": "assets/editor-DPAL19Hh.css",
+    "name": "editor",
+    "names": [
+      "editor.css"
+    ],
+    "src": "resources/css/editor.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CPdn1Hye.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor-alpine-C-Df5laJ.js",
+      "_vendor-gsap-BOhTbr05.js",
+      "_vendor-swiper-Czb7wm2A.js"
+    ]
+  },
+  "resources/js/editor.js": {
+    "file": "assets/editor-8lGfoRX_.js",
+    "name": "editor",
+    "src": "resources/js/editor.js",
+    "isEntry": true
+  }
+}

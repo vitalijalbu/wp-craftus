@@ -20,7 +20,7 @@
   <div class="max-w-360 mx-auto px-6 lg:px-10">
     @include('partials.breadcrumb')
     @if($cat_name)
-      <a href="{{ $cat_link }}" class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-3 inline-block hover:text-primary transition-colors">
+      <a href="{{ $cat_link }}" class="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3 inline-block hover:text-primary transition-colors">
         {{ $cat_name }}
       </a>
     @endif
@@ -52,7 +52,7 @@
     {{-- Sidebar: project details --}}
     <aside class="space-y-6 text-sm lg:sticky lg:top-28">
 
-      <div class="w-10 h-px bg-gold"></div>
+      <div class="w-10 h-px bg-accent"></div>
 
       @if($client)
         <div>

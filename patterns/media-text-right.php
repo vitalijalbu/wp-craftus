@@ -8,15 +8,15 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"backgroundColor":"off-white","layout":{"type":"constrained"}} -->
-<div class="wp-block-group has-off-white-background-color has-background">
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"backgroundColor":"surface-alt","layout":{"type":"constrained"}} -->
+<div class="wp-block-group has-surface-alt-background-color has-background">
 
 	<!-- wp:media-text {"mediaPosition":"right","mediaType":"image","verticalAlignment":"center","className":"theme-media-text"} -->
 	<div class="wp-block-media-text theme-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 50%">
 		<div class="wp-block-media-text__content">
 
-			<!-- wp:heading {"level":2,"textColor":"dark","fontFamily":"serif","fontSize":"hero","className":"theme-hero-title"} -->
-			<h2 class="wp-block-heading has-dark-color has-text-color has-serif-font-family has-hero-font-size theme-hero-title">Risultati misurabili,<br>non promesse vuote</h2>
+			<!-- wp:heading {"level":2,"textColor":"ink","fontFamily":"serif","fontSize":"hero","className":"theme-hero-title"} -->
+			<h2 class="wp-block-heading has-ink-color has-text-color has-serif-font-family has-hero-font-size theme-hero-title">Risultati misurabili,<br>non promesse vuote</h2>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph {"fontSize":"lg"} -->
@@ -29,8 +29,8 @@
 
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons">
-				<!-- wp:button {"backgroundColor":"dark","textColor":"primary"} -->
-				<div class="wp-block-button"><a class="wp-block-button__link has-dark-background-color has-primary-color has-background has-text-color wp-element-button" href="/portfolio">Vedi i Case Study →</a></div>
+				<!-- wp:button {"backgroundColor":"ink","textColor":"primary"} -->
+				<div class="wp-block-button"><a class="wp-block-button__link has-ink-background-color has-primary-color has-background has-text-color wp-element-button" href="/portfolio">Vedi i Case Study →</a></div>
 				<!-- /wp:button -->
 			</div>
 			<!-- /wp:buttons -->

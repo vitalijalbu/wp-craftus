@@ -51,7 +51,7 @@
 
         {{-- Input --}}
         <form @submit.prevent="submit()" role="search">
-          <label for="search-overlay-input" class="block font-semibold tracking-[0.25em] uppercase text-gold mb-6">
+          <label for="search-overlay-input" class="block font-semibold tracking-[0.25em] uppercase text-accent mb-6">
             {{ __('Cosa stai cercando?', 'sage') }}
           </label>
           <div class="flex items-end border-b border-white/20 pb-3 gap-4 focus-within:border-white/60 transition-colors">
@@ -69,7 +69,7 @@
             >
             <button
               type="submit"
-              class="shrink-0 text-white/40 hover:text-gold transition-colors pb-1"
+              class="shrink-0 text-white/40 hover:text-accent transition-colors pb-1"
               aria-label="{{ __('Cerca', 'sage') }}"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -121,11 +121,11 @@
                     <svg x-show="!item.thumb" class="w-5 h-5 text-white/20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/></svg>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="font-serif text-base font-light text-white group-hover:text-gold transition-colors truncate" x-text="item.title"></p>
+                    <p class="font-serif text-base font-light text-white group-hover:text-accent transition-colors truncate" x-text="item.title"></p>
                     <p class="text-xs text-white/40 truncate mt-0.5" x-text="item.excerpt"></p>
                   </div>
                   <div class="shrink-0 text-right" x-show="item.price">
-                    <span class="text-sm font-medium text-gold" x-html="item.price"></span>
+                    <span class="text-sm font-medium text-accent" x-html="item.price"></span>
                   </div>
                 </a>
               </li>
@@ -137,7 +137,7 @@
             <a
               :href="'{{ home_url("/?s=") }}' + encodeURIComponent(query)"
               @click="hide()"
-              class="text-xs font-semibold tracking-[0.18em] uppercase text-white/40 hover:text-gold transition-colors"
+              class="text-xs font-semibold tracking-[0.18em] uppercase text-white/40 hover:text-accent transition-colors"
             >
               {{ __('Vedi tutti i risultati', 'sage') }}
               <span x-show="totalCount > 0">(<span x-text="totalCount"></span>)</span>

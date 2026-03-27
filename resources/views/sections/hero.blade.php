@@ -69,7 +69,7 @@
         {{-- Label --}}
         @if($hero_label)
           <p
-            class="font-semibold tracking-[0.25em] uppercase text-gold mb-6 opacity-0 animate-fade-in-up animate-delay-100"
+            class="font-semibold tracking-[0.25em] uppercase text-accent mb-6 opacity-0 animate-fade-in-up animate-delay-100"
             data-scroll="fade"
           >{{ $hero_label }}</p>
         @endif

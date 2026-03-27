@@ -11,8 +11,8 @@
 <div class="wp-block-group has-surface-background-color has-background" style="padding-top:5rem;padding-bottom:5rem">
 <!-- wp:group {"layout":{"type":"constrained","contentSize":"36rem"},"style":{"spacing":{"margin":{"bottom":"3.5rem"}}}} -->
 <div class="wp-block-group">
-<!-- wp:paragraph {"align":"center","textColor":"gold","fontSize":"sm","className":"theme-section-label"} -->
-<p class="has-text-align-center has-gold-color has-text-color has-sm-font-size theme-section-label">Le nostre categorie</p>
+<!-- wp:paragraph {"align":"center","textColor":"accent","fontSize":"sm","className":"theme-section-label"} -->
+<p class="has-text-align-center has-accent-color has-text-color has-sm-font-size theme-section-label">Le nostre categorie</p>
 <!-- /wp:paragraph -->
 <!-- wp:heading {"level":2,"textAlign":"center","textColor":"ink","fontSize":"4xl","className":"theme-section-title","fontFamily":"serif"} -->
 <h2 class="wp-block-heading has-text-align-center has-ink-color has-text-color has-4-xl-font-size has-serif-font-family theme-section-title">Trova ciò che cercano</h2>

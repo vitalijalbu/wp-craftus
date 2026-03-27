@@ -34,7 +34,7 @@
       {!! wp_kses_post($text) !!}
       @if($cta_text && $cta_url)
         <a href="{{ $cta_url }}"
-           class="ml-3 font-semibold underline underline-offset-2 hover:text-gold transition-colors">
+           class="ml-3 font-semibold underline underline-offset-2 hover:text-accent transition-colors">
           {{ esc_html($cta_text) }}
         </a>
       @endif

@@ -18,7 +18,7 @@
   <div class="max-w-360 mx-auto px-6 lg:px-10">
     @include('partials.breadcrumb')
     @if($dept_name)
-      <p class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-3">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">
         {{ $dept_name }}
       </p>
     @endif

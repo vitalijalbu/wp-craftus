@@ -214,10 +214,6 @@ add_action('after_setup_theme', function () {
         'label' => __('Theme – Card', 'sage'),
         'description' => __('Card per prodotti, servizi e blog.', 'sage'),
     ]);
-    register_block_pattern_category('theme-carousel', [
-        'label' => __('Theme – Carousel', 'sage'),
-        'description' => __('Sezioni con slider e caroselli.', 'sage'),
-    ]);
 }, 20);
 
 /**

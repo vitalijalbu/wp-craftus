@@ -27,7 +27,7 @@
   $bg_class    = match($bg) { 'cream' => 'bg-cream', 'ink' => 'bg-ink', default => 'bg-surface' };
   $title_class = $bg === 'ink' ? 'text-white'   : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/50' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-gold'    : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-accent'    : 'text-muted';
   $cols_class  = $cols === 3
     ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
     : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4';
@@ -90,7 +90,7 @@
             @endif
             @if($linkedin)
               <a href="{{ esc_url($linkedin) }}" target="_blank" rel="noopener noreferrer"
-                 class="mt-2 inline-block     font-semibold tracking-[0.15em] uppercase {{ $bg === 'ink' ? 'text-gold' : 'text-primary' }} hover:underline"
+                 class="mt-2 inline-block     font-semibold tracking-[0.15em] uppercase {{ $bg === 'ink' ? 'text-accent' : 'text-primary' }} hover:underline"
                  aria-label="{{ __('LinkedIn di', 'sage') }} {{ esc_attr(get_the_title($pid)) }}">
                 LinkedIn
               </a>

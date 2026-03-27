@@ -13,7 +13,7 @@
   $bg_class    = match($bg) { 'cream' => 'bg-cream', 'surface' => 'bg-surface', default => 'bg-ink' };
   $title_class = $bg === 'ink' ? 'text-white'   : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/50' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-gold'    : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-accent'    : 'text-muted';
   $rest_url    = esc_url(rest_url('theme/v1/newsletter'));
   $nonce       = wp_create_nonce('wp_rest');
 @endphp

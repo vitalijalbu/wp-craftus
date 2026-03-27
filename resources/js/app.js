@@ -152,7 +152,9 @@ Alpine.data('siteHeader', () => ({
     document.addEventListener(
       'keydown',
       (e) => {
-        if (e.key !== 'Escape') return
+        if (e.key !== 'Escape') {
+          return
+        }
         this.closeMenu()
         this.closeMobile()
       },
@@ -243,7 +245,9 @@ Alpine.data('cartDrawer', () => ({
   init() {
     // Read initial count from the fragment span rendered server-side
     const countEl = document.querySelector('[data-cart-count]')
-    if (countEl) this.count = parseInt(countEl.dataset.cartCount || '0', 10)
+    if (countEl) {
+      this.count = parseInt(countEl.dataset.cartCount || '0', 10)
+    }
 
     // WooCommerce fires added_to_cart as a jQuery custom event, not a native DOM event
     if (typeof jQuery !== 'undefined') {
@@ -251,7 +255,9 @@ Alpine.data('cartDrawer', () => ({
         if (fragments) {
           jQuery.each(fragments, (selector, html) => jQuery(selector).replaceWith(html))
           const el = document.querySelector('[data-cart-count]')
-          if (el) this.count = parseInt(el.dataset.cartCount || '0', 10)
+          if (el) {
+            this.count = parseInt(el.dataset.cartCount || '0', 10)
+          }
           this.loading = false
         } else {
           this.refreshFragment()
@@ -264,11 +270,17 @@ Alpine.data('cartDrawer', () => ({
     }
   },
 
-  open() { this.isOpen = true },
-  close() { this.isOpen = false },
+  open() {
+    this.isOpen = true
+  },
+  close() {
+    this.isOpen = false
+  },
 
   refreshFragment() {
-    if (typeof jQuery === 'undefined') return
+    if (typeof jQuery === 'undefined') {
+      return
+    }
     this.loading = true
     jQuery.post(
       window.wc_cart_fragments_params?.ajax_url ?? '/wp-admin/admin-ajax.php',
@@ -278,7 +290,9 @@ Alpine.data('cartDrawer', () => ({
           jQuery.each(res.fragments, (key, val) => jQuery(key).replaceWith(val))
         }
         const el = document.querySelector('[data-cart-count]')
-        if (el) this.count = parseInt(el.dataset.cartCount || '0', 10)
+        if (el) {
+          this.count = parseInt(el.dataset.cartCount || '0', 10)
+        }
         this.loading = false
       },
     )

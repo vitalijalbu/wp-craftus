@@ -16,7 +16,7 @@ add_filter('woocommerce_add_to_cart_fragments', function (array $fragments): arr
 
     $count = (int) WC()->cart->get_cart_contents_count();
     $html = sprintf(
-        '<span class="cart-count-fragment absolute -top-1 -right-1 min-w-4 h-4 bg-gold text-ink     font-bold rounded-full flex items-center justify-center px-0.5 leading-none transition-opacity %s" data-cart-count="%d">%d</span>',
+        '<span class="cart-count-fragment absolute -top-1 -right-1 min-w-4 h-4 bg-accent text-ink     font-bold rounded-full flex items-center justify-center px-0.5 leading-none transition-opacity %s" data-cart-count="%d">%d</span>',
         $count === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100',
         $count,
         $count
@@ -171,7 +171,7 @@ add_action('woocommerce_after_add_to_cart_button', function () {
     ];
     foreach ($badges as $b) {
         printf(
-            '<span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="%s"/></svg>%s</span>',
+            '<span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="%s"/></svg>%s</span>',
             esc_attr($b['icon']),
             esc_html($b['label'])
         );

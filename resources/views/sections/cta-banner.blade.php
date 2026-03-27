@@ -22,7 +22,7 @@
   };
   $title_class  = in_array($style, ['dark', 'image', 'primary']) ? 'text-white'   : 'text-ink';
   $sub_class    = in_array($style, ['dark', 'image', 'primary']) ? 'text-white/65' : 'text-muted';
-  $label_class  = 'text-gold';
+  $label_class  = 'text-accent';
 
   $align_class = $align === 'center' ? 'text-center items-center mx-auto' : 'text-left';
   $btn_class   = match($style) {

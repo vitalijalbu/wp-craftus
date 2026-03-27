@@ -14,8 +14,8 @@
 	<!-- Titolo sezione -->
 	<!-- wp:group {"layout":{"type":"constrained","contentSize":"36rem"}} -->
 	<div class="wp-block-group">
-		<!-- wp:heading {"level":2,"textAlign":"center","textColor":"dark","fontSize":"2xl","className":"theme-section-title"} -->
-		<h2 class="wp-block-heading has-text-align-center has-dark-color has-text-color has-2-xl-font-size theme-section-title">Parliamo del tuo progetto</h2>
+		<!-- wp:heading {"level":2,"textAlign":"center","textColor":"ink","fontSize":"2xl","className":"theme-section-title"} -->
+		<h2 class="wp-block-heading has-text-align-center has-ink-color has-text-color has-2-xl-font-size theme-section-title">Parliamo del tuo progetto</h2>
 		<!-- /wp:heading -->
 		<!-- wp:paragraph {"align":"center","fontSize":"lg"} -->
 		<p class="has-text-align-center has-lg-font-size">Compila il form o contattaci direttamente. Rispondiamo entro 24 ore lavorative.</p>

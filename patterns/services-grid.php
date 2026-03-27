@@ -14,8 +14,8 @@
 	<!-- Titolo sezione -->
 	<!-- wp:group {"layout":{"type":"constrained","contentSize":"38rem"}} -->
 	<div class="wp-block-group">
-		<!-- wp:heading {"level":2,"textAlign":"center","textColor":"dark","fontSize":"2xl","className":"theme-section-title"} -->
-		<h2 class="wp-block-heading has-text-align-center has-dark-color has-text-color has-2-xl-font-size theme-section-title">I Nostri Servizi</h2>
+		<!-- wp:heading {"level":2,"textAlign":"center","textColor":"ink","fontSize":"2xl","className":"theme-section-title"} -->
+		<h2 class="wp-block-heading has-text-align-center has-ink-color has-text-color has-2-xl-font-size theme-section-title">I Nostri Servizi</h2>
 		<!-- /wp:heading -->
 		<!-- wp:paragraph {"align":"center","fontSize":"lg"} -->
 		<p class="has-text-align-center has-lg-font-size">Soluzioni su misura per comunicare al meglio la tua azienda, costruire autorevolezza e acquisire nuovi clienti.</p>
@@ -35,8 +35,8 @@
 				<!-- wp:paragraph -->
 				<p aria-hidden="true">🎯</p>
 				<!-- /wp:paragraph -->
-				<!-- wp:heading {"level":3,"textColor":"dark","fontSize":"xl"} -->
-				<h3 class="wp-block-heading has-dark-color has-text-color has-xl-font-size">Strategia di Comunicazione</h3>
+				<!-- wp:heading {"level":3,"textColor":"ink","fontSize":"xl"} -->
+				<h3 class="wp-block-heading has-ink-color has-text-color has-xl-font-size">Strategia di Comunicazione</h3>
 				<!-- /wp:heading -->
 				<!-- wp:paragraph {"fontSize":"lg"} -->
 				<p class="has-lg-font-size">Analizziamo il tuo mercato e definiamo la strategia comunicativa più efficace per raggiungere e convertire il tuo target.</p>
@@ -57,8 +57,8 @@
 				<!-- wp:paragraph -->
 				<p aria-hidden="true">✏️</p>
 				<!-- /wp:paragraph -->
-				<!-- wp:heading {"level":3,"textColor":"dark","fontSize":"xl"} -->
-				<h3 class="wp-block-heading has-dark-color has-text-color has-xl-font-size">Content Marketing</h3>
+				<!-- wp:heading {"level":3,"textColor":"ink","fontSize":"xl"} -->
+				<h3 class="wp-block-heading has-ink-color has-text-color has-xl-font-size">Content Marketing</h3>
 				<!-- /wp:heading -->
 				<!-- wp:paragraph {"fontSize":"lg"} -->
 				<p class="has-lg-font-size">Creiamo contenuti che parlano al tuo pubblico: articoli SEO, video, newsletter e social post che generano engagement e fiducia.</p>
@@ -79,8 +79,8 @@
 				<!-- wp:paragraph -->
 				<p aria-hidden="true">📱</p>
 				<!-- /wp:paragraph -->
-				<!-- wp:heading {"level":3,"textColor":"dark","fontSize":"xl"} -->
-				<h3 class="wp-block-heading has-dark-color has-text-color has-xl-font-size">Social Media Management</h3>
+				<!-- wp:heading {"level":3,"textColor":"ink","fontSize":"xl"} -->
+				<h3 class="wp-block-heading has-ink-color has-text-color has-xl-font-size">Social Media Management</h3>
 				<!-- /wp:heading -->
 				<!-- wp:paragraph {"fontSize":"lg"} -->
 				<p class="has-lg-font-size">Gestiamo i tuoi profili social con approccio strategico: dalla creazione dei contenuti alla community management e advertising.</p>

@@ -110,7 +110,7 @@
                 >
                   @for($i = 0; $i < 5; $i++)
                     <svg
-                      class="w-4 h-4 {{ $i < $t['rating'] ? 'text-gold fill-gold' : 'text-border fill-border' }}"
+                      class="w-4 h-4 {{ $i < $t['rating'] ? 'text-accent fill-accent' : 'text-border fill-border' }}"
                       viewBox="0 0 24 24"
                       aria-hidden="true"
                     >
@@ -145,7 +145,7 @@
                     class="testimonial-card__avatar bg-cream flex items-center justify-center shrink-0"
                     aria-hidden="true"
                   >
-                    <span class="font-serif text-gold text-sm font-medium">
+                    <span class="font-serif text-accent text-sm font-medium">
                       {{ mb_substr($t['name'] ?? 'A', 0, 1) }}
                     </span>
                   </div>

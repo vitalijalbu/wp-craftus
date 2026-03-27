@@ -32,8 +32,6 @@
         { "slug": "accent", "color": "#0074C7", "name": "Accent (Blue)" },
         { "slug": "accent-light", "color": "#eff6ff", "name": "Accent Light" },
         { "slug": "primary", "color": "#0074C7", "name": "Primary" },
-        { "slug": "contrast", "color": "#0a0a0a", "name": "Contrast" },
-        { "slug": "base", "color": "#ffffff", "name": "Base" },
         { "slug": "success", "color": "#16a34a", "name": "Success" },
         { "slug": "warning", "color": "#d97706", "name": "Warning" },
         { "slug": "error", "color": "#dc2626", "name": "Error" }

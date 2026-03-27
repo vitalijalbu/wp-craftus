@@ -56,10 +56,10 @@
       <div class="sm:w-2/5 bg-ink flex items-center justify-center p-8 relative overflow-hidden">
         <div class="absolute inset-0 opacity-5">
           <div class="absolute -top-10 -left-10 w-40 h-40 bg-accent rounded-full"></div>
-          <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-gold rounded-full"></div>
+          <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-accent rounded-full"></div>
         </div>
         <div class="relative text-center">
-          <p class="font-sans text-xs font-semibold tracking-[0.3em] uppercase text-gold mb-4">{{ __('Esclusivo', 'sage') }}</p>
+          <p class="font-sans text-xs font-semibold tracking-[0.3em] uppercase text-accent mb-4">{{ __('Esclusivo', 'sage') }}</p>
           <p class="font-serif text-3xl font-light text-white leading-tight">-10%</p>
           <p class="text-white/50 text-sm mt-2">{{ __('sul tuo primo ordine', 'sage') }}</p>
         </div>

@@ -48,7 +48,7 @@
   };
   $title_class = $bg === 'ink' ? 'text-white'   : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-gold'    : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-accent'    : 'text-muted';
 
   $cols_class = match(count($pages)) {
     1       => 'grid-cols-1 max-w-lg mx-auto',
@@ -126,12 +126,12 @@
           {{-- Body --}}
           <div class="related-page-card__body flex flex-col flex-1">
             @if($label)
-              <span class="text-[0.65rem] font-semibold tracking-[0.2em] uppercase mb-2 {{ $bg === 'ink' ? 'text-gold' : 'text-muted' }}">
+              <span class="text-[0.65rem] font-semibold tracking-[0.2em] uppercase mb-2 {{ $bg === 'ink' ? 'text-accent' : 'text-muted' }}">
                 {{ $label }}
               </span>
             @endif
 
-            <h3 class="font-serif text-xl font-light leading-snug mb-3 {{ $bg === 'ink' ? 'text-white group-hover:text-gold' : 'text-ink group-hover:text-primary' }} transition-colors">
+            <h3 class="font-serif text-xl font-light leading-snug mb-3 {{ $bg === 'ink' ? 'text-white group-hover:text-accent' : 'text-ink group-hover:text-primary' }} transition-colors">
               <a href="{{ $perma }}" class="relative after:absolute after:inset-0">
                 {!! esc_html(get_the_title($pid)) !!}
               </a>
