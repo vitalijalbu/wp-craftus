@@ -38,7 +38,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:group {"style":{"border":{"width":"1px","style":"solid","color":"#e0e0e0"},"spacing":{"padding":{"all":"0"}}},"backgroundColor":"surface","layout":{"type":"default"}} -->
-			<div class="wp-block-group has-surface-background-color has-background" style="border:1px solid #e0e0e0">
+			<div class="wp-block-group has-surface-background-color has-background" style="border:1px solid var(--wp--preset--color--border, #e0e0e0)">
 				<!-- wp:image {"aspectRatio":"4/3","scale":"cover","sizeSlug":"large"} -->
 				<figure class="wp-block-image size-large">
 					<img src="" alt="Immagine Prima" style="aspect-ratio:4/3;object-fit:cover"/>
@@ -66,7 +66,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:group {"style":{"border":{"width":"2px","style":"solid","color":"#0074C7"},"spacing":{"padding":{"all":"0"}}},"backgroundColor":"surface","layout":{"type":"default"}} -->
-			<div class="wp-block-group has-surface-background-color has-background" style="border:2px solid #0074C7">
+			<div class="wp-block-group has-surface-background-color has-background" style="border:2px solid var(--wp--preset--color--accent, #0074C7)">
 				<!-- wp:image {"aspectRatio":"4/3","scale":"cover","sizeSlug":"large"} -->
 				<figure class="wp-block-image size-large">
 					<img src="" alt="Immagine Dopo" style="aspect-ratio:4/3;object-fit:cover"/>

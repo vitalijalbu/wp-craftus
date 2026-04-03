@@ -31,7 +31,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:group {"className":"theme-service-card","style":{"spacing":{"padding":{"all":"2rem"}},"border":{"width":"1px","style":"solid","color":"#e5e7eb"}},"layout":{"type":"default"}} -->
-			<div class="wp-block-group theme-service-card" style="border:1px solid #e5e7eb;padding:2rem">
+			<div class="wp-block-group theme-service-card" style="border:1px solid var(--wp--preset--color--border, #e5e7eb);padding:2rem">
 				<!-- wp:paragraph -->
 				<p aria-hidden="true">🎯</p>
 				<!-- /wp:paragraph -->
@@ -53,7 +53,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:group {"className":"theme-service-card","style":{"spacing":{"padding":{"all":"2rem"}},"border":{"width":"1px","style":"solid","color":"#e5e7eb"}},"layout":{"type":"default"}} -->
-			<div class="wp-block-group theme-service-card" style="border:1px solid #e5e7eb;padding:2rem">
+			<div class="wp-block-group theme-service-card" style="border:1px solid var(--wp--preset--color--border, #e5e7eb);padding:2rem">
 				<!-- wp:paragraph -->
 				<p aria-hidden="true">✏️</p>
 				<!-- /wp:paragraph -->
@@ -75,7 +75,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:group {"className":"theme-service-card","style":{"spacing":{"padding":{"all":"2rem"}},"border":{"width":"1px","style":"solid","color":"#e5e7eb"}},"layout":{"type":"default"}} -->
-			<div class="wp-block-group theme-service-card" style="border:1px solid #e5e7eb;padding:2rem">
+			<div class="wp-block-group theme-service-card" style="border:1px solid var(--wp--preset--color--border, #e5e7eb);padding:2rem">
 				<!-- wp:paragraph -->
 				<p aria-hidden="true">📱</p>
 				<!-- /wp:paragraph -->

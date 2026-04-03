@@ -25,6 +25,7 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
         'facebook' => ['label' => 'Facebook',  'priority' => 20],
         'tiktok' => ['label' => 'TikTok',    'priority' => 30],
         'youtube' => ['label' => 'YouTube',   'priority' => 40],
+        'whatsapp' => ['label' => 'WhatsApp (numero con prefisso, es. +393401234567)', 'priority' => 50],
     ];
 
     foreach ($social_networks as $slug => $config) {
@@ -206,13 +207,34 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
 });
 
 /**
- * Helper: return the CTA URL, falling back to /contatti.
+ * Helper: return the CTA URL, falling back to a filterable slug.
+ * Override the slug per-project: add_filter('theme_cta_fallback_path', fn() => '/contact');
  */
 function theme_cta_url(): string
 {
     $override = get_theme_mod('cta_url', '');
+    if ($override) {
+        return esc_url($override);
+    }
 
-    return $override ? esc_url($override) : esc_url(home_url('/contatti'));
+    $fallback_path = apply_filters('theme_cta_fallback_path', '/contatti');
+
+    return esc_url(home_url($fallback_path));
+}
+
+/**
+ * Helper: return the WhatsApp URL from the customizer social_whatsapp field.
+ * Returns empty string if not set.
+ */
+function theme_whatsapp_url(): string
+{
+    $number = get_theme_mod('social_whatsapp', '');
+    if (! $number) {
+        return '';
+    }
+    $number = preg_replace('/[^+\d]/', '', $number);
+
+    return esc_url('https://wa.me/'.ltrim($number, '+'));
 }
 
 /**

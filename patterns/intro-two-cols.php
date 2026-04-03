@@ -49,9 +49,9 @@
 			<div style="height:1.5rem" aria-hidden="true" class="wp-block-spacer"></div>
 			<!-- /wp:spacer -->
 
-			<!-- Riga decorativa blu -->
-			<!-- wp:group {"style":{"dimensions":{"minHeight":"4px"},"color":{"background":"#3E80C4"}},"layout":{"type":"constrained","contentSize":"6rem"}} -->
-			<div class="wp-block-group has-background" style="background-color:#3E80C4;min-height:4px"></div>
+			<!-- Riga decorativa accent -->
+			<!-- wp:group {"style":{"dimensions":{"minHeight":"4px"}},"backgroundColor":"accent","layout":{"type":"constrained","contentSize":"6rem"}} -->
+			<div class="wp-block-group has-accent-background-color has-background" style="min-height:4px"></div>
 			<!-- /wp:group -->
 
 		</div>

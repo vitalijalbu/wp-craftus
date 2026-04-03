@@ -11,7 +11,7 @@ $ink = '#0a0a0a';
 $muted = '#6b6b6b';
 $accent = '#0074C7';
 $border = '#e0e0e0';
-$heading_font = 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+$heading_font = 'Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 $body_font = 'Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 ?>
 
@@ -187,4 +187,66 @@ table.td th {
 #template_footer a:hover {
     color: #ffffff !important;
     text-decoration: underline;
+}
+
+/* Product image column in order table */
+.wc-item-meta,
+.product-quantity {
+    font-size: 13px;
+    color: <?= esc_attr($muted) ?>;
+}
+
+td.td img {
+    max-width: 64px;
+    height: auto;
+    border: 1px solid <?= esc_attr($border) ?>;
+    vertical-align: middle;
+}
+
+/* Totals: right-align amounts */
+.woocommerce-email-order-details tfoot tr td {
+    text-align: right;
+    font-weight: 600;
+    color: <?= esc_attr($ink) ?>;
+}
+
+/* Grand total row: bolder */
+.woocommerce-email-order-details tfoot tr:last-child th,
+.woocommerce-email-order-details tfoot tr:last-child td {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* ── Responsive (email clients that support media queries) ────────────────── */
+@media only screen and (max-width: 620px) {
+    #wrapper {
+        padding: 16px 0 !important;
+    }
+
+    #template_container {
+        width: 100% !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+
+    #template_header,
+    #body_content,
+    #template_footer {
+        padding: 24px 20px !important;
+    }
+
+    table.td td,
+    table.td th {
+        padding: 10px 12px !important;
+    }
+
+    /* Stack address boxes */
+    .address {
+        padding: 16px !important;
+    }
+
+    /* Reduce product image size on mobile */
+    td.td img {
+        max-width: 48px !important;
+    }
 }

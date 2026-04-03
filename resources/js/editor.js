@@ -674,3 +674,85 @@ registerBlockType('theme/icon-box', {
   },
   save: () => null,
 })
+
+// ── theme/accordion ────────────────────────────────────────────────────────────
+registerBlockType('theme/accordion', {
+  edit({ attributes, setAttributes }) {
+    const { items, style, openFirst } = attributes
+
+    const styleOptions = [
+      { value: 'lines',  label: __('Linee (default)', 'sage') },
+      { value: 'cards',  label: __('Card con sfondo', 'sage') },
+      { value: 'filled', label: __('Filled (titolo scuro)', 'sage') },
+    ]
+
+    const updateItem = (index, field, value) => {
+      const next = items.map((item, i) => (i === index ? { ...item, [field]: value } : item))
+      setAttributes({ items: next })
+    }
+
+    const addItem = () => {
+      setAttributes({
+        items: [...items, { question: __('Nuova domanda?', 'sage'), answer: __('Risposta...', 'sage') }],
+      })
+    }
+
+    const removeItem = (index) => {
+      setAttributes({ items: items.filter((_, i) => i !== index) })
+    }
+
+    return el(
+      Fragment,
+      null,
+      el(
+        InspectorControls,
+        null,
+        el(
+          PanelBody,
+          { title: __('Stile', 'sage'), initialOpen: true },
+          el(SelectControl, {
+            label: __('Stile accordion', 'sage'),
+            value: style ?? 'lines',
+            options: styleOptions,
+            onChange: (val) => setAttributes({ style: val }),
+          }),
+          el(ToggleControl, {
+            label: __('Apri il primo item di default', 'sage'),
+            checked: openFirst ?? true,
+            onChange: (val) => setAttributes({ openFirst: val }),
+          }),
+        ),
+        el(
+          PanelBody,
+          { title: __('Domande', 'sage'), initialOpen: true },
+          ...(items ?? []).map((item, index) =>
+            el(
+              'div',
+              { key: index, style: { borderBottom: '1px solid #e0e0e0', paddingBottom: '12px', marginBottom: '12px' } },
+              el(TextControl, {
+                label: `${__('Domanda', 'sage')} ${index + 1}`,
+                value: item.question ?? '',
+                onChange: (val) => updateItem(index, 'question', val),
+              }),
+              el(TextareaControl, {
+                label: __('Risposta', 'sage'),
+                value: item.answer ?? '',
+                rows: 3,
+                onChange: (val) => updateItem(index, 'answer', val),
+              }),
+              items.length > 1 &&
+                el(
+                  Button,
+                  { variant: 'link', isDestructive: true, onClick: () => removeItem(index) },
+                  __('Rimuovi', 'sage'),
+                ),
+            ),
+          ),
+          el(Button, { variant: 'secondary', onClick: addItem }, `+ ${__('Aggiungi domanda', 'sage')}`),
+        ),
+      ),
+      el('div', useBlockProps(), el(ServerSideRender, { block: 'theme/accordion', attributes })),
+    )
+  },
+  save: () => null,
+})

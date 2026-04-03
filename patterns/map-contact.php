@@ -71,7 +71,7 @@
 				<!-- /wp:group -->
 
 				<!-- wp:separator {"style":{"color":{"background":"#e0e0e0"}}} -->
-				<hr class="wp-block-separator has-alpha-channel-opacity" style="background-color:#e0e0e0"/>
+				<hr class="wp-block-separator has-alpha-channel-opacity" style="background-color:var(--wp--preset--color--border, #e0e0e0)"/>
 				<!-- /wp:separator -->
 
 				<!-- Telefono -->
@@ -87,7 +87,7 @@
 				<!-- /wp:group -->
 
 				<!-- wp:separator {"style":{"color":{"background":"#e0e0e0"}}} -->
-				<hr class="wp-block-separator has-alpha-channel-opacity" style="background-color:#e0e0e0"/>
+				<hr class="wp-block-separator has-alpha-channel-opacity" style="background-color:var(--wp--preset--color--border, #e0e0e0)"/>
 				<!-- /wp:separator -->
 
 				<!-- Email -->
@@ -103,7 +103,7 @@
 				<!-- /wp:group -->
 
 				<!-- wp:separator {"style":{"color":{"background":"#e0e0e0"}}} -->
-				<hr class="wp-block-separator has-alpha-channel-opacity" style="background-color:#e0e0e0"/>
+				<hr class="wp-block-separator has-alpha-channel-opacity" style="background-color:var(--wp--preset--color--border, #e0e0e0)"/>
 				<!-- /wp:separator -->
 
 				<!-- Orari -->

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "theme/accordion",
+  "title": "Accordion – FAQ / Domande",
+  "category": "theme",
+  "description": "Lista di domande/risposte espandibili. Ogni item ha un titolo cliccabile e un testo che si apre/chiude.",
+  "keywords": ["accordion", "faq", "domande", "risposte", "toggle", "collapse"],
+  "textdomain": "sage",
+  "render": "file:render.php",
+  "supports": {
+    "anchor": true,
+    "align": ["wide"],
+    "html": false,
+    "color": {
+      "background": true,
+      "text": false
+    }
+  },
+  "attributes": {
+    "items": {
+      "type": "array",
+      "default": [
+        { "question": "Prima domanda?", "answer": "Risposta alla prima domanda." },
+        { "question": "Seconda domanda?", "answer": "Risposta alla seconda domanda." },
+        { "question": "Terza domanda?", "answer": "Risposta alla terza domanda." }
+      ]
+    },
+    "style": {
+      "type": "string",
+      "default": "lines",
+      "enum": ["lines", "cards", "filled"]
+    },
+    "openFirst": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

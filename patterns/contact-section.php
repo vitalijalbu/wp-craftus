@@ -72,6 +72,10 @@
 				</div>
 				<!-- /wp:group -->
 
+				<?php
+				$wa_url = function_exists('App\\theme_whatsapp_url') ? \App\theme_whatsapp_url() : '';
+				if ($wa_url) :
+				?>
 				<!-- WhatsApp -->
 				<!-- wp:group {"layout":{"type":"flex","verticalAlignment":"center"}} -->
 				<div class="wp-block-group">
@@ -81,16 +85,18 @@
 					<!-- wp:group {"layout":{"type":"default"}} -->
 					<div class="wp-block-group">
 						<!-- wp:paragraph {"className":"theme-section-label"} -->
-						<p class="theme-section-label">WhatsApp</p>
+						<p class="theme-section-label"><?php esc_html_e('WhatsApp', 'sage'); ?></p>
 						<!-- /wp:paragraph -->
 						<!-- wp:paragraph {"fontSize":"lg"} -->
-						<p class="has-lg-font-size"><a href="https://wa.me/393000000000" target="_blank" rel="noopener">Scrivici su WhatsApp</a></p>
+						<p class="has-lg-font-size"><a href="<?php echo esc_url($wa_url); ?>" target="_blank" rel="noopener"><?php esc_html_e('Scrivici su WhatsApp', 'sage'); ?></a></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:group -->
 				</div>
 				<!-- /wp:group -->
+				<?php endif; ?>
 
+				<?php $contact_address = get_theme_mod('contact_address', ''); if ($contact_address) : ?>
 				<!-- Sede -->
 				<!-- wp:group {"layout":{"type":"flex","verticalAlignment":"center"}} -->
 				<div class="wp-block-group">
@@ -100,15 +106,16 @@
 					<!-- wp:group {"layout":{"type":"default"}} -->
 					<div class="wp-block-group">
 						<!-- wp:paragraph {"className":"theme-section-label"} -->
-						<p class="theme-section-label">Sede</p>
+						<p class="theme-section-label"><?php esc_html_e('Sede', 'sage'); ?></p>
 						<!-- /wp:paragraph -->
 						<!-- wp:paragraph {"fontSize":"lg"} -->
-						<p class="has-lg-font-size">Pavia, Lombardia – Italia</p>
+						<p class="has-lg-font-size"><?php echo nl2br(esc_html($contact_address)); ?></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:group -->
 				</div>
 				<!-- /wp:group -->
+				<?php endif; ?>
 
 			</div>
 			<!-- /wp:group -->
@@ -121,7 +128,7 @@
 		<div class="wp-block-column is-vertically-aligned-top" style="flex-basis:60%">
 
 			<!-- wp:group {"className":"theme-contact-form","style":{"spacing":{"padding":{"all":"2.5rem"}},"border":{"width":"1px","style":"solid","color":"#e5e7eb"}}} -->
-			<div class="wp-block-group theme-contact-form" style="border:1px solid #e5e7eb;padding:2.5rem">
+			<div class="wp-block-group theme-contact-form" style="border:1px solid var(--wp--preset--color--border, #e5e7eb);padding:2.5rem">
 
 				<!-- wp:html -->
 				<form class="theme-form" id="theme-contact-form" novalidate>

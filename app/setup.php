@@ -234,7 +234,20 @@ add_filter('loop_shop_columns', fn () => 3);
  * preconnect hints reduce DNS + TLS handshake latency.
  */
 add_action('wp_head', function () {
-    $font_url = 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap';
+    /**
+     * Filter the Google Fonts URL.
+     * Override per-project: add_filter('theme_font_url', fn() => 'https://fonts.googleapis.com/...');
+     * Return empty string to disable Google Fonts entirely (self-hosted fonts).
+     */
+    $font_url = apply_filters(
+        'theme_font_url',
+        'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap'
+    );
+
+    if (! $font_url) {
+        return;
+    }
+
     $url = esc_url($font_url);
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">'."\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'."\n";
@@ -266,6 +279,53 @@ add_action('wp_head', function () {
     }
 
     $post_type = get_post_type($post);
+
+    // WooCommerce Product schema — output separately and return early.
+    if ($post_type === 'product' && function_exists('wc_get_product')) {
+        $product = wc_get_product($post->ID);
+        if ($product) {
+            $thumb_id = get_post_thumbnail_id($post);
+            $img_url  = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : '';
+
+            $offer = [
+                '@type'         => 'Offer',
+                'price'         => $product->get_price(),
+                'priceCurrency' => get_woocommerce_currency(),
+                'availability'  => $product->is_in_stock()
+                    ? 'https://schema.org/InStock'
+                    : 'https://schema.org/OutOfStock',
+                'url'           => get_permalink($post),
+            ];
+
+            $product_data = [
+                '@context'    => 'https://schema.org',
+                '@type'       => 'Product',
+                'name'        => get_the_title($post),
+                'url'         => get_permalink($post),
+                'description' => has_excerpt($post) ? wp_strip_all_tags(get_the_excerpt($post)) : '',
+                'offers'      => $offer,
+            ];
+
+            if ($img_url) {
+                $product_data['image'] = $img_url;
+            }
+
+            $rating_count = (int) $product->get_rating_count();
+            if ($rating_count > 0) {
+                $product_data['aggregateRating'] = [
+                    '@type'       => 'AggregateRating',
+                    'ratingValue' => (float) $product->get_average_rating(),
+                    'reviewCount' => $rating_count,
+                ];
+            }
+
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo '<script type="application/ld+json">'.wp_json_encode($product_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE).'</script>'."\n";
+        }
+
+        return;
+    }
+
     $schema_type = match ($post_type) {
         'post' => 'Article',
         'portfolio' => 'CreativeWork',
@@ -402,7 +462,7 @@ add_filter('block_categories_all', function (array $categories): array {
  * Each block lives in blocks/{name}/ with a block.json + render.php.
  */
 add_action('init', function () {
-    $blocks = ['hero', 'testimonial', 'stat', 'icon-box'];
+    $blocks = ['hero', 'testimonial', 'stat', 'icon-box', 'accordion'];
     foreach ($blocks as $name) {
         $dir = get_template_directory()."/blocks/{$name}";
         if (is_dir($dir)) {

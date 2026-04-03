@@ -116,6 +116,25 @@ export function initCarousels() {
     })
   })
 
+  // ── Logo carousel (brand / partner logos, FreeMode autoplay) ────────────────
+  document.querySelectorAll('.js-logos-swiper').forEach((el) => {
+    new Swiper(el, {
+      modules: [FreeMode, Autoplay, A11y],
+      slidesPerView: 2.5,
+      spaceBetween: 32,
+      loop: true,
+      freeMode: { enabled: true },
+      autoplay: { delay: 0, disableOnInteraction: false },
+      speed: 4000,
+      breakpoints: {
+        480:  { slidesPerView: 3,   spaceBetween: 40 },
+        768:  { slidesPerView: 4.5, spaceBetween: 48 },
+        1024: { slidesPerView: 6,   spaceBetween: 56 },
+      },
+      a11y: { enabled: false },
+    })
+  })
+
   // ── Product gallery (Swiper + Thumbs) ─────────────────────────────────────
   document.querySelectorAll('.js-product-gallery').forEach((el) => {
     const wrapper = el.closest('.product-gallery')

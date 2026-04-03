@@ -28,22 +28,32 @@
 			<div class="wp-block-button"><a class="wp-block-button__link has-ink-background-color has-white-color has-background has-text-color wp-element-button" href="/contatti">📅 Prenota una consulenza</a></div>
 			<!-- /wp:button -->
 			<!-- wp:button {"className":"is-style-outline"} -->
-			<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="tel:<?php echo esc_attr(get_theme_mod('contact_phone', '+39030000000')); ?>">📞 <?php echo esc_html(get_theme_mod('contact_phone', '030 000 000')); ?></a></div>
+			<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="tel:<?php echo esc_attr(get_theme_mod('contact_phone', '')); ?>"><?php echo esc_html(get_theme_mod('contact_phone', '')); ?></a></div>
 			<!-- /wp:button -->
 		</div>
 		<!-- /wp:buttons -->
 
+		<?php
+		$wa_url   = function_exists('App\\theme_whatsapp_url') ? \App\theme_whatsapp_url() : '';
+		$contact_email = get_theme_mod('contact_email', '');
+		if ($wa_url || $contact_email) :
+		?>
 		<!-- Link secondari: WhatsApp + email -->
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"center"}} -->
 		<div class="wp-block-group">
+			<?php if ($wa_url) : ?>
 			<!-- wp:paragraph {"textColor":"white","fontSize":"lg"} -->
-			<p class="has-white-color has-text-color has-lg-font-size">💬 <a href="https://wa.me/393000000000" target="_blank" rel="noopener">WhatsApp</a></p>
+			<p class="has-white-color has-text-color has-lg-font-size">💬 <a href="<?php echo esc_url($wa_url); ?>" target="_blank" rel="noopener"><?php esc_html_e('WhatsApp', 'sage'); ?></a></p>
 			<!-- /wp:paragraph -->
+			<?php endif; ?>
+			<?php if ($contact_email) : ?>
 			<!-- wp:paragraph {"textColor":"white","fontSize":"lg"} -->
-			<p class="has-white-color has-text-color has-lg-font-size">✉️ <a href="mailto:<?php echo esc_attr(get_theme_mod('contact_email', 'info@theme.it')); ?>"><?php echo esc_html(get_theme_mod('contact_email', 'info@theme.it')); ?></a></p>
+			<p class="has-white-color has-text-color has-lg-font-size">✉️ <a href="mailto:<?php echo esc_attr($contact_email); ?>"><?php echo esc_html($contact_email); ?></a></p>
 			<!-- /wp:paragraph -->
+			<?php endif; ?>
 		</div>
 		<!-- /wp:group -->
+		<?php endif; ?>
 
 	</div>
 	<!-- /wp:group -->
