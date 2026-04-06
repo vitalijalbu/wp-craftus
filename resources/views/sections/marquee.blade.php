@@ -49,7 +49,7 @@
           <span class="font-serif font-light tracking-widest uppercase {{ $font_size }} {{ $text_class }}">
             {{ $item }}
           </span>
-          <svg class="w-2 h-2 fill-accent shrink-0" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4"/></svg>
+          <x-icons.dot class="w-2 h-2 fill-accent shrink-0" />
         </span>
       @endforeach
     </div>

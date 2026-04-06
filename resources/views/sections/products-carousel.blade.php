@@ -61,26 +61,20 @@
             aria-label="{{ __('Precedente', 'sage') }}"
             type="button"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
-            </svg>
+            <x-icons.chevron-left class="w-4 h-4" stroke-width="2" />
           </button>
           <button
             class="swiper-button-next static w-11 h-11 border border-border flex items-center justify-center text-ink hover:bg-ink hover:text-surface hover:border-ink transition-all duration-200"
             aria-label="{{ __('Successivo', 'sage') }}"
             type="button"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
-            </svg>
+            <x-icons.chevron-right class="w-4 h-4" stroke-width="2" />
           </button>
         </div>
 
         <a href="{{ $view_all_url }}" class="btn-ghost">
           {{ $view_all_label }}
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-          </svg>
+          <x-icons.arrow-right class="w-4 h-4" />
         </a>
       </div>
     </div>

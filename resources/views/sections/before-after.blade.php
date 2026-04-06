@@ -118,8 +118,8 @@
         <div class="before-after__handle-line"></div>
         <div class="before-after__handle-btn">
           {{-- Chevrons --}}
-          <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7"/></svg>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+          <x-icons.chevron-left class="w-4 h-4 rotate-180" stroke-width="2" />
+          <x-icons.chevron-right class="w-4 h-4" stroke-width="2" />
         </div>
       </div>
     </div>

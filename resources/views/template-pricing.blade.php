@@ -146,14 +146,10 @@ $faqs = [
             @foreach($plan['features'] as $feature)
               <li class="flex items-start gap-2.5 py-2 border-b {{ $plan['featured'] ? 'border-white/10' : 'border-border' }} last:border-0">
                 @if($feature['active'])
-                  <svg class="w-4 h-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white' : 'text-success' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
-                  </svg>
+                  <x-icons.check class="w-4 h-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white' : 'text-success' }}" />
                   <span class="text-sm {{ $plan['featured'] ? 'text-white/80' : 'text-ink' }}">{{ esc_html($feature['text']) }}</span>
                 @else
-                  <svg class="w-4 h-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white/20' : 'text-border' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-                  </svg>
+                  <x-icons.x-mark class="w-4 h-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white/20' : 'text-border' }}" />
                   <span class="text-sm {{ $plan['featured'] ? 'text-white/30' : 'text-muted/50' }} line-through">{{ esc_html($feature['text']) }}</span>
                 @endif
               </li>
@@ -197,10 +193,7 @@ $faqs = [
             aria-controls="faq-pricing-{{ $i }}"
           >
             <span>{{ esc_html($faq['q']) }}</span>
-            <svg class="w-5 h-5 text-muted shrink-0 transition-transform duration-200" :class="open ? 'rotate-45' : ''"
-                 fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-            </svg>
+            <x-icons.plus class="w-5 h-5 text-muted shrink-0 transition-transform duration-200" ::class="open ? 'rotate-45' : ''" />
           </button>
           <div
             id="faq-pricing-{{ $i }}"

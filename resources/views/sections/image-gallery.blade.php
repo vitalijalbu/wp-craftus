@@ -132,13 +132,13 @@
         </template>
 
         <button @click="close()" class="absolute top-4 right-5 text-white/50 hover:text-white transition-colors" aria-label="{{ __('Chiudi', 'sage') }}">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+          <x-icons.x-mark class="w-6 h-6" stroke-width="1.5" />
         </button>
         <button @click="prev({{ count($images) }})" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" aria-label="{{ __('Precedente', 'sage') }}">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+          <x-icons.chevron-left class="w-8 h-8" />
         </button>
         <button @click="next({{ count($images) }})" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" aria-label="{{ __('Successivo', 'sage') }}">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+          <x-icons.chevron-right class="w-8 h-8" />
         </button>
 
         <span class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/30" aria-live="polite">

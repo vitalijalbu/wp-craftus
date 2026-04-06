@@ -93,17 +93,10 @@
             itemprop="name"
           >
             <span>{{ $faq['question'] }}</span>
-            <svg
+            <x-icons.plus
               class="faq-item__icon shrink-0"
-              :class="{ 'rotate-45': open === {{ $index }} }"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-            </svg>
+              ::class="{ 'rotate-45': open === {{ $index }} }"
+            />
           </button>
 
           {{-- Answer --}}

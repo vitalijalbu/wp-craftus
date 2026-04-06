@@ -46,11 +46,7 @@
       aria-label="{{ __('Chiudi annuncio', 'sage') }}"
       class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors p-1"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-           aria-hidden="true" focusable="false">
-        <path d="M18 6 6 18M6 6l12 12"/>
-      </svg>
+      <x-icons.x-mark class="w-[14px] h-[14px]" />
     </button>
   </div>
 @endif

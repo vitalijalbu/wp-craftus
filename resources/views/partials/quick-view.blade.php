@@ -48,17 +48,12 @@
       class="absolute top-4 right-4 z-20 text-muted hover:text-ink transition-colors"
       aria-label="{{ __('Chiudi', 'sage') }}"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-      </svg>
+      <x-icons.x-mark class="w-5 h-5" />
     </button>
 
     {{-- Loading state --}}
     <div x-show="loading" class="flex items-center justify-center py-20">
-      <svg class="w-8 h-8 text-accent animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"/>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
-      </svg>
+      <x-icons.spinner class="w-8 h-8 text-accent animate-spin" />
     </div>
 
     {{-- Product content --}}
@@ -101,12 +96,7 @@
         {{-- Rating --}}
         <div x-show="product?.rating_count > 0" class="flex items-center gap-1.5 mb-3">
           <template x-for="i in 5" :key="i">
-            <svg
-              :class="i <= Math.round(product?.rating || 0) ? 'fill-accent text-accent' : 'fill-border text-border'"
-              class="w-3 h-3" viewBox="0 0 24 24" aria-hidden="true"
-            >
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
+            <x-icons.star class="w-3 h-3" ::class="i <= Math.round(product?.rating || 0) ? 'fill-accent text-accent' : 'fill-border text-border'" />
           </template>
           <span class="text-xs text-muted" x-text="'(' + (product?.rating_count || 0) + ')'"></span>
         </div>
@@ -155,9 +145,7 @@
             :data-product_id="product?.id"
             rel="nofollow"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/>
-            </svg>
+            <x-icons.cart class="w-4 h-4" />
             {{ __('Aggiungi al carrello', 'sage') }}
           </a>
           <a

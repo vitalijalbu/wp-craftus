@@ -12,7 +12,7 @@
   <div class="flex-1 overflow-y-auto px-6 py-4 min-h-0">
     @if(empty($cart_items))
       <div class="flex flex-col items-center justify-center h-full text-center py-12">
-        <svg class="w-12 h-12 text-border mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/></svg>
+        <x-icons.cart class="w-12 h-12 text-border mb-4" stroke-width="1" />
         <p class="font-serif text-lg font-light text-ink mb-1">{{ __('Il carrello è vuoto', 'sage') }}</p>
         <p class="text-sm text-muted mb-6">{{ __('Aggiungi qualcosa di bello!', 'sage') }}</p>
         <a href="{{ esc_url(wc_get_page_permalink('shop')) }}"
@@ -43,7 +43,7 @@
             <a href="{{ esc_url(wc_get_cart_remove_url($key)) }}"
                aria-label="{{ __('Rimuovi', 'sage') . ' ' . esc_attr($product->get_name()) }}"
                class="text-muted hover:text-error transition-colors shrink-0 mt-0.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              <x-icons.x-mark class="w-[14px] h-[14px]" />
             </a>
           </li>
         @endforeach

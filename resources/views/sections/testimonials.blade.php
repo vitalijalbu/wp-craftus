@@ -70,18 +70,14 @@
           aria-label="{{ __('Recensione precedente', 'sage') }}"
           type="button"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
-          </svg>
+          <x-icons.chevron-left class="w-4 h-4" stroke-width="2" />
         </button>
         <button
           class="swiper-button-next static w-11 h-11 border flex items-center justify-center transition-all duration-200 {{ $bg === 'ink' ? 'border-white/20 text-white hover:bg-white hover:text-ink hover:border-white' : 'border-border text-ink hover:bg-ink hover:text-surface hover:border-ink' }}"
           aria-label="{{ __('Recensione successiva', 'sage') }}"
           type="button"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
-          </svg>
+          <x-icons.chevron-right class="w-4 h-4" stroke-width="2" />
         </button>
       </div>
     </div>
@@ -109,13 +105,7 @@
                   role="img"
                 >
                   @for($i = 0; $i < 5; $i++)
-                    <svg
-                      class="w-4 h-4 {{ $i < $t['rating'] ? 'text-accent fill-accent' : 'text-border fill-border' }}"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
+                    <x-icons.star class="w-4 h-4 {{ $i < $t['rating'] ? 'text-accent fill-accent' : 'text-border fill-border' }}" />
                   @endfor
                 </div>
               @endif

@@ -44,9 +44,7 @@
       class="absolute top-4 right-4 text-muted hover:text-ink transition-colors z-10"
       aria-label="{{ __('Chiudi', 'sage') }}"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-      </svg>
+      <x-icons.x-mark class="w-5 h-5" />
     </button>
 
     {{-- Layout: image + form --}}
@@ -116,9 +114,7 @@
             </div>
           </template>
           <div x-show="state === 'done'" class="text-center py-4" aria-live="polite">
-            <svg class="w-10 h-10 text-success mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-            </svg>
+            <x-icons.check-circle class="w-10 h-10 text-success mx-auto mb-3" />
             <p class="font-serif text-lg font-light text-ink" x-text="message || '{{ __('Grazie per l\'iscrizione!', 'sage') }}'"></p>
           </div>
         </form>

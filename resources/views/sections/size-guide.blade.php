@@ -84,11 +84,10 @@
               aria-controls="sg-table-{{ $ti }}"
             >
               <span class="font-serif text-base font-light">{{ esc_html($table['title'] ?? '') }}</span>
-              <svg
+              <x-icons.chevron-down
                 class="w-4 h-4 transition-transform duration-300 shrink-0"
-                :class="openTab === {{ $ti }} ? 'rotate-180' : ''"
-                fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"
-              ><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
+                ::class="openTab === {{ $ti }} ? 'rotate-180' : ''"
+              />
             </button>
             <div
               id="sg-table-{{ $ti }}"

@@ -70,9 +70,7 @@
               class="shrink-0 text-white/40 hover:text-accent transition-colors pb-1"
               aria-label="{{ __('Cerca', 'sage') }}"
             >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
-              </svg>
+              <x-icons.search class="w-6 h-6" />
             </button>
           </div>
         </form>
@@ -86,10 +84,7 @@
         >
           {{-- Loading --}}
           <div x-show="loading" class="flex justify-center py-8">
-            <svg class="w-5 h-5 text-white/30 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"/>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
-            </svg>
+            <x-icons.spinner class="w-5 h-5 text-white/30 animate-spin" />
           </div>
 
           {{-- Results list --}}
@@ -116,7 +111,7 @@
                       loading="lazy"
                       decoding="async"
                     >
-                    <svg x-show="!item.thumb" class="w-5 h-5 text-white/20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/></svg>
+                    <x-icons.image-placeholder x-show="!item.thumb" class="w-5 h-5 text-white/20" />
                   </div>
                   <div class="flex-1 min-w-0">
                     <p class="font-serif text-base font-light text-white group-hover:text-accent transition-colors truncate" x-text="item.title"></p>
@@ -157,9 +152,7 @@
           @click="hide()"
           class="mt-8 flex items-center gap-2     font-semibold tracking-[0.2em] uppercase text-white/30 hover:text-white/60 transition-colors"
         >
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-          </svg>
+          <x-icons.x-mark class="w-3.5 h-3.5" />
           {{ __('Chiudi', 'sage') }} <span class="opacity-50 ml-1">Esc</span>
         </button>
       </div>

@@ -107,7 +107,7 @@
               aria-haspopup="true"
             >
               {{ __('Shop', 'sage') }}
-              <svg class="w-2.5 h-2.5 transition-transform duration-200" :class="activeMenu==='shop'?'rotate-180':''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
+              <x-icons.chevron-down class="w-2.5 h-2.5 transition-transform duration-200" ::class="activeMenu==='shop'?'rotate-180':''" stroke-width="2.5" />
             </button>
           @endif
 
@@ -130,7 +130,7 @@
                 aria-haspopup="true"
               >
                 {{ esc_html($item->title) }}
-                <svg class="w-2.5 h-2.5 transition-transform duration-200" :class="activeMenu==='{{ $mega_id }}'?'rotate-180':''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
+                <x-icons.chevron-down class="w-2.5 h-2.5 transition-transform duration-200" ::class="activeMenu==='{{ $mega_id }}'?'rotate-180':''" stroke-width="2.5" />
               </button>
             @else
               <a
@@ -157,7 +157,7 @@
             aria-label="{{ __('Cerca', 'sage') }}"
             @click="$dispatch('open-search')"
           >
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+            <x-icons.search class="w-[18px] h-[18px]" />
           </button>
 
           {{-- Wishlist --}}
@@ -167,7 +167,7 @@
             :class="hasHero && !scrolled ? 'text-white/70 hover:text-white' : ''"
             aria-label="{{ __('Wishlist', 'sage') }}"
           >
-            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
+            <x-icons.heart class="w-[18px] h-[18px]" />
             <span
               class="wishlist-count-bubble absolute -top-1.5 -right-1.5 min-w-4 h-4 bg-accent text-ink font-bold rounded-full flex items-center justify-center px-0.5 leading-none text-[10px]"
             ></span>
@@ -182,7 +182,7 @@
               :class="hasHero && !scrolled ? 'text-white/70 hover:text-white' : ''"
               aria-label="{{ __('Apri carrello', 'sage') }}"
             >
-              <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/></svg>
+              <x-icons.cart class="w-[18px] h-[18px]" />
               <span
                 class="cart-count-fragment absolute -top-1.5 -right-1.5 min-w-4 h-4 bg-accent text-ink     font-bold rounded-full flex items-center justify-center px-0.5 leading-none transition-opacity"
                 data-cart-count="{{ $cart_count }}"
@@ -216,7 +216,7 @@
             :class="hasHero && !scrolled && !mobileOpen ? 'text-white/70' : 'text-ink'"
             aria-label="{{ __('Apri carrello', 'sage') }}"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/></svg>
+            <x-icons.cart class="w-5 h-5" />
             <span
               class="cart-count-fragment absolute -top-1 -right-1 min-w-4 h-4 bg-accent text-ink     font-bold rounded-full flex items-center justify-center px-0.5 leading-none"
               data-cart-count="{{ $cart_count }}"
@@ -232,7 +232,7 @@
           :class="hasHero && !scrolled && !mobileOpen ? 'text-white/70' : 'text-ink'"
           aria-label="{{ __('Wishlist', 'sage') }}"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
+          <x-icons.heart class="w-5 h-5" />
           <span class="wishlist-count-bubble absolute -top-1 -right-1 min-w-4 h-4 bg-accent text-ink font-bold rounded-full flex items-center justify-center px-0.5 leading-none text-[10px]"></span>
         </a>
 
@@ -245,8 +245,8 @@
           aria-controls="mobile-drawer"
           :aria-label="mobileOpen ? '{{ __('Chiudi menu', 'sage') }}' : '{{ __('Apri menu', 'sage') }}'"
         >
-          <svg x-show="!mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
-          <svg x-show="mobileOpen"  class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+          <x-icons.menu x-show="!mobileOpen" class="w-6 h-6" />
+          <x-icons.x-mark x-show="mobileOpen" class="w-6 h-6" stroke-width="1.5" />
         </button>
       </div>
 
@@ -335,7 +335,7 @@
               class="mt-8 btn-slide-light self-start"
             >
               {{ __('Vai allo shop', 'sage') }}
-              <svg class="w-3 h-3 ml-1.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+              <x-icons.arrow-right class="w-3 h-3 ml-1.5" stroke-width="2" />
             </a>
           </div>
 
@@ -412,7 +412,7 @@
             class="w-full flex items-center justify-between py-5 border-b border-white/8"
           >
             <span class="font-sans text-2xl font-light text-white tracking-wide">{{ __('Shop', 'sage') }}</span>
-            <svg class="w-4 h-4 text-white/30 transition-transform duration-300" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
+            <x-icons.chevron-down class="w-4 h-4 text-white/30 transition-transform duration-300" ::class="open ? 'rotate-180' : ''" />
           </button>
           <div x-show="open" x-collapse class="py-4">
             <div class="grid grid-cols-2 gap-x-4 gap-y-1">
@@ -451,7 +451,7 @@
               class="w-full flex items-center justify-between py-5 border-b border-white/8"
             >
               <span class="font-sans text-2xl font-light text-white tracking-wide">{{ esc_html($item->title) }}</span>
-              <svg class="w-4 h-4 text-white/30 transition-transform duration-300" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg>
+              <x-icons.chevron-down class="w-4 h-4 text-white/30 transition-transform duration-300" ::class="open ? 'rotate-180' : ''" />
             </button>
             <div x-show="open" x-collapse class="py-3 space-y-1">
               @foreach($mob_children as $child)

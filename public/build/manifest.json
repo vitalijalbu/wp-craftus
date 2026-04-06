@@ -16,7 +16,7 @@
     "src": "editor.deps.json"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DiZaoD5w.css",
+    "file": "assets/app-sTozuAvA.css",
     "name": "app",
     "names": [
       "app.css"
@@ -25,7 +25,7 @@
     "isEntry": true
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-D8HYYi82.css",
+    "file": "assets/editor-C1pYpFYi.css",
     "name": "editor",
     "names": [
       "editor.css"
@@ -34,7 +34,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-C7Baq4Eh.js",
+    "file": "assets/app-BLC9nfjm.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -45,7 +45,7 @@
     ]
   },
   "resources/js/editor.js": {
-    "file": "assets/editor-8lGfoRX_.js",
+    "file": "assets/editor-DSKympBK.js",
     "name": "editor",
     "src": "resources/js/editor.js",
     "isEntry": true
