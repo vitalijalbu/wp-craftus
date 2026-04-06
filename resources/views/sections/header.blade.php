@@ -270,8 +270,8 @@
     >
       <div class="max-w-360 mx-auto px-8 lg:px-12 py-10">
         <div
-          class="grid gap-px bg-border/60"
-          style="grid-template-columns: repeat({{ min(count($wc_cats), 5) }}, 1fr) 260px"
+          class="mega-grid grid gap-px bg-border/60"
+          style="--mega-cols:{{ min(count($wc_cats), 5) }}"
         >
 
           {{-- Category columns ─────────────────────────────────────────────── --}}

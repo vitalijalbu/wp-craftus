@@ -34,8 +34,8 @@ $wrap_flex = $is_horizontal
     aria-hidden="true"
     width="<?= $icon_size ?>"
     height="<?= $icon_size ?>"
-    class="shrink-0 object-contain"
-    style="width:<?= esc_attr($icon_size) ?>px;height:<?= esc_attr($icon_size) ?>px"
+    class="icon-box__icon shrink-0 object-contain"
+    style="--icon-sz:<?= $icon_size ?>px"
     loading="lazy"
     decoding="async"
   >

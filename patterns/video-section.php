@@ -20,8 +20,8 @@
 		<!-- wp:heading {"level":2,"textAlign":"center","textColor":"white","fontFamily":"serif","fontSize":"4xl"} -->
 		<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color has-serif-font-family has-4-xl-font-size">La nostra storia in 2 minuti</h2>
 		<!-- /wp:heading -->
-		<!-- wp:paragraph {"align":"center","fontSize":"base","style":{"color":{"text":"rgba(255,255,255,0.6)"}}} -->
-		<p class="has-text-align-center has-text-color has-base-font-size text-white/60">Scopri chi siamo, cosa facciamo e perché migliaia di clienti scelgono noi ogni anno.</p>
+		<!-- wp:paragraph {"align":"center","fontSize":"base","className":"text-white/60"} -->
+		<p class="has-text-align-center has-base-font-size text-white/60">Scopri chi siamo, cosa facciamo e perché migliaia di clienti scelgono noi ogni anno.</p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->
@@ -47,10 +47,10 @@
 	<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
 	<div class="wp-block-buttons">
 		<!-- wp:button {"backgroundColor":"accent","textColor":"white"} -->
-		<div class="wp-block-button"><a class="wp-block-button__link has-accent-background-color has-white-color has-background has-text-color wp-element-button" href="/contatti">Lavora con noi</a></div>
+		<div class="wp-block-button"><a class="wp-block-button__link has-accent-background-color has-white-color has-background has-text-color wp-element-button" href="<?php echo function_exists('App\\theme_cta_url') ? \App\theme_cta_url() : esc_url(home_url(apply_filters('theme_cta_fallback_path', '/contatti'))); ?>">Lavora con noi</a></div>
 		<!-- /wp:button -->
 		<!-- wp:button {"className":"is-style-outline"} -->
-		<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button text-white border-white" href="/chi-siamo">Scopri di più</a></div>
+		<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button text-white border-white" href="<?php echo esc_url(home_url(apply_filters('theme_about_path', '/chi-siamo'))); ?>">Scopri di più</a></div>
 		<!-- /wp:button -->
 	</div>
 	<!-- /wp:buttons -->

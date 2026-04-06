@@ -138,6 +138,15 @@ add_action('after_setup_theme', function () {
     add_theme_support('wc-product-gallery-slider');
 
     /**
+     * Yoast SEO — enable theme-native breadcrumb integration.
+     * Yoast will replace its own output with the theme's breadcrumb markup
+     * when this support is declared. Has no effect if Yoast is not active.
+     *
+     * @link https://developer.yoast.com/features/breadcrumbs/#breadcrumbs-in-themes
+     */
+    add_theme_support('yoast-seo-breadcrumbs');
+
+    /**
      * Disable the default block patterns.
      *
      * @link https://developer.wordpress.org/block-editor/developers/themes/theme-support/#disabling-the-default-block-patterns

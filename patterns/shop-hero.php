@@ -28,7 +28,7 @@
 <div class="wp-block-button theme-btn-primary"><a class="wp-block-button__link has-accent-background-color has-ink-color has-background has-text-color" href="/shop">Scopri i prodotti</a></div>
 <!-- /wp:button -->
 <!-- wp:button {"className":"is-style-outline theme-btn-outline-white"} -->
-<div class="wp-block-button is-style-outline theme-btn-outline-white"><a class="wp-block-button__link" href="/chi-siamo">Chi siamo</a></div>
+<div class="wp-block-button is-style-outline theme-btn-outline-white"><a class="wp-block-button__link" href="<?php echo esc_url(home_url(apply_filters('theme_about_path', '/chi-siamo'))); ?>">Chi siamo</a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->

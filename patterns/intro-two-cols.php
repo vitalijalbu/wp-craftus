@@ -29,7 +29,7 @@
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons">
 				<!-- wp:button {"backgroundColor":"primary","textColor":"white"} -->
-				<div class="wp-block-button"><a class="wp-block-button__link has-primary-background-color has-white-color has-background has-text-color wp-element-button" href="/chi-siamo">Scopri di più →</a></div>
+				<div class="wp-block-button"><a class="wp-block-button__link has-primary-background-color has-white-color has-background has-text-color wp-element-button" href="<?php echo esc_url(home_url(apply_filters('theme_about_path', '/chi-siamo'))); ?>">Scopri di più →</a></div>
 				<!-- /wp:button -->
 			</div>
 			<!-- /wp:buttons -->

@@ -30,7 +30,7 @@ $align_class = match ($align) {
 ?>
 <section
   class="theme-hero relative flex flex-col justify-center overflow-hidden"
-  style="min-height: <?= $min_height ?>"
+  style="--hero-min-h:<?= $min_height ?>"
   aria-label="<?= esc_attr(wp_strip_all_tags($heading)) ?>"
   <?= get_block_wrapper_attributes($scroll_effect ? ['data-scroll' => $scroll_effect] : []) ?>
 >
@@ -57,8 +57,8 @@ $align_class = match ($align) {
 
   {{-- Overlay --}}
   <div
-    class="absolute inset-0 bg-ink"
-    style="opacity: <?= $opacity / 100 ?>"
+    class="theme-hero__overlay absolute inset-0 bg-ink"
+    style="--hero-overlay:<?= $opacity / 100 ?>"
     aria-hidden="true"
   ></div>
 

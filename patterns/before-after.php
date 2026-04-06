@@ -37,14 +37,14 @@
 		<!-- PRIMA -->
 		<!-- wp:column -->
 		<div class="wp-block-column">
-			<!-- wp:group {"style":{"border":{"width":"1px","style":"solid","color":"#e0e0e0"},"spacing":{"padding":{"all":"0"}}},"backgroundColor":"surface","layout":{"type":"default"}} -->
+			<!-- wp:group {"className":"ba-card","backgroundColor":"surface","layout":{"type":"default"}} -->
 			<div class="wp-block-group has-surface-background-color has-background ba-card">
 				<!-- wp:image {"aspectRatio":"4/3","scale":"cover","sizeSlug":"large"} -->
 				<figure class="wp-block-image size-large">
-					<img src="" alt="Immagine Prima" class="aspect-[4/3] object-cover"/>
+					<img src="" alt="Immagine Prima" class="aspect-4/3 object-cover"/>
 				</figure>
 				<!-- /wp:image -->
-				<!-- wp:group {"style":{"spacing":{"padding":{"top":"1.25rem","bottom":"1.25rem","left":"1.5rem","right":"1.5rem"}}}} -->
+				<!-- wp:group {"className":"ba-card-body","layout":{"type":"default"}} -->
 				<div class="wp-block-group ba-card-body">
 					<!-- wp:paragraph {"textColor":"muted","fontSize":"xs","className":"section-label","style":{"spacing":{"margin":{"bottom":"0.25rem"}}}} -->
 					<p class="has-muted-color has-text-color has-xs-font-size section-label mb-1">PRIMA</p>
@@ -65,14 +65,14 @@
 		<!-- DOPO -->
 		<!-- wp:column -->
 		<div class="wp-block-column">
-			<!-- wp:group {"style":{"border":{"width":"2px","style":"solid","color":"#0074C7"},"spacing":{"padding":{"all":"0"}}},"backgroundColor":"surface","layout":{"type":"default"}} -->
+			<!-- wp:group {"className":"ba-card-accent","backgroundColor":"surface","layout":{"type":"default"}} -->
 			<div class="wp-block-group has-surface-background-color has-background ba-card-accent">
 				<!-- wp:image {"aspectRatio":"4/3","scale":"cover","sizeSlug":"large"} -->
 				<figure class="wp-block-image size-large">
-					<img src="" alt="Immagine Dopo" class="aspect-[4/3] object-cover"/>
+					<img src="" alt="Immagine Dopo" class="aspect-4/3 object-cover"/>
 				</figure>
 				<!-- /wp:image -->
-				<!-- wp:group {"style":{"spacing":{"padding":{"top":"1.25rem","bottom":"1.25rem","left":"1.5rem","right":"1.5rem"}}}} -->
+				<!-- wp:group {"className":"ba-card-body","layout":{"type":"default"}} -->
 				<div class="wp-block-group ba-card-body">
 					<!-- wp:paragraph {"textColor":"accent","fontSize":"xs","className":"section-label","style":{"spacing":{"margin":{"bottom":"0.25rem"}}}} -->
 					<p class="has-accent-color has-text-color has-xs-font-size section-label mb-1">DOPO</p>
@@ -101,7 +101,7 @@
 	<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
 	<div class="wp-block-buttons">
 		<!-- wp:button {"backgroundColor":"accent","textColor":"white"} -->
-		<div class="wp-block-button"><a class="wp-block-button__link has-accent-background-color has-white-color has-background has-text-color wp-element-button" href="/portfolio">Vedi altri progetti</a></div>
+		<div class="wp-block-button"><a class="wp-block-button__link has-accent-background-color has-white-color has-background has-text-color wp-element-button" href="<?php echo esc_url(home_url(apply_filters('theme_portfolio_path', '/portfolio'))); ?>">Vedi altri progetti</a></div>
 		<!-- /wp:button -->
 	</div>
 	<!-- /wp:buttons -->
