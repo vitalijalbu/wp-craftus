@@ -76,7 +76,7 @@ function initWishlistButtons() {
 
 // ── Wishlist page custom element ──────────────────────────────────────────────
 // Usage: <wishlist-products products-limit="12"></wishlist-products>
-// Fetches products via GET /wp-json/theme/v1/wishlist-products?ids=1,2,3
+// Fetches products via GET /wp-json/theme/v1/wishlist-products?ids=1,2,3 (URL from window.themeRestUrl)
 if (!window.customElements.get('wishlist-products')) {
   class WishlistProducts extends HTMLElement {
     connectedCallback() {
@@ -100,7 +100,8 @@ if (!window.customElements.get('wishlist-products')) {
       const timer = setTimeout(() => ctrl.abort(), 8000)
 
       try {
-        const res = await fetch('/wp-json/theme/v1/wishlist-products?ids=' + ids.join(','), {
+        const base = window.themeRestUrl || '/wp-json/theme/v1'
+        const res = await fetch(base + '/wishlist-products?ids=' + ids.join(','), {
           signal: ctrl.signal,
         })
         clearTimeout(timer)

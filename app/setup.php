@@ -243,6 +243,10 @@ add_filter('loop_shop_columns', fn () => 3);
  * preconnect hints reduce DNS + TLS handshake latency.
  */
 add_action('wp_head', function () {
+    echo '<script>window.themeRestUrl=' . wp_json_encode(rest_url('theme/v1')) . ';</script>' . "\n";
+}, 1);
+
+add_action('wp_head', function () {
     /**
      * Filter the Google Fonts URL.
      * Override per-project: add_filter('theme_font_url', fn() => 'https://fonts.googleapis.com/...');
@@ -337,8 +341,6 @@ add_action('wp_head', function () {
 
     $schema_type = match ($post_type) {
         'post' => 'Article',
-        'portfolio' => 'CreativeWork',
-        'team' => 'Person',
         default => 'WebPage',
     };
 

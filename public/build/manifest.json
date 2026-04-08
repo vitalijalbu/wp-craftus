@@ -1,10 +1,10 @@
 {
-  "_vendor-alpine-CF20ouNV.js": {
-    "file": "assets/vendor-alpine-CF20ouNV.js",
+  "_vendor-alpine-D3BvRU6V.js": {
+    "file": "assets/vendor-alpine-D3BvRU6V.js",
     "name": "vendor-alpine"
   },
-  "_vendor-gsap-BOhTbr05.js": {
-    "file": "assets/vendor-gsap-BOhTbr05.js",
+  "_vendor-gsap-CR_URoHS.js": {
+    "file": "assets/vendor-gsap-CR_URoHS.js",
     "name": "vendor-gsap"
   },
   "_vendor-swiper-c7IIMvfl.js": {
@@ -16,7 +16,7 @@
     "src": "editor.deps.json"
   },
   "resources/css/app.css": {
-    "file": "assets/app-sTozuAvA.css",
+    "file": "assets/app-3gB3YWv2.css",
     "name": "app",
     "names": [
       "app.css"
@@ -25,7 +25,7 @@
     "isEntry": true
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-C1pYpFYi.css",
+    "file": "assets/editor-BgIYmyeQ.css",
     "name": "editor",
     "names": [
       "editor.css"
@@ -34,13 +34,13 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BLC9nfjm.js",
+    "file": "assets/app-BGwVuTkL.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_vendor-alpine-CF20ouNV.js",
-      "_vendor-gsap-BOhTbr05.js",
+      "_vendor-alpine-D3BvRU6V.js",
+      "_vendor-gsap-CR_URoHS.js",
       "_vendor-swiper-c7IIMvfl.js"
     ]
   },

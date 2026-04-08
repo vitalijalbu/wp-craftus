@@ -212,7 +212,8 @@ Alpine.data('searchOverlay', () => ({
     this.loading = true
     this.noResults = false
     try {
-      const url = `/wp-json/theme/v1/search?q=${encodeURIComponent(q)}&per_page=6`
+      const base = window.themeRestUrl || '/wp-json/theme/v1'
+      const url = `${base}/search?q=${encodeURIComponent(q)}&per_page=6`
       const res = await fetch(url, { signal: this._abortCtrl.signal })
       if (!res.ok) {
         throw new Error('Network error')

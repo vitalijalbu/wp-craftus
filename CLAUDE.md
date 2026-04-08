@@ -63,7 +63,7 @@ sage-theme/
 │   ├── filters.php               # WP filters, REST API, performance, WC tweaks
 │   ├── ajax.php                  # REST endpoints: search, quick-view, products, wishlist + admin_post: contact
 │   ├── customizer.php            # Pannello Customizer (colori social, CTA, annuncio)
-│   ├── post-types.php            # CPT: portfolio, team, faq
+│   ├── post-types.php            # CPT: faq
 │   ├── Providers/
 │   │   └── ThemeServiceProvider.php   # boot Acorn (Laravel)
 │   └── View/Composers/               # iniettano dati nelle view Blade
@@ -394,7 +394,7 @@ I pattern vivono in `patterns/*.php`. WordPress li carica automaticamente.
 | Slug | Etichetta | Uso |
 |------|-----------|-----|
 | `theme-sections` | Theme – Sezioni | Hero, CTA, intro, media-text, stats |
-| `theme-cards` | Theme – Card | Product, team, testimonial card |
+| `theme-cards` | Theme – Card | Product, testimonial card |
 
 ### Pattern inventory (22 pattern)
 
@@ -419,8 +419,6 @@ I pattern vivono in `patterns/*.php`. WordPress li carica automaticamente.
 | `theme/product-categories` | Griglia Categorie Prodotti | theme-sections |
 | `theme/product-spotlight` | Prodotto in Evidenza | theme-sections |
 | `theme/services-grid` | Griglia Servizi – 3 Colonne | theme-sections, theme-cards |
-| `theme/portfolio-grid` | Portfolio – Griglia Case Study | theme-sections, theme-cards |
-| `theme/team-member-card` | Scheda Membro del Team | theme-sections, theme-cards |
 | `theme/text-with-aside` | Testo con Colonna Laterale | theme-sections |
 
 **Il modo più rapido per creare un pattern:**
@@ -592,16 +590,7 @@ Registrati in `app/post-types.php`. Tutti `show_in_rest: true` per compatibilit�
 
 | CPT | Slug | Archive | Taxonomy | Template Blade |
 |-----|------|---------|----------|----------------|
-| `portfolio` | `/portfolio/*` | ✅ | `portfolio_category` | `single-portfolio.blade.php`, `archive-portfolio.blade.php` |
-| `team` | `/team/*` | ❌ | `team_department` | `single-team.blade.php`, `archive-team.blade.php` |
 | `faq` | `/faq/*` | ❌ | `faq_category` | `archive-faq.blade.php` |
-
-### Meta keys
-
-| CPT | Meta key | Tipo |
-|-----|----------|------|
-| portfolio | `_portfolio_client`, `_portfolio_year`, `_portfolio_services`, `_portfolio_url` | string |
-| team | `_team_role`, `_team_email`, `_team_linkedin` | string |
 
 ---
 
@@ -898,7 +887,7 @@ Nei file pattern `.php`, cerca blocchi `core/columns` e aggiungi l'attributo:
 
 ## 20. Pattern — inventario completo (29 pattern)
 
-Tutti e 29 i pattern sono stati creati e sono disponibili nell'inserter.
+Tutti e 27 i pattern sono stati creati e sono disponibili nell'inserter.
 
 | Slug | File | Categoria |
 |------|------|-----------|
@@ -921,8 +910,6 @@ Tutti e 29 i pattern sono stati creati e sono disponibili nell'inserter.
 | `theme/product-categories` | `patterns/product-categories.php` | theme-sections |
 | `theme/product-spotlight` | `patterns/product-spotlight.php` | theme-sections |
 | `theme/services-grid` | `patterns/services-grid.php` | theme-sections, theme-cards |
-| `theme/portfolio-grid` | `patterns/portfolio-grid.php` | theme-sections, theme-cards |
-| `theme/team-member-card` | `patterns/team-member-card.php` | theme-sections, theme-cards |
 | `theme/text-with-aside` | `patterns/text-with-aside.php` | theme-sections |
 | `theme/faq-accordion` | `patterns/faq-accordion.php` | theme-sections |
 | `theme/pricing-table` | `patterns/pricing-table.php` | theme-sections |
