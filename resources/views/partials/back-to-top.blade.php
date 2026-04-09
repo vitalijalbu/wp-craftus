@@ -16,10 +16,8 @@
   @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
   type="button"
   aria-label="{{ __('Torna in cima', 'sage') }}"
-  class="fixed bottom-6 right-6 z-40 w-11 h-11 flex items-center justify-center
-         bg-ink text-white shadow-lg
-         hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary
-         transition-colors"
+  class="btn-icon fixed bottom-6 right-6 z-40 shadow-lg
+         focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
   x-cloak
 >
   <x-icons.chevron-up class="w-4 h-4" />

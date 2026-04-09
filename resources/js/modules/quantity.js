@@ -4,18 +4,24 @@
 export function initQuantitySelectors() {
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.qty-btn')
-    if (!btn) return
+    if (!btn) {
+      return
+    }
 
     const wrapper = btn.closest('.qty-selector')
-    if (!wrapper) return
+    if (!wrapper) {
+      return
+    }
 
     const input = wrapper.querySelector('input.qty')
-    if (!input) return
+    if (!input) {
+      return
+    }
 
-    const step  = parseFloat(input.step)  || 1
-    const min   = input.min !== '' ? parseFloat(input.min)  : 1
-    const max   = input.max !== '' ? parseFloat(input.max)  : Infinity
-    let   val   = parseFloat(input.value) || min
+    const step = parseFloat(input.step) || 1
+    const min = input.min !== '' ? parseFloat(input.min) : 1
+    const max = input.max !== '' ? parseFloat(input.max) : Infinity
+    let val = parseFloat(input.value) || min
 
     if (btn.classList.contains('qty-btn--minus')) {
       val = Math.max(min, val - step)
@@ -28,6 +34,8 @@ export function initQuantitySelectors() {
 
     // aggiorna stato disabled
     wrapper.querySelector('.qty-btn--minus')?.toggleAttribute('disabled', val <= min)
-    wrapper.querySelector('.qty-btn--plus')?.toggleAttribute('disabled', max !== Infinity && val >= max)
+    wrapper
+      .querySelector('.qty-btn--plus')
+      ?.toggleAttribute('disabled', max !== Infinity && val >= max)
   })
 }

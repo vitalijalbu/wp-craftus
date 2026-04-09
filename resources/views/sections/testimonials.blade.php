@@ -66,14 +66,14 @@
       {{-- Custom arrows --}}
       <div class="flex items-center gap-2 shrink-0" data-scroll="fade">
         <button
-          class="swiper-button-prev static w-11 h-11 border flex items-center justify-center transition-all duration-200 {{ $bg === 'ink' ? 'border-white/20 text-white hover:bg-white hover:text-ink hover:border-white' : 'border-border text-ink hover:bg-ink hover:text-surface hover:border-ink' }}"
+          class="swiper-button-prev btn-nav static {{ $bg === 'ink' ? 'btn-nav--light' : '' }}"
           aria-label="{{ __('Recensione precedente', 'sage') }}"
           type="button"
         >
           <x-icons.chevron-left class="w-4 h-4" stroke-width="2" />
         </button>
         <button
-          class="swiper-button-next static w-11 h-11 border flex items-center justify-center transition-all duration-200 {{ $bg === 'ink' ? 'border-white/20 text-white hover:bg-white hover:text-ink hover:border-white' : 'border-border text-ink hover:bg-ink hover:text-surface hover:border-ink' }}"
+          class="swiper-button-next btn-nav static {{ $bg === 'ink' ? 'btn-nav--light' : '' }}"
           aria-label="{{ __('Recensione successiva', 'sage') }}"
           type="button"
         >

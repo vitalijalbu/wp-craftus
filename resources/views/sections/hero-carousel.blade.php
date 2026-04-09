@@ -92,7 +92,7 @@
 
                 @if($cta_label && $cta_url)
                   <div class="flex flex-wrap gap-4">
-                    <a href="{{ $cta_url }}" class="btn-primary bg-white text-ink border-white hover:bg-white/90 hover:border-white/90">
+                    <a href="{{ $cta_url }}" class="btn-light">
                       {{ $cta_label }}
                     </a>
                     @if($cta2_label && $cta2_url)

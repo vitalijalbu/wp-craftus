@@ -44,7 +44,7 @@
           placeholder="{{ __('Nuova ricerca…', 'sage') }}"
           class="flex-1 border border-border border-r-0 px-4 py-3 text-sm text-ink focus:outline-none focus:border-primary transition-colors"
         >
-        <button type="submit" class="bg-ink text-white px-5 py-3 text-xs font-semibold tracking-wider uppercase hover:bg-primary transition-colors">
+        <button type="submit" class="btn-secondary btn-sm">
           {{ __('Cerca', 'sage') }}
         </button>
       </form>

@@ -45,14 +45,14 @@
       <button
         @click="accept('essential')"
         type="button"
-        class="text-xs font-semibold tracking-wider uppercase border border-border px-4 py-2 hover:border-primary hover:text-primary transition-colors"
+        class="btn-outline btn-sm"
       >
         {{ __('Solo essenziali', 'sage') }}
       </button>
       <button
         @click="accept('all')"
         type="button"
-        class="text-xs font-semibold tracking-wider uppercase bg-ink text-white px-4 py-2 hover:bg-primary transition-colors"
+        class="btn-secondary btn-sm"
       >
         {{ __('Accetta tutto', 'sage') }}
       </button>

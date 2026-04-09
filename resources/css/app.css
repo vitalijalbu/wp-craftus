@@ -186,82 +186,95 @@ img {
 .separator-white    { background-color: rgba(255,255,255,0.1); }
 
 /* ── Buttons ─────────────────────────────────────────────────────────────── */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: var(--color-accent);
-  color: #ffffff;
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 0.8125rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.875rem 2rem;
-  border: 1px solid var(--color-accent);
-  text-decoration: none;
-  transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease;
-  cursor: pointer;
-  line-height: 1;
-}
 
-.btn-primary:hover {
-  background-color: var(--color-primary-dark);
-  border-color: var(--color-primary-dark);
-  color: #ffffff;
-}
-
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background: transparent;
-  color: var(--color-accent);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 0.8125rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.875rem 2rem;
-  border: 1px solid var(--color-accent);
-  text-decoration: none;
-  transition: background-color 250ms ease, color 250ms ease;
-  cursor: pointer;
-  line-height: 1;
-}
-
-.btn-outline:hover {
-  background-color: var(--color-accent);
-  color: #ffffff;
-}
-
+/* Base — shared reset for every btn variant */
+.btn,
+.btn-primary,
+.btn-solid,
+.btn-secondary,
+.btn-light,
+.btn-outline,
 .btn-outline-white {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: transparent;
-  color: var(--color-surface);
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: 0.8125rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.875rem 2rem;
-  border: 1px solid rgba(250, 250, 248, 0.5);
+  border: 1px solid transparent;
+  border-radius: 0;
   text-decoration: none;
-  transition: background-color 250ms ease, border-color 250ms ease;
   cursor: pointer;
   line-height: 1;
+  box-sizing: border-box;
+  transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease;
 }
 
+/* Solid (default / accent) — .btn-primary  |  .btn-solid */
+.btn-primary,
+.btn-solid {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+}
+.btn-primary:hover,
+.btn-solid:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  color: #ffffff;
+}
+
+/* Secondary (ink bg) */
+.btn-secondary {
+  background-color: var(--color-ink);
+  color: #ffffff;
+  border-color: var(--color-ink);
+}
+.btn-secondary:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Light (white bg, ink text) */
+.btn-light {
+  background-color: #ffffff;
+  color: var(--color-ink);
+  border-color: #ffffff;
+}
+.btn-light:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.9);
+  color: var(--color-ink);
+}
+
+/* Outline (accent border, transparent bg) */
+.btn-outline {
+  background: transparent;
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.btn-outline:hover {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+/* Outline White */
+.btn-outline-white {
+  background: transparent;
+  color: var(--color-surface);
+  border-color: rgba(250, 250, 248, 0.5);
+}
 .btn-outline-white:hover {
   background-color: rgba(250, 250, 248, 0.12);
   border-color: var(--color-surface);
 }
 
+/* Ghost (underline only) */
 .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -282,13 +295,66 @@ img {
   cursor: pointer;
   line-height: 1;
 }
-
 .btn-ghost:hover {
   color: var(--color-ink);
   border-bottom-color: var(--color-ink);
 }
 
-/* WordPress block buttons */
+/* Icon button — square, minimal, for standalone icons */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: var(--color-ink);
+  color: #ffffff;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn-icon:hover {
+  background-color: var(--color-primary);
+}
+
+/* Swiper / nav arrows — square outline, fills on hover */
+.btn-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.btn-nav:hover {
+  background-color: var(--color-ink);
+  color: var(--color-surface);
+  border-color: var(--color-ink);
+}
+.btn-nav--light {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+.btn-nav--light:hover {
+  background-color: #ffffff;
+  color: var(--color-ink);
+  border-color: #ffffff;
+}
+
+/* Small size modifier */
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 0.625rem 1.25rem;
+}
+
+/* WordPress block buttons — inherit the same design system */
 .wp-block-button .wp-block-button__link {
   font-family: var(--font-sans) !important;
   font-weight: 500 !important;

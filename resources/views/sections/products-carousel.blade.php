@@ -49,14 +49,14 @@
         {{-- Nav arrows --}}
         <div class="flex gap-2">
           <button
-            class="swiper-button-prev static w-11 h-11 border border-border flex items-center justify-center text-ink hover:bg-ink hover:text-surface hover:border-ink transition-all duration-200"
+            class="swiper-button-prev btn-nav static"
             aria-label="{{ __('Precedente', 'sage') }}"
             type="button"
           >
             <x-icons.chevron-left class="w-4 h-4" stroke-width="2" />
           </button>
           <button
-            class="swiper-button-next static w-11 h-11 border border-border flex items-center justify-center text-ink hover:bg-ink hover:text-surface hover:border-ink transition-all duration-200"
+            class="swiper-button-next btn-nav static"
             aria-label="{{ __('Successivo', 'sage') }}"
             type="button"
           >

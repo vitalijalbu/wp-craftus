@@ -101,7 +101,7 @@
           data-scroll="slide-up"
         >
           @if($hero_cta_1_label && $hero_cta_1_url)
-            <a href="{{ $hero_cta_1_url }}" class="btn-primary bg-white text-ink border-white hover:bg-white/90 hover:border-white/90">
+            <a href="{{ $hero_cta_1_url }}" class="btn-light">
               {{ $hero_cta_1_label }}
             </a>
           @endif

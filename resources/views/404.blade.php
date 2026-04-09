@@ -31,21 +31,21 @@
       >
       <button
         type="submit"
-        class="bg-ink text-white px-5 py-3 text-xs font-semibold tracking-wider uppercase hover:bg-primary transition-colors"
+        class="btn-secondary btn-sm"
       >{{ __('Cerca', 'sage') }}</button>
     </form>
 
     {{-- Quick links --}}
     <nav aria-label="{{ __('Link utili', 'sage') }}" class="flex flex-wrap justify-center gap-4">
-      <a href="{{ home_url('/') }}" class="btn-primary text-sm">
+      <a href="{{ home_url('/') }}" class="btn-primary btn-sm">
         {{ __('← Torna in Homepage', 'sage') }}
       </a>
       @if(function_exists('wc_get_page_permalink'))
-        <a href="{{ esc_url(wc_get_page_permalink('shop')) }}" class="btn-ghost text-sm">
+        <a href="{{ esc_url(wc_get_page_permalink('shop')) }}" class="btn-ghost btn-sm">
           {{ __('Vai allo Shop', 'sage') }}
         </a>
       @endif
-      <a href="{{ home_url('/contatti') }}" class="btn-ghost text-sm">
+      <a href="{{ home_url('/contatti') }}" class="btn-ghost btn-sm">
         {{ __('Contattaci', 'sage') }}
       </a>
     </nav>

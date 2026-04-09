@@ -36,7 +36,7 @@
     <button
       type="button"
       @click="mobileOpen = !mobileOpen"
-      class="flex items-center gap-2 btn-outline text-xs w-full justify-between"
+      class="btn-outline btn-sm w-full justify-between"
       :aria-expanded="mobileOpen"
     >
       <span class="flex items-center gap-2">

@@ -94,7 +94,7 @@
         @if($cta_label && $cta_url)
           <div class="flex flex-wrap gap-4" data-scroll="slide-up">
             @if($bg === 'ink')
-              <a href="{{ $cta_url }}" class="btn-primary bg-white text-ink border-white hover:bg-white/90">
+              <a href="{{ $cta_url }}" class="btn-light">
                 {{ $cta_label }}
               </a>
             @else

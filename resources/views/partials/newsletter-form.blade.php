@@ -9,8 +9,8 @@
     ? 'bg-transparent border-white/20 text-white placeholder-white/25 focus:border-white/60'
     : 'bg-transparent border-border text-ink placeholder-muted focus:border-ink';
   $btn_class   = $bg === 'ink'
-    ? 'bg-white text-ink hover:bg-white/90'
-    : 'bg-ink text-white hover:bg-ink/90';
+    ? 'btn-light'
+    : 'btn-secondary';
   $meta_class  = $bg === 'ink' ? 'text-white/30' : 'text-muted/60';
 @endphp
 
@@ -39,7 +39,7 @@
       >
       <button
         type="submit"
-        class="shrink-0 px-5 py-2     font-semibold tracking-[0.18em] uppercase transition-colors {{ $btn_class }}"
+        class="shrink-0 btn-sm {{ $btn_class }}"
         :disabled="loading"
         :class="loading ? 'opacity-60 cursor-wait' : ''"
       >

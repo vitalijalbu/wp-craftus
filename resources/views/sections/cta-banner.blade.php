@@ -27,8 +27,8 @@
   $align_class = $align === 'center' ? 'text-center items-center mx-auto' : 'text-left';
   $btn_class   = match($style) {
     'cream'   => 'btn-primary',
-    'primary' => 'btn-primary bg-white text-primary border-white hover:bg-white/90',
-    default   => 'btn-primary bg-white text-ink border-white hover:bg-white/90',
+    'primary' => 'btn-light',
+    default   => 'btn-light',
   };
   $btn2_class  = match($style) {
     'cream'   => 'btn-ghost',
