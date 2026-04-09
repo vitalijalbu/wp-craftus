@@ -22,7 +22,7 @@ export default defineConfig({
     }),
     wordpressPlugin(),
     wordpressThemeJson({
-      disableTailwindColors:      false,
+      disableTailwindColors:      true,
       disableTailwindFonts:       false,
       disableTailwindFontSizes:   false,
       disableTailwindBorderRadius: false,

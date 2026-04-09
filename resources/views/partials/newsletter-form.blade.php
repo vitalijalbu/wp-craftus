@@ -75,42 +75,4 @@
   </p>
 </div>
 
-<script>
-if (typeof Alpine !== 'undefined' && !Alpine._data?.newsletterForm) {
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('newsletterForm', (restUrl, nonce) => ({
-      email:   '',
-      loading: false,
-      success: false,
-      error:   '',
-
-      async submit() {
-        this.error = ''
-        if (!this.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
-          this.error = '<?php echo esc_js(__("Inserisci un indirizzo email valido.", "sage")); ?>'
-          return
-        }
-        this.loading = true
-        try {
-          const res  = await fetch(restUrl, {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
-            body:    JSON.stringify({ email: this.email }),
-          })
-          const data = await res.json()
-          if (res.ok && data.success) {
-            this.success = true
-            this.email   = ''
-          } else {
-            this.error = data.message || '<?php echo esc_js(__("Si è verificato un errore.", "sage")); ?>'
-          }
-        } catch {
-          this.error = '<?php echo esc_js(__("Errore di rete. Riprova.", "sage")); ?>'
-        } finally {
-          this.loading = false
-        }
-      },
-    }))
-  })
-}
-</script>
+{{-- Alpine component 'newsletterForm' registrato in resources/js/app.js --}}

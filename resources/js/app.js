@@ -10,7 +10,8 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { initCarousels } from './modules/carousel.js'
 // ── Modules ───────────────────────────────────────────────────────────────────
-import { initLuxuryAnimations } from './modules/luxury-animations.js'
+import { initLuxuryAnimations } from './modules/animations.js'
+import { initQuantitySelectors } from './modules/quantity.js'
 import { initMagneticHover } from './modules/magnetic-hover.js'
 import { initScrollEffects } from './modules/scroll-effects.js'
 import './modules/wishlist.js'
@@ -300,12 +301,75 @@ Alpine.data('cartDrawer', () => ({
   },
 }))
 
+// ── Alpine component: newsletter form ────────────────────────────────────────
+Alpine.data('newsletterForm', (restUrl, nonce) => ({
+  email:   '',
+  loading: false,
+  success: false,
+  error:   '',
+
+  async submit() {
+    this.error = ''
+    if (!this.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
+      this.error = window.themeI18n?.invalidEmail ?? 'Inserisci un indirizzo email valido.'
+      return
+    }
+    this.loading = true
+    try {
+      const res  = await fetch(restUrl, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': nonce },
+        body:    JSON.stringify({ email: this.email }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        this.success = true
+        this.email   = ''
+      } else {
+        this.error = data.message || (window.themeI18n?.genericError ?? 'Si è verificato un errore.')
+      }
+    } catch {
+      this.error = window.themeI18n?.networkError ?? 'Errore di rete. Riprova.'
+    } finally {
+      this.loading = false
+    }
+  },
+}))
+
+// ── Alpine component: before/after slider ────────────────────────────────────
+Alpine.data('beforeAfter', () => ({
+  pos:      50,
+  dragging: false,
+  _el:      null,
+
+  startDrag(e) {
+    this.dragging = true
+    this._el = e.currentTarget
+    this.updatePos(e)
+  },
+
+  drag(e) {
+    if (!this.dragging) return
+    this.updatePos(e)
+  },
+
+  stopDrag() { this.dragging = false },
+
+  updatePos(e) {
+    if (!this._el) return
+    const rect    = this._el.getBoundingClientRect()
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX
+    this.pos      = Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100))
+  },
+}))
+
 window.Alpine = Alpine
 
 // ── Bootstrap ─────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   Alpine.start()
   initCarousels()
+  initQuantitySelectors()
 
   if (!prefersReducedMotion) {
     initLuxuryAnimations()

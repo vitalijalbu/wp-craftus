@@ -23,7 +23,7 @@ $has_images     = ! empty($all_ids);
 >
 
   <?php if (! $has_images) { ?>
-    <div class="product-gallery__main aspect-[4/5] flex flex-col items-center justify-center bg-surface-alt text-border">
+    <div class="product-gallery__main aspect-square flex flex-col items-center justify-center bg-surface-alt text-border">
       <svg class="w-16 h-16 mb-2" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z"/>
       </svg>
@@ -58,7 +58,7 @@ $has_images     = ! empty($all_ids);
             }
         ?>
           <div class="swiper-slide">
-            <a href="<?php echo esc_url($large_url ?: $full_url); ?>" data-pswp-width="<?php echo esc_attr($meta['width'] ?? 1200); ?>" data-pswp-height="<?php echo esc_attr($meta['height'] ?? 1500); ?>" class="block aspect-[4/5] overflow-hidden cursor-zoom-in">
+            <a href="<?php echo esc_url($large_url ?: $full_url); ?>" data-pswp-width="<?php echo esc_attr($meta['width'] ?? 1200); ?>" data-pswp-height="<?php echo esc_attr($meta['height'] ?? 1500); ?>" class="block aspect-square overflow-hidden cursor-zoom-in">
               <picture>
                 <?php if ($webp_srcset) { ?>
                   <source type="image/webp" srcset="<?php echo esc_attr($webp_srcset); ?>" sizes="(max-width: 768px) 100vw, 50vw">

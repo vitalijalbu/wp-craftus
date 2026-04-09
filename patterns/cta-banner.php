@@ -24,8 +24,8 @@
 
 		<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center","flexWrap":"wrap"}} -->
 		<div class="wp-block-buttons">
-			<!-- wp:button {"backgroundColor":"ink","textColor":"white"} -->
-			<div class="wp-block-button"><a class="wp-block-button__link has-ink-background-color has-white-color has-background has-text-color wp-element-button" href="<?php echo function_exists('App\\theme_cta_url') ? \App\theme_cta_url() : esc_url(home_url(apply_filters('theme_cta_fallback_path', '/contatti'))); ?>">📅 Prenota una consulenza</a></div>
+			<!-- wp:button -->
+			<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="<?php echo function_exists('App\\theme_cta_url') ? \App\theme_cta_url() : esc_url(home_url(apply_filters('theme_cta_fallback_path', '/contatti'))); ?>">📅 Prenota una consulenza</a></div>
 			<!-- /wp:button -->
 			<!-- wp:button {"className":"is-style-outline"} -->
 			<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="tel:<?php echo esc_attr(get_theme_mod('contact_phone', '')); ?>"><?php echo esc_html(get_theme_mod('contact_phone', '')); ?></a></div>

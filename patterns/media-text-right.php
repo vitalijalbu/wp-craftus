@@ -29,8 +29,8 @@
 
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons">
-				<!-- wp:button {"backgroundColor":"ink","textColor":"primary"} -->
-				<div class="wp-block-button"><a class="wp-block-button__link has-ink-background-color has-primary-color has-background has-text-color wp-element-button" href="/portfolio">Vedi i Case Study →</a></div>
+				<!-- wp:button -->
+				<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="/portfolio">Vedi i Case Study →</a></div>
 				<!-- /wp:button -->
 			</div>
 			<!-- /wp:buttons -->

@@ -58,7 +58,7 @@
         aria-label="{{ __('Chiudi carrello', 'sage') }}"
         class="text-muted hover:text-ink transition-colors p-1"
       >
-        <x-icons.x-mark class="w-[18px] h-[18px]" />
+        <x-icons.x-mark class="size-6" />
       </button>
     </div>
 

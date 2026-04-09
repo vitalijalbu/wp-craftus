@@ -86,7 +86,7 @@ sage-theme/
 │   │   ├── editor.js             # Blocchi Gutenberg (React) + Style/Block Variations
 │   │   └── modules/
 │   │       ├── carousel.js       # Swiper initialization
-│   │       ├── luxury-animations.js  # GSAP complex timelines
+│   │       ├── animations.js  # GSAP complex timelines
 │   │       ├── scroll-effects.js     # ScrollTrigger effects
 │   │       ├── magnetic-hover.js     # Hover animations
 │   │       ├── locomotive-scroll.js  # Smooth scroll
@@ -853,7 +853,7 @@ Risultati dell'audit deep 2026-03-24 e fix applicati al codebase.
 | File | Problema | Fix |
 |------|----------|-----|
 | `resources/css/editor.css` | `font-family: "Inter"` hardcoded su h1-h6 (r.16) e `core/quote` (r.118) | Sostituito con `"Poppins"` |
-| `resources/css/app.css` | Classe `.container` assente — tutte le Blade view la usano senza definizione | Aggiunta con `max-width:1200px`, `margin-inline:auto`, padding fluid |
+| `resources/css/app.css` | Classe `.container` assente — tutte le Blade view la usano senza definizione | Aggiunta con `max-width:90rem`, `margin-inline:auto`, padding fluid |
 | `resources/css/app.css` | `.theme-form`, `.theme-form__row/label/input/textarea/privacy/checkbox-label/submit/feedback` assenti — form contatti completamente non stilizzato | Aggiunte tutte le classi |
 | `resources/css/app.css` | `.theme-btn`, `.theme-btn--primary/outline/ink/full` assenti — bottoni del pattern contatti senza stile | Aggiunte |
 | `resources/css/app.css` | `.wishlist-btn`, `.wishlist-count-bubble`, `.wishlist-dot` assenti — wishlist.js li usa ma CSS non le definisce | Aggiunte con stati `.active` e `.is-visible` |

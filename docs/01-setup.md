@@ -84,7 +84,7 @@ sage-theme/
 │   │   ├── editor.js             # blocchi React + Style Variations + Block Variations
 │   │   └── modules/              # moduli JS
 │   │       ├── carousel.js
-│   │       ├── luxury-animations.js
+│   │       ├── animations.js
 │   │       ├── scroll-effects.js
 │   │       ├── magnetic-hover.js
 │   │       └── locomotive-scroll.js

@@ -20,7 +20,7 @@
 		<div class="wp-block-column basis-1/2">
 			<!-- wp:image {"aspectRatio":"4/5","scale":"cover","className":"overflow-hidden"} -->
 			<figure class="wp-block-image overflow-hidden">
-				<img src="" alt="Immagine sezione" class="aspect-[4/5] object-cover w-full"/>
+				<img src="" alt="Immagine sezione" class="aspect-square object-cover w-full"/>
 			</figure>
 			<!-- /wp:image -->
 		</div>

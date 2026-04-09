@@ -127,36 +127,5 @@
   </div>
 </section>
 
-<script>
-if (typeof Alpine !== 'undefined') {
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('beforeAfter', () => ({
-      pos:      50,
-      dragging: false,
-      _el:      null,
-
-      startDrag(e) {
-        this.dragging = true
-        this._el = e.currentTarget
-        this.updatePos(e)
-      },
-
-      drag(e) {
-        if (!this.dragging) return
-        this.updatePos(e)
-      },
-
-      stopDrag() { this.dragging = false },
-
-      updatePos(e) {
-        if (!this._el) return
-        const rect  = this._el.getBoundingClientRect()
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX
-        const pct   = ((clientX - rect.left) / rect.width) * 100
-        this.pos    = Math.min(100, Math.max(0, pct))
-      },
-    }))
-  })
-}
-</script>
+{{-- Alpine component 'beforeAfter' registrato in resources/js/app.js --}}
 @endif

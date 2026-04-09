@@ -68,13 +68,7 @@
     {{-- Header --}}
     @if($section_label || $section_title)
       <div class="mb-14">
-        @if($section_label)
-          <span class="section-label {{ $label_class }}" data-scroll="fade">{{ $section_label }}</span>
-        @endif
-        <h2 class="section-title {{ $title_class }}" data-scroll="text-reveal">{!! $section_title !!}</h2>
-        @if($section_subtitle)
-          <p class="section-subtitle mt-4 {{ $sub_class }}" data-scroll="slide-up">{{ $section_subtitle }}</p>
-        @endif
+        @include('partials.section-header', ['bg' => $bg])
       </div>
     @endif
 
@@ -112,7 +106,7 @@
           {{-- Thumbnail --}}
           @if($thumb_id)
             <a href="{{ $perma }}" tabindex="-1" aria-hidden="true"
-               class="block overflow-hidden aspect-[4/3] mb-0">
+               class="block overflow-hidden aspect-4/3 mb-0">
               <x-picture
                 :id="(int) $thumb_id"
                 :alt="$thumb_alt"

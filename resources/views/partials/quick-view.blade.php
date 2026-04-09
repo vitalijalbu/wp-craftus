@@ -102,9 +102,7 @@
         </div>
 
         {{-- Price --}}
-        <div class="mb-4">
-          <span class="font-serif text-2xl font-light text-ink" x-html="product?.price_html || ''"></span>
-        </div>
+        <div class="product-price text-xl mb-4" x-html="product?.price_html || ''"></div>
 
         {{-- Short description --}}
         <div class="text-sm text-muted leading-relaxed mb-5 prose prose-sm max-w-none"

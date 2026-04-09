@@ -18,7 +18,7 @@
 		<div class="wp-block-column basis-[55%] p-0">
 			<!-- wp:image {"aspectRatio":"4/5","scale":"cover","style":{"dimensions":{"minHeight":"100%"}}} -->
 			<figure class="wp-block-image min-h-full">
-				<img src="" alt="Immagine prodotto in evidenza" class="aspect-[4/5] object-cover w-full h-full"/>
+				<img src="" alt="Immagine prodotto in evidenza" class="aspect-square object-cover w-full h-full"/>
 			</figure>
 			<!-- /wp:image -->
 		</div>

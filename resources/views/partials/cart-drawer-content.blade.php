@@ -21,31 +21,7 @@
     @else
       <ul class="space-y-5" aria-label="{{ __('Prodotti nel carrello', 'sage') }}">
         @foreach($cart_items as $key => $item)
-          @php
-            $product  = $item['data'];
-            $img      = $product->get_image('thumbnail', ['class' => 'w-full h-full object-cover']);
-            $qty      = $item['quantity'];
-            $subtotal = WC()->cart->get_product_subtotal($product, $qty);
-          @endphp
-          <li class="flex gap-4 items-start">
-            <a href="{{ esc_url(get_permalink($item['product_id'])) }}" class="shrink-0 w-16 h-16 overflow-hidden bg-surface block">
-              {!! $img !!}
-            </a>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-ink leading-snug line-clamp-2">
-                <a href="{{ esc_url(get_permalink($item['product_id'])) }}" class="hover:text-primary transition-colors">
-                  {{ $product->get_name() }}
-                </a>
-              </p>
-              <p class="text-xs text-muted mt-0.5">{{ __('Qta:', 'sage') }} {{ $qty }}</p>
-              <p class="text-sm font-semibold text-ink mt-1">{!! $subtotal !!}</p>
-            </div>
-            <a href="{{ esc_url(wc_get_cart_remove_url($key)) }}"
-               aria-label="{{ __('Rimuovi', 'sage') . ' ' . esc_attr($product->get_name()) }}"
-               class="text-muted hover:text-error transition-colors shrink-0 mt-0.5">
-              <x-icons.x-mark class="w-[14px] h-[14px]" />
-            </a>
-          </li>
+          @include('partials.cart-item', ['key' => $key, 'item' => $item])
         @endforeach
       </ul>
     @endif

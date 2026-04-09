@@ -32,9 +32,10 @@ function updateButtonStates() {
   document.querySelectorAll('.wishlist-count-bubble').forEach((bubble) => {
     if (wishlist.length > 0) {
       bubble.textContent = wishlist.length
-      bubble.style.display = ''
+      bubble.classList.add('is-visible')
     } else {
-      bubble.style.display = 'none'
+      bubble.textContent = ''
+      bubble.classList.remove('is-visible')
     }
   })
 }
@@ -126,7 +127,7 @@ if (!window.customElements.get('wishlist-products')) {
 						<a href="${p.url}" class="block overflow-hidden aspect-square bg-surface-alt mb-4">
 							${p.thumb ? `<img src="${p.thumb}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">` : ''}
 						</a>
-						<div class="flex items-start justify-between gap-2">
+						<div class="p-2 flex items-start justify-between gap-2">
 							<div>
 								<a href="${p.url}" class="font-sans text-sm font-medium text-ink hover:text-accent transition-colors">${p.title}</a>
 								${p.price_html ? `<p class="text-sm text-muted mt-0.5">${p.price_html}</p>` : ''}

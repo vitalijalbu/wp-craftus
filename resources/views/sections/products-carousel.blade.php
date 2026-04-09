@@ -43,15 +43,7 @@
 
     {{-- Section header --}}
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-      <div>
-        @if($section_label)
-          <span class="section-label" data-scroll="fade">{{ $section_label }}</span>
-        @endif
-        <h2 class="section-title" data-scroll="text-reveal">{!! $section_title !!}</h2>
-        @if($section_subtitle)
-          <p class="section-subtitle mt-3" data-scroll="slide-up">{{ $section_subtitle }}</p>
-        @endif
-      </div>
+      @include('partials.section-header')
 
       <div class="flex items-center gap-4 shrink-0" data-scroll="fade">
         {{-- Nav arrows --}}

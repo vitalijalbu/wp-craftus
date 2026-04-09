@@ -6,6 +6,27 @@
 
 namespace App;
 
+// ── Frontend globals: themeData + themeI18n ──────────────────────────────────
+// Injected once via wp_add_inline_script so JS modules don't need inline PHP.
+add_action('wp_enqueue_scripts', function () {
+    $data = [
+        'restUrl' => esc_url_raw(rest_url()),
+        'nonce'   => wp_create_nonce('wp_rest'),
+        'homeUrl' => esc_url_raw(home_url('/')),
+        'shopUrl' => function_exists('wc_get_page_permalink') ? esc_url_raw(wc_get_page_permalink('shop')) : '',
+    ];
+    $i18n = [
+        'invalidEmail' => __('Inserisci un indirizzo email valido.', 'sage'),
+        'genericError' => __('Si è verificato un errore.', 'sage'),
+        'networkError' => __('Errore di rete. Riprova.', 'sage'),
+    ];
+    wp_add_inline_script(
+        'theme/js/app',
+        'window.themeData = ' . wp_json_encode($data) . '; window.themeI18n = ' . wp_json_encode($i18n) . ';',
+        'before',
+    );
+}, 20);
+
 // ── WooCommerce: cart count fragment ─────────────────────────────────────────
 // Updates `.cart-count-fragment[data-cart-count]` via WC's AJAX fragment system
 // so the cart badge stays accurate after add-to-cart without a page reload.
@@ -16,8 +37,9 @@ add_filter('woocommerce_add_to_cart_fragments', function (array $fragments): arr
 
     $count = (int) WC()->cart->get_cart_contents_count();
     $html = sprintf(
-        '<span class="cart-count-fragment absolute -top-1 -right-1 min-w-4 h-4 bg-accent text-ink     font-bold rounded-full flex items-center justify-center px-0.5 leading-none transition-opacity %s" data-cart-count="%d">%d</span>',
+        '<span class="icon-badge cart-count-fragment %s" data-cart-count="%d" data-count="%d">%d</span>',
         $count === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100',
+        $count,
         $count,
         $count
     );
@@ -120,12 +142,18 @@ add_filter('excerpt_more', function () {
 });
 
 /**
+ * Cap query — numero massimo di prodotti per query/blocco/shortcode.
+ * Valore unico, cambiare qui si applica ovunque.
+ */
+const THEME_PRODUCT_QUERY_CAP = 24;
+
+/**
  * Cap WooCommerce product queries so blocks/shortcodes never load all products at once.
  * Without this, an "All Products" block with 10k products causes memory exhaustion.
  */
 add_filter('woocommerce_shortcode_products_query', function (array $query): array {
     if (empty($query['posts_per_page']) || (int) $query['posts_per_page'] < 0) {
-        $query['posts_per_page'] = 12;
+        $query['posts_per_page'] = THEME_PRODUCT_QUERY_CAP;
     }
 
     return $query;
@@ -144,13 +172,8 @@ add_filter('pre_render_block', function ($pre_render, array $block) {
         'woocommerce/product-category',
     ];
     if (in_array($block['blockName'] ?? '', $wc_product_blocks, true)) {
-        if (empty($block['attrs']['perPage']) || $block['attrs']['perPage'] > 24) {
-            add_filter('query_vars', function ($vars) {
-                return $vars;
-            }); // noop to force re-read
-            add_filter('posts_per_page', function () {
-                return 12;
-            });
+        if (empty($block['attrs']['perPage']) || $block['attrs']['perPage'] > THEME_PRODUCT_QUERY_CAP) {
+            add_filter('posts_per_page', fn () => THEME_PRODUCT_QUERY_CAP);
         }
     }
 
@@ -158,6 +181,12 @@ add_filter('pre_render_block', function ($pre_render, array $block) {
 }, 5, 2);
 
 // ── WooCommerce single product: layout tweaks ────────────────────────────────
+
+// Rimuove il tab recensioni dalla pagina prodotto
+add_filter('woocommerce_product_tabs', function (array $tabs): array {
+    unset($tabs['reviews']);
+    return $tabs;
+});
 
 // Move breadcrumb above the product div (before single-product summary hooks)
 remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
@@ -175,16 +204,35 @@ add_filter('woocommerce_product_thumbnails_columns', fn () => 4);
 
 // Trust badges below add-to-cart
 add_action('woocommerce_after_add_to_cart_button', function () {
-    echo '<div class="trust-badges flex flex-wrap gap-4 mt-5 text-muted text-xs">';
+    global $product;
+
+    $is_physical = $product instanceof WC_Product
+        && ! $product->is_virtual()
+        && ! $product->is_downloadable();
+
     $badges = [
         ['icon' => 'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
-            'label' => __('Pagamento sicuro', 'sage')],
+            'label'    => __('Pagamento sicuro', 'sage'),
+            'physical' => false,
+        ],
         ['icon' => 'M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12',
-            'label' => __('Spedizione rapida', 'sage')],
+            'label'    => __('Spedizione rapida', 'sage'),
+            'physical' => true,
+        ],
         ['icon' => 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99',
-            'label' => __('Resi gratuiti 30gg', 'sage')],
+            'label'    => __('Resi gratuiti 30gg', 'sage'),
+            'physical' => true,
+        ],
     ];
-    foreach ($badges as $b) {
+
+    $visible = array_filter($badges, fn ($b) => ! $b['physical'] || $is_physical);
+
+    if (empty($visible)) {
+        return;
+    }
+
+    echo '<div class="trust-badges flex flex-wrap gap-4 mt-5 text-muted text-xs">';
+    foreach ($visible as $b) {
         printf(
             '<span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="%s"/></svg>%s</span>',
             esc_attr($b['icon']),

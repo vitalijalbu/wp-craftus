@@ -129,35 +129,39 @@ function live_search(\WP_REST_Request $request): \WP_REST_Response
     }
 
     $wp_query = new \WP_Query([
-        's' => $query,
-        'post_type' => $post_types,
+        's'              => $query,
+        'post_type'      => $post_types,
         'posts_per_page' => $per_page,
-        'post_status' => 'publish',
-        'no_found_rows' => true,
-        'fields' => 'ids',
+        'post_status'    => 'publish',
+        'no_found_rows'  => true,
+        // No 'fields' => 'ids' — load full objects so title/permalink/excerpt
+        // are available without extra queries. With max 12 results the overhead
+        // is negligible; the old approach caused N+1 for every meta/title call.
     ]);
 
+    // Warm thumbnail caches in one batch query instead of one per post.
+    update_post_thumbnail_cache($wp_query);
+
     $results = [];
-    foreach ($wp_query->posts as $pid) {
-        $pid = (int) $pid;
-        $thumb_id = get_post_thumbnail_id($pid);
+    foreach ($wp_query->posts as $post) {
+        $pid       = (int) $post->ID;
+        $thumb_id  = get_post_thumbnail_id($pid);
         $thumb_url = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'thumbnail') : '';
-        $post_type = get_post_type($pid);
 
         $price = '';
-        if ($post_type === 'product' && function_exists('wc_get_product')) {
+        if ($post->post_type === 'product' && function_exists('wc_get_product')) {
             $product = wc_get_product($pid);
-            $price = $product ? wp_strip_all_tags($product->get_price_html()) : '';
+            $price   = $product ? wp_strip_all_tags($product->get_price_html()) : '';
         }
 
         $results[] = [
-            'id' => $pid,
-            'title' => esc_html(get_the_title($pid)),
-            'url' => esc_url(get_permalink($pid)),
-            'thumb' => esc_url($thumb_url),
-            'type' => $post_type,
-            'price' => $price,
-            'excerpt' => wp_trim_words(get_the_excerpt($pid), 12, '…'),
+            'id'      => $pid,
+            'title'   => esc_html(get_the_title($post)),
+            'url'     => esc_url(get_permalink($post)),
+            'thumb'   => esc_url($thumb_url),
+            'type'    => $post->post_type,
+            'price'   => $price,
+            'excerpt' => wp_trim_words(get_the_excerpt($post), 12, '…'),
         ];
     }
 
@@ -394,6 +398,19 @@ function get_wishlist_products(\WP_REST_Request $request): \WP_REST_Response
     $raw_ids  = sanitize_text_field($request->get_param('ids'));
     $ids      = array_filter(array_map('absint', explode(',', $raw_ids)));
     $ids      = array_slice(array_values($ids), 0, 50);
+
+    // Prime post + meta caches in one batch before the loop.
+    _prime_post_caches($ids, false, true);
+
+    // Warm thumbnail caches via a single query.
+    $thumb_q = new \WP_Query([
+        'post__in'       => $ids,
+        'posts_per_page' => count($ids),
+        'post_status'    => 'any',
+        'no_found_rows'  => true,
+        'fields'         => 'ids',
+    ]);
+    update_post_thumbnail_cache($thumb_q);
 
     $products = [];
     foreach ($ids as $id) {

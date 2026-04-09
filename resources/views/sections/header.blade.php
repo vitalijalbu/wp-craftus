@@ -149,17 +149,6 @@
         {{-- Actions ───────────────────────────────────────────────────────── --}}
         <div class="flex items-center gap-4">
 
-          {{-- Search --}}
-          <button
-            type="button"
-            class="icon-btn"
-            :class="hasHero && !scrolled ? 'text-white/70 hover:text-white' : ''"
-            aria-label="{{ __('Cerca', 'sage') }}"
-            @click="$dispatch('open-search')"
-          >
-            <x-icons.search class="w-[18px] h-[18px]" />
-          </button>
-
           {{-- Wishlist --}}
           <a
             href="{{ esc_url(home_url('/wishlist')) }}"
@@ -167,10 +156,8 @@
             :class="hasHero && !scrolled ? 'text-white/70 hover:text-white' : ''"
             aria-label="{{ __('Wishlist', 'sage') }}"
           >
-            <x-icons.heart class="w-[18px] h-[18px]" />
-            <span
-              class="wishlist-count-bubble absolute -top-1.5 -right-1.5 min-w-4 h-4 bg-accent text-ink font-bold rounded-full flex items-center justify-center px-0.5 leading-none text-[10px]"
-            ></span>
+            <x-icons.heart class="size-6" />
+            <span class="icon-badge wishlist-count-bubble"></span>
           </a>
 
           {{-- Cart --}}
@@ -182,10 +169,11 @@
               :class="hasHero && !scrolled ? 'text-white/70 hover:text-white' : ''"
               aria-label="{{ __('Apri carrello', 'sage') }}"
             >
-              <x-icons.cart class="w-[18px] h-[18px]" />
+              <x-icons.cart class="size-6" />
               <span
-                class="cart-count-fragment absolute -top-1.5 -right-1.5 min-w-4 h-4 bg-accent text-ink     font-bold rounded-full flex items-center justify-center px-0.5 leading-none transition-opacity"
+                class="icon-badge cart-count-fragment"
                 data-cart-count="{{ $cart_count }}"
+                data-count="{{ $cart_count }}"
                 :class="cartCount === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'"
                 x-text="cartCount"
               >{{ $cart_count }}</span>
@@ -218,9 +206,10 @@
           >
             <x-icons.cart class="w-5 h-5" />
             <span
-              class="cart-count-fragment absolute -top-1 -right-1 min-w-4 h-4 bg-accent text-ink     font-bold rounded-full flex items-center justify-center px-0.5 leading-none"
+              class="icon-badge cart-count-fragment"
               data-cart-count="{{ $cart_count }}"
-              :class="cartCount === 0 ? 'hidden' : 'flex'"
+              data-count="{{ $cart_count }}"
+              :class="cartCount === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'"
               x-text="cartCount"
             >{{ $cart_count }}</span>
           </button>
@@ -233,7 +222,7 @@
           aria-label="{{ __('Wishlist', 'sage') }}"
         >
           <x-icons.heart class="w-5 h-5" />
-          <span class="wishlist-count-bubble absolute -top-1 -right-1 min-w-4 h-4 bg-accent text-ink font-bold rounded-full flex items-center justify-center px-0.5 leading-none text-[10px]"></span>
+          <span class="icon-badge wishlist-count-bubble"></span>
         </a>
 
         <button
@@ -505,10 +494,3 @@
   </div>
 
 </header>
-
-{{-- Spacer: compensates for fixed header on non-hero pages --}}
-<div
-  class="h-18"
-  :class="$store.layout.hasHero ? 'hidden' : 'block'"
-  aria-hidden="true"
-></div>

@@ -124,7 +124,7 @@ Entrambi caricati da Google Fonts in modo asincrono (non-render-blocking) via `a
 
 | Setting | Valore | Uso |
 |---------|--------|-----|
-| `contentSize` | `1200px` | Larghezza testo/contenuto standard |
+| `contentSize` | `90rem` | Larghezza testo/contenuto standard |
 | `wideSize` | `1440px` | Blocchi con `align: wide` |
 | `align: full` | `100vw` | Blocchi a tutta larghezza |
 

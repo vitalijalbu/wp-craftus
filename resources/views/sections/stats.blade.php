@@ -59,13 +59,8 @@
 
     {{-- Optional header --}}
     @if($section_label || $section_title)
-      <div class="text-center mb-14">
-        @if($section_label)
-          <span class="section-label {{ $section_label_class }}" data-scroll="fade">{{ $section_label }}</span>
-        @endif
-        @if($section_title)
-          <h2 class="section-title {{ $section_title_class }}" data-scroll="text-reveal">{!! $section_title !!}</h2>
-        @endif
+      <div class="mb-14">
+        @include('partials.section-header', ['bg' => $bg, 'align' => 'center'])
       </div>
     @endif
 
