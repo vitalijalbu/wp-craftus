@@ -40,7 +40,7 @@ $wrapper_class = match ($style) {
   >
     <summary
       class="flex items-center justify-between gap-4 py-5 cursor-pointer list-none select-none
-             font-sans font-medium text-ink hover:text-accent transition-colors duration-200
+             font-sans font-medium text-ink hover:text-primary transition-colors duration-200
              <?= $style === 'cards' ? 'px-5 bg-surface-alt' : '' ?>
              <?= $style === 'filled' ? 'px-5 bg-ink text-white hover:text-white/80' : '' ?>"
       @click.prevent="open = !open"

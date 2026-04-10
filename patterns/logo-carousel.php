@@ -8,7 +8,7 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"backgroundColor":"surface-alt","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
+<!-- wp:group {"backgroundColor":"surface-alt","style":{"spacing":{"padding":{"top":"var:preset|spacing|9","bottom":"var:preset|spacing|9"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group has-surface-alt-background-color has-background">
 
 	<!-- Titolo sezione (opzionale) -->

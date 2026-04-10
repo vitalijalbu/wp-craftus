@@ -1,6 +1,5 @@
 /**
- * Luxury animation library — GSAP + ScrollTrigger.
- * Called once after Locomotive Scroll is ready.
+ * Aanimation library — GSAP + ScrollTrigger.
  */
 
 import { gsap } from 'gsap'
@@ -106,7 +105,9 @@ export function initLuxuryAnimations() {
     if (!items.length) {
       return
     }
-    items.forEach((item) => track.appendChild(item.cloneNode(true)))
+    items.forEach((item) => {
+      track.appendChild(item.cloneNode(true))
+    })
     const speed = parseFloat(track.dataset.marqueeSpeed ?? '20')
     gsap.to(track, { xPercent: -50, ease: 'none', duration: speed, repeat: -1 })
   })

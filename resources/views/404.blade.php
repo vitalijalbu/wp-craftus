@@ -9,7 +9,7 @@
       404
     </p>
 
-    <div class="w-12 h-px bg-accent mx-auto my-8" aria-hidden="true"></div>
+    <div class="w-12 h-px bg-primary mx-auto my-8" aria-hidden="true"></div>
 
     <h1 id="error-heading" class="font-serif text-[clamp(1.75rem,4vw,3rem)] font-light text-ink mb-4">
       {{ __('Pagina non trovata', 'sage') }}

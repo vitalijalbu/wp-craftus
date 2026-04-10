@@ -77,7 +77,7 @@
               <div class="max-w-2xl">
 
                 @if($label)
-                  <p class="font-semibold tracking-[0.25em] uppercase text-accent mb-5">
+                  <p class="font-semibold tracking-[0.25em] uppercase text-primary mb-5">
                     {{ $label }}
                   </p>
                 @endif

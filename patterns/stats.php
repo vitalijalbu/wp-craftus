@@ -8,7 +8,7 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"backgroundColor":"ink","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+<!-- wp:group {"backgroundColor":"ink","style":{"spacing":{"padding":{"top":"var:preset|spacing|9","bottom":"var:preset|spacing|9"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group has-ink-background-color has-background">
 
 	<!-- Titolo -->

@@ -23,7 +23,7 @@
     default  => 'bg-surface border-border',
   };
   $text_class = $bg === 'ink' ? 'text-white' : 'text-ink';
-  $dot_class  = 'text-accent';
+  $dot_class  = 'text-primary';
 
   $font_size = match($size) {
     'sm' => 'text-sm',
@@ -49,7 +49,7 @@
           <span class="font-serif font-light tracking-widest uppercase {{ $font_size }} {{ $text_class }}">
             {{ $item }}
           </span>
-          <x-icons.dot class="w-2 h-2 fill-accent shrink-0" />
+          <x-icons.dot class="w-2 h-2 fill-primary shrink-0" />
         </span>
       @endforeach
     </div>

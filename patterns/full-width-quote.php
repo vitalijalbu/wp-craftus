@@ -14,8 +14,8 @@
 	<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","orientation":"vertical","justifyContent":"center"},"style":{"spacing":{"blockGap":"2rem"}},"textAlign":"center"} -->
 	<div class="wp-block-group text-center">
 
-		<!-- wp:paragraph {"className":"font-serif text-gold text-[3rem] leading-none select-none","style":{"typography":{"fontSize":"3rem"}}} -->
-		<p class="font-serif text-gold leading-none select-none text-[3rem]">&ldquo;</p>
+		<!-- wp:paragraph {"className":"font-serif text-primary text-[3rem] leading-none select-none","style":{"typography":{"fontSize":"3rem"}}} -->
+		<p class="font-serif text-primary leading-none select-none text-[3rem]">&ldquo;</p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:heading {"level":2,"className":"font-serif text-white font-light leading-snug","style":{"typography":{"fontSize":"clamp(1.75rem, 4vw, 3rem)","fontWeight":"300","lineHeight":"1.3"}}} -->

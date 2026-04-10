@@ -62,19 +62,14 @@
           "name": "Border"
         },
         {
-          "slug": "accent",
-          "color": "#0074C7",
-          "name": "Accent (Blue)"
-        },
-        {
-          "slug": "accent-light",
-          "color": "#eff6ff",
-          "name": "Accent Light"
-        },
-        {
           "slug": "primary",
           "color": "#0074C7",
           "name": "Primary"
+        },
+        {
+          "slug": "primary-50",
+          "color": "#eff6ff",
+          "name": "Primary Light"
         },
         {
           "slug": "success",
@@ -548,7 +543,7 @@
               "radius": "0px"
             }
           },
-          "accent": {
+          "primary": {
             "color": {
               "background": "#0074C7",
               "text": "#ffffff"

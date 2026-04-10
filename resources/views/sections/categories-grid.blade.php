@@ -44,7 +44,7 @@
     @if($section_label || $section_title)
       <div class="text-center mb-14">
         @if($section_label)
-          <span class="section-label {{ $bg === 'ink' ? 'text-accent' : 'text-muted' }}" data-scroll="fade">
+          <span class="section-label {{ $bg === 'ink' ? 'text-primary' : 'text-muted' }}" data-scroll="fade">
             {{ $section_label }}
           </span>
         @endif
@@ -107,10 +107,10 @@
             >
           @else
             <div
-              class="category-card__image bg-linear-to-br from-cream via-accent-light to-border flex items-center justify-center"
+              class="category-card__image bg-linear-to-br from-cream via-primary-50 to-border flex items-center justify-center"
               aria-hidden="true"
             >
-              <x-icons.image-placeholder class="w-12 h-12 text-accent/40" stroke-width="1" />
+              <x-icons.image-placeholder class="w-12 h-12 text-primary/40" stroke-width="1" />
             </div>
           @endif
 

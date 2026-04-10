@@ -73,7 +73,7 @@
     {{-- Badges --}}
     <div class="product-card__badge flex flex-col gap-1">
       @if($is_on_sale)
-        <span class="badge badge-gold">{{ __('Offerta', 'sage') }}</span>
+        <span class="badge badge-primary">{{ __('Offerta', 'sage') }}</span>
       @endif
       @if($is_featured && !$is_on_sale)
         <span class="badge">{{ __('In evidenza', 'sage') }}</span>
@@ -135,7 +135,7 @@
       >
         @php $rating = round($product->get_average_rating()); @endphp
         @for($i = 0; $i < 5; $i++)
-          <x-icons.star class="w-3 h-3 {{ $i < $rating ? 'fill-accent text-accent' : 'fill-border text-border' }}" />
+          <x-icons.star class="w-3 h-3 {{ $i < $rating ? 'fill-primary text-primary' : 'fill-border text-border' }}" />
         @endfor
         <span class="text-muted">({{ $product->get_rating_count() }})</span>
       </div>

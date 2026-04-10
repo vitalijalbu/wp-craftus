@@ -50,7 +50,7 @@
         @endif
         <div class="h-1 bg-border rounded-full overflow-hidden">
           <div
-            class="h-full transition-all duration-500 ease-out {{ $remaining <= 0 ? 'bg-success' : 'bg-accent' }}"
+            class="h-full transition-all duration-500 ease-out {{ $remaining <= 0 ? 'bg-success' : 'bg-primary' }}"
             style="width: {{ $progress }}%"
             role="progressbar"
             aria-valuenow="{{ $progress }}"

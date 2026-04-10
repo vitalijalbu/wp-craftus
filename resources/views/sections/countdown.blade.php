@@ -12,7 +12,7 @@
   $bg_class    = match($bg) { 'cream' => 'bg-cream', 'surface' => 'bg-surface', default => 'bg-ink' };
   $title_class = $bg === 'ink' ? 'text-white'    : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-accent'     : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-primary'     : 'text-muted';
   $unit_class  = $bg === 'ink' ? 'text-white/40' : 'text-muted';
   $num_class   = $bg === 'ink' ? 'text-white'    : 'text-ink';
   $card_class  = $bg === 'ink' ? 'bg-white/5'    : 'bg-cream';

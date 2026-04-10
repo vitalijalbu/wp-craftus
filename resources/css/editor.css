@@ -167,3 +167,332 @@ body {
   border: 1px solid #e0e0e0;
   padding: 2rem;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CUSTOM BLOCKS — WYSIWYG editor styles
+   These replicate the frontend Tailwind layout so the editor matches the
+   frontend. Tailwind utilities are NOT available in editor.css.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Design system tokens (mirrored from app.css @theme) ──────────────────── */
+.editor-styles-wrapper {
+  --ed-primary:     #0074C7;
+  --ed-ink:         #0a0a0a;
+  --ed-muted:       #6b6b6b;
+  --ed-border:      #e0e0e0;
+  --ed-cream:       #f5f5f5;
+  --ed-surface-alt: #f5f5f5;
+  --ed-white:       #ffffff;
+  --ed-font-sans:   "Poppins", system-ui, sans-serif;
+  --ed-font-serif:  "Poppins", system-ui, sans-serif;
+}
+
+/* ── Section label / title (mirrors app.css unified rule) ─────────────────── */
+.editor-styles-wrapper .section-label,
+.editor-styles-wrapper .theme-section-label {
+  display: block;
+  font-family: var(--ed-font-sans);
+  font-size: 0.625rem !important;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.editor-styles-wrapper .section-title,
+.editor-styles-wrapper .theme-section-title {
+  font-family: var(--ed-font-serif) !important;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem) !important;
+  font-weight: 300 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* ── theme/hero ────────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .theme-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 480px;
+  background-color: #1a1a1a; /* fallback when no image loaded */
+}
+
+.editor-styles-wrapper .theme-hero img.absolute {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.editor-styles-wrapper .theme-hero .absolute.inset-0 {
+  position: absolute;
+  inset: 0;
+}
+
+.editor-styles-wrapper .theme-hero .theme-hero-label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 1.25rem;
+}
+
+.editor-styles-wrapper .theme-hero .theme-hero-title {
+  font-family: var(--ed-font-serif);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.editor-styles-wrapper .theme-hero .theme-hero-subtext {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 2rem;
+}
+
+/* ── theme/stat ────────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .stat-block {
+  padding: 2rem 0 2rem 1.5rem;
+}
+
+.editor-styles-wrapper .stat-block .text-stat-display,
+.editor-styles-wrapper .stat-block [class*="text-stat"] {
+  font-family: var(--ed-font-serif);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.editor-styles-wrapper .stat-block p {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 0.75rem;
+  color: var(--ed-muted);
+}
+
+/* ── theme/accordion ───────────────────────────────────────────────────────── */
+.editor-styles-wrapper .theme-accordion {
+  width: 100%;
+}
+
+.editor-styles-wrapper .theme-accordion details {
+  border-bottom: 1px solid var(--ed-border);
+}
+
+.editor-styles-wrapper .theme-accordion details:first-child {
+  border-top: 1px solid var(--ed-border);
+}
+
+.editor-styles-wrapper .theme-accordion summary,
+.editor-styles-wrapper .theme-accordion .faq-item__trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  cursor: pointer;
+  font-family: var(--ed-font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--ed-ink);
+  list-style: none;
+  gap: 1rem;
+}
+
+.editor-styles-wrapper .theme-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.editor-styles-wrapper .theme-accordion .faq-item__icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--ed-primary);
+}
+
+.editor-styles-wrapper .theme-accordion .faq-item__answer {
+  padding: 0 0 1.25rem 0;
+  font-size: 0.9375rem;
+  color: var(--ed-muted);
+  line-height: 1.7;
+}
+
+/* Accordion — Cards variant */
+.editor-styles-wrapper .theme-accordion--cards details {
+  border: 1px solid var(--ed-border);
+  border-top: none;
+  padding: 0 1.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0;
+}
+
+.editor-styles-wrapper .theme-accordion--cards details:first-child {
+  border-top: 1px solid var(--ed-border);
+}
+
+/* Accordion — Filled variant */
+.editor-styles-wrapper .theme-accordion--filled details {
+  border: none;
+  background-color: var(--ed-cream);
+  padding: 0 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* ── theme/icon-box ────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .icon-box {
+  display: flex;
+  gap: 1rem;
+}
+
+.editor-styles-wrapper .icon-box.flex-col,
+.editor-styles-wrapper .icon-box:not(.flex-row) {
+  flex-direction: column;
+}
+
+.editor-styles-wrapper .icon-box.flex-row {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.editor-styles-wrapper .icon-box .icon-box__icon {
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.editor-styles-wrapper .icon-box h3 {
+  font-family: var(--ed-font-serif);
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.editor-styles-wrapper .icon-box p {
+  font-size: 0.875rem;
+  color: var(--ed-muted);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+.editor-styles-wrapper .icon-box a {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ed-primary);
+}
+
+/* ── theme/testimonial ─────────────────────────────────────────────────────── */
+.editor-styles-wrapper .testimonial-block {
+  margin: 0;
+}
+
+.editor-styles-wrapper .testimonial-block.p-8 {
+  padding: 2rem;
+  background-color: var(--ed-cream);
+}
+
+.editor-styles-wrapper .testimonial-block blockquote,
+.editor-styles-wrapper .testimonial-block blockquote p {
+  font-family: var(--ed-font-serif);
+  font-style: normal;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.editor-styles-wrapper .testimonial-block figcaption {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.editor-styles-wrapper .testimonial-block figcaption img {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.editor-styles-wrapper .testimonial-block .flex.gap-0\.5 {
+  display: flex;
+  gap: 0.125rem;
+  margin-bottom: 1rem;
+}
+
+.editor-styles-wrapper .testimonial-block svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* ── theme/products-carousel ──────────────────────────────────────────────── */
+.editor-styles-wrapper .products-carousel {
+  overflow: hidden;
+}
+
+.editor-styles-wrapper .products-carousel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.editor-styles-wrapper .products-carousel__title {
+  font-family: var(--ed-font-serif);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+.editor-styles-wrapper .products-carousel__subtitle {
+  font-size: 0.875rem;
+  color: var(--ed-muted);
+  margin-top: 0.5rem;
+}
+
+.editor-styles-wrapper .products-carousel__outer {
+  overflow: hidden;
+}
+
+.editor-styles-wrapper .products-carousel__track .swiper-wrapper {
+  display: flex;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.editor-styles-wrapper .products-carousel__track .swiper-slide {
+  flex: 0 0 calc(25% - 0.75rem);
+  min-width: 0;
+}
+
+/* ── USP band (mirrors app.css) ───────────────────────────────────────────── */
+.editor-styles-wrapper .theme-usp-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 1.5rem;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.editor-styles-wrapper .theme-usp-item:last-child {
+  border-right: none;
+}
+
+.editor-styles-wrapper .usp-item__title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}

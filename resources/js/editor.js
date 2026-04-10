@@ -20,6 +20,7 @@ import {
 } from '@wordpress/blocks'
 import {
   Button,
+  CheckboxControl,
   PanelBody,
   RangeControl,
   SelectControl,
@@ -27,6 +28,7 @@ import {
   TextControl,
   ToggleControl,
 } from '@wordpress/components'
+import { useSelect } from '@wordpress/data'
 import { createElement as el, Fragment } from '@wordpress/element'
 import { __ } from '@wordpress/i18n'
 import ServerSideRender from '@wordpress/server-side-render'
@@ -42,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
   })
   registerBlockStyle('core/button', {
     name: 'accent',
-    label: __('Accent (Blue)', 'sage'),
+    label: __('Primary (Blue)', 'sage'),
   })
   registerBlockStyle('core/button', {
     name: 'ghost',
@@ -66,7 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
   })
   registerBlockStyle('core/separator', {
     name: 'accent',
-    label: __('Accent', 'sage'),
+    label: __('Primary', 'sage'),
   })
 
   // ── core/quote ──────────────────────────────────────────────────────────────
@@ -766,6 +768,130 @@ registerBlockType('theme/accordion', {
         ),
       ),
       el('div', useBlockProps(), el(ServerSideRender, { block: 'theme/accordion', attributes })),
+    )
+  },
+  save: () => null,
+})
+
+// ── theme/products-carousel ──────────────────────────────────────────────────
+
+registerBlockType('theme/products-carousel', {
+  edit({ attributes, setAttributes }) {
+    const { title, subtitle, limit, categories, orderby, bg } = attributes
+
+    // Fetch all WooCommerce product categories from WP REST
+    const allCategories = useSelect((select) => {
+      return select('core').getEntityRecords('taxonomy', 'product_cat', {
+        per_page: 100,
+        hide_empty: false,
+        _fields: 'id,name,slug',
+      })
+    }, [])
+
+    const orderbyOptions = [
+      { label: __('Più recenti', 'sage'), value: 'date' },
+      { label: __('Più venduti', 'sage'), value: 'popularity' },
+      { label: __('Meglio votati', 'sage'), value: 'rating' },
+      { label: __('Prezzo crescente', 'sage'), value: 'price' },
+      { label: __('Prezzo decrescente', 'sage'), value: 'price-desc' },
+      { label: __('Alfabetico A→Z', 'sage'), value: 'title' },
+      { label: __('Casuale', 'sage'), value: 'rand' },
+    ]
+
+    const toggleCategory = (slug, checked) => {
+      const next = checked ? [...categories, slug] : categories.filter((s) => s !== slug)
+      setAttributes({ categories: next })
+    }
+
+    return el(
+      Fragment,
+      null,
+
+      el(
+        InspectorControls,
+        null,
+
+        // ── Testo ──────────────────────────────────────────────────────
+        el(
+          PanelBody,
+          { title: __('Testo', 'sage'), initialOpen: true },
+          el(TextControl, {
+            label: __('Titolo', 'sage'),
+            value: title ?? '',
+            onChange: (val) => setAttributes({ title: val }),
+          }),
+          el(TextControl, {
+            label: __('Etichetta sopra il titolo', 'sage'),
+            value: subtitle ?? '',
+            onChange: (val) => setAttributes({ subtitle: val }),
+          }),
+        ),
+
+        // ── Prodotti ────────────────────────────────────────────────────
+        el(
+          PanelBody,
+          { title: __('Prodotti', 'sage'), initialOpen: true },
+          el(RangeControl, {
+            label: __('Numero prodotti', 'sage'),
+            value: limit ?? 8,
+            min: 2,
+            max: 24,
+            onChange: (val) => setAttributes({ limit: val }),
+          }),
+          el(SelectControl, {
+            label: __('Ordina per', 'sage'),
+            value: orderby ?? 'date',
+            options: orderbyOptions,
+            onChange: (val) => setAttributes({ orderby: val }),
+          }),
+        ),
+
+        // ── Categorie ────────────────────────────────────────────────────
+        el(
+          PanelBody,
+          { title: __('Filtra per categoria', 'sage'), initialOpen: false },
+          allCategories === null
+            ? el('p', { style: { color: '#999', fontSize: '13px' } }, __('Caricamento…', 'sage'))
+            : allCategories.length === 0
+              ? el(
+                  'p',
+                  { style: { color: '#999', fontSize: '13px' } },
+                  __('Nessuna categoria trovata.', 'sage'),
+                )
+              : allCategories.map((cat) =>
+                  el(CheckboxControl, {
+                    key: cat.slug,
+                    label: cat.name,
+                    checked: categories.includes(cat.slug),
+                    onChange: (checked) => toggleCategory(cat.slug, checked),
+                  }),
+                ),
+          categories.length > 0 &&
+            el(
+              'p',
+              { style: { fontSize: '11px', color: '#999', marginTop: '8px' } },
+              __('Filtri attivi: ', 'sage') + categories.join(', '),
+            ),
+        ),
+
+        // ── Stile ────────────────────────────────────────────────────────
+        el(
+          PanelBody,
+          { title: __('Sfondo', 'sage'), initialOpen: false },
+          el(SelectControl, {
+            label: __('Colore sfondo', 'sage'),
+            value: bg ?? 'surface',
+            options: bgOptions,
+            onChange: (val) => setAttributes({ bg: val }),
+          }),
+        ),
+      ),
+
+      el(
+        'div',
+        useBlockProps({ style: { minHeight: '120px' } }),
+        el(ServerSideRender, { block: 'theme/products-carousel', attributes }),
+      ),
     )
   },
   save: () => null,

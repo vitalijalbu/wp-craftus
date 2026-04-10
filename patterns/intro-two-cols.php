@@ -8,7 +8,7 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"backgroundColor":"white","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+<!-- wp:group {"backgroundColor":"white","style":{"spacing":{"padding":{"top":"var:preset|spacing|9","bottom":"var:preset|spacing|9"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group has-white-background-color has-background">
 
 	<!-- wp:columns {"verticalAlignment":"center","isStackedOnMobile":true} -->
@@ -49,9 +49,9 @@
 			<div class="wp-block-spacer h-6" aria-hidden="true"></div>
 			<!-- /wp:spacer -->
 
-			<!-- Riga decorativa accent -->
-			<!-- wp:group {"style":{"dimensions":{"minHeight":"4px"}},"backgroundColor":"accent","layout":{"type":"constrained","contentSize":"6rem"}} -->
-			<div class="wp-block-group has-accent-background-color has-background min-h-1"></div>
+			<!-- Riga decorativa primary -->
+			<!-- wp:group {"style":{"dimensions":{"minHeight":"4px"}},"backgroundColor":"primary","layout":{"type":"constrained","contentSize":"6rem"}} -->
+			<div class="wp-block-group has-primary-background-color has-background min-h-1"></div>
 			<!-- /wp:group -->
 
 		</div>

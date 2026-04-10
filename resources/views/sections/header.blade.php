@@ -75,7 +75,7 @@
       {{-- LEFT: Logo ───────────────────────────────────────────────────────── --}}
       <a
         href="{{ esc_url(home_url('/')) }}"
-        class="shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+        class="shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
         aria-label="{{ esc_attr(get_bloginfo('name')) }}"
       >
         @if(has_custom_logo())
@@ -285,7 +285,7 @@
               @endif
               <a
                 href="{{ esc_url($cat_link) }}"
-                class="block font-semibold tracking-[0.15em] uppercase text-ink/80 hover:text-accent transition-colors duration-200 mb-4"
+                class="block font-semibold tracking-[0.15em] uppercase text-ink/80 hover:text-primary transition-colors duration-200 mb-4"
               >{{ esc_html($cat->name) }}</a>
 
               @if(!is_wp_error($sub_cats) && !empty($sub_cats))
@@ -309,7 +309,7 @@
           {{-- Featured dark CTA card ─────────────────────────────────────── --}}
           <div class="mega-item bg-ink p-8 flex flex-col justify-between">
             <div>
-              <p class="    font-semibold tracking-[0.28em] uppercase text-accent mb-5">
+              <p class="    font-semibold tracking-[0.28em] uppercase text-primary mb-5">
                 {{ __('In evidenza', 'sage') }}
               </p>
               <h3 class="font-sans text-xl font-light text-white leading-snug mb-3">
@@ -383,7 +383,7 @@
     x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="opacity-100 translate-x-0"
     x-transition:leave-end="opacity-0 translate-x-full"
-    class="fixed inset-0 top-18 bg-primary z-40 overflow-y-auto flex flex-col lg:hidden"
+    class="fixed inset-0 top-18 bg-ink z-40 overflow-y-auto flex flex-col lg:hidden"
     x-cloak
     role="dialog"
     aria-modal="true"
@@ -408,17 +408,17 @@
               @foreach($wc_cats as $cat)
                 <a
                   href="{{ esc_url(get_term_link($cat)) }}"
-                  class="flex items-center gap-2 py-2 font-medium tracking-wide text-white/50 hover:text-accent transition-colors"
+                  class="flex items-center gap-2 py-2 font-medium tracking-wide text-white/50 hover:text-primary transition-colors"
                   @click="closeMobile()"
                 >
-                  <span class="w-1 h-1 bg-accent/40 rounded-full shrink-0" aria-hidden="true"></span>
+                  <span class="w-1 h-1 bg-primary/40 rounded-full shrink-0" aria-hidden="true"></span>
                   {{ esc_html($cat->name) }}
                 </a>
               @endforeach
             </div>
             <a
               href="{{ esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop')) }}"
-              class="mt-5 inline-flex items-center gap-2     font-semibold tracking-[0.2em] uppercase text-accent"
+              class="mt-5 inline-flex items-center gap-2     font-semibold tracking-[0.2em] uppercase text-primary"
               @click="closeMobile()"
             >{{ __('Vedi tutto lo shop', 'sage') }} →</a>
           </div>
@@ -446,10 +446,10 @@
               @foreach($mob_children as $child)
                 <a
                   href="{{ esc_url($child->url) }}"
-                  class="flex items-center gap-2 py-2 text-[13px] text-white/50 hover:text-accent transition-colors"
+                  class="flex items-center gap-2 py-2 text-[13px] text-white/50 hover:text-primary transition-colors"
                   @click="closeMobile()"
                 >
-                  <span class="w-1 h-1 bg-accent/40 rounded-full shrink-0" aria-hidden="true"></span>
+                  <span class="w-1 h-1 bg-primary/40 rounded-full shrink-0" aria-hidden="true"></span>
                   {{ esc_html($child->title) }}
                 </a>
               @endforeach
@@ -458,7 +458,7 @@
         @else
           <a
             href="{{ esc_url($item->url) }}"
-            class="flex items-center justify-between py-5 border-b border-white/8 font-sans text-2xl font-light text-white hover:text-accent transition-colors tracking-wide"
+            class="flex items-center justify-between py-5 border-b border-white/8 font-sans text-2xl font-light text-white hover:text-primary transition-colors tracking-wide"
             @click="closeMobile()"
           >{{ esc_html($item->title) }}</a>
         @endif
@@ -471,7 +471,7 @@
       @if($show_cta)
         <a
           href="{{ $cta_url }}"
-          class="block w-full text-center py-4 bg-accent text-ink     font-semibold tracking-[0.22em] uppercase hover:bg-accent/90 transition-colors"
+          class="block w-full text-center py-4 bg-primary text-ink     font-semibold tracking-[0.22em] uppercase hover:bg-primary/90 transition-colors"
           @click="closeMobile()"
         >{{ esc_html($cta_label) }}</a>
       @endif
@@ -484,7 +484,7 @@
       @if($social_ig || $social_fb || $social_tk)
         <div class="flex items-center gap-5 justify-center pt-1">
           @foreach(array_filter(['instagram' => $social_ig, 'facebook' => $social_fb, 'tiktok' => $social_tk]) as $name => $url)
-            <a href="{{ esc_url($url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ ucfirst($name) }}" class="    font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-accent transition-colors">
+            <a href="{{ esc_url($url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ ucfirst($name) }}" class="    font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-primary transition-colors">
               {{ ucfirst($name) }}
             </a>
           @endforeach

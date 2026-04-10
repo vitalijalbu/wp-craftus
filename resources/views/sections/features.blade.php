@@ -37,7 +37,7 @@
     default => 'bg-surface',
   };
   $text_class  = $bg === 'ink' ? 'text-white'   : 'text-ink';
-  $label_class = $bg === 'ink' ? 'text-accent'    : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-primary'    : 'text-muted';
   $desc_class  = $bg === 'ink' ? 'text-white/60' : 'text-muted';
 
   $cols_class = match((int) $cols) {

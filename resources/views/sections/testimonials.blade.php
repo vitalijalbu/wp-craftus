@@ -105,7 +105,7 @@
                   role="img"
                 >
                   @for($i = 0; $i < 5; $i++)
-                    <x-icons.star class="w-4 h-4 {{ $i < $t['rating'] ? 'text-accent fill-accent' : 'text-border fill-border' }}" />
+                    <x-icons.star class="w-4 h-4 {{ $i < $t['rating'] ? 'text-primary fill-primary' : 'text-border fill-border' }}" />
                   @endfor
                 </div>
               @endif
@@ -135,7 +135,7 @@
                     class="testimonial-card__avatar bg-cream flex items-center justify-center shrink-0"
                     aria-hidden="true"
                   >
-                    <span class="font-serif text-accent text-sm font-medium">
+                    <span class="font-serif text-primary text-sm font-medium">
                       {{ mb_substr($t['name'] ?? 'A', 0, 1) }}
                     </span>
                   </div>

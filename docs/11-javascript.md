@@ -18,7 +18,6 @@ app.js
 │   └── layout            → { hasHero }
 └── Import moduli:
     ├── modules/gsap-scroll.js     → GSAP + ScrollTrigger animations
-    ├── modules/locomotive-scroll.js
     └── modules/carousel.js        → Swiper
 ```
 
@@ -262,49 +261,6 @@ initCarousel('.products-swiper', {
 
 ---
 
-## Locomotive Scroll
-
-Modulo: `resources/js/modules/locomotive-scroll.js`
-
-Smooth scroll con parallax e effetti inerzia.
-
-```js
-import LocomotiveScroll from 'locomotive-scroll'
-
-let scroll
-
-function initLocomotiveScroll() {
-    scroll = new LocomotiveScroll({
-        el: document.querySelector('[data-scroll-container]'),
-        smooth: true,
-        multiplier: 0.9,
-        lerp: 0.07,
-    })
-
-    // Sincronizza con ScrollTrigger GSAP
-    scroll.on('scroll', ScrollTrigger.update)
-    ScrollTrigger.scrollerProxy('[data-scroll-container]', {
-        scrollTop: (value) => {
-            return arguments.length
-                ? scroll.scrollTo(value, { duration: 0, disableLerp: true })
-                : scroll.scroll.instance.scroll.y
-        },
-        getBoundingClientRect: () => ({
-            top: 0, left: 0,
-            width: window.innerWidth, height: window.innerHeight,
-        }),
-    })
-    ScrollTrigger.addEventListener('refresh', () => scroll.update())
-    ScrollTrigger.refresh()
-}
-```
-
-Nel markup aggiungi `data-scroll-container` alla `<div id="app">`.
-
-> **Nota:** Locomotive Scroll può creare conflitti con WooCommerce cart fragments e form checkout. Considera di disabilitarlo per le pagine WC.
-
----
-
 ## Moduli lazy loading
 
 Per non inizializzare tutti i moduli su ogni pagina:
@@ -314,8 +270,7 @@ Per non inizializzare tutti i moduli su ogni pagina:
 document.addEventListener('DOMContentLoaded', () => {
     // Inizializza solo se ci sono elementi nel DOM
     if (document.querySelector('.swiper')) import('./modules/carousel')
-    if (document.querySelector('[data-scroll-container]')) import('./modules/locomotive-scroll')
-    if (document.querySelector('[data-scroll]')) import('./modules/gsap-scroll')
+    if (document.querySelector('[data-scroll]')) import('./modules/scroll-effects')
 })
 ```
 
@@ -357,7 +312,6 @@ I vendor sono divisi in chunk separati per ottimizzare il caching:
 manualChunks: {
     'vendor-alpine': ['alpinejs', '@alpinejs/collapse', '@alpinejs/focus'],
     'vendor-gsap':   ['gsap', 'gsap/ScrollTrigger'],
-    'vendor-loco':   ['locomotive-scroll'],
     'vendor-swiper': ['swiper'],
 }
 ```

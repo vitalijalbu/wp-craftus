@@ -49,7 +49,7 @@
 
         {{-- Input --}}
         <form @submit.prevent="submit()" role="search">
-          <label for="search-overlay-input" class="block font-semibold tracking-[0.25em] uppercase text-accent mb-6">
+          <label for="search-overlay-input" class="block font-semibold tracking-[0.25em] uppercase text-primary mb-6">
             {{ __('Cosa stai cercando?', 'sage') }}
           </label>
           <div class="flex items-end border-b border-white/20 pb-3 gap-4 focus-within:border-white/60 transition-colors">
@@ -67,7 +67,7 @@
             >
             <button
               type="submit"
-              class="shrink-0 text-white/40 hover:text-accent transition-colors pb-1"
+              class="shrink-0 text-white/40 hover:text-primary transition-colors pb-1"
               aria-label="{{ __('Cerca', 'sage') }}"
             >
               <x-icons.search class="w-6 h-6" />
@@ -114,11 +114,11 @@
                     <x-icons.image-placeholder x-show="!item.thumb" class="w-5 h-5 text-white/20" />
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="font-serif text-base font-light text-white group-hover:text-accent transition-colors truncate" x-text="item.title"></p>
+                    <p class="font-serif text-base font-light text-white group-hover:text-primary transition-colors truncate" x-text="item.title"></p>
                     <p class="text-xs text-white/40 truncate mt-0.5" x-text="item.excerpt"></p>
                   </div>
                   <div class="shrink-0 text-right" x-show="item.price">
-                    <span class="text-sm font-medium text-accent" x-html="item.price"></span>
+                    <span class="text-sm font-medium text-primary" x-html="item.price"></span>
                   </div>
                 </a>
               </li>
@@ -130,7 +130,7 @@
             <a
               :href="'{{ home_url("/?s=") }}' + encodeURIComponent(query)"
               @click="hide()"
-              class="text-xs font-semibold tracking-[0.18em] uppercase text-white/40 hover:text-accent transition-colors"
+              class="text-xs font-semibold tracking-[0.18em] uppercase text-white/40 hover:text-primary transition-colors"
             >
               {{ __('Vedi tutti i risultati', 'sage') }}
               <span x-show="totalCount > 0">(<span x-text="totalCount"></span>)</span>

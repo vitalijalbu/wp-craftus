@@ -22,7 +22,7 @@
   };
   $title_class  = in_array($style, ['dark', 'image', 'primary']) ? 'text-white'   : 'text-ink';
   $sub_class    = in_array($style, ['dark', 'image', 'primary']) ? 'text-white/65' : 'text-muted';
-  $label_class  = 'text-accent';
+  $label_class  = 'text-primary';
 
   $align_class = $align === 'center' ? 'text-center items-center mx-auto' : 'text-left';
   $btn_class   = match($style) {
@@ -63,7 +63,7 @@
         <span class="section-label {{ $label_class }}" data-scroll="fade">{{ $label }}</span>
       @endif
 
-      <div class="divider-gold {{ $align === 'center' ? 'mx-auto' : '' }}" data-scroll="line-in" aria-hidden="true"></div>
+      <div class="divider-primary {{ $align === 'center' ? 'mx-auto' : '' }}" data-scroll="line-in" aria-hidden="true"></div>
 
       <h2
         class="section-title-lg {{ $title_class }}"

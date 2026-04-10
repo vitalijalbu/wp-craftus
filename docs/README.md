@@ -20,7 +20,7 @@ Questo è un **tema ibrido**: il frontend usa Blade (PHP server-side), l'editor 
 | 08 | [Sidebar & Widget](./08-sidebar.md) | Sidebar registrate, uso nei template |
 | 09 | [WooCommerce](./09-woocommerce.md) | Setup, template override, filtri, cart fragments |
 | 10 | [Customizer](./10-customizer.md) | Opzioni tema, social links, CTA, announcement bar |
-| 11 | [JavaScript & Animazioni](./11-javascript.md) | Alpine.js, GSAP, Swiper, Locomotive Scroll |
+| 11 | [JavaScript & Animazioni](./11-javascript.md) | Alpine.js, GSAP, Swiper |
 | 12 | [REST API](./12-rest-api.md) | Endpoint custom, newsletter, live search |
 
 ---

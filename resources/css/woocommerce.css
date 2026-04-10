@@ -143,7 +143,7 @@
 
 .woocommerce .star-rating span::before,
 .woocommerce .star-rating::before {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .woocommerce .star-rating {
@@ -319,7 +319,7 @@
 }
 
 .woocommerce table.cart .product-name a:hover {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .woocommerce .cart-collaterals .cart_totals .order-total .amount {
@@ -390,7 +390,7 @@
 .woocommerce-account .woocommerce-MyAccount-navigation ul li a:hover,
 .woocommerce-account .woocommerce-MyAccount-navigation ul li.is-active a {
   color: var(--color-ink);
-  border-left-color: var(--color-accent);
+  border-left-color: var(--color-primary);
   padding-left: 1.375rem;
 }
 
@@ -447,7 +447,7 @@
 
 /* Widget filtri */
 .widget_price_filter .price_slider_wrapper .ui-slider-range {
-  background: var(--color-accent);
+  background: var(--color-primary);
 }
 
 .widget_price_filter .price_slider_wrapper .ui-slider-handle {
@@ -479,7 +479,7 @@
 
 .widget_product_categories ul li.current-cat > a,
 .widget_layered_nav ul li.chosen a {
-  color: var(--color-accent);
+  color: var(--color-primary);
   font-weight: 600;
 }
 

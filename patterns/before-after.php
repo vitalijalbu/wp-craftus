@@ -65,8 +65,8 @@
 		<!-- DOPO -->
 		<!-- wp:column -->
 		<div class="wp-block-column">
-			<!-- wp:group {"className":"ba-card-accent","backgroundColor":"surface","layout":{"type":"default"}} -->
-			<div class="wp-block-group has-surface-background-color has-background ba-card-accent">
+			<!-- wp:group {"className":"ba-card-primary","backgroundColor":"surface","layout":{"type":"default"}} -->
+			<div class="wp-block-group has-surface-background-color has-background ba-card-primary">
 				<!-- wp:image {"aspectRatio":"4/3","scale":"cover","sizeSlug":"large"} -->
 				<figure class="wp-block-image size-large">
 					<img src="" alt="Immagine Dopo" class="aspect-4/3 object-cover"/>
@@ -74,8 +74,8 @@
 				<!-- /wp:image -->
 				<!-- wp:group {"className":"ba-card-body","layout":{"type":"default"}} -->
 				<div class="wp-block-group ba-card-body">
-					<!-- wp:paragraph {"textColor":"accent","fontSize":"xs","className":"section-label","style":{"spacing":{"margin":{"bottom":"0.25rem"}}}} -->
-					<p class="has-accent-color has-text-color has-xs-font-size section-label mb-1">DOPO</p>
+					<!-- wp:paragraph {"textColor":"primary","fontSize":"xs","className":"section-label","style":{"spacing":{"margin":{"bottom":"0.25rem"}}}} -->
+					<p class="has-primary-color has-text-color has-xs-font-size section-label mb-1">DOPO</p>
 					<!-- /wp:paragraph -->
 					<!-- wp:heading {"level":4,"fontSize":"lg"} -->
 					<h4 class="wp-block-heading has-lg-font-size">Il risultato ottenuto</h4>
@@ -100,8 +100,8 @@
 	<!-- CTA -->
 	<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
 	<div class="wp-block-buttons">
-		<!-- wp:button {"backgroundColor":"accent","textColor":"white"} -->
-		<div class="wp-block-button"><a class="wp-block-button__link has-accent-background-color has-white-color has-background has-text-color wp-element-button" href="<?php echo esc_url(home_url(apply_filters('theme_portfolio_path', '/portfolio'))); ?>">Vedi altri progetti</a></div>
+		<!-- wp:button {"backgroundColor":"primary","textColor":"white"} -->
+		<div class="wp-block-button"><a class="wp-block-button__link has-primary-background-color has-white-color has-background has-text-color wp-element-button" href="<?php echo esc_url(home_url(apply_filters('theme_portfolio_path', '/portfolio'))); ?>">Vedi altri progetti</a></div>
 		<!-- /wp:button -->
 	</div>
 	<!-- /wp:buttons -->

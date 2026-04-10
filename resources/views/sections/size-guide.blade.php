@@ -42,7 +42,7 @@
   $bg_class    = match($bg) { 'cream' => 'bg-cream', 'ink' => 'bg-ink', default => 'bg-surface' };
   $title_class = $bg === 'ink' ? 'text-white'    : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-accent'     : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-primary'     : 'text-muted';
 @endphp
 
 <section

@@ -53,7 +53,7 @@
 
     {{-- Loading state --}}
     <div x-show="loading" class="flex items-center justify-center py-20">
-      <x-icons.spinner class="w-8 h-8 text-accent animate-spin" />
+      <x-icons.spinner class="w-8 h-8 text-primary animate-spin" />
     </div>
 
     {{-- Product content --}}
@@ -96,7 +96,7 @@
         {{-- Rating --}}
         <div x-show="product?.rating_count > 0" class="flex items-center gap-1.5 mb-3">
           <template x-for="i in 5" :key="i">
-            <x-icons.star class="w-3 h-3" ::class="i <= Math.round(product?.rating || 0) ? 'fill-accent text-accent' : 'fill-border text-border'" />
+            <x-icons.star class="w-3 h-3" ::class="i <= Math.round(product?.rating || 0) ? 'fill-primary text-primary' : 'fill-border text-border'" />
           </template>
           <span class="text-xs text-muted" x-text="'(' + (product?.rating_count || 0) + ')'"></span>
         </div>

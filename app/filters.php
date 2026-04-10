@@ -430,3 +430,153 @@ add_filter('template_include', function (string $template): string {
 
     return $template;
 }, 101);
+
+// ── [products_carousel] shortcode ─────────────────────────────────────────────
+// Usage: [products_carousel title="Titolo" subtitle="Label" limit="8" category="" orderby="date" order="DESC" ids=""]
+add_shortcode('products_carousel', function (array $atts): string {
+    if (! function_exists('wc_get_product')) {
+        return '';
+    }
+
+    $atts = shortcode_atts([
+        'title'    => __('I nostri prodotti', 'sage'),
+        'subtitle' => '',
+        'limit'    => 8,
+        'category' => '',
+        'orderby'  => 'date',
+        'order'    => 'DESC',
+        'ids'      => '',
+    ], $atts, 'products_carousel');
+
+    $limit    = max(1, min(24, (int) $atts['limit']));
+    $title    = sanitize_text_field($atts['title']);
+    $subtitle = sanitize_text_field($atts['subtitle']);
+    $orderby  = sanitize_key($atts['orderby']);
+    $order    = in_array(strtoupper((string) $atts['order']), ['ASC', 'DESC'], true)
+        ? strtoupper((string) $atts['order'])
+        : 'DESC';
+
+    $query_args = [
+        'post_type'           => 'product',
+        'post_status'         => 'publish',
+        'posts_per_page'      => $limit,
+        'orderby'             => $orderby,
+        'order'               => $order,
+        'ignore_sticky_posts' => true,
+    ];
+
+    if (! empty($atts['category'])) {
+        $query_args['tax_query'] = [[
+            'taxonomy' => 'product_cat',
+            'field'    => 'slug',
+            'terms'    => array_map('sanitize_title', explode(',', (string) $atts['category'])),
+        ]];
+    }
+
+    if (! empty($atts['ids'])) {
+        $ids = array_values(array_filter(array_map('absint', explode(',', (string) $atts['ids']))));
+        if (! empty($ids)) {
+            $query_args['post__in'] = $ids;
+            $query_args['orderby']  = 'post__in';
+        }
+    }
+
+    $query    = new \WP_Query($query_args);
+    $products = [];
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $product = wc_get_product(get_the_ID());
+            if ($product && $product->is_visible()) {
+                $products[] = $product;
+            }
+        }
+        wp_reset_postdata();
+    }
+
+    if (empty($products)) {
+        return '';
+    }
+
+    $has_many = count($products) > 1;
+
+    ob_start(); ?>
+    <section
+      class="products-carousel-section py-16 md:py-20"
+      data-products-carousel
+      aria-label="<?php echo esc_attr($title); ?>"
+    >
+        <?php if ($title || $subtitle) { ?>
+            <div class="container mb-8 md:mb-10">
+                <div class="flex items-end justify-between gap-6">
+                    <div>
+                        <?php if ($subtitle) { ?>
+                            <p class="section-label text-muted mb-2"><?php echo esc_html($subtitle); ?></p>
+                        <?php } ?>
+                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-serif font-light text-ink leading-tight m-0">
+                            <?php echo esc_html($title); ?>
+                        </h2>
+                    </div>
+                    <?php if ($has_many) { ?>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button type="button" class="swiper-button-prev products-carousel__btn" aria-label="<?php esc_attr_e('Prodotto precedente', 'sage'); ?>">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+                            </button>
+                            <button type="button" class="swiper-button-next products-carousel__btn" aria-label="<?php esc_attr_e('Prodotto successivo', 'sage'); ?>">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                            </button>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        <?php } ?>
+
+        <div class="products-carousel__outer">
+            <div class="products-carousel__track">
+                <div class="js-products-swiper swiper">
+                    <div class="swiper-wrapper items-stretch">
+                        <?php foreach ($products as $product) { ?>
+                            <div class="swiper-slide h-auto">
+                                <?php echo \Roots\view('partials.product-card', ['product' => $product])->render(); ?>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-scrollbar products-carousel__scrollbar"></div>
+        </div>
+
+    </section>
+    <?php
+    return ob_get_clean();
+});
+
+/**
+ * Recently Viewed — track current product on single product pages.
+ * Outputs an inline <script> at wp_footer that calls window.trackProductView()
+ * with the current product's data so the recently-viewed component can read it.
+ */
+add_action('wp_footer', function () {
+    if (! is_product() || ! function_exists('wc_get_product')) {
+        return;
+    }
+
+    $product = wc_get_product(get_the_ID());
+    if (! $product) {
+        return;
+    }
+
+    $thumb_url = get_the_post_thumbnail_url($product->get_id(), 'woocommerce_thumbnail') ?: '';
+    $price     = html_entity_decode(wp_strip_all_tags($product->get_price_html()), ENT_QUOTES, 'UTF-8');
+
+    $data = wp_json_encode([
+        'id'    => $product->get_id(),
+        'url'   => get_permalink($product->get_id()),
+        'title' => $product->get_name(),
+        'thumb' => $thumb_url,
+        'price' => $price,
+    ]);
+
+    echo '<script>window.trackProductView && window.trackProductView(' . $data . ');</script>' . "\n";
+}, 20);

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "theme/products-carousel",
+  "title": "Carousel Prodotti",
+  "description": "Carousel Swiper con card prodotti WooCommerce. Filtra per categoria, ordine e numero di prodotti.",
+  "category": "theme",
+  "textdomain": "sage",
+  "render": "file:render.php",
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "color": false,
+    "align": ["wide", "full"]
+  },
+  "attributes": {
+    "title":      { "type": "string",  "default": "I nostri prodotti" },
+    "subtitle":   { "type": "string",  "default": "" },
+    "limit":      { "type": "integer", "default": 8 },
+    "categories": { "type": "array",   "items": { "type": "string" }, "default": [] },
+    "orderby":    { "type": "string",  "default": "date" },
+    "order":      { "type": "string",  "default": "DESC" },
+    "bg":         { "type": "string",  "default": "surface" }
+  }
+}

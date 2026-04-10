@@ -85,7 +85,7 @@ $faqs = [
   {{-- Hero --}}
   <div class="bg-cream border-b border-border pt-20 pb-14">
     <div class="max-w-2xl mx-auto px-6 text-center">
-      <p class="section-label text-accent">{{ __('Prezzi', 'sage') }}</p>
+      <p class="section-label text-primary">{{ __('Prezzi', 'sage') }}</p>
       <h1 class="font-serif text-[clamp(2rem,4vw,3rem)] font-light text-ink leading-tight mb-4">
         {{ get_the_title() ?: __('Piani semplici, prezzi trasparenti', 'sage') }}
       </h1>
@@ -99,7 +99,7 @@ $faqs = [
           @click="annual = !annual"
           :aria-pressed="annual"
           class="relative w-11 h-6 bg-border rounded-full transition-colors duration-200"
-          :class="annual ? 'bg-accent' : 'bg-border'"
+          :class="annual ? 'bg-primary' : 'bg-border'"
           aria-label="{{ __('Passa a fatturazione annuale', 'sage') }}"
         >
           <span

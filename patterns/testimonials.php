@@ -8,7 +8,7 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"backgroundColor":"cream","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+<!-- wp:group {"backgroundColor":"cream","style":{"spacing":{"padding":{"top":"var:preset|spacing|9","bottom":"var:preset|spacing|9"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group has-cream-background-color has-background">
 
 	<!-- wp:group {"layout":{"type":"constrained","contentSize":"44rem"}} -->

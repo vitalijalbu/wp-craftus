@@ -66,8 +66,8 @@ $contact_map_url  = get_theme_mod( 'contact_map_embed_url', 'https://www.google.
 				<!-- Indirizzo -->
 				<!-- wp:group {"style":{"spacing":{"blockGap":"0.5rem"}},"layout":{"type":"default"}} -->
 				<div class="wp-block-group gap-2">
-					<!-- wp:paragraph {"textColor":"accent","fontSize":"xs","className":"section-label"} -->
-					<p class="has-accent-color has-text-color has-xs-font-size section-label">INDIRIZZO</p>
+					<!-- wp:paragraph {"textColor":"muted","fontSize":"xs","className":"section-label"} -->
+					<p class="has-muted-color has-text-color has-xs-font-size section-label">INDIRIZZO</p>
 					<!-- /wp:paragraph -->
 					<!-- wp:paragraph {"fontSize":"base"} -->
 					<p class="has-base-font-size"><?php echo nl2br( esc_html( $contact_address ) ); ?></p>
@@ -83,8 +83,8 @@ $contact_map_url  = get_theme_mod( 'contact_map_embed_url', 'https://www.google.
 				<!-- Telefono -->
 				<!-- wp:group {"style":{"spacing":{"blockGap":"0.5rem"}},"layout":{"type":"default"}} -->
 				<div class="wp-block-group gap-2">
-					<!-- wp:paragraph {"textColor":"accent","fontSize":"xs","className":"section-label"} -->
-					<p class="has-accent-color has-text-color has-xs-font-size section-label">TELEFONO</p>
+					<!-- wp:paragraph {"textColor":"muted","fontSize":"xs","className":"section-label"} -->
+					<p class="has-muted-color has-text-color has-xs-font-size section-label">TELEFONO</p>
 					<!-- /wp:paragraph -->
 					<!-- wp:paragraph {"fontSize":"base"} -->
 					<p class="has-base-font-size"><a href="tel:<?php echo esc_attr( preg_replace( '/[^+\d]/', '', $contact_phone ) ); ?>"><?php echo esc_html( $contact_phone ); ?></a></p>
@@ -101,8 +101,8 @@ $contact_map_url  = get_theme_mod( 'contact_map_embed_url', 'https://www.google.
 				<!-- Email -->
 				<!-- wp:group {"style":{"spacing":{"blockGap":"0.5rem"}},"layout":{"type":"default"}} -->
 				<div class="wp-block-group gap-2">
-					<!-- wp:paragraph {"textColor":"accent","fontSize":"xs","className":"section-label"} -->
-					<p class="has-accent-color has-text-color has-xs-font-size section-label">EMAIL</p>
+					<!-- wp:paragraph {"textColor":"muted","fontSize":"xs","className":"section-label"} -->
+					<p class="has-muted-color has-text-color has-xs-font-size section-label">EMAIL</p>
 					<!-- /wp:paragraph -->
 					<!-- wp:paragraph {"fontSize":"base"} -->
 					<p class="has-base-font-size"><a href="mailto:<?php echo esc_attr( $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a></p>
@@ -118,8 +118,8 @@ $contact_map_url  = get_theme_mod( 'contact_map_embed_url', 'https://www.google.
 				<!-- Orari -->
 				<!-- wp:group {"style":{"spacing":{"blockGap":"0.5rem"}},"layout":{"type":"default"}} -->
 				<div class="wp-block-group gap-2">
-					<!-- wp:paragraph {"textColor":"accent","fontSize":"xs","className":"section-label"} -->
-					<p class="has-accent-color has-text-color has-xs-font-size section-label">ORARI</p>
+					<!-- wp:paragraph {"textColor":"muted","fontSize":"xs","className":"section-label"} -->
+					<p class="has-muted-color has-text-color has-xs-font-size section-label">ORARI</p>
 					<!-- /wp:paragraph -->
 					<!-- wp:paragraph {"textColor":"muted","fontSize":"sm"} -->
 					<p class="has-muted-color has-text-color has-sm-font-size"><?php echo nl2br( esc_html( $contact_hours ) ); ?></p>
@@ -130,8 +130,8 @@ $contact_map_url  = get_theme_mod( 'contact_map_embed_url', 'https://www.google.
 				<!-- CTA -->
 				<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"0.5rem"}}}} -->
 				<div class="wp-block-buttons mt-2">
-					<!-- wp:button {"backgroundColor":"accent","textColor":"white"} -->
-					<div class="wp-block-button"><a class="wp-block-button__link has-accent-background-color has-white-color has-background has-text-color wp-element-button" href="/contatti">Scrivici ora</a></div>
+					<!-- wp:button {"backgroundColor":"primary","textColor":"white"} -->
+					<div class="wp-block-button"><a class="wp-block-button__link has-primary-background-color has-white-color has-background has-text-color wp-element-button" href="/contatti">Scrivici ora</a></div>
 					<!-- /wp:button -->
 				</div>
 				<!-- /wp:buttons -->

@@ -51,7 +51,7 @@
         </span>
         {{ __('Filtri', 'sage') }}
       </span>
-      <span x-show="activeCount > 0" class="text-xs bg-accent text-white px-2 py-0.5" x-text="activeCount"></span>
+      <span x-show="activeCount > 0" class="text-xs bg-primary text-white px-2 py-0.5" x-text="activeCount"></span>
     </button>
   </div>
 
@@ -66,7 +66,7 @@
       <button
         type="button"
         @click="reset()"
-        class="text-xs text-accent hover:underline"
+        class="text-xs text-primary hover:underline"
       >
         {{ __('Rimuovi tutti', 'sage') }}
       </button>
@@ -82,11 +82,11 @@
               <label class="flex items-center gap-2.5 cursor-pointer group">
                 <input
                   type="checkbox"
-                  class="rounded-none border-border text-accent focus:ring-accent/30 cursor-pointer"
+                  class="rounded-none border-border text-primary focus:ring-primary/30 cursor-pointer"
                   :checked="cats.includes({{ $cat->term_id }})"
                   @change="toggleCat({{ $cat->term_id }})"
                 >
-                <span class="text-sm text-ink group-hover:text-accent transition-colors">
+                <span class="text-sm text-ink group-hover:text-primary transition-colors">
                   {{ esc_html($cat->name) }}
                   <span class="text-muted">({{ $cat->count }})</span>
                 </span>
@@ -140,11 +140,11 @@
       <label class="flex items-center gap-2.5 cursor-pointer group">
         <input
           type="checkbox"
-          class="rounded-none border-border text-accent focus:ring-accent/30 cursor-pointer"
+          class="rounded-none border-border text-primary focus:ring-primary/30 cursor-pointer"
           x-model="inStockOnly"
           @change="applyFilters()"
         >
-        <span class="text-sm text-ink group-hover:text-accent transition-colors">{{ __('Solo disponibili', 'sage') }}</span>
+        <span class="text-sm text-ink group-hover:text-primary transition-colors">{{ __('Solo disponibili', 'sage') }}</span>
       </label>
     </div>
 

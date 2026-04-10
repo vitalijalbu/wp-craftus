@@ -32,7 +32,7 @@
   };
   $title_class = $bg === 'ink' ? 'text-white'   : 'text-ink';
   $sub_class   = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-  $label_class = $bg === 'ink' ? 'text-accent'    : 'text-muted';
+  $label_class = $bg === 'ink' ? 'text-primary'    : 'text-muted';
 
   $cols_class = match((int) $cols) {
     2 => 'grid-cols-1 sm:grid-cols-2',

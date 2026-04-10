@@ -21,8 +21,8 @@
 			<!-- wp:heading {"level":2,"textColor":"white","fontSize":"hero","fontFamily":"serif","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
 			<h2 class="wp-block-heading has-white-color has-text-color has-serif-font-family has-hero-font-size mb-0">4.9</h2>
 			<!-- /wp:heading -->
-			<!-- wp:paragraph {"textColor":"accent","fontSize":"xs","className":"section-label"} -->
-			<p class="has-accent-color has-text-color has-xs-font-size section-label">SU 5 STELLE</p>
+			<!-- wp:paragraph {"textColor":"primary","fontSize":"xs","className":"section-label"} -->
+			<p class="has-primary-color has-text-color has-xs-font-size section-label">SU 5 STELLE</p>
 			<!-- /wp:paragraph -->
 			<!-- wp:paragraph {"fontSize":"sm","className":"text-white/50"} -->
 			<p class="has-sm-font-size text-white/50">Basato su 328 recensioni</p>
@@ -73,8 +73,8 @@
 			<!-- wp:group {"className":"review-card","layout":{"type":"default"}} -->
 			<div class="wp-block-group review-card">
 				<!-- Stelle -->
-				<!-- wp:paragraph {"textColor":"accent","fontSize":"sm","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
-				<p class="has-accent-color has-text-color has-sm-font-size mb-0">★★★★★</p>
+				<!-- wp:paragraph {"textColor":"primary","fontSize":"sm","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
+				<p class="has-primary-color has-text-color has-sm-font-size mb-0">★★★★★</p>
 				<!-- /wp:paragraph -->
 				<!-- wp:paragraph {"fontSize":"base","className":"text-white/85"} -->
 				<p class="has-base-font-size text-white/85">"Professionalità e competenza fuori dal comune. Il sito realizzato ha superato ogni nostra aspettativa, sia per il design che per le performance."</p>
@@ -100,8 +100,8 @@
 			<!-- wp:group {"className":"review-card","layout":{"type":"default"}} -->
 			<div class="wp-block-group review-card">
 				<!-- Stelle -->
-				<!-- wp:paragraph {"textColor":"accent","fontSize":"sm","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
-				<p class="has-accent-color has-text-color has-sm-font-size mb-0">★★★★★</p>
+				<!-- wp:paragraph {"textColor":"primary","fontSize":"sm","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
+				<p class="has-primary-color has-text-color has-sm-font-size mb-0">★★★★★</p>
 				<!-- /wp:paragraph -->
 				<!-- wp:paragraph {"fontSize":"base","className":"text-white/85"} -->
 				<p class="has-base-font-size text-white/85">"Tempi rispettati, comunicazione impeccabile e risultato finale eccellente. Consigliatissimi a chiunque voglia un progetto digitale di qualità."</p>
@@ -127,8 +127,8 @@
 			<!-- wp:group {"className":"review-card","layout":{"type":"default"}} -->
 			<div class="wp-block-group review-card">
 				<!-- Stelle -->
-				<!-- wp:paragraph {"textColor":"accent","fontSize":"sm","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
-				<p class="has-accent-color has-text-color has-sm-font-size mb-0">★★★★★</p>
+				<!-- wp:paragraph {"textColor":"primary","fontSize":"sm","style":{"spacing":{"margin":{"bottom":"0"}}}} -->
+				<p class="has-primary-color has-text-color has-sm-font-size mb-0">★★★★★</p>
 				<!-- /wp:paragraph -->
 				<!-- wp:paragraph {"fontSize":"base","className":"text-white/85"} -->
 				<p class="has-base-font-size text-white/85">"Lavoro impeccabile dalla fase di analisi al lancio. Hanno capito subito le nostre esigenze e tradotto tutto in un prodotto digitale che funziona davvero."</p>

@@ -87,7 +87,6 @@ sage-theme/
 │   │       ├── animations.js
 │   │       ├── scroll-effects.js
 │   │       ├── magnetic-hover.js
-│   │       └── locomotive-scroll.js
 │   └── views/                    # Blade templates
 │       ├── layouts/
 │       │   └── app.blade.php     # layout principale
@@ -118,7 +117,6 @@ public/build/
 │   ├── vendor-alpine-[hash].js   # Alpine (chunk separato → cache)
 │   ├── vendor-gsap-[hash].js     # GSAP
 │   ├── vendor-swiper-[hash].js   # Swiper
-│   ├── vendor-loco-[hash].js     # Locomotive Scroll
 │   └── theme.json                # design system per WP
 └── manifest.json                 # mappa asset per Vite helper
 ```

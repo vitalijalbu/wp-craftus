@@ -40,7 +40,7 @@
               <x-icons.image-placeholder x-show="!item.thumb" class="w-8 h-8" stroke-width="1" />
             </div>
           </a>
-          <a :href="item.url" class="block text-xs font-medium text-ink hover:text-accent transition-colors leading-snug line-clamp-2 mb-1" x-text="item.title"></a>
+          <a :href="item.url" class="block text-xs font-medium text-ink hover:text-primary transition-colors leading-snug line-clamp-2 mb-1" x-text="item.title"></a>
           <p class="product-price text-xs mt-0.5" x-html="item.price"></p>
         </div>
       </template>

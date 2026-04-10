@@ -7,12 +7,12 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"backgroundColor":"surface","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"5rem","bottom":"5rem"}}}} -->
-<div class="wp-block-group has-surface-background-color has-background py-20">
+<!-- wp:group {"backgroundColor":"surface","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|9","bottom":"var:preset|spacing|9"}}}} -->
+<div class="wp-block-group has-surface-background-color has-background">
 <!-- wp:group {"layout":{"type":"constrained","contentSize":"36rem"},"style":{"spacing":{"margin":{"bottom":"3.5rem"}}}} -->
 <div class="wp-block-group">
-<!-- wp:paragraph {"align":"center","textColor":"accent","fontSize":"sm","className":"theme-section-label"} -->
-<p class="has-text-align-center has-accent-color has-text-color has-sm-font-size theme-section-label">Le nostre categorie</p>
+<!-- wp:paragraph {"align":"center","textColor":"muted","fontSize":"sm","className":"theme-section-label"} -->
+<p class="has-text-align-center has-muted-color has-text-color has-sm-font-size theme-section-label">Le nostre categorie</p>
 <!-- /wp:paragraph -->
 <!-- wp:heading {"level":2,"textAlign":"center","textColor":"ink","fontSize":"4xl","className":"theme-section-title","fontFamily":"serif"} -->
 <h2 class="wp-block-heading has-text-align-center has-ink-color has-text-color has-4-xl-font-size has-serif-font-family theme-section-title">Trova ciò che cercano</h2>

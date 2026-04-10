@@ -129,11 +129,11 @@ if (!window.customElements.get('wishlist-products')) {
 						</a>
 						<div class="p-2 flex items-start justify-between gap-2">
 							<div>
-								<a href="${p.url}" class="font-sans text-sm font-medium text-ink hover:text-accent transition-colors">${p.title}</a>
+								<a href="${p.url}" class="font-sans text-sm font-medium text-ink hover:text-primary transition-colors">${p.title}</a>
 								${p.price_html ? `<p class="text-sm text-muted mt-0.5">${p.price_html}</p>` : ''}
 							</div>
 							<button
-								class="product-card__wishlist wishlist-btn active shrink-0 w-8 h-8 flex items-center justify-center text-accent"
+								class="product-card__wishlist wishlist-btn active shrink-0 w-8 h-8 flex items-center justify-center text-primary"
 								data-product-id="${p.id}"
 								aria-label="Rimuovi dalla wishlist"
 								aria-pressed="true"

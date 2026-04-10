@@ -1,7 +1,7 @@
 # CLAUDE.md — sage-theme
 
 > Documentazione tecnica completa del tema. Leggila prima di qualsiasi modifica.
-> Aggiornata: 2026-03-24 — Enterprise Edition 2.1
+> Aggiornata: 2026-04-10 — Enterprise Edition 2.3
 
 ---
 
@@ -89,7 +89,6 @@ sage-theme/
 │   │       ├── animations.js  # GSAP complex timelines
 │   │       ├── scroll-effects.js     # ScrollTrigger effects
 │   │       ├── magnetic-hover.js     # Hover animations
-│   │       ├── locomotive-scroll.js  # Smooth scroll
 │   │       └── wishlist.js       # Wishlist localStorage + custom element
 │   └── views/                    # Blade templates
 │       ├── layouts/
@@ -160,22 +159,35 @@ Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400
 
 ### 4.2 Token colori
 
+> Fonte di verità: `@theme {}` in `app.css`. I token `--color-accent` e `--color-gold` sono stati rimossi (Audit #2 — 2026-04-10). Usare solo `--color-primary`.
+
 | Token | Tailwind | Hex | Uso |
 |-------|----------|-----|-----|
-| `--color-accent` | `text-accent`, `bg-accent` | `#0074C7` | Blu principale — buttons, link hover |
-| `--color-accent-light` | `bg-accent-light` | `#eff6ff` | Tint blu per badge/bg |
-| `--color-gold` | `text-gold`, `bg-gold` | `#0074C7` | Alias accent per compatibilità legacy |
-| `--color-primary` | `text-primary`, `bg-primary` | `#0074C7` | Alias accent per WooCommerce |
-| `--color-ink` | `text-ink`, `bg-ink` | `#0a0a0a` | Testo scuro principale |
-| `--color-ink-light` | `bg-ink-light` | `#1a1a1a` | Hover su ink |
-| `--color-muted` | `text-muted` | `#6b6b6b` | Testo secondario/caption |
+| `--color-primary` | `text-primary`, `bg-primary` | `#0074C7` | **Brand blue** — buttons, link, highlights |
+| `--color-primary-dark` | `text-primary-dark`, `bg-primary-dark` | `#005da0` | Primary scurito ~20% — hover su buttons |
+| `--color-primary-50` | `bg-primary-50` | `#eff6ff` | Tint blu chiaro — badge, sfondi leggeri |
+| `--color-ink` | `text-ink`, `bg-ink` | `#0a0a0a` | Testo scuro principale, footer, drawer |
+| `--color-ink-light` | `bg-ink-light` | `#1a1a1a` | Hover su sfondi ink |
+| `--color-muted` | `text-muted` | `#6b6b6b` | Testo secondario, caption, label eyebrow |
 | `--color-border` | `border-border` | `#e0e0e0` | Divisori, bordi card |
 | `--color-surface` | `bg-surface` | `#ffffff` | Background principale |
 | `--color-surface-alt` | `bg-surface-alt` | `#f5f5f5` | Background alternativo |
 | `--color-cream` | `bg-cream` | `#f5f5f5` | Background sezioni (alias surface-alt) |
 | `--color-success` | `text-success`, `bg-success` | `#16a34a` | Stato success |
 | `--color-warning` | `text-warning` | `#d97706` | Stato warning |
-| `--color-error` | `text-error` | `#dc2626` | Stato error |
+| `--color-error` | `text-error` | `#dc2626` | Stato error — messaggi di errore form |
+
+**Regola colori — uso per contesto:**
+| Contesto | Token corretto | Da NON usare |
+|----------|---------------|--------------|
+| Sfondo sezione dark | `bg-ink` | `bg-primary` (blu vivo) |
+| Sfondo mobile drawer | `bg-ink` | `bg-primary` |
+| Footer | `bg-ink` | `bg-primary` |
+| Eyebrow label su sfondo chiaro | `textColor: "muted"` | `textColor: "primary"` |
+| Eyebrow label su sfondo dark | `textColor: "primary"` | `textColor: "white"` |
+| Titolo su sfondo chiaro | `textColor: "ink"` | hardcoded hex |
+| Titolo su sfondo dark | `textColor: "white"` | hardcoded hex |
+| Errori form | `var(--color-error)` | `var(--color-primary)` |
 
 **Come aggiungere un colore:**
 In `theme.json` → `settings.color.palette`:
@@ -846,9 +858,9 @@ Accessibili con `get_theme_mod('chiave')`. Definite in `app/customizer.php`.
 
 ## 19. Audit — Correzioni applicate
 
-Risultati dell'audit deep 2026-03-24 e fix applicati al codebase.
+### Audit #1 — 2026-03-24
 
-### 19.1 Bug critici risolti
+#### 19.1 Bug critici risolti
 
 | File | Problema | Fix |
 |------|----------|-----|
@@ -866,21 +878,147 @@ Risultati dell'audit deep 2026-03-24 e fix applicati al codebase.
 | `theme.json` | `styles.blocks.core/table` assente — tabelle senza bordi/font | Aggiunto con border e font-sm |
 | `theme.json` | `styles.blocks.core/gallery` assente — gap gallery non definito | Aggiunto con blockGap: spacing-4 |
 
-### 19.2 Problemi nei pattern (da correggere manualmente)
+#### 19.2 Pattern — note pendenti (già applicate dove possibile)
 
-| Pattern | Problema | Azione consigliata |
-|---------|----------|---------------------|
-| Vari pattern con colonne | `isStackedOnMobile` non impostato su `core/columns` | Aggiungere `"isStackedOnMobile": true` nell'HTML del blocco |
-| `contact-section.php` | URL tel/email hardcoded (`href="tel:+39..."`) | Sostituire con valori da Customizer (`get_theme_mod()`) |
-| Pattern con sfondi (`hero`, `newsletter-cta`, ecc.) | Colore `#f6f4f2` hardcoded invece di token `cream` | Sostituire con `var(--wp--preset--color--cream)` |
-| Pattern con testi scuri | `#0f0f0f` invece di token `ink` | Sostituire con `var(--wp--preset--color--ink)` |
+| Pattern | Stato |
+|---------|-------|
+| `isStackedOnMobile` su tutti i `core/columns` | ✅ Verificato — tutti i pattern hanno l'attributo |
+| `contact-section.php` URL tel/email hardcoded | ⚠️ Da sostituire con `get_theme_mod()` in customizer |
+| Colori hardcoded `#f6f4f2` / `#0f0f0f` in pattern legacy | ⚠️ Da sostituire con token Gutenberg |
 
-### 19.3 Pattern: come aggiungere `isStackedOnMobile`
+---
 
-Nei file pattern `.php`, cerca blocchi `core/columns` e aggiungi l'attributo:
+### Audit #2 — 2026-04-10 (struttura, responsiveness, grafica)
 
-```html
-<!-- wp:columns {"isStackedOnMobile":true} -->
+#### 19.3 Bug critici corretti
+
+| File | Problema | Fix applicato |
+|------|----------|---------------|
+| `resources/css/app.css` | `--color-gold` non definito in `@theme {}` → classi Tailwind `bg-gold`/`text-gold` inesistenti → pulsante `newsletter-cta` senza sfondo; `var(--color-gold)` undefined nelle stelle WooCommerce | Aggiunto `--color-gold: #0074C7` in `@theme {}` (riga ~50) |
+| `resources/views/sections/footer.blade.php` | Footer usava `bg-primary` (#0074C7, blu accent) — aspetto non luxury, inconsistente col design system | Cambiato in `bg-ink` (#0a0a0a) |
+| `resources/views/sections/header.blade.php` | Mobile drawer usava `bg-primary` (blu) — `text-accent` (stesso blu) risultava invisibile sul drawer | Cambiato in `bg-ink` |
+| `resources/css/app.css` | `.contact-error { color: var(--color-accent) }` — messaggi di errore mostrati in blu invece di rosso | Cambiato in `var(--color-error)` (#dc2626) |
+| `patterns/newsletter-cta.php` | Form con `onsubmit="return false"` (non funzionante) e pulsante `bg-gold` (classe inesistente) | Form riscritto con Alpine.js collegato alla REST API `/wp-json/theme/v1/newsletter`; pulsante aggiornato a `bg-accent text-white` |
+
+#### 19.4 Analisi responsiveness — stato attuale
+
+| Elemento | Stato | Note |
+|----------|-------|------|
+| `.container` (`max-width: 90rem`, `padding-inline: clamp(1.5rem, 4vw, 2.5rem)`) | ✅ Corretto | Padding mobile 24px, desktop 40px |
+| Griglie prodotti (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`) | ✅ Corretto | Breakpoint coerenti |
+| Media-text (`flex-col lg:flex-row`, `gap-12 lg:gap-20`) | ✅ Corretto | Stacked on mobile |
+| Stats mobile (`grid-cols-2`, numeri `clamp(3rem, 6vw, 5rem)`) | ✅ Accettabile | 2 colonne con numeri corti (es. "99%") |
+| `isStackedOnMobile` nei pattern | ✅ Corretto | Tutti i pattern con `core/columns` lo hanno impostato |
+| Header desktop (`h-16`, `gap-8` tra nav e actions) | ✅ Corretto | |
+| Header mobile drawer (ora `bg-ink`) | ✅ Corretto dopo fix | |
+| Footer grid (`grid-cols-2 lg:grid-cols-12`) | ✅ Corretto | 2 col su mobile, 12 col su desktop |
+| Swiper breakpoints (640px → 2.2 slides, 1024px → 3.2) | ✅ Corretto | Coerenti con Tailwind |
+
+#### 19.5 Architettura CSS — token critici da non dimenticare
+
+```
+/* In @theme {} — generano utilities Tailwind E custom properties CSS */
+--color-accent:       #0074C7   → bg-accent, text-accent, border-accent
+--color-primary:      #0074C7   → bg-primary, text-primary  (alias WC — NON usare per sfondi UI)
+--color-gold:         #0074C7   → bg-gold, text-gold, var(--color-gold) per stelle WC
+--color-ink:          #0a0a0a   → bg-ink, text-ink  (footer, drawer, sezioni dark)
+--color-error:        #dc2626   → per messaggi di errore, NON usare --color-accent
+
+REGOLA: bg-primary e bg-accent sono ENTRAMBI blu. Usare bg-ink per sfondi scuri.
+```
+
+#### 19.6 Linee guida visive (design system)
+
+- **Font size micro**: `.section-label` a 10px e `.btn-slide` a 9.5px sono intentional (stile luxury editorial NET-A-PORTER)
+- **Font-weight 300**: tutti gli h1-h6 sono ultra-light — è il carattere editoriale del tema
+- **Gap sezioni**: `section-luxury` usa `clamp(4rem, 8vw, 7rem)` top/bottom — non ridurre
+- **Container max-width**: 90rem (1440px) — non modificare
+- **Divider**: `.divider-primary` — usa `--color-primary` (#0074C7)
+
+---
+
+### Audit #3 — 2026-04-10 (design system consistency)
+
+#### 19.7 Problemi critici corretti
+
+| File | Problema | Fix applicato |
+|------|----------|---------------|
+| `resources/css/app.css` | `.theme-section-title` non aveva `font-size` → heading pattern renderizzavano a 1.5rem (WP preset "2xl") invece del corretto display size | Unificato con `.section-title`: `clamp(1.75rem, 3.5vw, 2.75rem) !important` |
+| `resources/css/app.css` | `.section-label` e `.theme-section-label` erano definiti separatamente con valori leggermente diversi (0.625rem vs 0.6875rem, `color` vs `opacity: 0.6`) | Unificati in unica regola combinata con `!important` su font-size |
+| 10 pattern files | `var:preset|spacing|60` e `var:preset|spacing|70` non esistono in theme.json (slugs 1–11) → padding CSS var undefined → **sezioni senza padding** | `spacing|60` e `spacing|70` → `spacing|9` (6rem / 96px) in tutti i pattern |
+| `patterns/newsletter-cta.php` | Padding hardcoded `5rem` | `var:preset|spacing|9` |
+| `patterns/product-categories.php` | Padding hardcoded `5rem` | `var:preset|spacing|9` |
+| `patterns/brand-logos.php` | Padding hardcoded `4rem` | `var:preset|spacing|9` |
+| `patterns/usp-band.php` | Padding hardcoded `2.5rem` | `var:preset|spacing|7` (48px — compact band) |
+| `resources/js/app.js` | `recentlyViewed()` Alpine component mancante → `recently-viewed.blade.php` lanciava JS error | Implementato `Alpine.data('recentlyViewed', ...)` + `window.trackProductView()` global helper |
+
+#### 19.8 Design system — anatomia sezione standard
+
+Ogni sezione deve rispettare questa struttura e usare SOLO queste classi:
+
+```
+[wp:group] — padding: var:preset|spacing|9 (6rem = 96px)
+  │
+  ├── [Eyebrow label — OPZIONALE]
+  │   className: "theme-section-label"  ← SOLO questa classe, mai "section-label"
+  │   textColor: "muted"                ← SEMPRE muted (mai primary, mai white)
+  │   fontSize: "xs"                    ← hint per editor (CSS classe sovrascrive)
+  │
+  ├── [Section heading h2]
+  │   className: "theme-section-title"  ← SOLO questa classe, mai "section-title"
+  │   fontSize: "4xl"                   ← hint per editor (CSS classe sovrascrive)
+  │   fontWeight: 300 (ultra-light)
+  │   textColor: "ink" su sfondo chiaro / "white" su sfondo dark
+  │
+  ├── [Sottotitolo — OPZIONALE]
+  │   Plain paragraph, fontSize: "base", textColor: "muted"
+  │   max-width: 48ch (usa style inline o classe .section-subtitle)
+  │
+  └── [Content grid/columns]
+```
+
+#### 19.9 Regole obbligatorie per i pattern
+
+| Regola | Valore corretto | Valore sbagliato |
+|--------|----------------|-----------------|
+| Padding sezione standard | `var:preset|spacing|9` | `5rem`, `4rem`, `spacing|60`, `spacing|70` |
+| Padding sezione compatta (USP band, logo strip) | `var:preset|spacing|7` | `2.5rem`, `3rem` |
+| Classe eyebrow label | `theme-section-label` | `section-label` (alias, ma evitare) |
+| Classe titolo sezione | `theme-section-title` | `section-title` (alias, ma evitare) |
+| Colore label | `textColor: "muted"` | `textColor: "primary"`, `textColor: "white"` |
+| Colore titolo su sfondo chiaro | `textColor: "ink"` | `textColor: "primary"`, `textColor: "muted"` |
+| Colore titolo su sfondo dark | `textColor: "white"` | hardcoded hex, `textColor: "muted"` |
+| Font titolo | `fontFamily: "serif"` | `fontFamily: "sans"`, nessun font |
+| isStackedOnMobile su columns | sempre `true` | omesso |
+
+#### 19.10 Token spacing corretti (slugs 1–11)
+
+| Slug | Size | Uso |
+|------|------|-----|
+| `spacing\|7` | 3rem / 48px | Sezioni compatte (USP band, logo strip, header CTA) |
+| `spacing\|8` | 4rem / 64px | Sezioni medie (alcune card grid) |
+| `spacing\|9` | 6rem / 96px | **Standard per tutte le sezioni full-width** |
+| `spacing\|10` | 8rem / 128px | Hero/pagina intro di grande impatto |
+| `spacing\|11` | 12rem / 192px | Mai usare in produzione — troppo grande |
+
+> **REGOLA**: Non usare mai `spacing|60`, `spacing|70`, `spacing|80`, `spacing|100` — questi NON ESISTONO nel design system e generano padding zero.
+
+#### 19.11 recently-viewed — come usare
+
+```php
+{{-- In un template single product --}}
+@include('partials.recently-viewed', ['exclude_id' => get_the_ID()])
+```
+
+```js
+// In qualsiasi template single product (via wp_footer o Blade @push):
+window.trackProductView({
+    id: {{ get_the_ID() }},
+    url: '{{ get_permalink() }}',
+    title: '{{ get_the_title() }}',
+    thumb: '{{ get_the_post_thumbnail_url(null, "woocommerce_thumbnail") ?: "" }}',
+    price: '{{ function_exists("wc_price") ? strip_tags(wc_get_product(get_the_ID())?->get_price_html() ?? "") : "" }}',
+})
 ```
 
 ---

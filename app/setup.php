@@ -473,7 +473,7 @@ add_filter('block_categories_all', function (array $categories): array {
  * Each block lives in blocks/{name}/ with a block.json + render.php.
  */
 add_action('init', function () {
-    $blocks = ['hero', 'testimonial', 'stat', 'icon-box', 'accordion'];
+    $blocks = ['hero', 'testimonial', 'stat', 'icon-box', 'accordion', 'products-carousel'];
     foreach ($blocks as $name) {
         $dir = get_template_directory()."/blocks/{$name}";
         if (is_dir($dir)) {

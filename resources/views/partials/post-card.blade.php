@@ -31,11 +31,11 @@
     ? wp_trim_words(get_the_excerpt($post), 22, '…')
     : '';
 
-  $title_class   = $bg === 'ink' ? 'text-white group-hover:text-accent'   : 'text-ink group-hover:text-primary';
+  $title_class   = $bg === 'ink' ? 'text-white group-hover:text-primary'   : 'text-ink group-hover:text-primary';
   $meta_class    = $bg === 'ink' ? 'text-white/40'   : 'text-muted';
   $excerpt_class = $bg === 'ink' ? 'text-white/50'   : 'text-muted';
   $border_class  = $bg === 'ink' ? 'border-white/10' : 'border-border';
-  $cat_class     = $bg === 'ink' ? 'text-accent'     : 'text-primary';
+  $cat_class     = $bg === 'ink' ? 'text-primary'     : 'text-primary';
   $cta_class     = $bg === 'ink' ? 'text-white/40'   : 'text-primary';
 @endphp
 

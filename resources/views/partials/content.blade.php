@@ -30,7 +30,7 @@
     {{-- Category + reading time --}}
     <div class="flex items-center gap-3 mb-3">
       @if($cat_name)
-        <a href="{{ $cat_url }}" class="text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-accent hover:text-primary transition-colors">
+        <a href="{{ $cat_url }}" class="text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-primary hover:text-primary transition-colors">
           {{ $cat_name }}
         </a>
         <span class="w-px h-3 bg-border" aria-hidden="true"></span>

@@ -337,6 +337,44 @@ Alpine.data('newsletterForm', (restUrl, nonce) => ({
   },
 }))
 
+// ── Alpine component: recently viewed products (localStorage) ─────────────────
+Alpine.data('recentlyViewed', (excludeId = 0) => ({
+  items: [],
+
+  load() {
+    try {
+      const stored = JSON.parse(localStorage.getItem('theme:recently-viewed') || '[]')
+      this.items = stored.filter((item) => item.id !== excludeId).slice(0, 6)
+    } catch {
+      this.items = []
+    }
+  },
+
+  clear() {
+    localStorage.removeItem('theme:recently-viewed')
+    this.items = []
+  },
+}))
+
+/**
+ * Call on every product page to persist the product in localStorage.
+ * @param {{ id: number, url: string, title: string, thumb: string, price: string }} product
+ */
+window.trackProductView = function (product) {
+  if (!product?.id) {
+    return
+  }
+  try {
+    const KEY = 'theme:recently-viewed'
+    const stored = JSON.parse(localStorage.getItem(KEY) || '[]')
+    const filtered = stored.filter((p) => p.id !== product.id)
+    filtered.unshift(product)
+    localStorage.setItem(KEY, JSON.stringify(filtered.slice(0, 20)))
+  } catch (_e) {
+    // localStorage unavailable (private mode / storage full)
+  }
+}
+
 // ── Alpine component: before/after slider ────────────────────────────────────
 Alpine.data('beforeAfter', () => ({
   pos: 50,

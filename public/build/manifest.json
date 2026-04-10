@@ -12,11 +12,11 @@
     "name": "vendor-swiper"
   },
   "editor.deps.json": {
-    "file": "assets/editor.deps-2xX8_dVz.json",
+    "file": "assets/editor.deps-D-Ek2t4-.json",
     "src": "editor.deps.json"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DEmkn3ce.css",
+    "file": "assets/app-CGUOaNru.css",
     "name": "app",
     "names": [
       "app.css"
@@ -25,7 +25,7 @@
     "isEntry": true
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-C4V9wG-z.css",
+    "file": "assets/editor-eq8x_y5n.css",
     "name": "editor",
     "names": [
       "editor.css"
@@ -34,7 +34,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-C2ZLEOX9.js",
+    "file": "assets/app-DGy_TUqb.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -45,7 +45,7 @@
     ]
   },
   "resources/js/editor.js": {
-    "file": "assets/editor-DSKympBK.js",
+    "file": "assets/editor-CcaRar8O.js",
     "name": "editor",
     "src": "resources/js/editor.js",
     "isEntry": true

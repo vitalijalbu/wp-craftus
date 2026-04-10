@@ -33,7 +33,7 @@
     <span class="text-border" aria-hidden="true">·</span>
     {{-- Primary category --}}
     <a href="{{ esc_url(get_category_link($cats[0]->term_id)) }}"
-       class="inline-block font-semibold text-xs tracking-[0.15em] uppercase text-accent hover:text-primary transition-colors">
+       class="inline-block font-semibold text-xs tracking-[0.15em] uppercase text-primary hover:text-primary transition-colors">
       {{ esc_html($cats[0]->name) }}
     </a>
   @endif

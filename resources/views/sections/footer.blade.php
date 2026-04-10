@@ -31,14 +31,14 @@
   $cta_url              = function_exists('App\\theme_cta_url') ? \App\theme_cta_url() : esc_url(home_url('/contatti'));
 @endphp
 
-<footer class="bg-primary text-white" role="contentinfo">
+<footer class="bg-ink text-white" role="contentinfo">
 
   {{-- ─── Newsletter band ─────────────────────────────────────────────────── --}}
   @if($newsletter_active)
   <div class="border-b border-white/10">
     <div class="container py-10 flex flex-col md:flex-row items-center justify-between gap-6">
       <div>
-        <p class="    font-semibold tracking-[0.25em] uppercase text-accent mb-1">Newsletter</p>
+        <p class="    font-semibold tracking-[0.25em] uppercase text-primary mb-1">Newsletter</p>
         <p class="font-serif text-xl font-light text-white/90">{{ esc_html($newsletter_heading) }}</p>
       </div>
 
@@ -69,7 +69,7 @@
               x-model="email"
               placeholder="{{ __('La tua email', 'sage') }}"
               :disabled="state === 'loading'"
-              class="flex-1 bg-white/5 border border-white/15 border-r-0 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50"
+              class="flex-1 bg-white/5 border border-white/15 border-r-0 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
               required
             >
             <button
@@ -84,7 +84,7 @@
         </template>
         <p
           x-show="state === 'done'"
-          class="text-sm text-accent py-3"
+          class="text-sm text-primary py-3"
           aria-live="polite"
           x-text="message"
         ></p>
@@ -128,7 +128,7 @@
                 rel="noopener noreferrer"
                 aria-label="{{ esc_attr($social['label']) }}"
                 role="listitem"
-                class="w-8 h-8 flex items-center justify-center border border-white/10 text-white/30 hover:text-accent hover:border-accent/40 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-accent"
+                class="w-8 h-8 flex items-center justify-center border border-white/10 text-white/30 hover:text-primary hover:border-primary/40 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary"
               >
                 <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="{{ $social['icon'] }}"/>
@@ -173,7 +173,7 @@
           @endforeach
           @if(function_exists('wc_get_page_permalink'))
             <li>
-              <a href="{{ esc_url(wc_get_page_permalink('shop')) }}" class="text-accent/70 hover:text-accent transition-colors duration-150">
+              <a href="{{ esc_url(wc_get_page_permalink('shop')) }}" class="text-primary/70 hover:text-primary transition-colors duration-150">
                 {{ __('Tutti i prodotti →', 'sage') }}
               </a>
             </li>

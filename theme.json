@@ -29,9 +29,8 @@
         { "slug": "cream", "color": "#f5f5f5", "name": "Cream" },
         { "slug": "muted", "color": "#6b6b6b", "name": "Muted" },
         { "slug": "border", "color": "#e0e0e0", "name": "Border" },
-        { "slug": "accent", "color": "#0074C7", "name": "Accent (Blue)" },
-        { "slug": "accent-light", "color": "#eff6ff", "name": "Accent Light" },
         { "slug": "primary", "color": "#0074C7", "name": "Primary" },
+        { "slug": "primary-50", "color": "#eff6ff", "name": "Primary Light" },
         { "slug": "success", "color": "#16a34a", "name": "Success" },
         { "slug": "warning", "color": "#d97706", "name": "Warning" },
         { "slug": "error", "color": "#dc2626", "name": "Error" }
@@ -297,7 +296,7 @@
               "radius": "0px"
             }
           },
-          "accent": {
+          "primary": {
             "color": {
               "background": "#0074C7",
               "text": "#ffffff"

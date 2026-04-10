@@ -16,7 +16,7 @@ $scroll_effect = esc_attr($attributes['scrollEffect'] ?? '');
 
 $title_class = $bg === 'ink' ? 'text-white' : 'text-ink';
 $text_class = $bg === 'ink' ? 'text-white/60' : 'text-muted';
-$link_class = $bg === 'ink' ? 'text-gold' : 'text-primary';
+$link_class = 'text-primary';
 $border_class = $bordered ? ($bg === 'ink' ? 'border border-white/10 p-6' : 'border border-border p-6') : '';
 
 $is_horizontal = $layout === 'horizontal';

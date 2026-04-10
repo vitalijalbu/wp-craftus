@@ -14,7 +14,7 @@
 /* ── Design tokens — NET-A-PORTER inspired ───────────────────────────────── */
 /*
  * Single source of truth for the design system.
- * Tailwind generates utilities from these (text-accent, bg-cream, etc.).
+ * Tailwind generates utilities from these (text-primary, bg-cream, etc.).
  * theme.json mirrors the palette so the Gutenberg editor stays in sync.
  * To rebrand: change these 15 variables — everything updates automatically.
  */
@@ -22,13 +22,9 @@
   --font-sans:   'Poppins', system-ui, sans-serif;
   --font-serif:  'Poppins', system-ui, sans-serif;
 
-  /* ── Accent (blue) ────────────────────────────────────────────── */
-  --color-accent:       #0074C7;   /* Blue — buttons, labels, hover cues      */
-  --color-accent-light: #eff6ff;   /* Tint for backgrounds/badges             */
 
-  /* ── Primary (alias → accent for WC notices/buttons) ────────── */
   --color-primary:      #0074C7;
-  --color-primary-dark: #1d4ed8;
+  --color-primary-dark: #005da0;  /* primary #0074C7 darkened ~20% — same hue */
   --color-primary-50:   #eff6ff;
 
   /* ── Neutrals ────────────────────────────────────────────────── */
@@ -118,24 +114,29 @@ img {
   padding-bottom: clamp(4rem, 8vw, 7rem);
 }
 
-.section-label {
-  display: inline-block;
+/* ── Section eyebrow label (unified) ─────────────────────────────────────── */
+/* Color is NOT set here — controlled per-context via textColor block attribute:
+   light bg → textColor:"muted"   dark bg → textColor:"primary"              */
+.section-label,
+.theme-section-label {
+  display: block;
   font-family: var(--font-sans);
-  font-size: 0.625rem;
+  font-size: 0.625rem !important;  /* override WP has-*-font-size */
   font-weight: 600;
-  letter-spacing: 0.25em;  /* NAP: very generous tracking on all caps */
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--color-muted); /* NAP: labels are muted, not colored */
   margin-bottom: 1rem;
 }
 
-.section-title {
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 300;   /* NAP: always ultra-light on large display headings */
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  color: var(--color-ink);
+/* ── Section heading (unified) ────────────────────────────────────────────── */
+/* font-size uses !important to override WP's has-{preset}-font-size utility  */
+.section-title,
+.theme-section-title {
+  font-family: var(--font-serif) !important;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem) !important;
+  font-weight: 300 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.01em !important;
 }
 
 .section-title-lg {
@@ -155,10 +156,10 @@ img {
 }
 
 /* ── Divider lines ───────────────────────────────────────────────────────── */
-.divider-gold {
+.divider-primary {
   width: 3rem;
   height: 1px;
-  background: var(--color-accent);
+  background: var(--color-primary);
   display: block;
   margin: 1.5rem 0;
 }
@@ -180,7 +181,7 @@ img {
 
 /* ── Pattern utility classes ─────────────────────────────────────────────── */
 .card-border        { border: 1px solid var(--color-border); }
-.card-border-accent { border: 2px solid var(--color-accent); }
+.card-border-primary { border: 2px solid var(--color-primary); }
 .card-border-white  { border: 1px solid rgba(255,255,255,0.1); }
 .card-border-white-15 { border: 1px solid rgba(255,255,255,0.15); }
 .separator-white    { background-color: rgba(255,255,255,0.1); }
@@ -214,12 +215,12 @@ img {
   transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease;
 }
 
-/* Solid (default / accent) — .btn-primary  |  .btn-solid */
+/* Solid (default / primary) — .btn-primary  |  .btn-solid */
 .btn-primary,
 .btn-solid {
-  background-color: var(--color-accent);
+  background-color: var(--color-primary);
   color: #ffffff;
-  border-color: var(--color-accent);
+  border-color: var(--color-primary);
 }
 .btn-primary:hover,
 .btn-solid:hover {
@@ -252,14 +253,14 @@ img {
   color: var(--color-ink);
 }
 
-/* Outline (accent border, transparent bg) */
+/* Outline (primary border, transparent bg) */
 .btn-outline {
   background: transparent;
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 .btn-outline:hover {
-  background-color: var(--color-accent);
+  background-color: var(--color-primary);
   color: #ffffff;
 }
 
@@ -368,9 +369,9 @@ img {
 }
 
 .wp-block-button:not(.is-style-outline):not(.is-style-ghost) .wp-block-button__link {
-  background-color: var(--color-accent) !important;
+  background-color: var(--color-primary) !important;
   color: #ffffff !important;
-  border: 1px solid var(--color-accent) !important;
+  border: 1px solid var(--color-primary) !important;
 }
 
 /* Respect Gutenberg custom colors while keeping same box model */
@@ -390,13 +391,13 @@ img {
 
 .wp-block-button.is-style-outline .wp-block-button__link {
   background: transparent !important;
-  color: var(--color-accent) !important;
-  border-color: var(--color-accent) !important;
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
   border-radius: 0 !important;
 }
 
 .wp-block-button.is-style-outline .wp-block-button__link:hover {
-  background: var(--color-accent) !important;
+  background: var(--color-primary) !important;
   color: #ffffff !important;
 }
 
@@ -418,11 +419,6 @@ img {
   padding: 0.25rem 0.625rem;
   background: var(--color-ink);
   color: var(--color-surface);
-}
-
-.badge-gold {
-  background: var(--color-accent);
-  color: var(--color-ink);
 }
 
 .badge-primary {
@@ -471,7 +467,7 @@ img {
 }
 
 .mobile-menu-nav li.current-menu-item > a {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .mobile-menu-nav .sub-menu {
@@ -672,7 +668,7 @@ img {
 
 .product-card__wishlist.active svg {
   fill: currentColor;
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .product-card:hover .product-card__wishlist {
@@ -759,7 +755,7 @@ img {
 }
 
 .product-card__title:hover {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .product-card__price {
@@ -918,7 +914,7 @@ img {
   font-size: 3rem;
   line-height: 0;
   vertical-align: -0.5em;
-  color: var(--color-accent);
+  color: var(--color-primary);
   margin-right: 0.125rem;
 }
 
@@ -985,7 +981,7 @@ img {
 .feature-item__icon {
   width: 2.75rem;
   height: 2.75rem;
-  color: var(--color-accent);
+  color: var(--color-primary);
   margin-bottom: 1.5rem;
 }
 
@@ -1049,7 +1045,7 @@ img {
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 50%;
-  background: var(--color-accent);
+  background: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -1061,7 +1057,7 @@ img {
 }
 
 .entry-title a:hover {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .entry-summary {
@@ -1182,18 +1178,7 @@ select:focus {
   line-height: 1.1;
   letter-spacing: 0.02em;
 }
-.theme-section-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0.6;
-}
-.theme-section-title {
-  font-weight: 300;
-  line-height: 1.2;
-  letter-spacing: 0.01em;
-}
+/* .theme-section-label and .theme-section-title → merged into .section-label/.section-title above */
 .theme-cta-grid {
   display: flex;
   gap: 1rem;
@@ -1247,7 +1232,7 @@ select:focus {
 
 /* Before-after pattern cards */
 .ba-card       { border: 1px solid var(--color-border); }
-.ba-card-accent{ border: 2px solid var(--color-accent); }
+.ba-card-primary{ border: 2px solid var(--color-primary); }
 .ba-card-body  { padding: 1.25rem 1.5rem; }
 
 /* Timeline step */
@@ -1255,14 +1240,29 @@ select:focus {
 .timeline-step:last-child { padding-bottom: 0; }
 .timeline-step__num-wrap { min-width: 3rem; }
 .timeline-step__num {
-  border: 2px solid var(--color-accent);
+  border: 2px solid var(--color-primary);
   padding: 0.75rem;
 }
 .timeline-step__body { padding-top: 0.5rem; }
 
 /* USP band items */
-.theme-usp-item { padding: 0 1.5rem; border-right: 1px solid rgba(255,255,255,0.08); }
+.theme-usp-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 1.5rem;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
 .theme-usp-item:last-child { border-right: none; }
+
+/* USP item title — NOT an eyebrow label; do not use .theme-section-label here */
+.usp-item__title {
+  font-size: 0.8125rem;   /* 13px — readable, slightly smaller than body */
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
 
 /* Brand logos */
 .theme-brand-col { display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
@@ -1309,7 +1309,7 @@ select:focus {
 
 /* ── Text selection ─────────────────────────────────────────────────────── */
 ::selection {
-  background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
   color: var(--color-ink);
 }
 
@@ -1317,12 +1317,12 @@ select:focus {
 ::-webkit-scrollbar        { width: 3px; }
 ::-webkit-scrollbar-track  { background: transparent; }
 ::-webkit-scrollbar-thumb  { background: rgba(15, 15, 15, 0.12); border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
 *                          { scrollbar-width: thin; scrollbar-color: rgba(15,15,15,0.12) transparent; }
 
 /* ── Focus ring ─────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-primary);
   outline-offset: 3px;
 }
 
@@ -1341,7 +1341,7 @@ select:focus {
 }
 .icon-btn:hover { opacity: 1; color: var(--color-ink); }
 
-/* ── Nav link — Poppins uppercase + gold underline ──────────────────────── */
+/* ── Nav link — Poppins uppercase + primary underline ───────────────────── */
 .nav-link-t {
   position:       relative;
   display:        inline-flex;
@@ -1365,7 +1365,7 @@ select:focus {
   left:             0;
   right:            0;
   height:           1px;
-  background:       var(--color-accent);
+  background:       var(--color-primary);
   transform:        scaleX(0);
   transform-origin: right center;
   transition:       transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1433,7 +1433,7 @@ select:focus {
   letter-spacing:  0.18em;
   text-transform:  uppercase;
   border:          1px solid rgba(255,255,255,0.3);
-  color:           var(--color-accent);
+  color:           var(--color-primary);
   background:      transparent;
   cursor:          pointer;
   overflow:        hidden;
@@ -1485,8 +1485,8 @@ select:focus {
   border-radius: 0;
 }
 .form-input-luxury:focus {
-  border-color: var(--color-accent);
-  box-shadow:   0 0 0 3px color-mix(in srgb, var(--color-accent) 10%, transparent);
+  border-color: var(--color-primary);
+  box-shadow:   0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 .form-input-luxury::placeholder {
   color:       rgba(15, 15, 15, 0.3);
@@ -1495,7 +1495,7 @@ select:focus {
 
 /* ── Swiper scrollbar ───────────────────────────────────────────────────── */
 .swiper-scrollbar         { height: 2px !important; background: rgba(15,15,15,0.06) !important; border-radius: 0 !important; }
-.swiper-scrollbar-drag    { background: var(--color-accent) !important; border-radius: 0 !important; }
+.swiper-scrollbar-drag    { background: var(--color-primary) !important; border-radius: 0 !important; }
 
 /* ── FAQ Accordion ───────────────────────────────────────────────────────── */
 .faq-item {
@@ -1529,7 +1529,7 @@ select:focus {
 }
 .faq-item--dark .faq-item__trigger { color: #fff; }
 .faq-item__trigger:hover            { color: var(--color-primary); }
-.faq-item--dark .faq-item__trigger:hover { color: var(--color-accent); }
+.faq-item--dark .faq-item__trigger:hover { color: var(--color-primary); }
 
 .faq-item__icon {
   width:       1.25rem;
@@ -1681,7 +1681,7 @@ textarea.contact-input {
 .contact-error {
   font-family: var(--font-sans);
   font-size:   0.75rem;
-  color:       var(--color-accent);
+  color:       var(--color-error);
   margin-top:  0.375rem;
 }
 
@@ -1831,8 +1831,298 @@ textarea.contact-input {
 }
 
 /* Zoom cursor on main slides */
-.product-gallery__main .swiper-slide a {
+.product-gallery__main .swiper-slide button {
   cursor: zoom-in;
+}
+
+/* Thumbs strip container — must clip the Swiper wrapper horizontally */
+.product-gallery__thumbs {
+  overflow: hidden;
+  width: 100%;
+}
+.product-gallery__thumbs .swiper-wrapper {
+  flex-direction: row !important;
+}
+
+/* ── Products Carousel (theme/products-carousel block + shortcode) ──────── */
+
+.products-carousel-section {
+  padding-top:    4rem;
+  padding-bottom: 4rem;
+}
+@media (min-width: 768px) {
+  .products-carousel-section {
+    padding-top:    5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* Outer clip: hides the right bleed of the peek effect */
+.products-carousel__outer {
+  overflow: hidden;
+}
+
+/* Track: left-aligns slides with the container content */
+.products-carousel__track {
+  padding-left: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* Let slides bleed beyond the swiper boundary (clipped by __outer) */
+.products-carousel__track .swiper {
+  overflow: visible;
+}
+
+/* Navigation arrows — shown only on md+ */
+.products-carousel__btn {
+  display:          none;
+  align-items:      center;
+  justify-content:  center;
+  width:            2.75rem;
+  height:           2.75rem;
+  border:           1px solid var(--color-border);
+  background:       var(--color-surface);
+  color:            var(--color-ink);
+  cursor:           pointer;
+  transition:       background 200ms ease, color 200ms ease, border-color 200ms ease;
+  flex-shrink:      0;
+}
+@media (min-width: 768px) {
+  .products-carousel__btn {
+    display: flex;
+  }
+}
+.products-carousel__btn:hover {
+  background:   var(--color-ink);
+  color:        var(--color-surface);
+  border-color: var(--color-ink);
+}
+.products-carousel__btn.swiper-button-disabled {
+  opacity:        0.3;
+  cursor:         default;
+  pointer-events: none;
+}
+
+/* Scrollbar strip */
+.products-carousel__scrollbar {
+  height:       2px;
+  margin-top:   1.5rem;
+  margin-left:  clamp(1.5rem, 4vw, 2.5rem);
+  margin-right: clamp(1.5rem, 4vw, 2.5rem);
+  background:   var(--color-border);
+}
+.products-carousel__scrollbar .swiper-scrollbar-drag {
+  background: var(--color-ink);
+  height:     2px;
+}
+
+/* ── Single Product layout ───────────────────────────────────────────────── */
+
+/* Two-column grid: gallery + summary */
+.woocommerce div.product {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 3.5rem;
+  row-gap: 2.5rem;
+  align-items: start;
+}
+
+.woocommerce div.product .product-gallery {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.woocommerce div.product div.summary {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Tabs + related products: full width */
+.woocommerce div.product .product-tabs,
+.woocommerce div.product .woocommerce-tabs,
+.woocommerce div.product .related,
+.woocommerce div.product .upsells {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 767px) {
+  .woocommerce div.product {
+    grid-template-columns: 1fr;
+  }
+  .woocommerce div.product .product-gallery,
+  .woocommerce div.product div.summary {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+/* Summary typography */
+.woocommerce div.product div.summary .product_title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-ink);
+  margin: 0 0 1rem;
+}
+
+/* Star rating */
+.woocommerce div.product div.summary .woocommerce-product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.woocommerce div.product div.summary .woocommerce-product-rating .star-rating {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+}
+.woocommerce div.product div.summary .woocommerce-product-rating .woocommerce-review-link {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Price */
+.woocommerce div.product div.summary .price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-family: var(--font-sans);
+  font-size: 1.625rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 1.5rem;
+}
+.woocommerce div.product div.summary .price del {
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+.woocommerce div.product div.summary .price ins {
+  text-decoration: none;
+  color: var(--color-primary);
+}
+.woocommerce div.product div.summary .price .woocommerce-Price-amount {
+  font-size: inherit;
+}
+
+/* Short description */
+.woocommerce div.product div.summary .woocommerce-product-short-description {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-border);
+  padding-top: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+.woocommerce div.product div.summary .woocommerce-product-short-description p {
+  margin-bottom: 0.75em;
+}
+.woocommerce div.product div.summary .woocommerce-product-short-description p:last-child {
+  margin-bottom: 0;
+}
+
+/* Add to cart form */
+.woocommerce div.product form.cart {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+/* Quantity input */
+.woocommerce div.product form.cart .quantity {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  transition: border-color 200ms ease;
+  flex-shrink: 0;
+}
+.woocommerce div.product form.cart .quantity:focus-within {
+  border-color: var(--color-ink);
+}
+.woocommerce div.product form.cart .quantity input.qty {
+  width: 3rem;
+  text-align: center;
+  border: none;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  background: transparent;
+  -moz-appearance: textfield;
+}
+.woocommerce div.product form.cart .quantity input.qty::-webkit-outer-spin-button,
+.woocommerce div.product form.cart .quantity input.qty::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Add to cart button */
+.woocommerce div.product form.cart .single_add_to_cart_button {
+  flex: 1;
+  min-width: 10rem;
+  padding: 0.875rem 2rem;
+  background: var(--color-ink);
+  color: var(--color-surface);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.woocommerce div.product form.cart .single_add_to_cart_button:hover {
+  background: var(--color-ink-light, #1a1a1a);
+}
+.woocommerce div.product form.cart .single_add_to_cart_button.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+.woocommerce div.product form.cart .single_add_to_cart_button.added {
+  background: var(--color-success);
+}
+
+/* Product meta (SKU, categories, tags) */
+.woocommerce div.product div.summary .product_meta {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+.woocommerce div.product div.summary .product_meta span {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.woocommerce div.product div.summary .product_meta .sku {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+.woocommerce div.product div.summary .product_meta a {
+  color: var(--color-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.woocommerce div.product div.summary .product_meta a:hover {
+  color: var(--color-ink);
 }
 
 /* ── Pagination ──────────────────────────────────────────────────────────── */
@@ -2102,6 +2392,14 @@ textarea.contact-input {
   padding-inline: clamp(1.5rem, 4vw, 2.5rem);
 }
 
+/* ── Retrocompatibilità: accent → primary (blocchi Gutenberg già creati) ─── */
+/* WP genera has-accent-color da slug "accent" rimosso in theme.json.
+   Questi alias mantengono funzionante il contenuto creato prima della migrazione. */
+.has-accent-color                { color:            #0074C7 !important; }
+.has-accent-background-color     { background-color: #0074C7 !important; }
+.has-accent-light-color          { color:            #eff6ff !important; }
+.has-accent-light-background-color { background-color: #eff6ff !important; }
+
 /* ── Theme form (contact-section pattern) ───────────────────────────────── */
 .theme-form {
   display:        flex;
@@ -2199,7 +2497,7 @@ textarea.contact-input {
 
 .wishlist-btn:hover,
 .wishlist-btn.active {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .wishlist-btn.active svg {
@@ -2250,7 +2548,7 @@ textarea.contact-input {
   width:         0.5rem;
   height:        0.5rem;
   border-radius: 50%;
-  background:    var(--color-accent);
+  background:    var(--color-primary);
   flex-shrink:   0;
 }
 
