@@ -635,39 +635,6 @@ body.has-hero .page-header-offset {
   line-height: 1.7;
 }
 
-/* Scroll indicator */
-.scroll-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: #fff;
-  font-family: var(--font-sans);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
-.scroll-indicator-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, currentColor, transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-
-@keyframes scrollPulse {
-
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-
-  50% {
-    opacity: 1;
-  }
-}
 
 /* ── Prezzo prodotto — classe base condivisa tra card, quick-view, recently-viewed ── */
 .product-price {
@@ -2323,7 +2290,7 @@ textarea.contact-input {
   display: flex;
 }
 
-.js-products-swiper .swiper-slide > * {
+.js-products-swiper .swiper-slide>* {
   width: 100%;
 }
 

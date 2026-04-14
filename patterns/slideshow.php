@@ -87,11 +87,6 @@
       <button class="swiper-button-prev swiper-dark absolute left-6 lg:left-10 top-1/2 -translate-y-1/2 z-20" aria-label="Slide precedente"></button>
       <button class="swiper-button-next swiper-dark absolute right-6 lg:right-10 top-1/2 -translate-y-1/2 z-20" aria-label="Slide successiva"></button>
     </div>
-
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 scroll-indicator" aria-hidden="true">
-      <div class="scroll-indicator-line"></div>
-      <span class="mt-2">scroll</span>
-    </div>
   </section>
   <!-- /wp:html -->
 </div>

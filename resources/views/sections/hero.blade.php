@@ -115,14 +115,4 @@
       </div>
     </div>
   </div>
-
-  {{-- Scroll indicator --}}
-  <div
-    class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 scroll-indicator"
-    aria-hidden="true"
-  >
-    <div class="scroll-indicator-line"></div>
-    <span class="mt-2">scroll</span>
-  </div>
-
 </section>
