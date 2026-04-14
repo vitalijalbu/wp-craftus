@@ -35,7 +35,7 @@
       </a>
     @endif
 
-    <h1 class="p-name font-serif text-[clamp(1.75rem,4vw,3rem)] font-light text-ink leading-tight mb-6">
+    <h1 class="p-name text-[clamp(1.75rem,4vw,3rem)] font-light text-ink leading-tight mb-6">
       {!! $title !!}
     </h1>
 
@@ -47,9 +47,9 @@
 
   {{-- Body --}}
   <div class="e-content prose prose-lg prose-ink max-w-none
-    prose-headings:font-serif prose-headings:font-light
+    prose-headings:prose-headings:font-light
     prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-    prose-blockquote:border-l-primary prose-blockquote:font-serif prose-blockquote:font-light prose-blockquote:text-xl
+    prose-blockquote:border-l-primary prose-blockquote:prose-blockquote:font-light prose-blockquote:text-xl
     prose-img:rounded">
     @php(the_content())
   </div>

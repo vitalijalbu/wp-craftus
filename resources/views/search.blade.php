@@ -7,7 +7,7 @@
   <div class="container">
     @include('partials.breadcrumb')
     @if(get_search_query())
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
         {{ sprintf(__('Risultati per: "%s"', 'sage'), esc_html(get_search_query())) }}
       </h1>
       @if(have_posts())
@@ -19,7 +19,7 @@
         </p>
       @endif
     @else
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink">
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink">
         {{ __('Ricerca', 'sage') }}
       </h1>
     @endif

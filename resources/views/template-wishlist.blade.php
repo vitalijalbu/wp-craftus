@@ -15,7 +15,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
   <div class="bg-cream border-b border-border page-header-offset pb-10">
     <div class="container">
       @include('partials.breadcrumb')
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
         {{ __('La mia wishlist', 'sage') }}
       </h1>
     </div>
@@ -28,7 +28,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
     {{-- Empty state (no JS / truly empty) --}}
     <noscript>
       <div class="text-center py-20">
-        <p class="font-serif text-2xl font-light text-ink mb-3">{{ __('La tua wishlist è vuota', 'sage') }}</p>
+        <p class="text-2xl font-light text-ink mb-3">{{ __('La tua wishlist è vuota', 'sage') }}</p>
         <p class="text-muted mb-6">{{ __('Sfoglia i prodotti e aggiungi i tuoi preferiti!', 'sage') }}</p>
         <div class="flex flex-wrap justify-center gap-4">
           <a href="{{ esc_url(home_url('/')) }}" class="btn-primary">{{ __('Vai alla Home', 'sage') }}</a>

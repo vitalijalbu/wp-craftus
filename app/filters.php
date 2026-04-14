@@ -27,6 +27,17 @@ add_action('wp_enqueue_scripts', function () {
     );
 }, 20);
 
+// ── WooCommerce: always enable registration on My Account frontend ─────────
+// The custom form-login override always shows Login + Register side by side.
+// Keep admin settings untouched.
+add_filter('option_woocommerce_enable_myaccount_registration', function ($value) {
+    if (is_admin()) {
+        return $value;
+    }
+
+    return 'yes';
+});
+
 // ── WooCommerce: move related & upsells outside div.product grid ─────────
 // By default WC renders them inside woocommerce_after_single_product_summary
 // (which lives inside the 2-column product grid). Moving them to
@@ -553,8 +564,8 @@ add_shortcode('products_carousel', function (array $atts): string {
             </div>
         <?php } ?>
 
-        <div class="products-carousel__outer">
-            <div class="products-carousel__track">
+        <div class="products-carousel__outer container">
+
                 <div class="js-products-swiper swiper">
                     <div class="swiper-wrapper items-stretch">
                         <?php foreach ($products as $product) { ?>
@@ -564,7 +575,7 @@ add_shortcode('products_carousel', function (array $atts): string {
                         <?php } ?>
                     </div>
                 </div>
-            </div>
+            
             <div class="swiper-scrollbar products-carousel__scrollbar"></div>
         </div>
 

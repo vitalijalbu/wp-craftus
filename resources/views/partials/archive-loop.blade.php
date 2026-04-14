@@ -14,7 +14,7 @@
 <div class="bg-cream border-b border-border page-header-offset pb-10">
   <div class="container">
     @include('partials.breadcrumb')
-    <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
+    <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
       {!! wp_kses_post($archive_title) !!}
     </h1>
     @if($archive_desc)
@@ -63,7 +63,7 @@
             @endif
 
             <div class="p-6 flex flex-col flex-1">
-              <h2 class="font-serif text-xl font-light text-ink group-hover:text-primary transition-colors mb-3 leading-snug">
+              <h2 class="text-xl font-light text-ink group-hover:text-primary transition-colors mb-3 leading-snug">
                 <a href="{{ $perma }}" class="relative after:absolute after:inset-0">
                   {!! get_the_title() !!}
                 </a>

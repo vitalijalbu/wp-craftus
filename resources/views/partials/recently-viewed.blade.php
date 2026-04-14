@@ -15,7 +15,7 @@
 >
   <div class="container">
     <div class="flex items-center justify-between mb-8">
-      <h2 class="font-serif text-2xl font-light text-ink">{{ __('Visti di recente', 'sage') }}</h2>
+      <h2 class="text-2xl font-light text-ink">{{ __('Visti di recente', 'sage') }}</h2>
       <button
         type="button"
         @click="clear()"

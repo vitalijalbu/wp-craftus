@@ -95,13 +95,6 @@ img {
 /* ── Skip link ───────────────────────────────────────────────────────────── */
 .skip-to-content {
   position: absolute;
-.page-header-offset {
-  padding-top: clamp(5.5rem, 8vw, 7rem);
-}
-
-body.has-hero .page-header-offset {
-  padding-top: 4rem;
-}
   top: -100%;
   left: 1rem;
   background: var(--color-primary);
@@ -117,6 +110,22 @@ body.has-hero .page-header-offset {
 
 .skip-to-content:focus {
   top: 0;
+}
+
+/* ── Brand logos (header/footer) ────────────────────────────────────────── */
+.site-logo .custom-logo,
+.site-logo img {
+  max-height: 50px;
+  width: auto;
+}
+
+/* ── Header offset for page hero bars (non-hero pages) ─────────────────── */
+.page-header-offset {
+  padding-top: clamp(5.5rem, 8vw, 7rem);
+}
+
+body.has-hero .page-header-offset {
+  padding-top: 4rem;
 }
 
 /* ── Luxury section spacing ──────────────────────────────────────────────── */
@@ -1119,6 +1128,21 @@ select {
   appearance: none;
 }
 
+select:not([multiple]):not([size]),
+select[size="1"] {
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%230f0f0f' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 12px;
+}
+
+select[multiple],
+select[size]:not([size="1"]) {
+  background-image: none;
+  padding-right: 1rem;
+}
+
 input:focus,
 textarea:focus,
 select:focus {
@@ -1899,16 +1923,6 @@ textarea.contact-input {
 /* Outer clip: hides the right bleed of the peek effect */
 .products-carousel__outer {
   overflow: hidden;
-}
-
-/* Track: left-aligns slides with the container content */
-.products-carousel__track {
-  padding-left: clamp(1.5rem, 4vw, 2.5rem);
-}
-
-/* Let slides bleed beyond the swiper boundary (clipped by __outer) */
-.products-carousel__track .swiper {
-  overflow: visible;
 }
 
 /* Navigation arrows — shown only on md+ */

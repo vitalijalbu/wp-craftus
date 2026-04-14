@@ -174,7 +174,6 @@ export function initCarousels() {
       breakpoints: {
         640: { slidesPerView: 2.2, spaceBetween: 20 },
         1024: { slidesPerView: 4, spaceBetween: 24 },
-        1280: { slidesPerView: 6, spaceBetween: 24 },
       },
       a11y: {
         prevSlideMessage: 'Prodotto precedente',

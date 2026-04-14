@@ -31,9 +31,10 @@
   $newsletter_heading   = get_theme_mod('newsletter_heading', __('Offerte esclusive, novità e consigli per il tuo animale.', 'sage'));
   $newsletter_active    = get_theme_mod('newsletter_active', false);
   $cta_url              = function_exists('App\\theme_cta_url') ? \App\theme_cta_url() : esc_url(home_url('/contatti'));
+  $custom_logo_id       = (int) get_theme_mod('custom_logo');
 @endphp
 
-<footer class="bg-ink text-white" role="contentinfo">
+<footer class="bg-cream" role="contentinfo">
 
   {{-- ─── Newsletter band ─────────────────────────────────────────────────── --}}
   @if($newsletter_active)
@@ -41,7 +42,7 @@
     <div class="container py-10 flex flex-col md:flex-row items-center justify-between gap-6">
       <div>
         <p class="    font-semibold tracking-[0.25em] uppercase text-primary mb-1">Newsletter</p>
-        <p class="font-serif text-xl font-light text-white/90">{{ esc_html($newsletter_heading) }}</p>
+        <p class="text-xl font-light">{{ esc_html($newsletter_heading) }}</p>
       </div>
 
       {{-- Newsletter form — submits to REST API /wp-json/theme/v1/newsletter --}}
@@ -71,7 +72,7 @@
               x-model="email"
               placeholder="{{ __('La tua email', 'sage') }}"
               :disabled="state === 'loading'"
-              class="flex-1 bg-white/5 border border-white/15 border-r-0 px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
+              class="flex-1 bg-white/5 border border-white/15 border-r-0 px-4 py-3 text-sm placeholder-white/30 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
               required
             >
             <button
@@ -107,15 +108,15 @@
 
       {{-- Brand column --}}
       <div class="col-span-2 lg:col-span-4">
-        <a href="{{ esc_url(home_url('/')) }}" class="block mb-5" aria-label="{{ esc_attr(get_bloginfo('name')) }}">
-          @if(has_custom_logo())
-            {!! get_custom_logo() !!}
+        <a href="{{ esc_url(home_url('/')) }}" class="site-logo site-logo--footer block mb-5" aria-label="{{ esc_attr(get_bloginfo('name')) }}">
+          @if($custom_logo_id)
+            {!! wp_get_attachment_image($custom_logo_id, 'full', false, ['class' => 'custom-logo', 'alt' => get_bloginfo('name'), 'loading' => 'lazy', 'decoding' => 'async']) !!}
           @else
-            <span class="font-serif text-2xl font-light tracking-[0.25em] uppercase text-white">{{ get_bloginfo('name') }}</span>
+            <span class="text-2xl font-light tracking-[0.25em] uppercase">{{ get_bloginfo('name') }}</span>
           @endif
         </a>
         @if($footer_tagline)
-          <p class="text-white/55 leading-relaxed max-w-xs mb-8">
+          <p class="leading-relaxed max-w-xs mb-8">
             {{ esc_html($footer_tagline) }}
           </p>
         @endif
@@ -130,7 +131,7 @@
                 rel="noopener noreferrer"
                 aria-label="{{ esc_attr($social['label']) }}"
                 role="listitem"
-                class="size-8 flex items-center justify-center border border-white/15 text-white/50 hover:text-primary hover:border-primary/60 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary"
+                class="size-8 flex items-center justify-center border border-white/15 hover:text-primary hover:border-primary/60 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary"
               >
                 <x-dynamic-component :component="'icons.' . $slug" class="w-3.5 h-3.5" />
               </a>
@@ -141,7 +142,7 @@
 
       {{-- Explore nav --}}
       <div class="col-span-1 lg:col-span-2 lg:col-start-6">
-        <p class="font-semibold tracking-[0.25em] uppercase text-white/50 mb-5">{{ __('Esplora', 'sage') }}</p>
+        <p class="font-semibold tracking-[0.25em] uppercase mb-5">{{ __('Esplora', 'sage') }}</p>
         <ul class="space-y-3">
           @if(has_nav_menu('footer_navigation'))
             @php
@@ -151,7 +152,7 @@
             @endphp
             @foreach($footer_items as $item)
               <li>
-                <a href="{{ esc_url($item->url) }}" class="text-white/55 hover:text-white transition-colors duration-150">
+                <a href="{{ esc_url($item->url) }}">
                   {{ esc_html($item->title) }}
                 </a>
               </li>
@@ -162,11 +163,11 @@
 
       {{-- Shop categories --}}
       <div class="col-span-1 lg:col-span-2">
-        <p class="font-semibold tracking-[0.25em] uppercase text-white/50 mb-5">{{ __('Shop', 'sage') }}</p>
+        <p class="font-semibold tracking-[0.25em] uppercase mb-5">{{ __('Shop', 'sage') }}</p>
         <ul class="space-y-3">
           @foreach($shop_cats as $cat)
             <li>
-              <a href="{{ esc_url(get_term_link($cat)) }}" class="text-white/55 hover:text-white transition-colors duration-150">
+              <a href="{{ esc_url(get_term_link($cat)) }}">
                 {{ esc_html($cat->name) }}
               </a>
             </li>
@@ -183,7 +184,7 @@
 
       {{-- Info links — Menu Footer — Informazioni (Aspetto → Menu) --}}
       <div class="col-span-2 lg:col-span-2">
-        <p class="font-semibold tracking-[0.25em] uppercase text-white/50 mb-5">{{ __('Informazioni', 'sage') }}</p>
+        <p class="font-semibold tracking-[0.25em] uppercase mb-5">{{ __('Informazioni', 'sage') }}</p>
         @if(has_nav_menu('footer_info_navigation'))
           @php
             $info_loc   = get_nav_menu_locations()['footer_info_navigation'] ?? 0;
@@ -193,7 +194,7 @@
           <ul class="space-y-3">
             @foreach($info_items as $item)
               <li>
-                <a href="{{ esc_url($item->url) }}" class="text-white/55 hover:text-white transition-colors duration-150">
+                <a href="{{ esc_url($item->url) }}">
                   {{ esc_html($item->title) }}
                 </a>
               </li>
@@ -210,7 +211,7 @@
 
   {{-- Legal bar --}}
   <div class="container py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-    <p class="text-white/55">
+    <p>
       © {{ date('Y') }} {{ get_bloginfo('name') }}. {{ __('Tutti i diritti riservati.', 'sage') }}
     </p>
     {{-- Legal links — Menu Footer — Legal (Aspetto → Menu) --}}
@@ -222,7 +223,7 @@
       @endphp
       <div class="flex items-center gap-5">
         @foreach($legal_items as $item)
-          <a href="{{ esc_url($item->url) }}" class="text-white/55 hover:text-white/80 transition-colors">
+          <a href="{{ esc_url($item->url) }}">
             {{ esc_html($item->title) }}
           </a>
         @endforeach

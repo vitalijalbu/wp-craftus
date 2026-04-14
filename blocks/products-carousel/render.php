@@ -1,4 +1,5 @@
 <?php
+
 /**
  * theme/products-carousel — server-side render.
  *
@@ -93,8 +94,8 @@ if ($query->have_posts()) {
 if (empty($products)) {
     if (defined('REST_REQUEST') && REST_REQUEST) {
         echo '<p style="padding:2rem;color:#999;font-style:italic;">'
-            .esc_html__('Nessun prodotto trovato con questi filtri.', 'sage')
-            .'</p>';
+            . esc_html__('Nessun prodotto trovato con questi filtri.', 'sage')
+            . '</p>';
     }
 
     return;
@@ -126,14 +127,14 @@ $wrapper_atts = get_block_wrapper_attributes([
                             class="swiper-button-prev products-carousel__btn"
                             aria-label="<?php esc_attr_e('Prodotto precedente', 'sage'); ?>">
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                             </svg>
                         </button>
                         <button type="button"
                             class="swiper-button-next products-carousel__btn"
                             aria-label="<?php esc_attr_e('Prodotto successivo', 'sage'); ?>">
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
                         </button>
                     </div>
@@ -142,16 +143,14 @@ $wrapper_atts = get_block_wrapper_attributes([
         </div>
     <?php } ?>
 
-    <div class="products-carousel__outer">
-        <div class="products-carousel__track">
-            <div class="js-products-swiper swiper">
-                <div class="swiper-wrapper items-stretch">
-                    <?php foreach ($products as $product) { ?>
-                        <div class="swiper-slide h-auto">
-                            <?php echo \Roots\view('partials.product-card', ['product' => $product])->render(); ?>
-                        </div>
-                    <?php } ?>
-                </div>
+    <div class="products-carousel__outer container">
+        <div class="js-products-swiper swiper">
+            <div class="swiper-wrapper items-stretch">
+                <?php foreach ($products as $product) { ?>
+                    <div class="swiper-slide h-auto">
+                        <?php echo \Roots\view('partials.product-card', ['product' => $product])->render(); ?>
+                    </div>
+                <?php } ?>
             </div>
         </div>
         <div class="swiper-scrollbar products-carousel__scrollbar"></div>

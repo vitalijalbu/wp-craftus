@@ -86,7 +86,7 @@ $faqs = [
   <div class="bg-cream border-b border-border pt-20 pb-14">
     <div class="max-w-2xl mx-auto px-6 text-center">
       <p class="section-label text-primary">{{ __('Prezzi', 'sage') }}</p>
-      <h1 class="font-serif text-[clamp(2rem,4vw,3rem)] font-light text-ink leading-tight mb-4">
+      <h1 class="text-[clamp(2rem,4vw,3rem)] font-light text-ink leading-tight mb-4">
         {{ get_the_title() ?: __('Piani semplici, prezzi trasparenti', 'sage') }}
       </h1>
       @php the_excerpt() @endphp
@@ -130,7 +130,7 @@ $faqs = [
               {{ esc_html($plan['name']) }}
             </p>
             <div class="flex items-baseline gap-1 mb-3">
-              <span class="font-serif text-[clamp(2rem,4vw,2.75rem)] font-light {{ $plan['featured'] ? 'text-white' : 'text-ink' }}">
+              <span class="text-[clamp(2rem,4vw,2.75rem)] font-light {{ $plan['featured'] ? 'text-white' : 'text-ink' }}">
                 {{ esc_html($plan['price']) }}
               </span>
               @if($plan['period'])
@@ -170,7 +170,7 @@ $faqs = [
     {{-- Enterprise CTA band --}}
     <div class="mt-12 bg-cream border border-border px-8 py-7 flex flex-col md:flex-row items-center justify-between gap-5">
       <div>
-        <p class="font-serif text-lg font-light text-ink mb-1">{{ __('Hai esigenze particolari?', 'sage') }}</p>
+        <p class="text-lg font-light text-ink mb-1">{{ __('Hai esigenze particolari?', 'sage') }}</p>
         <p class="text-sm text-muted">{{ __('Il piano Enterprise si adatta completamente al tuo business. Parla con il nostro team.', 'sage') }}</p>
       </div>
       <a href="{{ esc_url(home_url('/contatti')) }}" class="btn-primary shrink-0">{{ __('Richiedi un preventivo', 'sage') }}</a>
@@ -179,7 +179,7 @@ $faqs = [
 
   {{-- FAQ --}}
   <div class="max-w-2xl mx-auto px-6 pb-20">
-    <h2 class="font-serif text-[clamp(1.5rem,3vw,2rem)] font-light text-ink text-center mb-10">
+    <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-light text-ink text-center mb-10">
       {{ __('Domande frequenti', 'sage') }}
     </h2>
     <div class="space-y-0">

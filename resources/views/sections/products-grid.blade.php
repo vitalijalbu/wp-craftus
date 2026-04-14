@@ -217,7 +217,7 @@
       x-show="!loading && products.length === 0"
       x-cloak
     >
-      <p class="font-serif text-2xl text-ink mb-3">{{ __('Nessun prodotto trovato', 'sage') }}</p>
+      <p class="text-2xl text-ink mb-3">{{ __('Nessun prodotto trovato', 'sage') }}</p>
       <p class="text-sm text-muted">{{ __('Prova a selezionare un\'altra categoria.', 'sage') }}</p>
     </div>
 

@@ -58,7 +58,7 @@
         </div>
         <div class="relative text-center">
           <p class="font-sans text-xs font-semibold tracking-[0.3em] uppercase text-primary mb-4">{{ __('Esclusivo', 'sage') }}</p>
-          <p class="font-serif text-3xl font-light text-white leading-tight">-10%</p>
+          <p class="text-3xl font-light text-white leading-tight">-10%</p>
           <p class="text-white/50 text-sm mt-2">{{ __('sul tuo primo ordine', 'sage') }}</p>
         </div>
       </div>
@@ -66,7 +66,7 @@
       {{-- Form --}}
       <div class="flex-1 p-8 flex flex-col justify-center">
         <p class="section-label text-muted mb-2">{{ __('Newsletter', 'sage') }}</p>
-        <h2 id="nl-popup-title" class="font-serif text-2xl font-light text-ink leading-tight mb-2">
+        <h2 id="nl-popup-title" class="text-2xl font-light text-ink leading-tight mb-2">
           {{ esc_html(get_theme_mod('newsletter_heading', __('Offerte esclusive, ogni settimana', 'sage'))) }}
         </h2>
         <p class="text-sm text-muted mb-6">{{ __('Iscriviti e ricevi novità, offerte e contenuti premium in anteprima.', 'sage') }}</p>
@@ -115,7 +115,7 @@
           </template>
           <div x-show="state === 'done'" class="text-center py-4" aria-live="polite">
             <x-icons.check-circle class="w-10 h-10 text-success mx-auto mb-3" />
-            <p class="font-serif text-lg font-light text-ink" x-text="message || '{{ __('Grazie per l\'iscrizione!', 'sage') }}'"></p>
+            <p class="text-lg font-light text-ink" x-text="message || '{{ __('Grazie per l\'iscrizione!', 'sage') }}'"></p>
           </div>
         </form>
 

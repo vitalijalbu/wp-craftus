@@ -60,7 +60,7 @@
               x-ref="input"
               @input.debounce.350ms="fetchResults()"
               placeholder="{{ __('Cerca prodotti, articoli…', 'sage') }}"
-              class="flex-1 bg-transparent font-serif text-3xl lg:text-5xl font-light text-white placeholder-white/20 focus:outline-none"
+              class="flex-1 bg-transparent text-3xl lg:text-5xl font-light text-white placeholder-white/20 focus:outline-none"
               autocomplete="off"
               aria-controls="search-live-results"
               :aria-expanded="results.length > 0 ? 'true' : 'false'"
@@ -114,7 +114,7 @@
                     <x-icons.image-placeholder x-show="!item.thumb" class="size-5 text-white/20" />
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="font-serif text-base font-light text-white group-hover:text-primary transition-colors truncate" x-text="item.title"></p>
+                    <p class="text-base font-light text-white group-hover:text-primary transition-colors truncate" x-text="item.title"></p>
                     <p class="text-xs text-white/40 truncate mt-0.5" x-text="item.excerpt"></p>
                   </div>
                   <div class="shrink-0 text-right" x-show="item.price">

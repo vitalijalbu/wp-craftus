@@ -31,6 +31,7 @@
   $cta_raw_url   = get_theme_mod('cta_url', '');
   $cta_raw_label = get_theme_mod('header_cta_label', '');
   $show_cta  = !empty($cta_raw_url) || !empty($cta_raw_label);
+  $custom_logo_id = (int) get_theme_mod('custom_logo');
 @endphp
 
 @include('partials.announcement-bar')
@@ -59,11 +60,11 @@
       {{-- LEFT: Logo ───────────────────────────────────────────────────────── --}}
       <a
         href="{{ esc_url(home_url('/')) }}"
-        class="shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+        class="site-logo site-logo--header shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
         aria-label="{{ esc_attr(get_bloginfo('name')) }}"
       >
-        @if(has_custom_logo())
-          {!! get_custom_logo() !!}
+        @if($custom_logo_id)
+          {!! wp_get_attachment_image($custom_logo_id, 'full', false, ['class' => 'custom-logo', 'alt' => get_bloginfo('name'), 'decoding' => 'async', 'fetchpriority' => 'high']) !!}
         @else
           <span
             class="font-sans text-xl font-light tracking-[0.22em] uppercase transition-colors duration-300"
@@ -83,8 +84,33 @@
               $is_mega       = get_post_meta($item->ID, '_menu_item_megamenu', true) === '1';
               $item_children = $children_map[$item->ID] ?? [];
               $mega_id       = 'nav-' . $item->ID;
-              $active_classes = ['current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current-page-ancestor'];
-              $is_current     = !empty(array_intersect($active_classes, (array)($item->classes ?? [])));
+              $active_classes = [
+                'current-menu-item',
+                'current_page_item',
+                'current-menu-ancestor',
+                'current-page-ancestor',
+                'current-menu-parent',
+                'current_page_parent',
+              ];
+
+              $item_classes = (array) ($item->classes ?? []);
+              $is_current   = !empty(array_intersect($active_classes, $item_classes));
+
+              // Fallback: exact URL match (useful when WP doesn't assign current-* classes,
+              // e.g. custom links to Shop archive).
+              $item_path    = untrailingslashit((string) wp_parse_url((string) ($item->url ?? ''), PHP_URL_PATH));
+              $current_path = untrailingslashit((string) wp_parse_url((string) home_url(add_query_arg([], $wp->request ?? '')), PHP_URL_PATH));
+              if (!$is_current && $item_path && $current_path && $item_path === $current_path) {
+                $is_current = true;
+              }
+
+              // Extra fallback for WooCommerce shop page.
+              if (!$is_current && function_exists('is_shop') && is_shop() && function_exists('wc_get_page_permalink')) {
+                $shop_path = untrailingslashit((string) wp_parse_url((string) wc_get_page_permalink('shop'), PHP_URL_PATH));
+                if ($item_path && $shop_path && $item_path === $shop_path) {
+                  $is_current = true;
+                }
+              }
             @endphp
             @if($is_mega && !empty($item_children))
               <button

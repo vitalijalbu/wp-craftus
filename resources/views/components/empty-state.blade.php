@@ -22,7 +22,7 @@
 
   {{-- Decorative code (e.g. 404) --}}
   @if($code)
-    <p class="font-serif text-[clamp(6rem,20vw,14rem)] font-light leading-none text-border select-none" aria-hidden="true">
+    <p class="text-[clamp(6rem,20vw,14rem)] font-light leading-none text-border select-none" aria-hidden="true">
       {{ $code }}
     </p>
     <div class="w-12 h-px bg-primary mx-auto my-8" aria-hidden="true"></div>
@@ -36,7 +36,7 @@
   @endif
 
   {{-- Title --}}
-  <h2 class="font-serif text-[clamp(1.5rem,3.5vw,2.5rem)] font-light text-ink mb-3 leading-tight">
+  <h2 class="text-[clamp(1.5rem,3.5vw,2.5rem)] font-light text-ink mb-3 leading-tight">
     {{ $title }}
   </h2>
 

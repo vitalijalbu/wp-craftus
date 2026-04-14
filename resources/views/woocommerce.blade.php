@@ -19,7 +19,7 @@
           @php woocommerce_breadcrumb() @endphp
         </div>
       @endif
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
         {!! $page_title !!}
       </h1>
     </div>

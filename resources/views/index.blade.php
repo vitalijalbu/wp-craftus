@@ -23,7 +23,7 @@
           {{ $is_category ? __('Categoria', 'sage') : __('Tag', 'sage') }}
         </p>
       @endif
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
         {!! $archive_title !!}
       </h1>
       @if($archive_desc)
@@ -34,7 +34,7 @@
       <p class="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
         {{ __('Blog', 'sage') }}
       </p>
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink">
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink">
         {{ get_bloginfo('name') }}
       </h1>
     @endif
@@ -46,7 +46,7 @@
 
   @if(!have_posts())
     <div class="text-center py-12">
-      <p class="font-serif text-2xl text-ink mb-3">{{ __('Nessun articolo trovato.', 'sage') }}</p>
+      <p class="text-2xl text-ink mb-3">{{ __('Nessun articolo trovato.', 'sage') }}</p>
     </div>
   @else
     <div

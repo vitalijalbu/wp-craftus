@@ -41,7 +41,7 @@
     </div>
 
     {{-- Title --}}
-    <h2 class="font-serif text-xl font-light text-ink leading-snug mb-3 group-hover:text-primary transition-colors">
+    <h2 class="text-xl font-light text-ink leading-snug mb-3 group-hover:text-primary transition-colors">
       <a href="{{ get_permalink() }}" class="after:absolute after:inset-0 relative">
         {!! $title !!}
       </a>

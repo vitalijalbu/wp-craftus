@@ -154,7 +154,7 @@
           <div class="max-w-4xl mx-auto">
 
             <h1
-              class="font-serif text-[clamp(2.5rem,5vw,4rem)] font-light text-ink leading-tight mb-8"
+              class="text-[clamp(2.5rem,5vw,4rem)] font-light text-ink leading-tight mb-8"
               data-scroll="text-reveal"
             >{{ get_the_title() }}</h1>
 

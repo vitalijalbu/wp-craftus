@@ -91,7 +91,7 @@
         <p class="text-xs font-semibold tracking-[0.2em] uppercase text-muted mb-2" x-text="product?.category || ''"></p>
 
         {{-- Title --}}
-        <h2 class="font-serif text-xl font-light text-ink leading-snug mb-3" x-text="product?.title"></h2>
+        <h2 class="text-xl font-light text-ink leading-snug mb-3" x-text="product?.title"></h2>
 
         {{-- Rating --}}
         <div x-show="product?.rating_count > 0" class="flex items-center gap-1.5 mb-3">

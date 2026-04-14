@@ -24,7 +24,7 @@
   <div class="bg-cream border-b border-border page-header-offset pb-10">
     <div class="container">
       @include('partials.breadcrumb')
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
         {!! get_the_title() !!}
       </h1>
       @php $intro = get_the_excerpt(); @endphp
@@ -163,7 +163,7 @@
         {{-- RIGHT: Info sidebar --}}
         <aside>
           <span class="section-label text-muted">{{ __('Dove siamo', 'sage') }}</span>
-          <h2 class="font-serif text-2xl font-light text-ink mb-8">{{ __('Informazioni di contatto', 'sage') }}</h2>
+          <h2 class="text-2xl font-light text-ink mb-8">{{ __('Informazioni di contatto', 'sage') }}</h2>
 
           <dl class="space-y-7">
 

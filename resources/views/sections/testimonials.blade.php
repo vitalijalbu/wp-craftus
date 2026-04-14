@@ -135,7 +135,7 @@
                     class="testimonial-card__avatar bg-cream flex items-center justify-center shrink-0"
                     aria-hidden="true"
                   >
-                    <span class="font-serif text-primary text-sm font-medium">
+                    <span class="text-primary text-sm font-medium">
                       {{ mb_substr($t['name'] ?? 'A', 0, 1) }}
                     </span>
                   </div>

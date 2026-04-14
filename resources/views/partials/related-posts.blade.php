@@ -19,7 +19,7 @@
     <p class="text-xs font-semibold tracking-[0.2em] uppercase text-muted mb-2" aria-hidden="true">
       {{ __('Continua a leggere', 'sage') }}
     </p>
-    <h2 id="related-heading" class="font-serif text-2xl font-light text-ink mb-8">
+    <h2 id="related-heading" class="text-2xl font-light text-ink mb-8">
       {{ __('Articoli correlati', 'sage') }}
     </h2>
 
