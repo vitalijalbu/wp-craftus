@@ -3,7 +3,7 @@
  * Single Product tabs — overrides WooCommerce default.
  * Renders product tabs (Description, Reviews, Additional Info) as Alpine.js tabs.
  *
- * @version 3.8.0 (WC reference version)
+ * @version 9.8.0 (WC reference version)
  */
 defined('ABSPATH') || exit;
 

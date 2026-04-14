@@ -4,7 +4,7 @@
  * Displayed in the cart page below the cart table.
  * Uses the theme's product-card partial for consistent styling.
  *
- * @version 3.0.0 (WC reference version)
+ * @version 9.8.0 (WC reference version)
  */
 defined('ABSPATH') || exit;
 

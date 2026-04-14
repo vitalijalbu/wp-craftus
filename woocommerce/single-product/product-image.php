@@ -3,7 +3,7 @@
  * Single product image — Swiper gallery with Thumbs + Alpine.js lightbox.
  * Overrides WooCommerce default template.
  *
- * @version 3.5.1 (WC reference version)
+ * @version 10.5.0 (WC reference version)
  */
 defined('ABSPATH') || exit;
 

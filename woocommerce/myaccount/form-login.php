@@ -3,9 +3,9 @@
  * My Account Login/Register — custom UI override.
  *
  * @see https://woocommerce.com/document/template-structure/
+ *
  * @version 9.9.0
  */
-
 defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_customer_login_form');
@@ -23,7 +23,7 @@ do_action('woocommerce_before_customer_login_form');
 
       <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
         <label for="username"><?php esc_html_e('Nome utente o indirizzo email', 'sage'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Richiesto', 'sage'); ?></span></label>
-        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="<?php echo (!empty($_POST['username']) && is_string($_POST['username'])) ? esc_attr(wp_unslash($_POST['username'])) : ''; ?>" required aria-required="true" />
+        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="<?php echo (! empty($_POST['username']) && is_string($_POST['username'])) ? esc_attr(wp_unslash($_POST['username'])) : ''; ?>" required aria-required="true" />
       </p>
 
       <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
@@ -58,26 +58,26 @@ do_action('woocommerce_before_customer_login_form');
     <form method="post" class="woocommerce-form woocommerce-form-register register" <?php do_action('woocommerce_register_form_tag'); ?>>
       <?php do_action('woocommerce_register_form_start'); ?>
 
-      <?php if ('no' === get_option('woocommerce_registration_generate_username')) : ?>
+      <?php if (get_option('woocommerce_registration_generate_username') === 'no') { ?>
         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
           <label for="reg_username"><?php esc_html_e('Nome utente', 'sage'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Richiesto', 'sage'); ?></span></label>
-          <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="<?php echo !empty($_POST['username']) ? esc_attr(wp_unslash($_POST['username'])) : ''; ?>" required aria-required="true" />
+          <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="<?php echo ! empty($_POST['username']) ? esc_attr(wp_unslash($_POST['username'])) : ''; ?>" required aria-required="true" />
         </p>
-      <?php endif; ?>
+      <?php } ?>
 
       <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
         <label for="reg_email"><?php esc_html_e('Email', 'sage'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Richiesto', 'sage'); ?></span></label>
-        <input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="<?php echo !empty($_POST['email']) ? esc_attr(wp_unslash($_POST['email'])) : ''; ?>" required aria-required="true" />
+        <input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="<?php echo ! empty($_POST['email']) ? esc_attr(wp_unslash($_POST['email'])) : ''; ?>" required aria-required="true" />
       </p>
 
-      <?php if ('no' === get_option('woocommerce_registration_generate_password')) : ?>
+      <?php if (get_option('woocommerce_registration_generate_password') === 'no') { ?>
         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
           <label for="reg_password"><?php esc_html_e('Password', 'sage'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Richiesto', 'sage'); ?></span></label>
           <input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="password" id="reg_password" autocomplete="new-password" required aria-required="true" />
         </p>
-      <?php else : ?>
+      <?php } else { ?>
         <p class="wc-auth-note"><?php esc_html_e('Ti invieremo una email per impostare la password.', 'sage'); ?></p>
-      <?php endif; ?>
+      <?php } ?>
 
       <?php do_action('woocommerce_register_form'); ?>
 

@@ -52,8 +52,8 @@
 					<!-- /wp:image -->
 					<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","orientation":"vertical"},"style":{"spacing":{"blockGap":"0.25rem"}}} -->
 					<div class="wp-block-group">
-						<!-- wp:heading {"level":3,"className":"font-serif text-lg font-light text-ink"} -->
-						<h3 class="font-serif text-lg font-light text-ink">Qualità artigianale</h3>
+						<!-- wp:heading {"level":3,"className":"text-lg font-light text-ink"} -->
+						<h3 class="text-lg font-light text-ink">Qualità artigianale</h3>
 						<!-- /wp:heading -->
 						<!-- wp:paragraph {"className":"text-sm text-muted"} -->
 						<p class="text-sm text-muted">Ogni prodotto è realizzato a mano con cura e attenzione al dettaglio.</p>
@@ -71,8 +71,8 @@
 					<!-- /wp:image -->
 					<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","orientation":"vertical"},"style":{"spacing":{"blockGap":"0.25rem"}}} -->
 					<div class="wp-block-group">
-						<!-- wp:heading {"level":3,"className":"font-serif text-lg font-light text-ink"} -->
-						<h3 class="font-serif text-lg font-light text-ink">Materiali sostenibili</h3>
+						<!-- wp:heading {"level":3,"className":"text-lg font-light text-ink"} -->
+						<h3 class="text-lg font-light text-ink">Materiali sostenibili</h3>
 						<!-- /wp:heading -->
 						<!-- wp:paragraph {"className":"text-sm text-muted"} -->
 						<p class="text-sm text-muted">Selezioniamo solo materie prime certificate e a basso impatto ambientale.</p>
@@ -90,8 +90,8 @@
 					<!-- /wp:image -->
 					<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","orientation":"vertical"},"style":{"spacing":{"blockGap":"0.25rem"}}} -->
 					<div class="wp-block-group">
-						<!-- wp:heading {"level":3,"className":"font-serif text-lg font-light text-ink"} -->
-						<h3 class="font-serif text-lg font-light text-ink">Consegna garantita</h3>
+						<!-- wp:heading {"level":3,"className":"text-lg font-light text-ink"} -->
+						<h3 class="text-lg font-light text-ink">Consegna garantita</h3>
 						<!-- /wp:heading -->
 						<!-- wp:paragraph {"className":"text-sm text-muted"} -->
 						<p class="text-sm text-muted">Spedizione rapida e tracciata, con reso gratuito entro 30 giorni.</p>

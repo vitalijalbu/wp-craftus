@@ -44,8 +44,10 @@ add_filter('option_woocommerce_enable_myaccount_registration', function ($value)
 // woocommerce_after_single_product places them outside, so bg-cream goes full-width.
 remove_action('woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15);
 remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
-add_action('woocommerce_after_single_product', 'woocommerce_upsell_display', 10);
-add_action('woocommerce_after_single_product', 'woocommerce_output_related_products', 20);
+remove_action('woocommerce_after_single_product', 'woocommerce_upsell_display', 10);
+remove_action('woocommerce_after_single_product', 'woocommerce_output_related_products', 20);
+add_action('theme_after_woocommerce_container', 'woocommerce_upsell_display', 10);
+add_action('theme_after_woocommerce_container', 'woocommerce_output_related_products', 20);
 
 // ── WooCommerce: cart count fragment ─────────────────────────────────────────
 // Updates `.cart-count-fragment[data-cart-count]` via WC's AJAX fragment system
@@ -179,26 +181,27 @@ add_filter('woocommerce_shortcode_products_query', function (array $query): arra
     return $query;
 });
 
-add_filter('pre_render_block', function ($pre_render, array $block) {
-    $wc_product_blocks = [
-        'woocommerce/all-products',
-        'woocommerce/product-query',
-        'woocommerce/handpicked-products',
-        'woocommerce/product-best-sellers',
-        'woocommerce/product-new',
-        'woocommerce/product-on-sale',
-        'woocommerce/product-top-rated',
-        'woocommerce/products-by-attribute',
-        'woocommerce/product-category',
-    ];
-    if (in_array($block['blockName'] ?? '', $wc_product_blocks, true)) {
-        if (empty($block['attrs']['perPage']) || $block['attrs']['perPage'] > THEME_PRODUCT_QUERY_CAP) {
-            add_filter('posts_per_page', fn () => THEME_PRODUCT_QUERY_CAP);
-        }
+// Safe cap for product queries: avoids leaking a global posts_per_page override.
+add_filter('posts_per_page', function ($posts_per_page, $query) {
+    if (is_admin() || ! $query instanceof \WP_Query) {
+        return $posts_per_page;
     }
 
-    return $pre_render;
-}, 5, 2);
+    $post_type = $query->get('post_type');
+    $is_product_query = $post_type === 'product'
+        || (is_array($post_type) && in_array('product', $post_type, true));
+
+    if (! $is_product_query) {
+        return $posts_per_page;
+    }
+
+    $pp = (int) $posts_per_page;
+    if ($pp <= 0 || $pp > THEME_PRODUCT_QUERY_CAP) {
+        return THEME_PRODUCT_QUERY_CAP;
+    }
+
+    return $pp;
+}, 20, 2);
 
 // ── WooCommerce single product: layout tweaks ────────────────────────────────
 
@@ -211,6 +214,26 @@ add_filter('woocommerce_product_tabs', function (array $tabs): array {
 
 // Move breadcrumb above the product div (before single-product summary hooks)
 remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+
+// Normalize breadcrumb markup so separators and current item can be styled reliably.
+add_filter('woocommerce_breadcrumb_defaults', function (array $defaults): array {
+    $defaults['delimiter'] = '<span class="breadcrumb-separator" aria-hidden="true">/</span>';
+
+    return $defaults;
+});
+
+add_filter('woocommerce_get_breadcrumb', function (array $crumbs): array {
+    if (empty($crumbs)) {
+        return $crumbs;
+    }
+
+    $last = count($crumbs) - 1;
+    $label = wp_strip_all_tags((string) ($crumbs[$last][0] ?? ''));
+    $crumbs[$last][0] = '<span class="woocommerce-breadcrumb__current">'.esc_html($label).'</span>';
+    $crumbs[$last][1] = '';
+
+    return $crumbs;
+});
 
 // Wrap result-count + ordering in a flex row
 add_action('woocommerce_before_shop_loop', function () {

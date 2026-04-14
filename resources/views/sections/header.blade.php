@@ -41,6 +41,7 @@
   x-data="siteHeader"
   @click.outside="closeMenu()"
   class="fixed top-0 left-0 right-0 z-50"
+  :class="{ 'header--hero-top': hasHero && !scrolled }"
   role="banner"
 >
 
@@ -102,6 +103,18 @@
               $current_path = untrailingslashit((string) wp_parse_url((string) home_url(add_query_arg([], $wp->request ?? '')), PHP_URL_PATH));
               if (!$is_current && $item_path && $current_path && $item_path === $current_path) {
                 $is_current = true;
+              }
+
+              // Front page fallback for custom Home links.
+              if (!$is_current && is_front_page()) {
+                $item_url = isset($item->url) ? (string) $item->url : '';
+                $item_url_no_frag = strtok($item_url, '#') ?: '';
+                $item_url_no_qs = strtok($item_url_no_frag, '?') ?: $item_url_no_frag;
+                $home_root = trailingslashit(home_url('/'));
+                $item_root = trailingslashit($item_url_no_qs);
+                if ($item_root && $item_root === $home_root) {
+                  $is_current = true;
+                }
               }
 
               // Extra fallback for WooCommerce shop page.

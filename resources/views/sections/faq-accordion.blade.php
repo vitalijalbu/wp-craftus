@@ -93,9 +93,10 @@
             itemprop="name"
           >
             <span>{{ $faq['question'] }}</span>
-            <x-icons.plus
+            <x-icons.chevron-down
               class="faq-item__icon shrink-0"
-              ::class="{ 'rotate-45': open === {{ $index }} }"
+              ::class="{ 'rotate-180': open === {{ $index }} }"
+              stroke-width="2"
             />
           </button>
 

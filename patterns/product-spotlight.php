@@ -33,16 +33,16 @@
 				<p class="section-label text-muted">NOVITÀ</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:heading {"level":2,"className":"font-serif text-4xl font-light text-ink leading-tight"} -->
-				<h2 class="font-serif text-4xl font-light text-ink leading-tight">Nome del Prodotto<br>in Evidenza</h2>
+				<!-- wp:heading {"level":2,"className":"text-4xl font-light text-ink leading-tight"} -->
+				<h2 class="text-4xl font-light text-ink leading-tight">Nome del Prodotto<br>in Evidenza</h2>
 				<!-- /wp:heading -->
 
 				<!-- wp:paragraph {"className":"text-sm text-muted leading-relaxed"} -->
 				<p class="text-sm text-muted leading-relaxed">Descrizione breve del prodotto. Racconta cosa lo rende speciale, i materiali, l'artigianalità o la storia che lo ispira. Qualità e stile in un unico oggetto.</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:paragraph {"className":"font-serif text-3xl font-light text-ink"} -->
-				<p class="font-serif text-3xl font-light text-ink">€ 199,00</p>
+				<!-- wp:paragraph {"className":"text-3xl font-light text-ink"} -->
+				<p class="text-3xl font-light text-ink">€ 199,00</p>
 				<!-- /wp:paragraph -->
 
 				<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"left"},"style":{"spacing":{"blockGap":"1rem"}}} -->

@@ -22,10 +22,10 @@ $sub_class = $bg === 'ink' ? 'text-white/40' : 'text-muted';
 
 if ($style === 'large') {
     $wrap_class = 'max-w-2xl mx-auto text-center py-16 px-6';
-    $quote_size = 'font-serif text-2xl md:text-3xl font-light leading-snug';
+    $quote_size = 'text-2xl md:text-3xl font-light leading-snug';
 } elseif ($style === 'minimal') {
     $wrap_class = 'py-6';
-    $quote_size = 'font-serif text-lg font-light leading-snug';
+    $quote_size = 'text-lg font-light leading-snug';
 } else {
     // card
     $wrap_class = "p-8 {$card_bg}";

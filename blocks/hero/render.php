@@ -69,7 +69,7 @@ $align_class = match ($align) {
       <span class="section-label text-white/60 mb-4"><?= $label ?></span>
     <?php } ?>
 
-    <h1 class="font-serif text-white font-light leading-tight text-hero-display">
+    <h1 class="text-white font-light leading-tight text-hero-display">
       <?= $heading ?>
     </h1>
 

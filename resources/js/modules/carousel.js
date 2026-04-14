@@ -22,21 +22,21 @@ Alpine.data('productLightbox', (imagesJson) => ({
   open: false,
   current: 0,
   images:
-    typeof imagesJson === 'string' ?
-      (() => {
-        try {
-          return JSON.parse(imagesJson || '[]');
-        } catch (_e) {
-          return [];
-        }
-      })()
-    : (imagesJson ?? []),
+    typeof imagesJson === 'string'
+      ? (() => {
+          try {
+            return JSON.parse(imagesJson || '[]')
+          } catch (_e) {
+            return []
+          }
+        })()
+      : (imagesJson ?? []),
   _trigger: null,
   _lbSwiper: null,
 
   initLightboxSwiper() {
     if (this._lbSwiper || !this.$refs.lbSwiper) {
-      return;
+      return
     }
 
     this._lbSwiper = new Swiper(this.$refs.lbSwiper, {
@@ -54,10 +54,10 @@ Alpine.data('productLightbox', (imagesJson) => ({
       },
       on: {
         slideChange: (swiper) => {
-          this.current = swiper.activeIndex;
+          this.current = swiper.activeIndex
         },
       },
-    });
+    })
   },
 
   show(i, el) {
@@ -66,10 +66,10 @@ Alpine.data('productLightbox', (imagesJson) => ({
     this.open = true
     document.body.style.overflow = 'hidden'
     this.$nextTick(() => {
-      this.initLightboxSwiper();
-      this._lbSwiper?.slideTo(i, 0, false);
-      this.$refs.lbClose?.focus();
-    });
+      this.initLightboxSwiper()
+      this._lbSwiper?.slideTo(i, 0, false)
+      this.$refs.lbClose?.focus()
+    })
   },
 
   close() {
@@ -80,18 +80,18 @@ Alpine.data('productLightbox', (imagesJson) => ({
 
   prev() {
     if (this._lbSwiper) {
-      this._lbSwiper.slidePrev();
-      return;
+      this._lbSwiper.slidePrev()
+      return
     }
-    this.current = (this.current - 1 + this.images.length) % this.images.length;
+    this.current = (this.current - 1 + this.images.length) % this.images.length
   },
 
   next() {
     if (this._lbSwiper) {
-      this._lbSwiper.slideNext();
-      return;
+      this._lbSwiper.slideNext()
+      return
     }
-    this.current = (this.current + 1) % this.images.length;
+    this.current = (this.current + 1) % this.images.length
   },
 
   trapFocus(e) {

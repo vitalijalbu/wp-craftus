@@ -94,8 +94,8 @@ if ($query->have_posts()) {
 if (empty($products)) {
     if (defined('REST_REQUEST') && REST_REQUEST) {
         echo '<p style="padding:2rem;color:#999;font-style:italic;">'
-            . esc_html__('Nessun prodotto trovato con questi filtri.', 'sage')
-            . '</p>';
+            .esc_html__('Nessun prodotto trovato con questi filtri.', 'sage')
+            .'</p>';
     }
 
     return;
@@ -117,7 +117,7 @@ $wrapper_atts = get_block_wrapper_attributes([
                     <?php if ($subtitle) { ?>
                         <p class="section-label text-muted mb-2"><?php echo $subtitle; ?></p>
                     <?php } ?>
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-serif font-light text-ink leading-tight m-0">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-light text-ink leading-tight m-0">
                         <?php echo $title; ?>
                     </h2>
                 </div>

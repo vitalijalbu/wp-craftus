@@ -48,8 +48,8 @@
 			<!-- wp:group {"className":"bg-cream p-8 sticky top-8","layout":{"type":"flex","flexWrap":"nowrap","orientation":"vertical"},"style":{"spacing":{"blockGap":"1.5rem"}}} -->
 			<div class="wp-block-group bg-cream p-8 sticky top-8">
 
-				<!-- wp:heading {"level":3,"className":"font-serif text-xl font-light text-ink"} -->
-				<h3 class="font-serif text-xl font-light text-ink">In breve</h3>
+				<!-- wp:heading {"level":3,"className":"text-xl font-light text-ink"} -->
+				<h3 class="text-xl font-light text-ink">In breve</h3>
 				<!-- /wp:heading -->
 
 				<!-- wp:list {"className":"text-sm text-muted space-y-2","style":{"typography":{"lineHeight":"1.8"}}} -->

@@ -36,5 +36,9 @@
         @php woocommerce_content() @endphp
       @endif
     </div>
+
+    @if(is_product())
+      @php do_action('theme_after_woocommerce_container') @endphp
+    @endif
   </div>
 @endsection

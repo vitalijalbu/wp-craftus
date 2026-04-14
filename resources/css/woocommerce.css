@@ -461,8 +461,8 @@
 .woocommerce .woocommerce-breadcrumb {
   font-family: var(--font-sans);
   font-size: 0.8125rem;
-  color: var(--color-primary);
-  font-weight: 600;
+  color: var(--color-muted);
+  font-weight: 400;
   margin-bottom: 2rem;
 }
 
@@ -475,6 +475,17 @@
 
 .woocommerce .woocommerce-breadcrumb a:hover {
   color: var(--color-ink);
+}
+
+.woocommerce .woocommerce-breadcrumb .breadcrumb-separator {
+  color: var(--color-border);
+  margin: 0 0.35rem;
+  font-weight: 400;
+}
+
+.woocommerce .woocommerce-breadcrumb .woocommerce-breadcrumb__current {
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 /* Sort/count */

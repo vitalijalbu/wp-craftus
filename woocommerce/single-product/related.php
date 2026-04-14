@@ -3,7 +3,7 @@
  * Related Products — overrides WooCommerce default.
  * Uses the theme's product-card partial for consistent styling.
  *
- * @version 3.9.0 (WC reference version)
+ * @version 10.3.0 (WC reference version)
  */
 defined('ABSPATH') || exit;
 
