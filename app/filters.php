@@ -553,6 +553,34 @@ add_shortcode('products_carousel', function (array $atts): string {
 });
 
 /**
+ * WCAG fix: when a wp:button block uses has-primary-color on a dark background,
+ * remove the inline color style so our CSS !important rule can set white text.
+ * The editor preserves the class; only the inline style (which would override
+ * our CSS) is stripped from the output.
+ */
+add_filter('render_block_core/button', function (string $block_content, array $block): string {
+    // Only target buttons with primary-color text AND a dark/ink background
+    if (
+        str_contains($block_content, 'has-primary-color')
+        && (str_contains($block_content, 'has-dark-background-color') || str_contains($block_content, 'has-ink-background-color'))
+    ) {
+        // Strip standalone 'color:' property from inline style attributes.
+        // Negative lookbehind (?<![a-z-]) ensures we don't remove background-color,
+        // border-color, text-decoration-color, etc. — only the bare 'color:' property.
+        $block_content = preg_replace(
+            '/(?<![a-z-])color:\s*[^;}"]+;?/i',
+            '',
+            $block_content,
+        );
+        // Clean up any empty or whitespace-only style attributes left behind
+        $block_content = preg_replace('/\s+style="\s*;?\s*"/', '', $block_content);
+        $block_content = str_replace(' style=""', '', $block_content);
+    }
+
+    return $block_content;
+}, 10, 2);
+
+/**
  * Recently Viewed — track current product on single product pages.
  * Outputs an inline <script> at wp_footer that calls window.trackProductView()
  * with the current product's data so the recently-viewed component can read it.

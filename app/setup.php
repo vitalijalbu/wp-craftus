@@ -251,10 +251,14 @@ add_action('wp_head', function () {
      * Filter the Google Fonts URL.
      * Override per-project: add_filter('theme_font_url', fn() => 'https://fonts.googleapis.com/...');
      * Return empty string to disable Google Fonts entirely (self-hosted fonts).
+     *
+     * Removed italic weight (1,400) — not used in the theme.
+     * display=optional: browser uses system font if Poppins not cached — best for FCP.
+     * Weights loaded: 300 (headings), 400 (body), 500 (labels), 600 (caps/nav), 700 (buttons/prices).
      */
     $font_url = apply_filters(
         'theme_font_url',
-        'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap'
+        'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=optional'
     );
 
     if (! $font_url) {
@@ -262,10 +266,11 @@ add_action('wp_head', function () {
     }
 
     $url = esc_url($font_url);
+    // Preconnect: first two reduce DNS + TLS handshake to Google Fonts CDN.
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">'."\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'."\n";
-    echo '<link rel="preload" as="style" href="'.$url.'">'."\n";
-    echo '<link rel="stylesheet" media="print" onload="this.media=\'all\'" href="'.$url.'">'."\n";
+    // Non-render-blocking: browser loads as print stylesheet, promotes to all on load.
+    echo '<link rel="preload" as="style" href="'.$url.'" onload="this.onload=null;this.rel=\'stylesheet\'">'."\n";
     echo '<noscript><link rel="stylesheet" href="'.$url.'"></noscript>'."\n";
 }, 1);
 

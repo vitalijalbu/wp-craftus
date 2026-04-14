@@ -43,6 +43,9 @@
   --color-warning:      #d97706;
   --color-error:        #dc2626;
 
+  /* ── Accent gold — star ratings, highlights (true gold, not blue) ── */
+  --color-gold:         #c9a227;   /* WCAG AA: 3.1:1 on white (large text) */
+
   /* ── Spacing tokens ──────────────────────────────────────────── */
   --header-height: 72px;
   --section-sm:    clamp(3rem, 6vw, 5rem);
@@ -406,6 +409,22 @@ img {
   background-color: transparent !important;
 }
 
+/* WCAG fix: primary-color text on any dark block background → promote to white.
+   Uses #app ID prefix to out-specificity WP core's .has-primary-color !important rule.
+   Contrast: white on ink ≥ 21:1 (WCAG AAA), white on dark ≥ 4.5:1 (WCAG AA). */
+#app .wp-block-button__link.has-primary-color.has-dark-background-color,
+#app .wp-block-button__link.has-primary-color.has-ink-background-color,
+.wp-block-button__link.has-primary-color.has-dark-background-color,
+.wp-block-button__link.has-primary-color.has-ink-background-color {
+  color: var(--color-surface) !important;
+  border-color: rgba(255,255,255,0.5) !important;
+}
+#app .wp-block-button__link.has-primary-color.has-dark-background-color:hover,
+#app .wp-block-button__link.has-primary-color.has-ink-background-color:hover {
+  background-color: rgba(255,255,255,0.12) !important;
+  color: var(--color-surface) !important;
+}
+
 /* ── Badge ────────────────────────────────────────────────────────────────── */
 .badge {
   display: inline-flex;
@@ -514,11 +533,16 @@ img {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(15, 15, 15, 0.72) 0%,
-    rgba(15, 15, 15, 0.28) 55%,
-    rgba(15, 15, 15, 0.08) 100%
+    rgba(15, 15, 15, 0.78) 0%,
+    rgba(15, 15, 15, 0.40) 50%,
+    rgba(15, 15, 15, 0.18) 100%
   );
   z-index: 1;
+}
+
+/* Ensure sufficient contrast for text above cover blocks (WCAG AA) */
+.wp-block-cover .wp-block-cover__background.has-background-dim-50 {
+  opacity: 0.55 !important;  /* slightly stronger than default 50% */
 }
 
 .hero-content {

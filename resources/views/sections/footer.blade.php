@@ -113,7 +113,7 @@
           @endif
         </a>
         @if($footer_tagline)
-          <p class="text-white/40 leading-relaxed max-w-xs mb-8">
+          <p class="text-white/55 leading-relaxed max-w-xs mb-8">
             {{ esc_html($footer_tagline) }}
           </p>
         @endif
@@ -128,7 +128,7 @@
                 rel="noopener noreferrer"
                 aria-label="{{ esc_attr($social['label']) }}"
                 role="listitem"
-                class="w-8 h-8 flex items-center justify-center border border-white/10 text-white/30 hover:text-primary hover:border-primary/40 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary"
+                class="w-8 h-8 flex items-center justify-center border border-white/15 text-white/50 hover:text-primary hover:border-primary/60 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary"
               >
                 <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="{{ $social['icon'] }}"/>
@@ -141,7 +141,7 @@
 
       {{-- Explore nav --}}
       <div class="col-span-1 lg:col-span-2 lg:col-start-6">
-        <p class="    font-semibold tracking-[0.25em] uppercase text-white/30 mb-5">{{ __('Esplora', 'sage') }}</p>
+        <p class="font-semibold tracking-[0.25em] uppercase text-white/50 mb-5">{{ __('Esplora', 'sage') }}</p>
         <ul class="space-y-3">
           @if(has_nav_menu('footer_navigation'))
             @php
@@ -151,7 +151,7 @@
             @endphp
             @foreach($footer_items as $item)
               <li>
-                <a href="{{ esc_url($item->url) }}" class="text-white/40 hover:text-white transition-colors duration-150">
+                <a href="{{ esc_url($item->url) }}" class="text-white/55 hover:text-white transition-colors duration-150">
                   {{ esc_html($item->title) }}
                 </a>
               </li>
@@ -162,11 +162,11 @@
 
       {{-- Shop categories --}}
       <div class="col-span-1 lg:col-span-2">
-        <p class="    font-semibold tracking-[0.25em] uppercase text-white/30 mb-5">{{ __('Shop', 'sage') }}</p>
+        <p class="font-semibold tracking-[0.25em] uppercase text-white/50 mb-5">{{ __('Shop', 'sage') }}</p>
         <ul class="space-y-3">
           @foreach($shop_cats as $cat)
             <li>
-              <a href="{{ esc_url(get_term_link($cat)) }}" class="text-white/40 hover:text-white transition-colors duration-150">
+              <a href="{{ esc_url(get_term_link($cat)) }}" class="text-white/55 hover:text-white transition-colors duration-150">
                 {{ esc_html($cat->name) }}
               </a>
             </li>
@@ -183,7 +183,7 @@
 
       {{-- Info links — Menu Footer — Informazioni (Aspetto → Menu) --}}
       <div class="col-span-2 lg:col-span-2">
-        <p class="    font-semibold tracking-[0.25em] uppercase text-white/30 mb-5">{{ __('Informazioni', 'sage') }}</p>
+        <p class="font-semibold tracking-[0.25em] uppercase text-white/50 mb-5">{{ __('Informazioni', 'sage') }}</p>
         @if(has_nav_menu('footer_info_navigation'))
           @php
             $info_loc   = get_nav_menu_locations()['footer_info_navigation'] ?? 0;
@@ -193,7 +193,7 @@
           <ul class="space-y-3">
             @foreach($info_items as $item)
               <li>
-                <a href="{{ esc_url($item->url) }}" class="text-white/40 hover:text-white transition-colors duration-150">
+                <a href="{{ esc_url($item->url) }}" class="text-white/55 hover:text-white transition-colors duration-150">
                   {{ esc_html($item->title) }}
                 </a>
               </li>
@@ -210,7 +210,7 @@
 
   {{-- Legal bar --}}
   <div class="container py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-    <p class="    text-white/20">
+    <p class="text-white/55">
       © {{ date('Y') }} {{ get_bloginfo('name') }}. {{ __('Tutti i diritti riservati.', 'sage') }}
     </p>
     {{-- Legal links — Menu Footer — Legal (Aspetto → Menu) --}}
@@ -222,7 +222,7 @@
       @endphp
       <div class="flex items-center gap-5">
         @foreach($legal_items as $item)
-          <a href="{{ esc_url($item->url) }}" class="    text-white/20 hover:text-white/50 transition-colors">
+          <a href="{{ esc_url($item->url) }}" class="text-white/55 hover:text-white/80 transition-colors">
             {{ esc_html($item->title) }}
           </a>
         @endforeach

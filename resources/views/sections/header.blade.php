@@ -8,7 +8,8 @@
 
 @php
   // ── Resolve data once ────────────────────────────────────────────────────
-  $wc_cats = [];
+  $wc_cats         = [];
+  $sub_cats_by_parent = [];
   if (function_exists('get_terms')) {
     $wc_cats = wp_cache_get('theme_header_wc_cats');
     if ($wc_cats === false) {
@@ -22,6 +23,26 @@
       $wc_cats = is_array($wc_cats) ? array_values($wc_cats) : [];
       wp_cache_set('theme_header_wc_cats', $wc_cats, '', 5 * MINUTE_IN_SECONDS);
     }
+
+    // Pre-fetch ALL subcategories in one query (avoids N+1 per parent category)
+    $sub_cats_by_parent = wp_cache_get('theme_header_sub_cats');
+    if ($sub_cats_by_parent === false && !empty($wc_cats)) {
+      $parent_ids = array_map(fn($c) => $c->term_id, array_slice($wc_cats, 0, 5));
+      $all_sub    = get_terms([
+        'taxonomy'   => 'product_cat',
+        'hide_empty' => true,
+        'parent__in' => $parent_ids,
+        'number'     => 30,   // 5 parents × 6 children max
+      ]);
+      $sub_cats_by_parent = [];
+      if (!is_wp_error($all_sub) && is_array($all_sub)) {
+        foreach ($all_sub as $_sub) {
+          $sub_cats_by_parent[(int) $_sub->parent][] = $_sub;
+        }
+      }
+      wp_cache_set('theme_header_sub_cats', $sub_cats_by_parent, '', 5 * MINUTE_IN_SECONDS);
+    }
+    $sub_cats_by_parent = $sub_cats_by_parent ?: [];
   }
 
   // Load all nav items and build a parent→children map for dropdown support
@@ -137,6 +158,7 @@
                 href="{{ esc_url($item->url) }}"
                 class="nav-link-t"
                 :class="hasHero && !scrolled ? 'text-white/80 hover:text-white' : ''"
+                @if(in_array('current-menu-item', (array)($item->classes ?? []), true)) aria-current="page" @endif
               >{{ esc_html($item->title) }}</a>
             @endif
           @endforeach
@@ -269,7 +291,7 @@
               $cat_link     = get_term_link($cat);
               $cat_thumb_id = get_term_meta($cat->term_id, 'thumbnail_id', true);
               $cat_img      = $cat_thumb_id ? wp_get_attachment_image_url($cat_thumb_id, 'medium') : '';
-              $sub_cats     = get_terms(['taxonomy' => 'product_cat', 'parent' => $cat->term_id, 'hide_empty' => true, 'number' => 6]);
+              $sub_cats     = array_slice($sub_cats_by_parent[$cat->term_id] ?? [], 0, 6);
             @endphp
             <div class="mega-item megamenu-col bg-surface p-7 group">
               @if($cat_img)
@@ -288,7 +310,7 @@
                 class="block font-semibold tracking-[0.15em] uppercase text-ink/80 hover:text-primary transition-colors duration-200 mb-4"
               >{{ esc_html($cat->name) }}</a>
 
-              @if(!is_wp_error($sub_cats) && !empty($sub_cats))
+              @if(!empty($sub_cats))
                 <ul class="space-y-2" role="list">
                   @foreach($sub_cats as $sub)
                     <li>
@@ -471,7 +493,7 @@
       @if($show_cta)
         <a
           href="{{ $cta_url }}"
-          class="block w-full text-center py-4 bg-primary text-ink     font-semibold tracking-[0.22em] uppercase hover:bg-primary/90 transition-colors"
+          class="block w-full text-center py-4 bg-primary text-white font-semibold tracking-[0.22em] uppercase hover:bg-primary-dark transition-colors"
           @click="closeMobile()"
         >{{ esc_html($cta_label) }}</a>
       @endif
