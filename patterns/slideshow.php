@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Slideshow Hero (Swiper)
+ * Title: Slideshow
  * Slug: theme/slideshow
  * Categories: theme-sections
  * Keywords: slide, slideshow, hero, swiper, slider, banner, carosello, cta
