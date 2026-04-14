@@ -129,11 +129,11 @@ function live_search(\WP_REST_Request $request): \WP_REST_Response
     }
 
     $wp_query = new \WP_Query([
-        's'              => $query,
-        'post_type'      => $post_types,
+        's' => $query,
+        'post_type' => $post_types,
         'posts_per_page' => $per_page,
-        'post_status'    => 'publish',
-        'no_found_rows'  => true,
+        'post_status' => 'publish',
+        'no_found_rows' => true,
         // No 'fields' => 'ids' — load full objects so title/permalink/excerpt
         // are available without extra queries. With max 12 results the overhead
         // is negligible; the old approach caused N+1 for every meta/title call.
@@ -144,23 +144,23 @@ function live_search(\WP_REST_Request $request): \WP_REST_Response
 
     $results = [];
     foreach ($wp_query->posts as $post) {
-        $pid       = (int) $post->ID;
-        $thumb_id  = get_post_thumbnail_id($pid);
+        $pid = (int) $post->ID;
+        $thumb_id = get_post_thumbnail_id($pid);
         $thumb_url = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'thumbnail') : '';
 
         $price = '';
         if ($post->post_type === 'product' && function_exists('wc_get_product')) {
             $product = wc_get_product($pid);
-            $price   = $product ? wp_strip_all_tags($product->get_price_html()) : '';
+            $price = $product ? wp_strip_all_tags($product->get_price_html()) : '';
         }
 
         $results[] = [
-            'id'      => $pid,
-            'title'   => esc_html(get_the_title($post)),
-            'url'     => esc_url(get_permalink($post)),
-            'thumb'   => esc_url($thumb_url),
-            'type'    => $post->post_type,
-            'price'   => $price,
+            'id' => $pid,
+            'title' => esc_html(get_the_title($post)),
+            'url' => esc_url(get_permalink($post)),
+            'thumb' => esc_url($thumb_url),
+            'type' => $post->post_type,
+            'price' => $price,
             'excerpt' => wp_trim_words(get_the_excerpt($post), 12, '…'),
         ];
     }
@@ -372,13 +372,13 @@ function filtered_products(\WP_REST_Request $request): \WP_REST_Response
 
 add_action('rest_api_init', function () {
     register_rest_route('theme/v1', '/wishlist-products', [
-        'methods'             => 'GET',
-        'callback'            => __NAMESPACE__ . '\\get_wishlist_products',
+        'methods' => 'GET',
+        'callback' => __NAMESPACE__.'\\get_wishlist_products',
         'permission_callback' => '__return_true',
-        'args'                => [
+        'args' => [
             'ids' => [
-                'required'          => true,
-                'type'              => 'string',
+                'required' => true,
+                'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
             ],
         ],
@@ -395,20 +395,20 @@ function get_wishlist_products(\WP_REST_Request $request): \WP_REST_Response
         return rest_ensure_response(['products' => []]);
     }
 
-    $raw_ids  = sanitize_text_field($request->get_param('ids'));
-    $ids      = array_filter(array_map('absint', explode(',', $raw_ids)));
-    $ids      = array_slice(array_values($ids), 0, 50);
+    $raw_ids = sanitize_text_field($request->get_param('ids'));
+    $ids = array_filter(array_map('absint', explode(',', $raw_ids)));
+    $ids = array_slice(array_values($ids), 0, 50);
 
     // Prime post + meta caches in one batch before the loop.
     _prime_post_caches($ids, false, true);
 
     // Warm thumbnail caches via a single query.
     $thumb_q = new \WP_Query([
-        'post__in'       => $ids,
+        'post__in' => $ids,
         'posts_per_page' => count($ids),
-        'post_status'    => 'any',
-        'no_found_rows'  => true,
-        'fields'         => 'ids',
+        'post_status' => 'any',
+        'no_found_rows' => true,
+        'fields' => 'ids',
     ]);
     update_post_thumbnail_cache($thumb_q);
 
@@ -419,15 +419,15 @@ function get_wishlist_products(\WP_REST_Request $request): \WP_REST_Response
             continue;
         }
 
-        $thumb_id   = $product->get_image_id();
+        $thumb_id = $product->get_image_id();
         $products[] = [
-            'id'         => $id,
-            'title'      => esc_html($product->get_name()),
-            'url'        => esc_url(get_permalink($id)),
-            'thumb'      => esc_url(wp_get_attachment_image_url($thumb_id, 'woocommerce_thumbnail') ?: ''),
+            'id' => $id,
+            'title' => esc_html($product->get_name()),
+            'url' => esc_url(get_permalink($id)),
+            'thumb' => esc_url(wp_get_attachment_image_url($thumb_id, 'woocommerce_thumbnail') ?: ''),
             'price_html' => wp_strip_all_tags($product->get_price_html()),
-            'in_stock'   => $product->is_in_stock(),
-            'on_sale'    => $product->is_on_sale(),
+            'in_stock' => $product->is_in_stock(),
+            'on_sale' => $product->is_on_sale(),
         ];
     }
 

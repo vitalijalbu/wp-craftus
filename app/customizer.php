@@ -22,30 +22,30 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
 
     $social_networks = [
         'instagram' => ['label' => 'Instagram',   'priority' => 10],
-        'facebook'  => ['label' => 'Facebook',    'priority' => 20],
-        'tiktok'    => ['label' => 'TikTok',      'priority' => 30],
-        'youtube'   => ['label' => 'YouTube',     'priority' => 40],
-        'twitter'   => ['label' => 'X (Twitter)', 'priority' => 45],
-        'whatsapp'  => [
-            'label'       => 'WhatsApp (numero con prefisso, es. +393401234567)',
-            'priority'    => 50,
-            'sanitize'    => 'sanitize_text_field',
-            'type'        => 'text',
+        'facebook' => ['label' => 'Facebook',    'priority' => 20],
+        'tiktok' => ['label' => 'TikTok',      'priority' => 30],
+        'youtube' => ['label' => 'YouTube',     'priority' => 40],
+        'twitter' => ['label' => 'X (Twitter)', 'priority' => 45],
+        'whatsapp' => [
+            'label' => 'WhatsApp (numero con prefisso, es. +393401234567)',
+            'priority' => 50,
+            'sanitize' => 'sanitize_text_field',
+            'type' => 'text',
             'placeholder' => '+393401234567',
         ],
     ];
 
     foreach ($social_networks as $slug => $config) {
         $wp_customize->add_setting("social_{$slug}", [
-            'default'           => '',
+            'default' => '',
             'sanitize_callback' => $config['sanitize'] ?? 'esc_url_raw',
-            'transport'         => 'refresh',
+            'transport' => 'refresh',
         ]);
         $wp_customize->add_control("social_{$slug}", [
-            'label'       => $config['label'],
-            'section'     => 'theme_social',
-            'type'        => $config['type'] ?? 'url',
-            'priority'    => $config['priority'],
+            'label' => $config['label'],
+            'section' => 'theme_social',
+            'type' => $config['type'] ?? 'url',
+            'priority' => $config['priority'],
             'input_attrs' => ['placeholder' => $config['placeholder'] ?? "https://www.{$slug}.com/nomepagina"],
         ]);
     }

@@ -211,11 +211,11 @@ add_action('after_setup_theme', function () {
      * @link https://developer.wordpress.org/themes/functionality/custom-logo/
      */
     add_theme_support('custom-logo', [
-        'height'               => 80,
-        'width'                => 250,
-        'flex-height'          => true,
-        'flex-width'           => true,
-        'header-text'          => ['site-title', 'site-description'],
+        'height' => 80,
+        'width' => 250,
+        'flex-height' => true,
+        'flex-width' => true,
+        'header-text' => ['site-title', 'site-description'],
         'unlink-homepage-logo' => false,
     ]);
 
@@ -257,7 +257,7 @@ add_filter('loop_shop_columns', fn () => 3);
  * preconnect hints reduce DNS + TLS handshake latency.
  */
 add_action('wp_head', function () {
-    echo '<script>window.themeRestUrl=' . wp_json_encode(rest_url('theme/v1')) . ';</script>' . "\n";
+    echo '<script>window.themeRestUrl='.wp_json_encode(rest_url('theme/v1')).';</script>'."\n";
 }, 1);
 
 add_action('wp_head', function () {
@@ -317,25 +317,25 @@ add_action('wp_head', function () {
         $product = wc_get_product($post->ID);
         if ($product) {
             $thumb_id = get_post_thumbnail_id($post);
-            $img_url  = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : '';
+            $img_url = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : '';
 
             $offer = [
-                '@type'         => 'Offer',
-                'price'         => $product->get_price(),
+                '@type' => 'Offer',
+                'price' => $product->get_price(),
                 'priceCurrency' => get_woocommerce_currency(),
-                'availability'  => $product->is_in_stock()
+                'availability' => $product->is_in_stock()
                     ? 'https://schema.org/InStock'
                     : 'https://schema.org/OutOfStock',
-                'url'           => get_permalink($post),
+                'url' => get_permalink($post),
             ];
 
             $product_data = [
-                '@context'    => 'https://schema.org',
-                '@type'       => 'Product',
-                'name'        => get_the_title($post),
-                'url'         => get_permalink($post),
+                '@context' => 'https://schema.org',
+                '@type' => 'Product',
+                'name' => get_the_title($post),
+                'url' => get_permalink($post),
                 'description' => has_excerpt($post) ? wp_strip_all_tags(get_the_excerpt($post)) : '',
-                'offers'      => $offer,
+                'offers' => $offer,
             ];
 
             if ($img_url) {
@@ -345,7 +345,7 @@ add_action('wp_head', function () {
             $rating_count = (int) $product->get_rating_count();
             if ($rating_count > 0) {
                 $product_data['aggregateRating'] = [
-                    '@type'       => 'AggregateRating',
+                    '@type' => 'AggregateRating',
                     'ratingValue' => (float) $product->get_average_rating(),
                     'reviewCount' => $rating_count,
                 ];

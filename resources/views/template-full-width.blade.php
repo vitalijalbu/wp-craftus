@@ -9,7 +9,7 @@
     @php the_post() @endphp
 
     {{-- Page header --}}
-    <div class="bg-cream border-b border-border pt-16 pb-10">
+    <div class="bg-cream border-b border-border page-header-offset pb-10">
       <div class="container">
         @include('partials.breadcrumb')
         <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">

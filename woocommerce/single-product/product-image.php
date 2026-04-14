@@ -10,11 +10,11 @@ defined('ABSPATH') || exit;
 global $product;
 
 $attachment_ids = $product->get_gallery_image_ids();
-$main_id        = $product->get_image_id();
-$all_ids        = array_merge([$main_id], $attachment_ids);
-$all_ids        = array_filter(array_unique($all_ids));
-$has_gallery    = count($all_ids) > 1;
-$has_images     = ! empty($all_ids);
+$main_id = $product->get_image_id();
+$all_ids = array_merge([$main_id], $attachment_ids);
+$all_ids = array_filter(array_unique($all_ids));
+$has_gallery = count($all_ids) > 1;
+$has_images = ! empty($all_ids);
 
 // Build lightbox URLs (full resolution) for Alpine.js
 $lightbox_urls = [];
@@ -22,13 +22,14 @@ foreach ($all_ids as $img_id) {
     $lightbox_urls[] = wp_get_attachment_image_url($img_id, 'full');
 }
 $lightbox_urls_json = wp_json_encode(array_values(array_filter($lightbox_urls)));
-$product_title      = esc_attr($product->get_name());
+$product_title = esc_attr($product->get_name());
 ?>
 
 <div
   class="product-gallery group"
   data-product-id="<?php echo esc_attr($product->get_id()); ?>"
-  x-data="productLightbox(<?php echo $lightbox_urls_json; ?>, '<?php echo $product_title; ?>')"
+  data-lightbox-images="<?php echo esc_attr($lightbox_urls_json); ?>"
+  x-data="productLightbox($el.dataset.lightboxImages)"
   @keydown.escape.window="close()"
   @keydown.arrow-left.window="open && prev()"
   @keydown.arrow-right.window="open && next()"
@@ -48,27 +49,27 @@ $product_title      = esc_attr($product->get_name());
     <div class="js-product-gallery swiper product-gallery__main overflow-hidden" aria-label="<?php esc_attr_e('Galleria immagini prodotto', 'sage'); ?>">
       <div class="swiper-wrapper">
         <?php foreach (array_values($all_ids) as $index => $img_id) {
-            $full_url  = wp_get_attachment_image_url($img_id, 'woocommerce_single');
-            $srcset    = wp_get_attachment_image_srcset($img_id, 'woocommerce_single');
-            $alt       = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
+            $full_url = wp_get_attachment_image_url($img_id, 'woocommerce_single');
+            $srcset = wp_get_attachment_image_srcset($img_id, 'woocommerce_single');
+            $alt = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
 
             // Build WebP srcset
-            $meta        = wp_get_attachment_metadata($img_id);
-            $upload      = wp_get_upload_dir();
+            $meta = wp_get_attachment_metadata($img_id);
+            $upload = wp_get_upload_dir();
             $webp_srcset = '';
             if (! empty($meta['file']) && ! empty($meta['sizes'])) {
-                $file_dir    = $upload['baseurl'] . '/' . dirname($meta['file']);
-                $webp_parts  = [];
+                $file_dir = $upload['baseurl'].'/'.dirname($meta['file']);
+                $webp_parts = [];
                 foreach ($meta['sizes'] as $size_data) {
                     $wf = $size_data['sources']['image/webp']['file'] ?? '';
                     $ww = (int) ($size_data['width'] ?? 0);
                     if ($wf && $ww) {
-                        $webp_parts[] = esc_url($file_dir . '/' . $wf) . ' ' . $ww . 'w';
+                        $webp_parts[] = esc_url($file_dir.'/'.$wf).' '.$ww.'w';
                     }
                 }
                 $webp_srcset = implode(', ', $webp_parts);
             }
-        ?>
+            ?>
           <div class="swiper-slide">
             <button
               type="button"
@@ -118,8 +119,8 @@ $product_title      = esc_attr($product->get_name());
         <div class="swiper-wrapper">
           <?php foreach (array_values($all_ids) as $index => $img_id) {
               $thumb_url = wp_get_attachment_image_url($img_id, 'thumbnail');
-              $alt       = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
-          ?>
+              $alt = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
+              ?>
             <div class="swiper-slide">
               <button type="button" class="product-gallery__thumb" aria-label="<?php printf(esc_attr__('Immagine %d', 'sage'), $index + 1); ?>">
                 <img
@@ -165,6 +166,7 @@ $product_title      = esc_attr($product->get_name());
 
       <!-- Prev -->
       <button
+        x-ref="lbPrev"
         @click="prev()"
         class="btn btn-icon btn-light absolute left-4 md:left-6 z-10"
         aria-label="<?php esc_attr_e('Immagine precedente', 'sage'); ?>"
@@ -173,22 +175,28 @@ $product_title      = esc_attr($product->get_name());
         <svg class="size-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
       </button>
 
-      <!-- Image -->
+      <!-- Lightbox Swiper -->
       <div class="max-w-5xl max-h-[90vh] w-full px-16 md:px-20 flex items-center justify-center">
-        <template x-for="(img, i) in images" :key="i">
-          <img
-            x-show="current === i"
-            :src="img"
-            :alt="'<?php echo $product_title; ?> — ' + (i + 1)"
-            class="max-h-[85vh] max-w-full object-contain shadow-2xl"
-            width="1200"
-            height="1500"
-          >
-        </template>
+        <div x-ref="lbSwiper" class="js-product-lightbox swiper w-full h-full">
+          <div class="swiper-wrapper">
+            <template x-for="(img, i) in images" :key="i">
+              <div class="swiper-slide flex items-center justify-center">
+                <img
+                  :src="img"
+                  :alt="'<?php echo $product_title; ?> — ' + (i + 1)"
+                  class="max-h-[85vh] max-w-full object-contain shadow-2xl"
+                  width="1200"
+                  height="1500"
+                >
+              </div>
+            </template>
+          </div>
+        </div>
       </div>
 
       <!-- Next -->
       <button
+        x-ref="lbNext"
         @click="next()"
         class="btn btn-icon btn-light absolute right-4 md:right-6 z-10"
         aria-label="<?php esc_attr_e('Immagine successiva', 'sage'); ?>"

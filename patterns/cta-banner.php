@@ -34,26 +34,26 @@
 		<!-- /wp:buttons -->
 
 		<?php
-		$wa_url   = function_exists('App\\theme_whatsapp_url') ? \App\theme_whatsapp_url() : '';
-		$contact_email = get_theme_mod('contact_email', '');
-		if ($wa_url || $contact_email) :
-		?>
+        $wa_url = function_exists('App\\theme_whatsapp_url') ? \App\theme_whatsapp_url() : '';
+$contact_email = get_theme_mod('contact_email', '');
+if ($wa_url || $contact_email) {
+    ?>
 		<!-- Link secondari: WhatsApp + email -->
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"center"}} -->
 		<div class="wp-block-group">
-			<?php if ($wa_url) : ?>
+			<?php if ($wa_url) { ?>
 			<!-- wp:paragraph {"textColor":"white","fontSize":"lg"} -->
 			<p class="has-white-color has-text-color has-lg-font-size">💬 <a href="<?php echo esc_url($wa_url); ?>" target="_blank" rel="noopener"><?php esc_html_e('WhatsApp', 'sage'); ?></a></p>
 			<!-- /wp:paragraph -->
-			<?php endif; ?>
-			<?php if ($contact_email) : ?>
+			<?php } ?>
+			<?php if ($contact_email) { ?>
 			<!-- wp:paragraph {"textColor":"white","fontSize":"lg"} -->
 			<p class="has-white-color has-text-color has-lg-font-size">✉️ <a href="mailto:<?php echo esc_attr($contact_email); ?>"><?php echo esc_html($contact_email); ?></a></p>
 			<!-- /wp:paragraph -->
-			<?php endif; ?>
+			<?php } ?>
 		</div>
 		<!-- /wp:group -->
-		<?php endif; ?>
+		<?php } ?>
 
 	</div>
 	<!-- /wp:group -->

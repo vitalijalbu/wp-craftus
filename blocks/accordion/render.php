@@ -4,13 +4,12 @@
  * Accessible accordion — uses native <details>/<summary> for zero-JS open/close.
  * Alpine.js adds smooth animation when available; native browser fallback works without JS.
  *
- * @var array    $attributes  Block attributes.
- * @var string   $content     Inner blocks HTML (unused).
+ * @var array $attributes  Block attributes.
+ * @var string $content     Inner blocks HTML (unused).
  * @var WP_Block $block       Block instance.
  */
-
-$items     = $attributes['items']    ?? [];
-$style     = $attributes['style']    ?? 'lines';
+$items = $attributes['items'] ?? [];
+$style = $attributes['style'] ?? 'lines';
 $open_first = (bool) ($attributes['openFirst'] ?? true);
 
 if (empty($items)) {
@@ -18,20 +17,20 @@ if (empty($items)) {
 }
 
 $wrapper_class = match ($style) {
-    'cards'  => 'theme-accordion theme-accordion--cards divide-y-0 space-y-2',
+    'cards' => 'theme-accordion theme-accordion--cards divide-y-0 space-y-2',
     'filled' => 'theme-accordion theme-accordion--filled divide-y-0 space-y-1',
-    default  => 'theme-accordion theme-accordion--lines divide-y divide-border',
+    default => 'theme-accordion theme-accordion--lines divide-y divide-border',
 };
 ?>
 <div <?= get_block_wrapper_attributes(['class' => $wrapper_class]) ?>>
-  <?php foreach ($items as $index => $item) :
-    $question = wp_kses_post($item['question'] ?? '');
-    $answer   = wp_kses_post($item['answer']   ?? '');
-    if (! $question && ! $answer) {
-        continue;
-    }
-    $is_open = ($open_first && $index === 0);
-  ?>
+  <?php foreach ($items as $index => $item) {
+      $question = wp_kses_post($item['question'] ?? '');
+      $answer = wp_kses_post($item['answer'] ?? '');
+      if (! $question && ! $answer) {
+          continue;
+      }
+      $is_open = ($open_first && $index === 0);
+      ?>
   <details
     class="group"
     <?= $is_open ? 'open' : '' ?>
@@ -69,5 +68,5 @@ $wrapper_class = match ($style) {
       </div>
     </div>
   </details>
-  <?php endforeach; ?>
+  <?php } ?>
 </div>

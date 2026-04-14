@@ -95,6 +95,13 @@ img {
 /* ── Skip link ───────────────────────────────────────────────────────────── */
 .skip-to-content {
   position: absolute;
+.page-header-offset {
+  padding-top: clamp(5.5rem, 8vw, 7rem);
+}
+
+body.has-hero .page-header-offset {
+  padding-top: 4rem;
+}
   top: -100%;
   left: 1rem;
   background: var(--color-primary);

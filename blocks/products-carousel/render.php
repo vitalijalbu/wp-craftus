@@ -2,8 +2,8 @@
 /**
  * theme/products-carousel — server-side render.
  *
- * @var array    $attributes  Block attributes.
- * @var string   $content     Inner blocks HTML (unused — dynamic block).
+ * @var array $attributes  Block attributes.
+ * @var string $content     Inner blocks HTML (unused — dynamic block).
  * @var WP_Block $block       Block instance.
  */
 defined('ABSPATH') || exit;
@@ -12,28 +12,28 @@ if (! function_exists('wc_get_product')) {
     return;
 }
 
-$title      = esc_html($attributes['title']    ?? '');
-$subtitle   = esc_html($attributes['subtitle'] ?? '');
-$limit      = max(1, min(24, (int) ($attributes['limit'] ?? 8)));
+$title = esc_html($attributes['title'] ?? '');
+$subtitle = esc_html($attributes['subtitle'] ?? '');
+$limit = max(1, min(24, (int) ($attributes['limit'] ?? 8)));
 $categories = array_filter(array_map('sanitize_title', (array) ($attributes['categories'] ?? [])));
-$orderby    = sanitize_key($attributes['orderby'] ?? 'date');
-$order      = in_array(strtoupper((string) ($attributes['order'] ?? 'DESC')), ['ASC', 'DESC'], true)
+$orderby = sanitize_key($attributes['orderby'] ?? 'date');
+$order = in_array(strtoupper((string) ($attributes['order'] ?? 'DESC')), ['ASC', 'DESC'], true)
     ? strtoupper((string) ($attributes['order'] ?? 'DESC'))
     : 'DESC';
-$bg         = $attributes['bg'] ?? 'surface';
+$bg = $attributes['bg'] ?? 'surface';
 
 $bg_class = match ($bg) {
     'cream' => 'bg-cream',
-    'ink'   => 'bg-ink',
+    'ink' => 'bg-ink',
     default => 'bg-surface',
 };
 
 // ── WP_Query ──────────────────────────────────────────────────────────────────
 $query_args = [
-    'post_type'           => 'product',
-    'post_status'         => 'publish',
-    'posts_per_page'      => $limit,
-    'order'               => $order,
+    'post_type' => 'product',
+    'post_status' => 'publish',
+    'posts_per_page' => $limit,
+    'order' => $order,
     'ignore_sticky_posts' => true,
 ];
 
@@ -41,21 +41,21 @@ $query_args = [
 switch ($orderby) {
     case 'popularity':
         $query_args['meta_key'] = 'total_sales';
-        $query_args['orderby']  = 'meta_value_num';
+        $query_args['orderby'] = 'meta_value_num';
         break;
     case 'rating':
         $query_args['meta_key'] = '_wc_average_rating';
-        $query_args['orderby']  = 'meta_value_num';
+        $query_args['orderby'] = 'meta_value_num';
         break;
     case 'price':
         $query_args['meta_key'] = '_price';
-        $query_args['orderby']  = 'meta_value_num';
-        $query_args['order']    = 'ASC';
+        $query_args['orderby'] = 'meta_value_num';
+        $query_args['order'] = 'ASC';
         break;
     case 'price-desc':
         $query_args['meta_key'] = '_price';
-        $query_args['orderby']  = 'meta_value_num';
-        $query_args['order']    = 'DESC';
+        $query_args['orderby'] = 'meta_value_num';
+        $query_args['order'] = 'DESC';
         break;
     case 'title':
         $query_args['orderby'] = 'title';
@@ -71,12 +71,12 @@ switch ($orderby) {
 if (! empty($categories)) {
     $query_args['tax_query'] = [[
         'taxonomy' => 'product_cat',
-        'field'    => 'slug',
-        'terms'    => $categories,
+        'field' => 'slug',
+        'terms' => $categories,
     ]];
 }
 
-$query    = new WP_Query($query_args);
+$query = new WP_Query($query_args);
 $products = [];
 
 if ($query->have_posts()) {
@@ -93,17 +93,18 @@ if ($query->have_posts()) {
 if (empty($products)) {
     if (defined('REST_REQUEST') && REST_REQUEST) {
         echo '<p style="padding:2rem;color:#999;font-style:italic;">'
-            . esc_html__('Nessun prodotto trovato con questi filtri.', 'sage')
-            . '</p>';
+            .esc_html__('Nessun prodotto trovato con questi filtri.', 'sage')
+            .'</p>';
     }
+
     return;
 }
 
-$has_many     = count($products) > 1;
+$has_many = count($products) > 1;
 $wrapper_atts = get_block_wrapper_attributes([
-    'class'       => "products-carousel-section {$bg_class}",
+    'class' => "products-carousel-section {$bg_class}",
     'data-products-carousel' => '',
-    'aria-label'  => $title ?: __('Carousel prodotti', 'sage'),
+    'aria-label' => $title ?: __('Carousel prodotti', 'sage'),
 ]);
 ?>
 <section <?php echo $wrapper_atts; ?>>

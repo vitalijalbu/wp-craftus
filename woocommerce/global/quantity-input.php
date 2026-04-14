@@ -12,8 +12,8 @@ $label = ! empty($args['product_name'])
     ? sprintf(esc_html__('%s quantity', 'woocommerce'), wp_strip_all_tags($args['product_name']))
     : esc_html__('Quantity', 'woocommerce');
 
-$min  = ('' !== $min_value)  ? (int) $min_value  : 1;
-$max  = ('' !== $max_value && 0 < $max_value) ? (int) $max_value : '';
+$min = ($min_value !== '') ? (int) $min_value : 1;
+$max = ($max_value !== '' && $max_value > 0) ? (int) $max_value : '';
 ?>
 <div class="quantity qty-selector">
     <?php do_action('woocommerce_before_quantity_input_field'); ?>
@@ -33,20 +33,20 @@ $max  = ('' !== $max_value && 0 < $max_value) ? (int) $max_value : '';
         type="<?php echo esc_attr($type); ?>"
         <?php echo $readonly ? 'readonly="readonly"' : ''; ?>
         id="<?php echo esc_attr($input_id); ?>"
-        class="<?php echo esc_attr(join(' ', (array) $classes)); ?>"
+        class="<?php echo esc_attr(implode(' ', (array) $classes)); ?>"
         name="<?php echo esc_attr($input_name); ?>"
         value="<?php echo esc_attr($input_value); ?>"
         aria-label="<?php echo esc_attr($label); ?>"
         min="<?php echo esc_attr($min_value); ?>"
-        <?php if (0 < $max_value) : ?>
+        <?php if ($max_value > 0) { ?>
             max="<?php echo esc_attr($max_value); ?>"
-        <?php endif; ?>
-        <?php if (! $readonly) : ?>
+        <?php } ?>
+        <?php if (! $readonly) { ?>
             step="<?php echo esc_attr($step); ?>"
             placeholder="<?php echo esc_attr($placeholder); ?>"
             inputmode="<?php echo esc_attr($inputmode); ?>"
             autocomplete="<?php echo esc_attr($autocomplete ?? 'on'); ?>"
-        <?php endif; ?>
+        <?php } ?>
     />
 
     <button

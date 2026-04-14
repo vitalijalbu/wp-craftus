@@ -73,9 +73,9 @@
 				<!-- /wp:group -->
 
 				<?php
-				$wa_url = function_exists('App\\theme_whatsapp_url') ? \App\theme_whatsapp_url() : '';
-				if ($wa_url) :
-				?>
+                $wa_url = function_exists('App\\theme_whatsapp_url') ? \App\theme_whatsapp_url() : '';
+if ($wa_url) {
+    ?>
 				<!-- WhatsApp -->
 				<!-- wp:group {"layout":{"type":"flex","verticalAlignment":"center"}} -->
 				<div class="wp-block-group">
@@ -94,9 +94,10 @@
 					<!-- /wp:group -->
 				</div>
 				<!-- /wp:group -->
-				<?php endif; ?>
+				<?php } ?>
 
-				<?php $contact_address = get_theme_mod('contact_address', ''); if ($contact_address) : ?>
+				<?php $contact_address = get_theme_mod('contact_address', '');
+if ($contact_address) { ?>
 				<!-- Sede -->
 				<!-- wp:group {"layout":{"type":"flex","verticalAlignment":"center"}} -->
 				<div class="wp-block-group">
@@ -115,7 +116,7 @@
 					<!-- /wp:group -->
 				</div>
 				<!-- /wp:group -->
-				<?php endif; ?>
+				<?php } ?>
 
 			</div>
 			<!-- /wp:group -->

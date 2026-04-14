@@ -11,7 +11,7 @@ namespace App;
 add_action('wp_enqueue_scripts', function () {
     $data = [
         'restUrl' => esc_url_raw(rest_url()),
-        'nonce'   => wp_create_nonce('wp_rest'),
+        'nonce' => wp_create_nonce('wp_rest'),
         'homeUrl' => esc_url_raw(home_url('/')),
         'shopUrl' => function_exists('wc_get_page_permalink') ? esc_url_raw(wc_get_page_permalink('shop')) : '',
     ];
@@ -22,7 +22,7 @@ add_action('wp_enqueue_scripts', function () {
     ];
     wp_add_inline_script(
         'theme/js/app',
-        'window.themeData = ' . wp_json_encode($data) . '; window.themeI18n = ' . wp_json_encode($i18n) . ';',
+        'window.themeData = '.wp_json_encode($data).'; window.themeI18n = '.wp_json_encode($i18n).';',
         'before',
     );
 }, 20);
@@ -194,6 +194,7 @@ add_filter('pre_render_block', function ($pre_render, array $block) {
 // Rimuove il tab recensioni dalla pagina prodotto
 add_filter('woocommerce_product_tabs', function (array $tabs): array {
     unset($tabs['reviews']);
+
     return $tabs;
 });
 
@@ -221,15 +222,15 @@ add_action('woocommerce_after_add_to_cart_button', function () {
 
     $badges = [
         ['icon' => 'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
-            'label'    => __('Pagamento sicuro', 'sage'),
+            'label' => __('Pagamento sicuro', 'sage'),
             'physical' => false,
         ],
         ['icon' => 'M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12',
-            'label'    => __('Spedizione rapida', 'sage'),
+            'label' => __('Spedizione rapida', 'sage'),
             'physical' => true,
         ],
         ['icon' => 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99',
-            'label'    => __('Resi gratuiti 30gg', 'sage'),
+            'label' => __('Resi gratuiti 30gg', 'sage'),
             'physical' => true,
         ],
     ];
@@ -254,10 +255,10 @@ add_action('woocommerce_after_add_to_cart_button', function () {
     // Payment methods
     $payment_methods = ['Visa', 'Mastercard', 'PayPal', 'Apple Pay'];
     echo '<div class="flex items-center gap-3 mt-1">';
-    echo '<span class="text-[10px] font-semibold tracking-wider uppercase text-muted/60">' . esc_html__('Accettiamo', 'sage') . '</span>';
+    echo '<span class="text-[10px] font-semibold tracking-wider uppercase text-muted/60">'.esc_html__('Accettiamo', 'sage').'</span>';
     echo '<div class="flex items-center gap-2 text-muted/50 text-[10px] tracking-wide">';
     foreach ($payment_methods as $method) {
-        echo '<span>' . esc_html($method) . '</span>';
+        echo '<span>'.esc_html($method).'</span>';
     }
     echo '</div></div>';
 
@@ -459,37 +460,37 @@ add_shortcode('products_carousel', function (array $atts): string {
     }
 
     $atts = shortcode_atts([
-        'title'    => __('I nostri prodotti', 'sage'),
+        'title' => __('I nostri prodotti', 'sage'),
         'subtitle' => '',
-        'limit'    => 8,
+        'limit' => 8,
         'category' => '',
-        'orderby'  => 'date',
-        'order'    => 'DESC',
-        'ids'      => '',
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'ids' => '',
     ], $atts, 'products_carousel');
 
-    $limit    = max(1, min(24, (int) $atts['limit']));
-    $title    = sanitize_text_field($atts['title']);
+    $limit = max(1, min(24, (int) $atts['limit']));
+    $title = sanitize_text_field($atts['title']);
     $subtitle = sanitize_text_field($atts['subtitle']);
-    $orderby  = sanitize_key($atts['orderby']);
-    $order    = in_array(strtoupper((string) $atts['order']), ['ASC', 'DESC'], true)
+    $orderby = sanitize_key($atts['orderby']);
+    $order = in_array(strtoupper((string) $atts['order']), ['ASC', 'DESC'], true)
         ? strtoupper((string) $atts['order'])
         : 'DESC';
 
     $query_args = [
-        'post_type'           => 'product',
-        'post_status'         => 'publish',
-        'posts_per_page'      => $limit,
-        'orderby'             => $orderby,
-        'order'               => $order,
+        'post_type' => 'product',
+        'post_status' => 'publish',
+        'posts_per_page' => $limit,
+        'orderby' => $orderby,
+        'order' => $order,
         'ignore_sticky_posts' => true,
     ];
 
     if (! empty($atts['category'])) {
         $query_args['tax_query'] = [[
             'taxonomy' => 'product_cat',
-            'field'    => 'slug',
-            'terms'    => array_map('sanitize_title', explode(',', (string) $atts['category'])),
+            'field' => 'slug',
+            'terms' => array_map('sanitize_title', explode(',', (string) $atts['category'])),
         ]];
     }
 
@@ -497,11 +498,11 @@ add_shortcode('products_carousel', function (array $atts): string {
         $ids = array_values(array_filter(array_map('absint', explode(',', (string) $atts['ids']))));
         if (! empty($ids)) {
             $query_args['post__in'] = $ids;
-            $query_args['orderby']  = 'post__in';
+            $query_args['orderby'] = 'post__in';
         }
     }
 
-    $query    = new \WP_Query($query_args);
+    $query = new \WP_Query($query_args);
     $products = [];
 
     if ($query->have_posts()) {
@@ -616,15 +617,15 @@ add_action('wp_footer', function () {
     }
 
     $thumb_url = get_the_post_thumbnail_url($product->get_id(), 'woocommerce_thumbnail') ?: '';
-    $price     = html_entity_decode(wp_strip_all_tags($product->get_price_html()), ENT_QUOTES, 'UTF-8');
+    $price = html_entity_decode(wp_strip_all_tags($product->get_price_html()), ENT_QUOTES, 'UTF-8');
 
     $data = wp_json_encode([
-        'id'    => $product->get_id(),
-        'url'   => get_permalink($product->get_id()),
+        'id' => $product->get_id(),
+        'url' => get_permalink($product->get_id()),
         'title' => $product->get_name(),
         'thumb' => $thumb_url,
         'price' => $price,
     ]);
 
-    echo '<script>window.trackProductView && window.trackProductView(' . $data . ');</script>' . "\n";
+    echo '<script>window.trackProductView && window.trackProductView('.$data.');</script>'."\n";
 }, 20);

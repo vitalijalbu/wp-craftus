@@ -12,7 +12,7 @@
   @endphp
 
   {{-- Page header --}}
-  <div class="bg-cream border-b border-border pt-16 pb-10">
+  <div class="bg-cream border-b border-border page-header-offset pb-10">
     <div class="container">
       @if(function_exists('woocommerce_breadcrumb'))
         <div class="text-xs text-muted mb-4 [&_a]:text-muted [&_a:hover]:text-primary [&_.breadcrumb-separator]:mx-1">
