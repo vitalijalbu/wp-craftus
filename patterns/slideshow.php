@@ -1,11 +1,10 @@
 <?php
 /**
- * Title: Slideshow – Hero con Swiper
+ * Title: Slideshow Hero (Swiper)
  * Slug: theme/slideshow
  * Categories: theme-sections
- * Keywords: slideshow, hero, swiper, slider, banner, cta
+ * Keywords: slide, slideshow, hero, swiper, slider, banner, carosello, cta
  * Description: Hero slideshow multi-slide con Swiper, overlay scuro, titolo serif e CTA in stile tema.
- * Block Types: core/group
  * Viewport Width: 1440
  */
 ?>

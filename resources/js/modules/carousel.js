@@ -16,6 +16,7 @@ import {
   Scrollbar,
   Thumbs,
 } from 'swiper/modules'
+import { initHeroSwipers } from './swiper-hero.js'
 
 // ── Alpine component: product lightbox ────────────────────────────────────────
 Alpine.data('productLightbox', (imagesJson) => ({
@@ -128,33 +129,7 @@ Alpine.data('productLightbox', (imagesJson) => ({
 
 export function initCarousels() {
   // ── Hero carousel ─────────────────────────────────────────────────────────
-  document.querySelectorAll('.js-hero-swiper').forEach((el) => {
-    new Swiper(el, {
-      modules: [Navigation, Pagination, Autoplay, EffectFade, A11y],
-      effect: 'fade',
-      fadeEffect: { crossFade: true },
-      autoplay: {
-        delay: 5500,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      },
-      loop: true,
-      speed: 1000,
-      pagination: {
-        el: el.querySelector('.swiper-pagination'),
-        clickable: true,
-      },
-      navigation: {
-        nextEl: el.querySelector('.swiper-button-next'),
-        prevEl: el.querySelector('.swiper-button-prev'),
-      },
-      a11y: {
-        prevSlideMessage: 'Slide precedente',
-        nextSlideMessage: 'Slide successiva',
-        paginationBulletMessage: 'Vai alla slide {{index}}',
-      },
-    })
-  })
+  initHeroSwipers(document, { datasetKey: 'swiperInit', pauseOnMouseEnter: true })
 
   // ── Products carousel ─────────────────────────────────────────────────────
   document.querySelectorAll('.js-products-swiper').forEach((el) => {

@@ -96,14 +96,11 @@
           {{-- Icon / number --}}
           <div class="process-step__icon-wrap {{ $bg === 'ink' ? 'border-white/20' : 'border-border' }}">
             @if($icon_path)
-              <svg
+              <x-icons.path
+                :path="$icon_path"
                 class="size-5 {{ $bg === 'ink' ? 'text-primary' : 'text-primary' }}"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
                 stroke-width="1.5"
-                aria-hidden="true"
-              >{!! $icon_path !!}</svg>
+              />
             @else
               <span class="process-step__num {{ $bg === 'ink' ? 'text-primary' : 'text-primary' }}"
                     aria-hidden="{{ $numbered ? 'false' : 'true' }}">

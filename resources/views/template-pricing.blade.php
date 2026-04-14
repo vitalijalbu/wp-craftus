@@ -193,7 +193,7 @@ $faqs = [
             aria-controls="faq-pricing-{{ $i }}"
           >
             <span>{{ esc_html($faq['q']) }}</span>
-            <x-icons.plus class="size-5 text-muted shrink-0 transition-transform duration-200" ::class="open ? 'rotate-45' : ''" />
+            <x-icons.chevron-down class="size-5 text-muted shrink-0 transition-transform duration-200" ::class="open ? 'rotate-180' : ''" stroke-width="2" />
           </button>
           <div
             id="faq-pricing-{{ $i }}"

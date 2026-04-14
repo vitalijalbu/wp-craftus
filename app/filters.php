@@ -246,48 +246,75 @@ add_action('woocommerce_before_shop_loop', function () {
 // Change default columns: 2-col gallery on single product (WC default = 1/2 split via flex)
 add_filter('woocommerce_product_thumbnails_columns', fn () => 4);
 
-// Trust badges below add-to-cart
-add_action('woocommerce_after_add_to_cart_button', function () {
+// Trust badges below add-to-cart form (outside <form class="cart">)
+add_action('woocommerce_after_add_to_cart_form', function () {
     global $product;
 
     $is_physical = $product instanceof WC_Product
         && ! $product->is_virtual()
         && ! $product->is_downloadable();
 
+    $trust_title = sanitize_text_field(get_theme_mod('single_trust_title', __('Perché scegliere noi', 'sage')));
+
     $badges = [
         ['icon' => 'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
-            'label' => __('Pagamento sicuro', 'sage'),
+            'label' => sanitize_text_field(get_theme_mod('single_trust_secure', __('Pagamento sicuro', 'sage'))),
             'physical' => false,
         ],
         ['icon' => 'M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12',
-            'label' => __('Spedizione rapida', 'sage'),
+            'label' => sanitize_text_field(get_theme_mod('single_trust_shipping', __('Spedizione rapida', 'sage'))),
             'physical' => true,
         ],
         ['icon' => 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99',
-            'label' => __('Resi gratuiti 30gg', 'sage'),
+            'label' => sanitize_text_field(get_theme_mod('single_trust_returns', __('Resi gratuiti 30gg', 'sage'))),
             'physical' => true,
+        ],
+        ['icon' => 'M13.5 4.5c-1.44 0-2.773.62-3.694 1.629A5.003 5.003 0 0 0 6.112 4.5C3.795 4.5 1.875 6.358 1.875 8.7c0 5.25 7.93 9.75 7.93 9.75s7.945-4.5 7.945-9.75c0-2.342-1.92-4.2-4.25-4.2Z',
+            'label' => sanitize_text_field(get_theme_mod('single_trust_happy_pet', __('Il tuo cane sarà felice', 'sage'))),
+            'physical' => false,
         ],
     ];
 
-    $visible = array_filter($badges, fn ($b) => ! $b['physical'] || $is_physical);
+    $visible = array_values(array_filter(
+        $badges,
+        fn ($b) => !empty($b['label']) && (! $b['physical'] || $is_physical)
+    ));
 
     if (empty($visible)) {
         return;
     }
 
-    echo '<div class="trust-badges flex flex-col gap-3 mt-6 pt-5 border-t border-border">';
+    echo '<section class="trust-badges mt-6 pt-5 border-t border-border" aria-label="'.esc_attr__('Vantaggi acquisto', 'sage').'">';
 
-    // Badge items — vertical stack
+    if (! empty($trust_title)) {
+        echo '<p class="text-[10px] font-semibold tracking-wider uppercase text-muted/60 mb-3">'.esc_html($trust_title).'</p>';
+    }
+
+    echo '<ul class="list-none m-0 p-0 flex flex-col gap-2.5">';
+
+    // Badge items
     foreach ($visible as $b) {
+        $icon_html = \Roots\view('components.icons.path', [
+            'path' => (string) $b['icon'],
+            'attributes' => new \Illuminate\View\ComponentAttributeBag([
+                'class' => 'size-4 text-primary shrink-0',
+                'stroke-width' => '1.5',
+            ]),
+        ])->render();
+
         printf(
-            '<span class="flex items-center gap-2 text-muted text-xs"><svg class="size-4 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="%s"/></svg>%s</span>',
-            esc_attr($b['icon']),
+            '<li class="flex items-center gap-2 text-muted text-xs">%s%s</li>',
+            $icon_html,
             esc_html($b['label'])
         );
     }
 
+    echo '</ul>';
+
     // Payment methods
-    $payment_methods = ['Visa', 'Mastercard', 'PayPal', 'Apple Pay'];
+    $payment_methods_raw = sanitize_text_field(get_theme_mod('single_payment_methods', 'Visa, Mastercard, PayPal, Apple Pay'));
+    $payment_methods = array_values(array_filter(array_map('trim', explode(',', $payment_methods_raw))));
+
     echo '<div class="flex items-center gap-3 mt-1">';
     echo '<span class="text-[10px] font-semibold tracking-wider uppercase text-muted/60">'.esc_html__('Accettiamo', 'sage').'</span>';
     echo '<div class="flex items-center gap-2 text-muted/50 text-[10px] tracking-wide">';
@@ -296,7 +323,7 @@ add_action('woocommerce_after_add_to_cart_button', function () {
     }
     echo '</div></div>';
 
-    echo '</div>';
+    echo '</section>';
 }, 25);
 
 // ── Performance: rimuovi asset inutili di WordPress ──────────────────────────
@@ -576,10 +603,10 @@ add_shortcode('products_carousel', function (array $atts): string {
                     <?php if ($has_many) { ?>
                         <div class="flex items-center gap-2 shrink-0">
                             <button type="button" class="swiper-button-prev products-carousel__btn" aria-label="<?php esc_attr_e('Prodotto precedente', 'sage'); ?>">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+                                <?php echo \Roots\view('components.icons.chevron-left', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-4', 'stroke-width' => '1.5'])])->render(); ?>
                             </button>
                             <button type="button" class="swiper-button-next products-carousel__btn" aria-label="<?php esc_attr_e('Prodotto successivo', 'sage'); ?>">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                                <?php echo \Roots\view('components.icons.chevron-right', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-4', 'stroke-width' => '1.5'])])->render(); ?>
                             </button>
                         </div>
                     <?php } ?>

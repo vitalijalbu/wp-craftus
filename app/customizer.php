@@ -138,6 +138,80 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
         'priority' => 25,
     ]);
 
+    // Single product trust badges
+    $wp_customize->add_setting('single_trust_title', [
+        'default' => __('Perché scegliere noi', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_title', [
+        'label' => __('Titolo badge fiducia (prodotto)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 40,
+    ]);
+
+    $wp_customize->add_setting('single_trust_secure', [
+        'default' => __('Pagamento sicuro', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_secure', [
+        'label' => __('Badge 1 (sempre visibile)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 41,
+    ]);
+
+    $wp_customize->add_setting('single_trust_shipping', [
+        'default' => __('Spedizione rapida', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_shipping', [
+        'label' => __('Badge 2 (solo prodotti fisici)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 42,
+    ]);
+
+    $wp_customize->add_setting('single_trust_returns', [
+        'default' => __('Resi gratuiti 30gg', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_returns', [
+        'label' => __('Badge 3 (solo prodotti fisici)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 43,
+    ]);
+
+    $wp_customize->add_setting('single_trust_happy_pet', [
+        'default' => __('Il tuo cane sarà felice', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_happy_pet', [
+        'label' => __('Badge 4 (sempre visibile)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 44,
+    ]);
+
+    $wp_customize->add_setting('single_payment_methods', [
+        'default' => 'Visa, Mastercard, PayPal, Apple Pay',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_payment_methods', [
+        'label' => __('Metodi pagamento (separati da virgola)', 'sage'),
+        'description' => __('Esempio: Visa, Mastercard, PayPal, Apple Pay', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 45,
+    ]);
+
     // ── Section: Contatti ────────────────────────────────────────────────────
     $wp_customize->add_section('theme_contact', [
         'title' => __('Informazioni di contatto', 'sage'),

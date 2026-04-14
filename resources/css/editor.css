@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/effect-fade";
 
 /* ── Base editor ────────────────────────────────────────────────────────────── */
 
@@ -495,4 +499,109 @@ body {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.04em;
+}
+
+/* ── theme/slideshow (editor preview) ────────────────────────────────────── */
+.editor-styles-wrapper .theme-slideshow-wrapper {
+  position: relative;
+  min-height: 520px;
+  background: #111;
+  overflow: hidden;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .js-hero-swiper,
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper,
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper-wrapper,
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper-slide {
+  height: 100%;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .js-hero-swiper,
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper {
+  position: relative;
+  min-height: 520px;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper-wrapper {
+  display: flex;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper-slide {
+  position: relative;
+  min-width: 100%;
+  min-height: 520px;
+  overflow: hidden;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .absolute {
+  position: absolute;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .relative {
+  position: relative;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .inset-0 {
+  inset: 0;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .w-full {
+  width: 100%;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .h-full {
+  height: 100%;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .object-cover {
+  object-fit: cover;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .items-end {
+  align-items: flex-end;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .flex {
+  display: flex;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .hero-title {
+  font-family: var(--ed-font-serif);
+  font-size: clamp(2.2rem, 4.6vw, 4rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: #fff;
+  margin: 0 0 1rem;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .hero-subtitle {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 52ch;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .container {
+  width: min(100%, 1280px);
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .max-w-2xl {
+  max-width: 42rem;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .z-10 {
+  z-index: 10;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .z-20 {
+  z-index: 20;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .bg-linear-to-t {
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.72), rgba(10, 10, 10, 0.28), rgba(10, 10, 10, 0.08));
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .text-primary {
+  color: var(--ed-primary);
 }

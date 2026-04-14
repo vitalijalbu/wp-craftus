@@ -32,6 +32,7 @@ import { useSelect } from '@wordpress/data'
 import { createElement as el, Fragment } from '@wordpress/element'
 import { __ } from '@wordpress/i18n'
 import ServerSideRender from '@wordpress/server-side-render'
+import { initHeroSwipers } from './modules/swiper-hero.js'
 
 // ── Block Style Variations ─────────────────────────────────────────────────────
 // Registrate dopo il caricamento dei blocchi per evitare race conditions.
@@ -195,6 +196,30 @@ window.addEventListener('DOMContentLoaded', () => {
     ],
     scope: ['inserter'],
   })
+})
+
+window.addEventListener('DOMContentLoaded', () => {
+  initHeroSwipers(document, {
+    datasetKey: 'editorSwiperInit',
+    pauseOnMouseEnter: false,
+  })
+
+  if (window.wp?.data?.subscribe) {
+    let rafId = 0
+    window.wp.data.subscribe(() => {
+      if (rafId) {
+        return
+      }
+
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0
+        initHeroSwipers(document, {
+          datasetKey: 'editorSwiperInit',
+          pauseOnMouseEnter: false,
+        })
+      })
+    })
+  }
 })
 
 // ── Shared helpers ────────────────────────────────────────────────────────────
