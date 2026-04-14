@@ -690,7 +690,7 @@ La pagina con slug `/wishlist` usa `resources/views/page-wishlist.blade.php` aut
   aria-label="{{ __('Aggiungi alla wishlist', 'sage') }}"
   aria-pressed="false"
 >
-  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+  <svg class="size-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
     <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
   </svg>
 </button>
@@ -931,7 +931,7 @@ REGOLA: bg-primary e bg-accent sono ENTRAMBI blu. Usare bg-ink per sfondi scuri.
 
 - **Font size micro**: `.section-label` a 10px e `.btn-slide` a 9.5px sono intentional (stile luxury editorial NET-A-PORTER)
 - **Font-weight 300**: tutti gli h1-h6 sono ultra-light — è il carattere editoriale del tema
-- **Gap sezioni**: `section-luxury` usa `clamp(4rem, 8vw, 7rem)` top/bottom — non ridurre
+- **Gap sezioni**: `section` usa `clamp(4rem, 8vw, 7rem)` top/bottom — non ridurre
 - **Container max-width**: 90rem (1440px) — non modificare
 - **Divider**: `.divider-primary` — usa `--color-primary` (#0074C7)
 

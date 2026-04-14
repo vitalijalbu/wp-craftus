@@ -14,7 +14,7 @@ if (empty($cross_sells)) {
 ?>
 
 <section
-  class="cross-sells section-luxury bg-surface-alt"
+  class="cross-sells section bg-surface-alt"
   aria-label="<?php esc_attr_e('Completa il tuo ordine', 'sage'); ?>"
 >
   <div class="container">

@@ -34,7 +34,7 @@
 @if(!empty($products))
 <section
   id="{{ $section_id ?? 'section-products-carousel' }}"
-  class="section-luxury bg-surface overflow-hidden"
+  class="section bg-surface overflow-hidden"
   data-products-carousel
   aria-roledescription="{{ __('carosello', 'sage') }}"
   aria-label="{{ strip_tags($section_title) }}"
@@ -53,20 +53,20 @@
             aria-label="{{ __('Precedente', 'sage') }}"
             type="button"
           >
-            <x-icons.chevron-left class="w-4 h-4" stroke-width="2" />
+            <x-icons.chevron-left class="size-4" stroke-width="2" />
           </button>
           <button
             class="swiper-button-next btn-nav static"
             aria-label="{{ __('Successivo', 'sage') }}"
             type="button"
           >
-            <x-icons.chevron-right class="w-4 h-4" stroke-width="2" />
+            <x-icons.chevron-right class="size-4" stroke-width="2" />
           </button>
         </div>
 
         <a href="{{ $view_all_url }}" class="btn-ghost">
           {{ $view_all_label }}
-          <x-icons.arrow-right class="w-4 h-4" />
+          <x-icons.arrow-right class="size-4" />
         </a>
       </div>
     </div>

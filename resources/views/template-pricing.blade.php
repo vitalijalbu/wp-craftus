@@ -103,7 +103,7 @@ $faqs = [
           aria-label="{{ __('Passa a fatturazione annuale', 'sage') }}"
         >
           <span
-            class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"
+            class="absolute top-0.5 left-0.5 size-5 bg-white rounded-full shadow transition-transform duration-200"
             :class="annual ? 'translate-x-5' : 'translate-x-0'"
           ></span>
         </button>
@@ -146,10 +146,10 @@ $faqs = [
             @foreach($plan['features'] as $feature)
               <li class="flex items-start gap-2.5 py-2 border-b {{ $plan['featured'] ? 'border-white/10' : 'border-border' }} last:border-0">
                 @if($feature['active'])
-                  <x-icons.check class="w-4 h-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white' : 'text-success' }}" />
+                  <x-icons.check class="size-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white' : 'text-success' }}" />
                   <span class="text-sm {{ $plan['featured'] ? 'text-white/80' : 'text-ink' }}">{{ esc_html($feature['text']) }}</span>
                 @else
-                  <x-icons.x-mark class="w-4 h-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white/20' : 'text-border' }}" />
+                  <x-icons.x-mark class="size-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white/20' : 'text-border' }}" />
                   <span class="text-sm {{ $plan['featured'] ? 'text-white/30' : 'text-muted/50' }} line-through">{{ esc_html($feature['text']) }}</span>
                 @endif
               </li>
@@ -193,7 +193,7 @@ $faqs = [
             aria-controls="faq-pricing-{{ $i }}"
           >
             <span>{{ esc_html($faq['q']) }}</span>
-            <x-icons.plus class="w-5 h-5 text-muted shrink-0 transition-transform duration-200" ::class="open ? 'rotate-45' : ''" />
+            <x-icons.plus class="size-5 text-muted shrink-0 transition-transform duration-200" ::class="open ? 'rotate-45' : ''" />
           </button>
           <div
             id="faq-pricing-{{ $i }}"

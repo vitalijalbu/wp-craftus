@@ -231,14 +231,27 @@ add_action('woocommerce_after_add_to_cart_button', function () {
         return;
     }
 
-    echo '<div class="trust-badges flex flex-wrap gap-4 mt-5 text-muted text-xs">';
+    echo '<div class="trust-badges flex flex-col gap-3 mt-6 pt-5 border-t border-border">';
+
+    // Badge items — vertical stack
     foreach ($visible as $b) {
         printf(
-            '<span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="%s"/></svg>%s</span>',
+            '<span class="flex items-center gap-2 text-muted text-xs"><svg class="size-4 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="%s"/></svg>%s</span>',
             esc_attr($b['icon']),
             esc_html($b['label'])
         );
     }
+
+    // Payment methods
+    $payment_methods = ['Visa', 'Mastercard', 'PayPal', 'Apple Pay'];
+    echo '<div class="flex items-center gap-3 mt-1">';
+    echo '<span class="text-[10px] font-semibold tracking-wider uppercase text-muted/60">' . esc_html__('Accettiamo', 'sage') . '</span>';
+    echo '<div class="flex items-center gap-2 text-muted/50 text-[10px] tracking-wide">';
+    foreach ($payment_methods as $method) {
+        echo '<span>' . esc_html($method) . '</span>';
+    }
+    echo '</div></div>';
+
     echo '</div>';
 }, 25);
 
@@ -303,8 +316,6 @@ add_filter('script_loader_tag', function (string $tag, string $handle): string {
         'wc-add-to-cart',
         'wc-cart-fragments',
         'jquery-blockui',
-        'woocommerce',
-        'wc-single-product',
     ];
     if (in_array($handle, $defer_handles, true) && ! str_contains($tag, 'defer')) {
         $tag = str_replace(' src=', ' defer src=', $tag);

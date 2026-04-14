@@ -43,7 +43,7 @@
 @if(!empty($posts_list))
 <section
   id="{{ $section_id ?? 'section-blog' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
 >
   <div class="container">
@@ -58,7 +58,7 @@
           data-scroll="fade"
         >
           {{ $cta_label }}
-          <x-icons.arrow-right class="w-4 h-4" />
+          <x-icons.arrow-right class="size-4" />
         </a>
       @endif
     </div>

@@ -8,8 +8,8 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"className":"section-luxury bg-surface","layout":{"type":"default"}} -->
-<div class="wp-block-group section-luxury bg-surface">
+<!-- wp:group {"className":"section bg-surface","layout":{"type":"default"}} -->
+<div class="wp-block-group section bg-surface">
 
 	<div class="container">
 

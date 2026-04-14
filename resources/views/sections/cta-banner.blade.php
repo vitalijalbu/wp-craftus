@@ -39,7 +39,7 @@
 
 <section
   id="{{ $section_id ?? 'section-cta' }}"
-  class="section-luxury {{ $section_classes }}"
+  class="section {{ $section_classes }}"
   aria-label="{{ strip_tags($title) }}"
 >
   {{-- Background image (style='image') --}}

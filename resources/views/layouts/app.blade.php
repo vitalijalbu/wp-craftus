@@ -70,7 +70,7 @@
               class="shrink-0 text-white/40 hover:text-primary transition-colors pb-1"
               aria-label="{{ __('Cerca', 'sage') }}"
             >
-              <x-icons.search class="w-6 h-6" />
+              <x-icons.search class="size-6" />
             </button>
           </div>
         </form>
@@ -84,7 +84,7 @@
         >
           {{-- Loading --}}
           <div x-show="loading" class="flex justify-center py-8">
-            <x-icons.spinner class="w-5 h-5 text-white/30 animate-spin" />
+            <x-icons.spinner class="size-5 text-white/30 animate-spin" />
           </div>
 
           {{-- Results list --}}
@@ -111,7 +111,7 @@
                       loading="lazy"
                       decoding="async"
                     >
-                    <x-icons.image-placeholder x-show="!item.thumb" class="w-5 h-5 text-white/20" />
+                    <x-icons.image-placeholder x-show="!item.thumb" class="size-5 text-white/20" />
                   </div>
                   <div class="flex-1 min-w-0">
                     <p class="font-serif text-base font-light text-white group-hover:text-primary transition-colors truncate" x-text="item.title"></p>

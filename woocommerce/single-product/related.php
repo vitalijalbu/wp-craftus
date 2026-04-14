@@ -13,7 +13,7 @@ if (empty($related_products)) {
 ?>
 
 <section
-  class="related-products section-luxury bg-cream"
+  class="related-products section bg-cream"
   aria-label="<?php esc_attr_e('Prodotti correlati', 'sage'); ?>"
 >
   <div class="container">

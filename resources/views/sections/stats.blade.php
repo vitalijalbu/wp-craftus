@@ -54,7 +54,7 @@
   };
 @endphp
 
-<section id="{{ $section_id ?? 'section-stats' }}" class="section-luxury {{ $bg_class }}" aria-label="{{ $section_title ?: __('Statistiche', 'sage') }}">
+<section id="{{ $section_id ?? 'section-stats' }}" class="section {{ $bg_class }}" aria-label="{{ $section_title ?: __('Statistiche', 'sage') }}">
   <div class="container">
 
     {{-- Optional header --}}

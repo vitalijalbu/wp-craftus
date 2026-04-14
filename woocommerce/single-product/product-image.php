@@ -28,37 +28,7 @@ $product_title      = esc_attr($product->get_name());
 <div
   class="product-gallery group"
   data-product-id="<?php echo esc_attr($product->get_id()); ?>"
-  x-data="{
-    open: false,
-    current: 0,
-    images: <?php echo $lightbox_urls_json; ?>,
-    _trigger: null,
-    show(i, el) {
-        this._trigger = el ?? null;
-        this.current  = i;
-        this.open     = true;
-        document.body.style.overflow = 'hidden';
-        this.$nextTick(() => this.$refs.lbClose?.focus());
-    },
-    close() {
-        this.open = false;
-        document.body.style.overflow = '';
-        this.$nextTick(() => this._trigger?.focus());
-    },
-    prev() { this.current = (this.current - 1 + this.images.length) % this.images.length; },
-    next() { this.current = (this.current + 1) % this.images.length; },
-    trapFocus(e) {
-        if (!this.open) return;
-        const el = this.$refs.lbDialog;
-        const focusable = Array.from(el.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex=\'-1\'])'
-        )).filter(n => !n.hasAttribute('disabled'));
-        if (!focusable.length) return;
-        const first = focusable[0], last = focusable[focusable.length - 1];
-        if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
-        else            { if (document.activeElement === last)  { e.preventDefault(); first.focus(); } }
-    },
-  }"
+  x-data="productLightbox(<?php echo $lightbox_urls_json; ?>, '<?php echo $product_title; ?>')"
   @keydown.escape.window="close()"
   @keydown.arrow-left.window="open && prev()"
   @keydown.arrow-right.window="open && next()"
@@ -129,10 +99,10 @@ $product_title      = esc_attr($product->get_name());
       <?php if ($has_gallery) { ?>
         <!-- Navigation arrows -->
         <button type="button" class="product-gallery__prev" aria-label="<?php esc_attr_e('Immagine precedente', 'sage'); ?>">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+          <svg class="size-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
         </button>
         <button type="button" class="product-gallery__next" aria-label="<?php esc_attr_e('Immagine successiva', 'sage'); ?>">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+          <svg class="size-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
         </button>
 
         <!-- Slide counter -->

@@ -264,6 +264,7 @@ Alpine.data('cartDrawer', () => ({
         } else {
           this.refreshFragment()
         }
+        // Open drawer AFTER fragments are replaced so the new cart content is visible
         this.open()
       })
 

@@ -31,7 +31,7 @@
 @if(!empty($images))
 <section
   id="{{ $section_id ?? 'section-gallery' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ $section_title ?: __('Galleria immagini', 'sage') }}"
   @if($lightbox) x-data="imageLightbox()" @endif
 >
@@ -132,13 +132,13 @@
         </template>
 
         <button @click="close()" class="absolute top-4 right-5 text-white/50 hover:text-white transition-colors" aria-label="{{ __('Chiudi', 'sage') }}">
-          <x-icons.x-mark class="w-6 h-6" stroke-width="1.5" />
+          <x-icons.x-mark class="size-6" stroke-width="1.5" />
         </button>
         <button @click="prev({{ count($images) }})" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" aria-label="{{ __('Precedente', 'sage') }}">
-          <x-icons.chevron-left class="w-8 h-8" />
+          <x-icons.chevron-left class="size-8" />
         </button>
         <button @click="next({{ count($images) }})" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" aria-label="{{ __('Successivo', 'sage') }}">
-          <x-icons.chevron-right class="w-8 h-8" />
+          <x-icons.chevron-right class="size-8" />
         </button>
 
         <span class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/30" aria-live="polite">

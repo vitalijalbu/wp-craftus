@@ -44,7 +44,7 @@
 
 <section
   id="{{ $section_id ?? 'section-testimonials' }}"
-  class="section-luxury {{ $bg_class }} overflow-hidden"
+  class="section {{ $bg_class }} overflow-hidden"
   aria-roledescription="{{ __('carosello', 'sage') }}"
   aria-label="{{ strip_tags($section_title) }}"
   data-testimonials
@@ -70,14 +70,14 @@
           aria-label="{{ __('Recensione precedente', 'sage') }}"
           type="button"
         >
-          <x-icons.chevron-left class="w-4 h-4" stroke-width="2" />
+          <x-icons.chevron-left class="size-4" stroke-width="2" />
         </button>
         <button
           class="swiper-button-next btn-nav static {{ $bg === 'ink' ? 'btn-nav--light' : '' }}"
           aria-label="{{ __('Recensione successiva', 'sage') }}"
           type="button"
         >
-          <x-icons.chevron-right class="w-4 h-4" stroke-width="2" />
+          <x-icons.chevron-right class="size-4" stroke-width="2" />
         </button>
       </div>
     </div>
@@ -105,7 +105,7 @@
                   role="img"
                 >
                   @for($i = 0; $i < 5; $i++)
-                    <x-icons.star class="w-4 h-4 {{ $i < $t['rating'] ? 'text-primary fill-primary' : 'text-border fill-border' }}" />
+                    <x-icons.star class="size-4 {{ $i < $t['rating'] ? 'text-primary fill-primary' : 'text-border fill-border' }}" />
                   @endfor
                 </div>
               @endif

@@ -56,7 +56,7 @@
 
 <section
   id="{{ $section_id ?? 'section-products' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
   x-data="{
     activeCategory: '{{ $category ?: 'all' }}',
@@ -193,7 +193,7 @@
       x-cloak
       aria-hidden="true"
     >
-      <div class="w-8 h-8 border-2 border-border border-t-primary rounded-full animate-spin"></div>
+      <div class="size-8 border-2 border-border border-t-primary rounded-full animate-spin"></div>
     </div>
 
     {{-- Load more --}}

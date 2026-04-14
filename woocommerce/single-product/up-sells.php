@@ -14,7 +14,7 @@ if (empty($upsells)) {
 ?>
 
 <section
-  class="upsells section-luxury bg-surface"
+  class="upsells section bg-surface"
   aria-label="<?php esc_attr_e('Potresti apprezzare', 'sage'); ?>"
 >
   <div class="container">

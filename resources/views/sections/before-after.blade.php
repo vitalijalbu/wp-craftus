@@ -35,7 +35,7 @@
 @if($before_url && $after_url)
 <section
   id="{{ $section_id ?? 'section-before-after' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ $heading ?: __('Prima e dopo', 'sage') }}"
 >
   <div class="container">
@@ -118,8 +118,8 @@
         <div class="before-after__handle-line"></div>
         <div class="before-after__handle-btn">
           {{-- Chevrons --}}
-          <x-icons.chevron-left class="w-4 h-4 rotate-180" stroke-width="2" />
-          <x-icons.chevron-right class="w-4 h-4" stroke-width="2" />
+          <x-icons.chevron-left class="size-4 rotate-180" stroke-width="2" />
+          <x-icons.chevron-right class="size-4" stroke-width="2" />
         </div>
       </div>
     </div>

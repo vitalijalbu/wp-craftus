@@ -47,7 +47,7 @@
 
 <section
   id="{{ $section_id ?? 'section-size-guide' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($heading) }}"
   @if($accordion && count($tables) > 1) x-data="{ openTab: 0 }" @endif
 >
@@ -85,7 +85,7 @@
             >
               <span class="font-serif text-base font-light">{{ esc_html($table['title'] ?? '') }}</span>
               <x-icons.chevron-down
-                class="w-4 h-4 transition-transform duration-300 shrink-0"
+                class="size-4 transition-transform duration-300 shrink-0"
                 ::class="openTab === {{ $ti }} ? 'rotate-180' : ''"
               />
             </button>

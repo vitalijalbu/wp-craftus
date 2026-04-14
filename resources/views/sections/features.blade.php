@@ -47,7 +47,7 @@
   };
 @endphp
 
-<section id="{{ $section_id ?? 'section-features' }}" class="section-luxury {{ $bg_class }}" aria-label="{{ $section_title }}">
+<section id="{{ $section_id ?? 'section-features' }}" class="section {{ $bg_class }}" aria-label="{{ $section_title }}">
   <div class="container">
 
     {{-- Header --}}
@@ -91,7 +91,7 @@
               class="btn-ghost mt-4 {{ $bg === 'ink' ? 'text-white/60 border-white/40 hover:text-white hover:border-white' : '' }}"
             >
               {{ $feature['cta_label'] }}
-              <x-icons.arrow-right class="w-4 h-4" />
+              <x-icons.arrow-right class="size-4" />
             </a>
           @endif
         </div>

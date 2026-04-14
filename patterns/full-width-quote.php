@@ -8,8 +8,8 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"className":"section-luxury bg-ink","layout":{"type":"constrained","contentSize":"72rem"}} -->
-<div class="wp-block-group section-luxury bg-ink">
+<!-- wp:group {"className":"section bg-ink","layout":{"type":"constrained","contentSize":"72rem"}} -->
+<div class="wp-block-group section bg-ink">
 
 	<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","orientation":"vertical","justifyContent":"center"},"style":{"spacing":{"blockGap":"2rem"}},"textAlign":"center"} -->
 	<div class="wp-block-group text-center">

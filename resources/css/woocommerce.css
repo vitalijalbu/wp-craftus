@@ -1,7 +1,12 @@
 /* ══════════════════════════════════════════════════════════════════════════
    WOOCOMMERCE
    ══════════════════════════════════════════════════════════════════════════ */
-
+.woocommerce-account .wp-block-post-title, .woocommerce-account main .woocommerce, .woocommerce-cart .wp-block-post-title, .woocommerce-cart main .woocommerce, .woocommerce-checkout .wp-block-post-title, .woocommerce-checkout main .woocommerce {
+    max-width: 100%;
+}
+.select2-selection--single{
+  height: 50px;
+}
 .woocommerce,
 .woocommerce-page {
   font-family: var(--font-sans);

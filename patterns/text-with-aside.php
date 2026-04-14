@@ -8,8 +8,8 @@
  * Viewport Width: 1440
  */
 ?>
-<!-- wp:group {"className":"section-luxury bg-surface","layout":{"type":"constrained","contentSize":"90rem"}} -->
-<div class="wp-block-group section-luxury bg-surface">
+<!-- wp:group {"className":"section bg-surface","layout":{"type":"constrained","contentSize":"90rem"}} -->
+<div class="wp-block-group section bg-surface">
 
 	<!-- wp:columns {"isStackedOnMobile":true,"style":{"spacing":{"blockGap":{"left":"4rem","top":"3rem"}}}} -->
 	<div class="wp-block-columns">

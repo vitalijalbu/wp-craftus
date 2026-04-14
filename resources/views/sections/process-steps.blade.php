@@ -51,7 +51,7 @@
 
 <section
   id="{{ $section_id ?? 'section-how-it-works' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
 >
   <div class="container">
@@ -97,7 +97,7 @@
           <div class="process-step__icon-wrap {{ $bg === 'ink' ? 'border-white/20' : 'border-border' }}">
             @if($icon_path)
               <svg
-                class="w-5 h-5 {{ $bg === 'ink' ? 'text-primary' : 'text-primary' }}"
+                class="size-5 {{ $bg === 'ink' ? 'text-primary' : 'text-primary' }}"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"

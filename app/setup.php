@@ -206,6 +206,20 @@ add_action('after_setup_theme', function () {
     ]);
 
     /**
+     * Enable custom logo support.
+     *
+     * @link https://developer.wordpress.org/themes/functionality/custom-logo/
+     */
+    add_theme_support('custom-logo', [
+        'height'               => 80,
+        'width'                => 250,
+        'flex-height'          => true,
+        'flex-width'           => true,
+        'header-text'          => ['site-title', 'site-description'],
+        'unlink-homepage-logo' => false,
+    ]);
+
+    /**
      * Enable selective refresh for widgets in customizer.
      *
      * @link https://developer.wordpress.org/reference/functions/add_theme_support/#customize-selective-refresh-widgets

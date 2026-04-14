@@ -90,7 +90,7 @@
       aria-label="{{ sprintf(__('Aggiungi %s alla wishlist', 'sage'), esc_attr($product_name)) }}"
       data-product-id="{{ $product_id }}"
     >
-      <x-icons.heart class="w-4 h-4 text-ink" />
+      <x-icons.heart class="size-4 text-ink" />
     </button>
 
     {{-- Add to cart overlay --}}
@@ -135,7 +135,7 @@
       >
         @php $rating = round($product->get_average_rating()); @endphp
         @for($i = 0; $i < 5; $i++)
-          <x-icons.star class="w-3 h-3 {{ $i < $rating ? 'fill-primary text-primary' : 'fill-border text-border' }}" />
+          <x-icons.star class="size-3 {{ $i < $rating ? 'fill-primary text-primary' : 'fill-border text-border' }}" />
         @endfor
         <span class="text-muted">({{ $product->get_rating_count() }})</span>
       </div>

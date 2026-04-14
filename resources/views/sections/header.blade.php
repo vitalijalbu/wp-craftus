@@ -8,43 +8,6 @@
 
 @php
   // ── Resolve data once ────────────────────────────────────────────────────
-  $wc_cats         = [];
-  $sub_cats_by_parent = [];
-  if (function_exists('get_terms')) {
-    $wc_cats = wp_cache_get('theme_header_wc_cats');
-    if ($wc_cats === false) {
-      $wc_cats = get_terms([
-        'taxonomy'   => 'product_cat',
-        'hide_empty' => true,
-        'parent'     => 0,
-        'number'     => 6,
-        'exclude'    => get_option('default_product_cat'),
-      ]);
-      $wc_cats = is_array($wc_cats) ? array_values($wc_cats) : [];
-      wp_cache_set('theme_header_wc_cats', $wc_cats, '', 5 * MINUTE_IN_SECONDS);
-    }
-
-    // Pre-fetch ALL subcategories in one query (avoids N+1 per parent category)
-    $sub_cats_by_parent = wp_cache_get('theme_header_sub_cats');
-    if ($sub_cats_by_parent === false && !empty($wc_cats)) {
-      $parent_ids = array_map(fn($c) => $c->term_id, array_slice($wc_cats, 0, 5));
-      $all_sub    = get_terms([
-        'taxonomy'   => 'product_cat',
-        'hide_empty' => true,
-        'parent__in' => $parent_ids,
-        'number'     => 30,   // 5 parents × 6 children max
-      ]);
-      $sub_cats_by_parent = [];
-      if (!is_wp_error($all_sub) && is_array($all_sub)) {
-        foreach ($all_sub as $_sub) {
-          $sub_cats_by_parent[(int) $_sub->parent][] = $_sub;
-        }
-      }
-      wp_cache_set('theme_header_sub_cats', $sub_cats_by_parent, '', 5 * MINUTE_IN_SECONDS);
-    }
-    $sub_cats_by_parent = $sub_cats_by_parent ?: [];
-  }
-
   // Load all nav items and build a parent→children map for dropdown support
   $top_items    = [];
   $children_map = [];
@@ -110,27 +73,10 @@
       </a>
 
       {{-- RIGHT: Navigation + Actions (desktop) ───────────────────────────── --}}
-      <div class="hidden lg:flex items-center gap-8">
+      <div class="hidden lg:flex items-center gap-8 h-full">
 
         {{-- Nav links ─────────────────────────────────────────────────────── --}}
-        <nav aria-label="{{ __('Menu principale', 'sage') }}" class="flex items-center gap-7">
-
-          @if(!empty($wc_cats))
-            <button
-              type="button"
-              id="btn-mega-shop"
-              class="nav-link-t flex items-center gap-1"
-              :class="hasHero && !scrolled ? 'text-white/80 hover:text-white' : ''"
-              @mouseenter="openMenu('shop')"
-              @click="openMenu('shop')"
-              :aria-expanded="(activeMenu === 'shop').toString()"
-              aria-controls="mega-shop"
-              aria-haspopup="true"
-            >
-              {{ __('Shop', 'sage') }}
-              <x-icons.chevron-down class="w-2.5 h-2.5 transition-transform duration-200" ::class="activeMenu==='shop'?'rotate-180':''" stroke-width="2.5" />
-            </button>
-          @endif
+        <nav aria-label="{{ __('Menu principale', 'sage') }}" class="flex items-stretch gap-7 h-full">
 
           @foreach($top_items as $item)
             @php
@@ -226,7 +172,7 @@
             :class="hasHero && !scrolled && !mobileOpen ? 'text-white/70' : 'text-ink'"
             aria-label="{{ __('Apri carrello', 'sage') }}"
           >
-            <x-icons.cart class="w-5 h-5" />
+            <x-icons.cart class="size-5" />
             <span
               class="icon-badge cart-count-fragment"
               data-cart-count="{{ $cart_count }}"
@@ -243,7 +189,7 @@
           :class="hasHero && !scrolled && !mobileOpen ? 'text-white/70' : 'text-ink'"
           aria-label="{{ __('Wishlist', 'sage') }}"
         >
-          <x-icons.heart class="w-5 h-5" />
+          <x-icons.heart class="size-5" />
           <span class="icon-badge wishlist-count-bubble"></span>
         </a>
 
@@ -256,104 +202,13 @@
           aria-controls="mobile-drawer"
           :aria-label="mobileOpen ? '{{ __('Chiudi menu', 'sage') }}' : '{{ __('Apri menu', 'sage') }}'"
         >
-          <x-icons.menu x-show="!mobileOpen" class="w-6 h-6" />
-          <x-icons.x-mark x-show="mobileOpen" class="w-6 h-6" stroke-width="1.5" />
+          <x-icons.menu x-show="!mobileOpen" class="size-6" />
+          <x-icons.x-mark x-show="mobileOpen" class="size-6" stroke-width="1.5" />
         </button>
       </div>
 
     </div>
   </div>
-
-  {{-- ════════════════════════════════════════════════════════════════════════
-       MEGA-MENU: SHOP
-       ════════════════════════════════════════════════════════════════════════ --}}
-  @if(!empty($wc_cats))
-    <div
-      id="mega-shop"
-      role="region"
-      aria-labelledby="btn-mega-shop"
-      x-show="activeMenu === 'shop'"
-      x-cloak
-      @mouseenter="activeMenu = 'shop'"
-      @mouseleave="closeMenu()"
-      class="absolute top-full left-0 right-0 bg-surface shadow-[0_24px_80px_rgba(0,0,0,0.1)] overflow-hidden border-b border-border mega-clip-enter"
-      x-cloak
-    >
-      <div class="max-w-360 mx-auto px-8 lg:px-12 py-10">
-        <div
-          class="mega-grid grid gap-px bg-border/60"
-          style="--mega-cols:{{ min(count($wc_cats), 5) }}"
-        >
-
-          {{-- Category columns ─────────────────────────────────────────────── --}}
-          @foreach(array_slice($wc_cats, 0, 5) as $cat)
-            @php
-              $cat_link     = get_term_link($cat);
-              $cat_thumb_id = get_term_meta($cat->term_id, 'thumbnail_id', true);
-              $cat_img      = $cat_thumb_id ? wp_get_attachment_image_url($cat_thumb_id, 'medium') : '';
-              $sub_cats     = array_slice($sub_cats_by_parent[$cat->term_id] ?? [], 0, 6);
-            @endphp
-            <div class="mega-item megamenu-col bg-surface p-7 group">
-              @if($cat_img)
-                <a href="{{ esc_url($cat_link) }}" class="block mb-5 overflow-hidden aspect-4/3" tabindex="-1">
-                  <img
-                    src="{{ esc_url($cat_img) }}"
-                    alt="{{ esc_attr($cat->name) }}"
-                    loading="lazy"
-                    decoding="async"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  >
-                </a>
-              @endif
-              <a
-                href="{{ esc_url($cat_link) }}"
-                class="block font-semibold tracking-[0.15em] uppercase text-ink/80 hover:text-primary transition-colors duration-200 mb-4"
-              >{{ esc_html($cat->name) }}</a>
-
-              @if(!empty($sub_cats))
-                <ul class="space-y-2" role="list">
-                  @foreach($sub_cats as $sub)
-                    <li>
-                      <a
-                        href="{{ esc_url(get_term_link($sub)) }}"
-                        class="flex items-center gap-2 text-muted hover:text-ink transition-colors duration-150"
-                      >
-                        <span class="w-3 h-px bg-border inline-block shrink-0" aria-hidden="true"></span>
-                        {{ esc_html($sub->name) }}
-                      </a>
-                    </li>
-                  @endforeach
-                </ul>
-              @endif
-            </div>
-          @endforeach
-
-          {{-- Featured dark CTA card ─────────────────────────────────────── --}}
-          <div class="mega-item bg-ink p-8 flex flex-col justify-between">
-            <div>
-              <p class="    font-semibold tracking-[0.28em] uppercase text-primary mb-5">
-                {{ __('In evidenza', 'sage') }}
-              </p>
-              <h3 class="font-sans text-xl font-light text-white leading-snug mb-3">
-                {{ __('Tutto per il tuo animale', 'sage') }}
-              </h3>
-              <p class="text-white/40 leading-relaxed">
-                {{ __('Selezione premium, consegna rapida.', 'sage') }}
-              </p>
-            </div>
-            <a
-              href="{{ esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop')) }}"
-              class="mt-8 btn-slide-light self-start"
-            >
-              {{ __('Vai allo shop', 'sage') }}
-              <x-icons.arrow-right class="w-3 h-3 ml-1.5" stroke-width="2" />
-            </a>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  @endif
 
   {{-- ════════════════════════════════════════════════════════════════════════
        DROPDOWN PANELS — nav items with "Megamenu" checkbox
@@ -413,40 +268,6 @@
   >
     <nav class="flex-1 px-6 py-8 space-y-0.5" aria-label="{{ __('Menu mobile', 'sage') }}">
 
-      {{-- Shop accordion ────────────────────────────────────────────────────── --}}
-      @if(!empty($wc_cats))
-        <div x-data="{ open: false }">
-          <button
-            type="button"
-            @click="open = !open"
-            :aria-expanded="open.toString()"
-            class="w-full flex items-center justify-between py-5 border-b border-white/8"
-          >
-            <span class="font-sans text-2xl font-light text-white tracking-wide">{{ __('Shop', 'sage') }}</span>
-            <x-icons.chevron-down class="w-4 h-4 text-white/30 transition-transform duration-300" ::class="open ? 'rotate-180' : ''" />
-          </button>
-          <div x-show="open" x-collapse class="py-4">
-            <div class="grid grid-cols-2 gap-x-4 gap-y-1">
-              @foreach($wc_cats as $cat)
-                <a
-                  href="{{ esc_url(get_term_link($cat)) }}"
-                  class="flex items-center gap-2 py-2 font-medium tracking-wide text-white/50 hover:text-primary transition-colors"
-                  @click="closeMobile()"
-                >
-                  <span class="w-1 h-1 bg-primary/40 rounded-full shrink-0" aria-hidden="true"></span>
-                  {{ esc_html($cat->name) }}
-                </a>
-              @endforeach
-            </div>
-            <a
-              href="{{ esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop')) }}"
-              class="mt-5 inline-flex items-center gap-2     font-semibold tracking-[0.2em] uppercase text-primary"
-              @click="closeMobile()"
-            >{{ __('Vedi tutto lo shop', 'sage') }} →</a>
-          </div>
-        </div>
-      @endif
-
       {{-- Regular nav items (or dropdown accordions for megamenu items) ──────── --}}
       @foreach($top_items as $item)
         @php
@@ -462,7 +283,7 @@
               class="w-full flex items-center justify-between py-5 border-b border-white/8"
             >
               <span class="font-sans text-2xl font-light text-white tracking-wide">{{ esc_html($item->title) }}</span>
-              <x-icons.chevron-down class="w-4 h-4 text-white/30 transition-transform duration-300" ::class="open ? 'rotate-180' : ''" />
+              <x-icons.chevron-down class="size-4 text-white/30 transition-transform duration-300" ::class="open ? 'rotate-180' : ''" />
             </button>
             <div x-show="open" x-collapse class="py-3 space-y-1">
               @foreach($mob_children as $child)
@@ -499,17 +320,27 @@
       @endif
 
       @php
-        $social_ig = get_theme_mod('social_instagram', '');
-        $social_fb = get_theme_mod('social_facebook',  '');
-        $social_tk = get_theme_mod('social_tiktok',    '');
+        $mob_socials = array_filter([
+          'instagram' => ['label' => 'Instagram',   'url' => get_theme_mod('social_instagram', '')],
+          'facebook'  => ['label' => 'Facebook',    'url' => get_theme_mod('social_facebook',  '')],
+          'tiktok'    => ['label' => 'TikTok',      'url' => get_theme_mod('social_tiktok',    '')],
+          'youtube'   => ['label' => 'YouTube',     'url' => get_theme_mod('social_youtube',   '')],
+          'twitter'   => ['label' => 'X',           'url' => get_theme_mod('social_twitter',   '')],
+        ], fn($s) => !empty($s['url']));
+        $mob_wa_url = function_exists('App\\theme_whatsapp_url') ? \App\theme_whatsapp_url() : '';
       @endphp
-      @if($social_ig || $social_fb || $social_tk)
-        <div class="flex items-center gap-5 justify-center pt-1">
-          @foreach(array_filter(['instagram' => $social_ig, 'facebook' => $social_fb, 'tiktok' => $social_tk]) as $name => $url)
-            <a href="{{ esc_url($url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ ucfirst($name) }}" class="    font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-primary transition-colors">
-              {{ ucfirst($name) }}
+      @if(!empty($mob_socials) || $mob_wa_url)
+        <div class="flex items-center gap-5 justify-center flex-wrap pt-1">
+          @foreach($mob_socials as $social)
+            <a href="{{ esc_url($social['url']) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ esc_attr($social['label']) }}" class="font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-primary transition-colors">
+              {{ $social['label'] }}
             </a>
           @endforeach
+          @if($mob_wa_url)
+            <a href="{{ esc_url($mob_wa_url) }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-primary transition-colors">
+              WhatsApp
+            </a>
+          @endif
         </div>
       @endif
     </div>

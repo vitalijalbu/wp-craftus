@@ -136,7 +136,7 @@
           ])
 
         @elseif($layout === 'wysiwyg')
-          <section class="section-luxury bg-surface">
+          <section class="section bg-surface">
             <div class="container">
               <div class="prose max-w-3xl mx-auto">
                 {!! $section['content'] ?? '' !!}
@@ -149,7 +149,7 @@
 
     @else
       {{-- ── Fallback: standard page content ── --}}
-      <div class="section-luxury bg-surface">
+      <div class="section bg-surface">
         <div class="container">
           <div class="max-w-4xl mx-auto">
 

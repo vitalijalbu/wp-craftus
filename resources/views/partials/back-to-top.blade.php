@@ -20,5 +20,5 @@
          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
   x-cloak
 >
-  <x-icons.chevron-up class="w-4 h-4" />
+  <x-icons.chevron-up class="size-4" />
 </button>

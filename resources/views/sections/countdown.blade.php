@@ -20,7 +20,7 @@
 
 <section
   id="{{ $section_id ?? 'section-countdown' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($heading) }}"
   x-data="countdown('{{ esc_js($end_date) }}')"
   x-init="start()"

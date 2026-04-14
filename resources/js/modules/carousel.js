@@ -15,6 +15,64 @@ import {
   Thumbs,
 } from 'swiper/modules'
 
+// ── Alpine.js ────────────────────────────────────────────────────────────────
+import Alpine from 'alpinejs'
+
+// ── Alpine component: product lightbox ────────────────────────────────────────
+Alpine.data('productLightbox', (imagesJson, productTitle) => ({
+  open: false,
+  current: 0,
+  images: imagesJson || [],
+  _trigger: null,
+
+  show(i, el) {
+    this._trigger = el ?? null
+    this.current = i
+    this.open = true
+    document.body.style.overflow = 'hidden'
+    this.$nextTick(() => this.$refs.lbClose?.focus())
+  },
+
+  close() {
+    this.open = false
+    document.body.style.overflow = ''
+    this.$nextTick(() => this._trigger?.focus())
+  },
+
+  prev() {
+    this.current = (this.current - 1 + this.images.length) % this.images.length
+  },
+
+  next() {
+    this.current = (this.current + 1) % this.images.length
+  },
+
+  trapFocus(e) {
+    if (!this.open) return
+    const el = this.$refs.lbDialog
+    if (!el) return
+    const focusable = Array.from(
+      el.querySelectorAll(
+        "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
+      ),
+    ).filter((n) => !n.hasAttribute('disabled'))
+    if (!focusable.length) return
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+  },
+}))
+
 export function initCarousels() {
   // ── Hero carousel ─────────────────────────────────────────────────────────
   document.querySelectorAll('.js-hero-swiper').forEach((el) => {
@@ -55,8 +113,8 @@ export function initCarousels() {
       },
       breakpoints: {
         640: { slidesPerView: 2.2, spaceBetween: 20 },
-        1024: { slidesPerView: 3.2, spaceBetween: 24 },
-        1280: { slidesPerView: 4, spaceBetween: 24 },
+        1024: { slidesPerView: 4, spaceBetween: 24 },
+        1280: { slidesPerView: 6, spaceBetween: 24 },
       },
       a11y: {
         prevSlideMessage: 'Prodotto precedente',

@@ -49,7 +49,7 @@ $wrapper_class = match ($style) {
     >
       <span><?= $question ?></span>
       <svg
-        class="w-4 h-4 shrink-0 transition-transform duration-300"
+        class="size-4 shrink-0 transition-transform duration-300"
         :class="open ? 'rotate-45' : 'rotate-0'"
         fill="none" stroke="currentColor" stroke-width="2"
         viewBox="0 0 24 24" aria-hidden="true"

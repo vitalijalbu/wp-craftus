@@ -48,12 +48,12 @@
       class="absolute top-4 right-4 z-20 text-muted hover:text-ink transition-colors"
       aria-label="{{ __('Chiudi', 'sage') }}"
     >
-      <x-icons.x-mark class="w-5 h-5" />
+      <x-icons.x-mark class="size-5" />
     </button>
 
     {{-- Loading state --}}
     <div x-show="loading" class="flex items-center justify-center py-20">
-      <x-icons.spinner class="w-8 h-8 text-primary animate-spin" />
+      <x-icons.spinner class="size-8 text-primary animate-spin" />
     </div>
 
     {{-- Product content --}}
@@ -96,7 +96,7 @@
         {{-- Rating --}}
         <div x-show="product?.rating_count > 0" class="flex items-center gap-1.5 mb-3">
           <template x-for="i in 5" :key="i">
-            <x-icons.star class="w-3 h-3" ::class="i <= Math.round(product?.rating || 0) ? 'fill-primary text-primary' : 'fill-border text-border'" />
+            <x-icons.star class="size-3" ::class="i <= Math.round(product?.rating || 0) ? 'fill-primary text-primary' : 'fill-border text-border'" />
           </template>
           <span class="text-xs text-muted" x-text="'(' + (product?.rating_count || 0) + ')'"></span>
         </div>
@@ -116,7 +116,7 @@
                 <label class="block text-xs font-semibold tracking-wider uppercase text-ink mb-1.5" x-text="attr.label"></label>
                 <select
                   x-model="selectedVariants[attr.name]"
-                  class="form-input-luxury text-sm py-2.5"
+                  class="form-input text-sm py-2.5"
                 >
                   <option value="">{{ __('Seleziona', 'sage') }} <span x-text="attr.label"></span></option>
                   <template x-for="opt in attr.options" :key="opt">
@@ -143,7 +143,7 @@
             :data-product_id="product?.id"
             rel="nofollow"
           >
-            <x-icons.cart class="w-4 h-4" />
+            <x-icons.cart class="size-4" />
             {{ __('Aggiungi al carrello', 'sage') }}
           </a>
           <a

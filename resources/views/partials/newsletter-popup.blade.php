@@ -44,7 +44,7 @@
       class="absolute top-4 right-4 text-muted hover:text-ink transition-colors z-10"
       aria-label="{{ __('Chiudi', 'sage') }}"
     >
-      <x-icons.x-mark class="w-5 h-5" />
+      <x-icons.x-mark class="size-5" />
     </button>
 
     {{-- Layout: image + form --}}
@@ -98,7 +98,7 @@
                   placeholder="{{ __('La tua email', 'sage') }}"
                   :disabled="state === 'loading'"
                   required
-                  class="flex-1 form-input-luxury border-r-0 py-3 text-sm"
+                  class="flex-1 form-input border-r-0 py-3 text-sm"
                 >
                 <button
                   type="submit"
