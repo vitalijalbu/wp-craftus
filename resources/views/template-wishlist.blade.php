@@ -47,7 +47,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
       {{-- Actions bar --}}
       <div class="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border pt-6">
-        <a href="{{ esc_url($shop_url) }}" class="btn-outline btn-sm">
+        <a href="{{ esc_url($shop_url) }}" class="btn-outline">
           {{ __('← Continua lo shopping', 'sage') }}
         </a>
         <button

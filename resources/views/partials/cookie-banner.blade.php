@@ -45,14 +45,14 @@
       <button
         @click="accept('essential')"
         type="button"
-        class="btn-outline btn-sm"
+        class="btn-outline"
       >
         {{ __('Solo essenziali', 'sage') }}
       </button>
       <button
         @click="accept('all')"
         type="button"
-        class="btn-secondary btn-sm"
+        class="btn-secondary"
       >
         {{ __('Accetta tutto', 'sage') }}
       </button>

@@ -104,10 +104,10 @@ if (!window.customElements.get('wishlist-products')) {
 					'<div class="flex flex-wrap justify-center gap-4">' +
 					'<a href="' +
 					homeUrl +
-					'" class="btn-primary btn-sm">Vai alla Home</a>' +
+					'" class="btn-primary">Vai alla Home</a>' +
 					'<a href="' +
 					shopUrl +
-					'" class="btn-outline btn-sm">Sfoglia i prodotti</a>' +
+					'" class="btn-outline">Sfoglia i prodotti</a>' +
 					'</div>' +
 					'</div>';
 				return;
@@ -147,10 +147,10 @@ if (!window.customElements.get('wishlist-products')) {
 						'<div class="flex flex-wrap justify-center gap-4">' +
 						'<a href="' +
 						homeUrl +
-						'" class="btn-primary btn-sm">Vai alla Home</a>' +
+						'" class="btn-primary">Vai alla Home</a>' +
 						'<a href="' +
 						shopUrl +
-						'" class="btn-outline btn-sm">Sfoglia i prodotti</a>' +
+						'" class="btn-outline">Sfoglia i prodotti</a>' +
 						'</div>' +
 						'</div>';
 					return;

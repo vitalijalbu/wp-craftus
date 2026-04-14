@@ -59,7 +59,7 @@
         placeholder="{{ __('Cerca nel sito…', 'sage') }}"
         class="flex-1 border border-border border-r-0 px-4 py-3 text-sm text-ink bg-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
       >
-      <button type="submit" class="btn-secondary btn-sm">{{ __('Cerca', 'sage') }}</button>
+      <button type="submit" class="btn-secondary">{{ __('Cerca', 'sage') }}</button>
     </form>
   @endif
 
@@ -70,9 +70,9 @@
         @php
           $style = $btn['style'] ?? 'primary';
           $class = match($style) {
-            'outline' => 'btn-outline btn-sm',
-            'ghost'   => 'btn-ghost btn-sm',
-            default   => 'btn-primary btn-sm',
+            'outline' => 'btn-outline',
+            'ghost'   => 'btn-ghost',
+            default   => 'btn-primary',
           };
         @endphp
         <a href="{{ esc_url($btn['url']) }}" class="{{ $class }}">

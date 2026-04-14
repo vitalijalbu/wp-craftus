@@ -83,12 +83,14 @@
               $is_mega       = get_post_meta($item->ID, '_menu_item_megamenu', true) === '1';
               $item_children = $children_map[$item->ID] ?? [];
               $mega_id       = 'nav-' . $item->ID;
+              $active_classes = ['current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current-page-ancestor'];
+              $is_current     = !empty(array_intersect($active_classes, (array)($item->classes ?? [])));
             @endphp
             @if($is_mega && !empty($item_children))
               <button
                 type="button"
                 id="btn-mega-{{ $mega_id }}"
-                class="nav-link-t flex items-center gap-1"
+                class="nav-link-t flex items-center gap-1 {{ $is_current ? 'active' : '' }}"
                 :class="hasHero && !scrolled ? 'text-white/80 hover:text-white' : ''"
                 @mouseenter="openMenu('{{ $mega_id }}')"
                 @click="openMenu('{{ $mega_id }}')"
@@ -102,9 +104,9 @@
             @else
               <a
                 href="{{ esc_url($item->url) }}"
-                class="nav-link-t"
+                class="nav-link-t {{ $is_current ? 'active' : '' }}"
                 :class="hasHero && !scrolled ? 'text-white/80 hover:text-white' : ''"
-                @if(in_array('current-menu-item', (array)($item->classes ?? []), true)) aria-current="page" @endif
+                @if($is_current) aria-current="page" @endif
               >{{ esc_html($item->title) }}</a>
             @endif
           @endforeach
@@ -127,6 +129,18 @@
             <x-icons.heart class="size-6" />
             <span class="icon-badge wishlist-count-bubble"></span>
           </a>
+
+          {{-- Account --}}
+          @if(function_exists('WC'))
+            <a
+              href="{{ esc_url(wc_get_page_permalink('myaccount')) }}"
+              class="icon-btn"
+              :class="hasHero && !scrolled ? 'text-white/70 hover:text-white' : ''"
+              aria-label="{{ __('Il mio account', 'sage') }}"
+            >
+              <x-icons.user class="size-6" />
+            </a>
+          @endif
 
           {{-- Cart --}}
           @if(function_exists('WC'))

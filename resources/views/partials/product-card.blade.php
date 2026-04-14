@@ -100,7 +100,7 @@
           href="{{ $add_to_cart_url }}"
           data-product_id="{{ $product_id }}"
           data-product_sku="{{ $product_sku }}"
-          class="btn-primary btn-sm w-full justify-center add_to_cart_button ajax_add_to_cart"
+          class="btn-primary w-full justify-center add_to_cart_button ajax_add_to_cart"
           rel="nofollow"
           aria-label="{{ sprintf(__('Aggiungi %s al carrello', 'sage'), esc_attr($product_name)) }}"
         >

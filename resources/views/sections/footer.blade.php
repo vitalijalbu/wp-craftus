@@ -77,7 +77,7 @@
             <button
               type="submit"
               :disabled="state === 'loading'"
-              class="btn-primary btn-sm whitespace-nowrap disabled:opacity-60"
+              class="btn-primary whitespace-nowrap disabled:opacity-60"
             >
               <span x-show="state !== 'loading'">{{ __('Iscriviti', 'sage') }}</span>
               <span x-show="state === 'loading'" aria-live="polite">…</span>

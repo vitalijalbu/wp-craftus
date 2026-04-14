@@ -39,7 +39,7 @@
       >
       <button
         type="submit"
-        class="shrink-0 btn-sm {{ $btn_class }}"
+        class="shrink-0 {{ $btn_class }}"
         :disabled="loading"
         :class="loading ? 'opacity-60 cursor-wait' : ''"
       >

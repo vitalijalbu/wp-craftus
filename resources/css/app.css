@@ -1971,9 +1971,7 @@ textarea.contact-input {
 
 /* Tabs + related products: full width */
 .woocommerce div.product .product-tabs,
-.woocommerce div.product .woocommerce-tabs,
-.woocommerce div.product .related,
-.woocommerce div.product .upsells {
+.woocommerce div.product .woocommerce-tabs {
   grid-column: 1 / -1;
 }
 

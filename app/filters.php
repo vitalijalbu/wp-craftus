@@ -27,6 +27,15 @@ add_action('wp_enqueue_scripts', function () {
     );
 }, 20);
 
+// ── WooCommerce: move related & upsells outside div.product grid ─────────
+// By default WC renders them inside woocommerce_after_single_product_summary
+// (which lives inside the 2-column product grid). Moving them to
+// woocommerce_after_single_product places them outside, so bg-cream goes full-width.
+remove_action('woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15);
+remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
+add_action('woocommerce_after_single_product', 'woocommerce_upsell_display', 10);
+add_action('woocommerce_after_single_product', 'woocommerce_output_related_products', 20);
+
 // ── WooCommerce: cart count fragment ─────────────────────────────────────────
 // Updates `.cart-count-fragment[data-cart-count]` via WC's AJAX fragment system
 // so the cart badge stays accurate after add-to-cart without a page reload.

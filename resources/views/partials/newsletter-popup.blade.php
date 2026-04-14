@@ -103,7 +103,7 @@
                 <button
                   type="submit"
                   :disabled="state === 'loading'"
-                  class="btn-primary btn-sm shrink-0 disabled:opacity-60"
+                  class="btn-primary shrink-0 disabled:opacity-60"
                 >
                   <span x-show="state !== 'loading'">{{ __('Iscriviti', 'sage') }}</span>
                   <span x-show="state === 'loading'" class="animate-pulse">…</span>
