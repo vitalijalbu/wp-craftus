@@ -227,9 +227,8 @@ add_filter('woocommerce_get_breadcrumb', function (array $crumbs): array {
         return $crumbs;
     }
 
+    // Remove link from last crumb (current page).
     $last = count($crumbs) - 1;
-    $label = wp_strip_all_tags((string) ($crumbs[$last][0] ?? ''));
-    $crumbs[$last][0] = '<span class="woocommerce-breadcrumb__current">'.esc_html($label).'</span>';
     $crumbs[$last][1] = '';
 
     return $crumbs;

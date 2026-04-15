@@ -369,6 +369,91 @@ Alpine.data('recentlyViewed', (excludeId = 0) => ({
   },
 }))
 
+// ── Alpine component: products grid (AJAX filters/load-more) ────────────────
+Alpine.data('productsGrid', (config = {}) => ({
+  activeCategory: config.activeCategory ?? 'all',
+  products: Array.isArray(config.products) ? config.products : [],
+  page: 1,
+  perPage: Number(config.perPage ?? 12),
+  loading: false,
+  hasMore: Boolean(config.hasMore),
+  statusMsg: '',
+  categoriesUrl: config.categoriesUrl ?? '/wp-json/wc/v3/products/categories',
+  productsUrl: config.productsUrl ?? '/wp-json/wc/v3/products',
+  nonce: config.nonce ?? '',
+
+  async filterByCategory(slug) {
+    this.activeCategory = slug
+    this.page = 1
+    this.loading = true
+    await this.fetchProducts(true)
+    this.loading = false
+  },
+
+  async loadMore() {
+    if (this.loading || !this.hasMore) {
+      return
+    }
+
+    this.page++
+    this.loading = true
+    await this.fetchProducts(false)
+    this.loading = false
+  },
+
+  async fetchProducts(reset) {
+    const params = new URLSearchParams({
+      per_page: this.perPage,
+      page: this.page,
+      status: 'publish',
+      orderby: 'date',
+      order: 'desc',
+    })
+
+    const headers = this.nonce ? { 'X-WP-Nonce': this.nonce } : {}
+
+    if (this.activeCategory && this.activeCategory !== 'all') {
+      const catUrl = `${this.categoriesUrl}?slug=${encodeURIComponent(this.activeCategory)}`
+      const catResp = await fetch(catUrl, {
+        credentials: 'same-origin',
+        headers,
+      })
+
+      if (catResp.ok) {
+        const cats = await catResp.json()
+        if (Array.isArray(cats) && cats.length > 0) {
+          params.append('category', cats[0].id)
+        }
+      }
+    }
+
+    const resp = await fetch(`${this.productsUrl}?${params.toString()}`, {
+      credentials: 'same-origin',
+      headers,
+    })
+
+    if (!resp.ok) {
+      return
+    }
+
+    const data = await resp.json()
+    const ids = Array.isArray(data) ? data.map((p) => p.id) : []
+
+    if (reset) {
+      this.products = ids
+    } else {
+      this.products = [...this.products, ...ids]
+    }
+
+    this.hasMore = ids.length >= this.perPage
+    this.statusMsg = ids.length === 0 ? 'Nessun prodotto trovato' : `${ids.length} prodotti caricati`
+
+    if (window.ScrollTrigger) {
+      window.ScrollTrigger.refresh()
+    }
+  },
+}))
+
 /**
  * Call on every product page to persist the product in localStorage.
  * @param {{ id: number, url: string, title: string, thumb: string, price: string }} product

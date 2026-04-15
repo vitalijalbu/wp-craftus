@@ -58,69 +58,15 @@
   id="{{ $section_id ?? 'section-products' }}"
   class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
-  x-data="{
-    activeCategory: '{{ $category ?: 'all' }}',
-    products: {{ json_encode(array_map(fn($p) => $p->get_id(), $initial_products)) }},
-    page: 1,
-    perPage: {{ (int) $per_page }},
-    loading: false,
-    hasMore: {{ count($initial_products) >= $per_page ? 'true' : 'false' }},
-    statusMsg: '',
-
-    async filterByCategory(slug) {
-      this.activeCategory = slug;
-      this.page = 1;
-      this.loading = true;
-      await this.fetchProducts(true);
-      this.loading = false;
-    },
-
-    async loadMore() {
-      if (this.loading || !this.hasMore) return;
-      this.page++;
-      this.loading = true;
-      await this.fetchProducts(false);
-      this.loading = false;
-    },
-
-    async fetchProducts(reset) {
-      const params = new URLSearchParams({
-        per_page: this.perPage,
-        page: this.page,
-        status: 'publish',
-        orderby: 'date',
-        order: 'desc',
-      });
-      if (this.activeCategory && this.activeCategory !== 'all') {
-        // Resolve category ID from slug via REST
-        const catResp = await fetch(
-          `{{ rest_url('wc/v3/products/categories') }}?slug=${this.activeCategory}&consumer_key=&consumer_secret=`,
-          { credentials: 'same-origin', headers: { 'X-WP-Nonce': '{{ wp_create_nonce('wp_rest') }}' } }
-        );
-        if (catResp.ok) {
-          const cats = await catResp.json();
-          if (cats.length) params.append('category', cats[0].id);
-        }
-      }
-      const resp = await fetch(
-        `{{ rest_url('wc/v3/products') }}?${params.toString()}`,
-        { credentials: 'same-origin', headers: { 'X-WP-Nonce': '{{ wp_create_nonce('wp_rest') }}' } }
-      );
-      if (resp.ok) {
-        const data = await resp.json();
-        const ids = data.map(p => p.id);
-        if (reset) {
-          this.products = ids;
-        } else {
-          this.products = [...this.products, ...ids];
-        }
-        this.hasMore = ids.length >= this.perPage;
-        this.statusMsg = ids.length === 0 ? 'Nessun prodotto trovato' : ids.length + ' prodotti caricati';
-        // Trigger GSAP refresh
-        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
-      }
-    }
-  }"
+  x-data="productsGrid({{ \Illuminate\Support\Js::from([
+    'activeCategory' => $category ?: 'all',
+    'products' => array_map(fn($p) => (int) $p->get_id(), $initial_products),
+    'perPage' => (int) $per_page,
+    'hasMore' => count($initial_products) >= $per_page,
+    'categoriesUrl' => rest_url('wc/v3/products/categories'),
+    'productsUrl' => rest_url('wc/v3/products'),
+    'nonce' => wp_create_nonce('wp_rest'),
+  ]) }})"
 >
   <div class="container">
 
