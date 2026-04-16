@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Theme setup.
  */
@@ -42,7 +44,7 @@ add_action('admin_head', function () {
     }
 
     // Load Google Fonts for the block editor via <link> (avoids CSS @import order warnings).
-    $font_url = esc_url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+    $font_url = esc_url('https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">'."\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'."\n";
     echo '<link rel="stylesheet" href="'.$font_url.'">'."\n";
@@ -266,13 +268,14 @@ add_action('wp_head', function () {
      * Override per-project: add_filter('theme_font_url', fn() => 'https://fonts.googleapis.com/...');
      * Return empty string to disable Google Fonts entirely (self-hosted fonts).
      *
-     * Removed italic weight (1,400) — not used in the theme.
-     * display=optional: browser uses system font if Poppins not cached — best for FCP.
-     * Weights loaded: 300 (headings), 400 (body), 500 (labels), 600 (caps/nav), 700 (buttons/prices).
+     * Fonts loaded: Abhaya Libre (headings, serif feel) + Poppins (body, UI).
+     * Abhaya Libre weights: 400, 500, 600 — used for h1-h6 and display text.
+     * Poppins weights: 400 (body), 500 (labels), 600 (buttons/nav), 700 (prices).
+     * display=swap for Poppins (body text), optional for Abhaya Libre (LCP-safe).
      */
     $font_url = apply_filters(
         'theme_font_url',
-        'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=optional'
+        'https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap'
     );
 
     if (! $font_url) {

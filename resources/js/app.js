@@ -273,11 +273,12 @@ Alpine.data('cartDrawer', () => ({
             this.count = parseInt(el.dataset.cartCount || '0', 10)
           }
           this.loading = false
+          // Open drawer after fragments are replaced so cart content is visible
+          this.open()
         } else {
-          this.refreshFragment()
+          // No fragments provided — refresh async, open drawer once complete
+          this.refreshFragment(() => this.open())
         }
-        // Open drawer AFTER fragments are replaced so the new cart content is visible
-        this.open()
       })
 
       // WC fragment refresh (e.g. after removing an item)
@@ -292,7 +293,7 @@ Alpine.data('cartDrawer', () => ({
     this.isOpen = false
   },
 
-  refreshFragment() {
+  refreshFragment(onComplete) {
     if (typeof jQuery === 'undefined') {
       return
     }
@@ -309,6 +310,7 @@ Alpine.data('cartDrawer', () => ({
           this.count = parseInt(el.dataset.cartCount || '0', 10)
         }
         this.loading = false
+        onComplete?.()
       },
     )
   },

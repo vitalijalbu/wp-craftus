@@ -98,11 +98,11 @@
             @if($icon_path)
               <x-icons.path
                 :path="$icon_path"
-                class="size-5 {{ $bg === 'ink' ? 'text-primary' : 'text-primary' }}"
+                class="size-5 text-primary"
                 stroke-width="1.5"
               />
             @else
-              <span class="process-step__num {{ $bg === 'ink' ? 'text-primary' : 'text-primary' }}"
+              <span class="process-step__num text-primary"
                     aria-hidden="{{ $numbered ? 'false' : 'true' }}">
                 {{ $num }}
               </span>

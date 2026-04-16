@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * WordPress Customizer options for Sage theme.
  *
@@ -234,6 +236,32 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
             'label' => $label,
             'section' => 'theme_contact',
             'type' => $type,
+        ]);
+    }
+
+    // ── Section: Dati Legali Organizzazione ─────────────────────────────────
+    // Obblighi di legge per associazioni non profit / APS / ODV
+    $wp_customize->add_section('theme_legal', [
+        'title'       => __('Dati Legali (Footer)', 'sage'),
+        'description' => __('Codice fiscale, email e telefono legale dell\'organizzazione. Compaiono nel footer sotto i link legali.', 'sage'),
+        'priority'    => 129,
+    ]);
+
+    foreach ([
+        ['org_codice_fiscale', __('Codice Fiscale', 'sage'),          'text',     'sanitize_text_field'],
+        ['org_email',          __('Email contatti', 'sage'),           'email',    'sanitize_email'],
+        ['org_phone',          __('Telefono contatti', 'sage'),        'text',     'sanitize_text_field'],
+        ['org_address',        __('Sede legale / indirizzo', 'sage'),  'textarea', 'sanitize_textarea_field'],
+    ] as [$key, $label, $type, $sanitize]) {
+        $wp_customize->add_setting($key, [
+            'default'           => '',
+            'sanitize_callback' => $sanitize,
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control($key, [
+            'label'   => $label,
+            'section' => 'theme_legal',
+            'type'    => $type,
         ]);
     }
 

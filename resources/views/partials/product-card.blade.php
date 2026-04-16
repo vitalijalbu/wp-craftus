@@ -86,7 +86,7 @@
     {{-- Wishlist button (placeholder — activate with YITH Wishlist) --}}
     <button
       type="button"
-      class="product-card__wishlist"
+      class="product-card__wishlist wishlist-btn"
       aria-label="{{ sprintf(__('Aggiungi %s alla wishlist', 'sage'), esc_attr($product_name)) }}"
       data-product-id="{{ $product_id }}"
     >

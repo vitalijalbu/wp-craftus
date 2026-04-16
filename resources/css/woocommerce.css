@@ -272,12 +272,12 @@
   background-color: var(--color-primary) !important;
   color: #ffffff !important;
   font-family: var(--font-sans) !important;
-  font-weight: 500 !important;
-  font-size: 0.8125rem !important;
-  letter-spacing: 0.1em !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   padding: 0.875rem 2rem !important;
-  border-radius: 0 !important;
+  border-radius: 100px !important;
   border: 1px solid var(--color-primary) !important;
   line-height: 1 !important;
   box-sizing: border-box !important;
@@ -746,11 +746,11 @@ mark.order-status {
 .wp-block-woocommerce-proceed-to-checkout-block .wc-block-components-button,
 .wc-block-cart__submit-button {
   font-family: var(--font-sans) !important;
-  font-weight: 500 !important;
-  font-size: 0.8125rem !important;
-  letter-spacing: 0.1em !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
-  border-radius: 0 !important;
+  border-radius: 100px !important;
   padding: 0.875rem 2rem !important;
   background-color: var(--color-primary) !important;
   color: #ffffff !important;

@@ -12,7 +12,7 @@
       :buttons="[
         ['url' => home_url('/'), 'label' => __('← Torna in Homepage', 'sage'), 'style' => 'primary'],
         ['url' => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop'), 'label' => __('Sfoglia i prodotti', 'sage'), 'style' => 'outline'],
-        ['url' => home_url('/contatti'), 'label' => __('Contattaci', 'sage'), 'style' => 'ghost'],
+        ['url' => get_permalink(get_page_by_path('contatti')) ?: home_url('/contatti/'), 'label' => __('Contattaci', 'sage'), 'style' => 'ghost'],
       ]"
     />
 

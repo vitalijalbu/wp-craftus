@@ -139,7 +139,7 @@
           <section class="section bg-surface">
             <div class="container">
               <div class="prose max-w-3xl mx-auto">
-                {!! $section['content'] ?? '' !!}
+                {!! wp_kses_post($section['content'] ?? '') !!}
               </div>
             </div>
           </section>

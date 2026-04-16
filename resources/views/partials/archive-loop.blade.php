@@ -97,8 +97,8 @@
           @endphp
           {!! get_the_posts_pagination([
             'mid_size'  => 2,
-            'prev_text' => $prev_icon . '<span class="sr-only">' . __('Precedente', 'sage') . '</span>',
-            'next_text' => '<span class="sr-only">' . __('Successivo', 'sage') . '</span>' . $next_icon,
+            'prev_text' => $prev_icon . '<span class="sr-only">' . esc_html__('Precedente', 'sage') . '</span>',
+            'next_text' => '<span class="sr-only">' . esc_html__('Successivo', 'sage') . '</span>' . $next_icon,
             'class'     => 'pagination flex items-center gap-2',
           ]) !!}
         </nav>

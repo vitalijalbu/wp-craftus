@@ -34,7 +34,7 @@
   $custom_logo_id       = (int) get_theme_mod('custom_logo');
 @endphp
 
-<footer class="bg-cream" role="contentinfo">
+<footer class="bg-surface-alt" role="contentinfo">
 
   {{-- ─── Newsletter band ─────────────────────────────────────────────────── --}}
   @if($newsletter_active)
@@ -206,12 +206,37 @@
     </div>
   </div>
 
-  {{-- Gold gradient divider --}}
-  <div class="h-px bg-linear-to-r from-transparent via-white/20 to-transparent mx-6 lg:mx-10" data-scroll="line-in"></div>
+  {{-- Divider --}}
+  <div class="h-px bg-border mx-6 lg:mx-10"></div>
+
+  {{-- Legal info — obblighi di legge organizzazione non profit --}}
+  @php
+    $org_cf      = get_theme_mod('org_codice_fiscale', '');
+    $org_email   = get_theme_mod('org_email',          '');
+    $org_phone   = get_theme_mod('org_phone',          '');
+    $org_address = get_theme_mod('org_address',        '');
+  @endphp
+  @if($org_cf || $org_email || $org_phone || $org_address)
+  <div class="container py-4">
+    <p class="text-xs text-muted leading-relaxed text-center sm:text-left">
+      @if($org_cf) {{ __('C.F.', 'sage') }} {{ esc_html($org_cf) }}@endif
+      @if($org_email && $org_cf) &nbsp;·&nbsp; @endif
+      @if($org_email)
+        {{ __('Email:', 'sage') }} <a href="mailto:{{ esc_attr($org_email) }}" class="hover:text-primary transition-colors">{{ esc_html($org_email) }}</a>
+      @endif
+      @if($org_phone && ($org_cf || $org_email)) &nbsp;·&nbsp; @endif
+      @if($org_phone)
+        {{ __('Tel.:', 'sage') }} <a href="tel:{{ esc_attr(preg_replace('/\s+/', '', $org_phone)) }}" class="hover:text-primary transition-colors">{{ esc_html($org_phone) }}</a>
+      @endif
+      @if($org_address && ($org_cf || $org_email || $org_phone)) &nbsp;·&nbsp; @endif
+      @if($org_address) {{ esc_html($org_address) }} @endif
+    </p>
+  </div>
+  @endif
 
   {{-- Legal bar --}}
-  <div class="container py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-    <p>
+  <div class="container py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <p class="text-sm text-muted">
       © {{ date('Y') }} {{ get_bloginfo('name') }}. {{ __('Tutti i diritti riservati.', 'sage') }}
     </p>
     {{-- Legal links — Menu Footer — Legal (Aspetto → Menu) --}}
@@ -221,9 +246,9 @@
         $legal_items = $legal_loc ? (wp_get_nav_menu_items($legal_loc) ?: []) : [];
         $legal_items = array_filter($legal_items, fn($i) => !$i->menu_item_parent);
       @endphp
-      <div class="flex items-center gap-5">
+      <div class="flex items-center gap-5 flex-wrap">
         @foreach($legal_items as $item)
-          <a href="{{ esc_url($item->url) }}">
+          <a href="{{ esc_url($item->url) }}" class="text-sm text-muted hover:text-primary transition-colors">
             {{ esc_html($item->title) }}
           </a>
         @endforeach
