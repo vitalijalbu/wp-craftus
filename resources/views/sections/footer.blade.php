@@ -52,7 +52,7 @@
   $custom_logo_id       = (int) get_theme_mod('custom_logo');
 @endphp
 
-<footer class="bg-surface-alt" role="contentinfo">
+<footer class="bg-dark text-white" role="contentinfo">
 
   {{-- ─── Newsletter band ─────────────────────────────────────────────────── --}}
   @if($newsletter_active)

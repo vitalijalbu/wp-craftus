@@ -1,4 +1,4 @@
-# CLAUDE.md — sage-theme
+# CLAUDE.md — wp-craft
 
 > Documentazione tecnica completa del tema. Leggila prima di qualsiasi modifica.
 > Aggiornata: 2026-04-10 — Enterprise Edition 2.3
@@ -56,7 +56,7 @@
 ## 2. Struttura directory
 
 ```
-sage-theme/
+wp-craft/
 │
 ├── app/                          # PHP backend (namespace App\)
 │   ├── setup.php                 # theme supports, menu, font, blocchi, pattern categories

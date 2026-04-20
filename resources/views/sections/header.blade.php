@@ -52,8 +52,8 @@
     x-ref="expandedWrapper"
     class="header-expanded border-b transition-colors duration-300"
     :class="{
-      'border-white/10 bg-transparent': hasHero && !scrolled,
-      'border-border/60 bg-surface/95 backdrop-blur-md': !hasHero || scrolled
+      'text-white bg-transparent': hasHero && !scrolled,
+      'bg-white': !hasHero || scrolled
     }"
   >
     <div class="container flex items-center justify-between h-16">

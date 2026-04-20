@@ -1,6 +1,7 @@
 /* Fonts are loaded asynchronously via wp_head in app/setup.php — no @import here */
 
 @import "tailwindcss" theme(static);
+@import "./swiper.css";
 
 @source "../../app/**/*.php";
 @source "../../woocommerce/**/*.php";
@@ -11,17 +12,10 @@
 @source "../../templates/**/*.html";
 @source "../../parts/**/*.html";
 
-/* ── Design tokens — NET-A-PORTER inspired ───────────────────────────────── */
-/*
- * Single source of truth for the design system.
- * Tailwind generates utilities from these (text-primary, bg-cream, etc.).
- * theme.json mirrors the palette so the Gutenberg editor stays in sync.
- * To rebrand: change these 15 variables — everything updates automatically.
- */
+
 @theme {
   --font-sans: 'Poppins', system-ui, sans-serif;
-  --font-serif: 'Abhaya Libre', Georgia, serif;
-  /* Abhaya Libre — headings and display text, as per brand identity */
+  --font-serif: 'Poppins', system-ui, sans-serif;
 
 
   --color-primary: #196EC8;
@@ -45,6 +39,7 @@
   --color-surface-alt: #f5f5f5;
   /* Subtle off-white for section contrast   */
   --color-cream: #f5f5f5;
+  --color-dark: #373636;
   /* Section bg (NAP uses cool off-whites)   */
 
   /* ── Semantic status colors ──────────────────────────────────── */
@@ -80,7 +75,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Brand headings — Abhaya Libre serif at 500 for display warmth */
 h1,
 h2,
 h3,
@@ -157,12 +151,6 @@ img {
 /* WP block images — soft rounding on all images inside content */
 .wp-block-image img {
   border-radius: 10px;
-}
-
-/* Section/content images rounding */
-.wp-block-media-text .wp-block-media-text__media img,
-.wp-block-cover img {
-  border-radius: 12px;
 }
 
 /* ── Header offset for page hero bars (non-hero pages) ─────────────────── */
@@ -905,8 +893,7 @@ body.has-hero .page-header-offset {
 
 .swiper-button-next::after,
 .swiper-button-prev::after {
-  font-size: 0.875rem;
-  font-weight: 700;
+  content: none;
 }
 
 .swiper-button-next.swiper-dark,
@@ -1642,8 +1629,7 @@ select:focus {
   display: flex;
   align-items: center;
   font-family: var(--font-sans);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.95rem;
   text-transform: uppercase;
   color: var(--color-ink);
   opacity: 0.7;

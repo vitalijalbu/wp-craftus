@@ -174,9 +174,9 @@
           "name": "Poppins (Sans)"
         },
         {
-          "fontFamily": "'Abhaya Libre', Georgia, serif",
+          "fontFamily": "'Poppins', system-ui, sans-serif",
           "slug": "serif",
-          "name": "Abhaya Libre (Titoli)"
+          "name": "Poppins (Titoli)"
         },
         {
           "name": "mono",

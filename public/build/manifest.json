@@ -23,7 +23,7 @@
     "src": "editor.deps.json"
   },
   "resources/css/app.css": {
-    "file": "assets/app-7YIQGvQ_.css",
+    "file": "assets/app-CYmE4Osa.css",
     "name": "app",
     "names": [
       "app.css"
@@ -32,7 +32,7 @@
     "isEntry": true
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-QMtoBPfa.css",
+    "file": "assets/editor-2y8tbRtA.css",
     "name": "editor",
     "names": [
       "editor.css"
@@ -50,7 +50,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-C6vkkeXZ.js",
+    "file": "assets/app-BAifR1u_.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
