@@ -1,22 +1,29 @@
 {
-  "_vendor-alpine-D3BvRU6V.js": {
-    "file": "assets/vendor-alpine-D3BvRU6V.js",
+  "_motion-BiGILQgg.js": {
+    "file": "assets/motion-BiGILQgg.js",
+    "name": "motion"
+  },
+  "_vendor-alpine-CKmlF1QB.js": {
+    "file": "assets/vendor-alpine-CKmlF1QB.js",
     "name": "vendor-alpine"
   },
-  "_vendor-gsap-NXZ58_I0.js": {
-    "file": "assets/vendor-gsap-NXZ58_I0.js",
-    "name": "vendor-gsap"
+  "_vendor-swiper-COp9XrRL.js": {
+    "file": "assets/vendor-swiper-COp9XrRL.js",
+    "name": "vendor-swiper",
+    "css": [
+      "assets/vendor-swiper-Dw-Lyh-_.css"
+    ]
   },
-  "_vendor-swiper-DIZQWVvN.js": {
-    "file": "assets/vendor-swiper-DIZQWVvN.js",
-    "name": "vendor-swiper"
+  "_vendor-swiper-Dw-Lyh-_.css": {
+    "file": "assets/vendor-swiper-Dw-Lyh-_.css",
+    "src": "_vendor-swiper-Dw-Lyh-_.css"
   },
   "editor.deps.json": {
     "file": "assets/editor.deps-D-Ek2t4-.json",
     "src": "editor.deps.json"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DBmkdPaO.css",
+    "file": "assets/app-7YIQGvQ_.css",
     "name": "app",
     "names": [
       "app.css"
@@ -25,7 +32,7 @@
     "isEntry": true
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-Z-GMBw_n.css",
+    "file": "assets/editor-QMtoBPfa.css",
     "name": "editor",
     "names": [
       "editor.css"
@@ -33,24 +40,45 @@
     "src": "resources/css/editor.css",
     "isEntry": true
   },
+  "resources/css/woocommerce.css": {
+    "file": "assets/woocommerce-B3ycL_My.css",
+    "name": "woocommerce",
+    "names": [
+      "woocommerce.css"
+    ],
+    "src": "resources/css/woocommerce.css",
+    "isEntry": true
+  },
   "resources/js/app.js": {
-    "file": "assets/app-C5m5Er_O.js",
+    "file": "assets/app-C6vkkeXZ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_vendor-alpine-D3BvRU6V.js",
-      "_vendor-gsap-NXZ58_I0.js",
-      "_vendor-swiper-DIZQWVvN.js"
+      "_vendor-alpine-CKmlF1QB.js"
+    ],
+    "dynamicImports": [
+      "resources/js/modules/carousel.js",
+      "_motion-BiGILQgg.js"
     ]
   },
   "resources/js/editor.js": {
-    "file": "assets/editor-DDSQFxAC.js",
+    "file": "assets/editor--TUAUW19.js",
     "name": "editor",
     "src": "resources/js/editor.js",
     "isEntry": true,
     "imports": [
-      "_vendor-swiper-DIZQWVvN.js"
+      "_vendor-swiper-COp9XrRL.js"
+    ]
+  },
+  "resources/js/modules/carousel.js": {
+    "file": "assets/carousel-lPEQq0cY.js",
+    "name": "carousel",
+    "src": "resources/js/modules/carousel.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-alpine-CKmlF1QB.js",
+      "_vendor-swiper-COp9XrRL.js"
     ]
   }
 }

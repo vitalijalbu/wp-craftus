@@ -1,8 +1,8 @@
 @php
   // Parameters
-  $section_label    = $section_label    ?? '';
-  $section_title    = $section_title    ?? __('Domande frequenti', 'sage');
-  $section_subtitle = $section_subtitle ?? '';
+  $section_label    = sanitize_text_field($section_label ?? '');
+  $section_title    = wp_kses_post($section_title ?? __('Domande frequenti', 'sage'));
+  $section_subtitle = sanitize_text_field($section_subtitle ?? '');
   $bg               = $bg               ?? 'surface'; // 'surface' | 'cream' | 'ink'
   $layout           = $layout           ?? 'single';  // 'single' | 'two-col'
   $category         = $category         ?? '';        // faq_category slug

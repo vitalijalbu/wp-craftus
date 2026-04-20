@@ -1,8 +1,8 @@
 @php
   // Parameters
-  $section_label    = $section_label    ?? __('Testimonianze', 'sage');
-  $section_title    = $section_title    ?? __('Cosa dicono di noi', 'sage');
-  $section_subtitle = $section_subtitle ?? '';
+  $section_label    = sanitize_text_field($section_label ?? __('Testimonianze', 'sage'));
+  $section_title    = wp_kses_post($section_title ?? __('Cosa dicono di noi', 'sage'));
+  $section_subtitle = sanitize_text_field($section_subtitle ?? '');
   $bg               = $bg               ?? 'cream'; // 'surface' | 'cream' | 'ink'
 
   // Default testimonials — override via $testimonials parameter

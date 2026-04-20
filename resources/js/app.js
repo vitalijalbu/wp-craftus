@@ -4,36 +4,14 @@ import Collapse from '@alpinejs/collapse'
 import Focus from '@alpinejs/focus'
 // ── Alpine.js ────────────────────────────────────────────────────────────────
 import Alpine from 'alpinejs'
-
-// ── GSAP ─────────────────────────────────────────────────────────────────────
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-// ── Modules ───────────────────────────────────────────────────────────────────
-import { initLuxuryAnimations } from './modules/animations.js'
-import { initCarousels } from './modules/carousel.js'
-import { initMagneticHover } from './modules/magnetic-hover.js'
 import { initQuantitySelectors } from './modules/quantity.js'
-import { initScrollEffects } from './modules/scroll-effects.js'
 import './modules/wishlist.js'
 
 // ── Accessibility: reduced motion ─────────────────────────────────────────────
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const THEME_API_BASE = (window.themeData?.themeApiBase ?? '/wp-json/theme/v1').replace(/\/$/, '')
 
-if (!prefersReducedMotion) {
-  gsap.registerPlugin(ScrollTrigger)
-  window.ScrollTrigger = ScrollTrigger
-} else {
-  window.ScrollTrigger = {
-    refresh: () => {
-      /* noop */
-    },
-    update: () => {
-      /* noop */
-    },
-  }
-}
-
-window.gsap = gsap
+const hasAny = (selector) => document.querySelector(selector) !== null
 
 // ── Alpine plugins ────────────────────────────────────────────────────────────
 Alpine.plugin(Collapse)
@@ -60,7 +38,7 @@ Alpine.store('layout', {
 })
 
 // ── Alpine component: site header ─────────────────────────────────────────────
-// Dual-state (expanded ↔ scrolled) with GSAP timeline — same pattern as Madison.
+// Dual-state (expanded ↔ scrolled) gestito via classi Alpine.
 Alpine.data('siteHeader', () => ({
   mobileOpen: false,
   activeMenu: null,
@@ -81,56 +59,14 @@ Alpine.data('siteHeader', () => ({
     }
     this.activeMenu = id
     document.getElementById('site-header')?.classList.add('header-mega-open')
-    this.$nextTick(() => {
-      const panel = document.getElementById('mega-' + id)
-      if (!panel) {
-        return
-      }
-      gsap.fromTo(
-        panel,
-        { clipPath: 'inset(0% 0% 100% 0%)', opacity: 0 },
-        {
-          clipPath: 'inset(0% 0% 0% 0%)',
-          opacity: 1,
-          duration: 0.42,
-          ease: 'expo.out',
-        },
-      )
-      gsap.fromTo(
-        panel.querySelectorAll('.mega-item'),
-        { opacity: 0, y: 14 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.38,
-          ease: 'expo.out',
-          stagger: 0.04,
-          delay: 0.08,
-        },
-      )
-    })
   },
 
   closeMenu() {
     if (!this.activeMenu) {
       return
     }
-    const id = this.activeMenu
-    const panel = document.getElementById('mega-' + id)
     document.getElementById('site-header')?.classList.remove('header-mega-open')
-    if (!panel) {
-      this.activeMenu = null
-      return
-    }
-    gsap.to(panel, {
-      clipPath: 'inset(0% 0% 100% 0%)',
-      opacity: 0,
-      duration: 0.28,
-      ease: 'expo.in',
-      onComplete: () => {
-        this.activeMenu = null
-      },
-    })
+    this.activeMenu = null
   },
 
   // ── Mobile ─────────────────────────────────────────────────────────────────
@@ -143,7 +79,7 @@ Alpine.data('siteHeader', () => ({
     document.body.classList.remove('overflow-hidden')
   },
 
-  // ── Init: scroll + keyboard + GSAP dual-state watcher ──────────────────────
+  // ── Init: scroll + keyboard ─────────────────────────────────────────────────
   init() {
     // Scroll detection — AbortController enables cleanup if component is destroyed
     this._scrollCtrl = new AbortController()
@@ -174,7 +110,7 @@ Alpine.data('siteHeader', () => ({
       { signal: this._scrollCtrl.signal },
     )
 
-    // no GSAP swap — background change is handled by Alpine :class binding
+    // Background change is handled by Alpine :class binding.
   },
 
   destroy() {
@@ -225,8 +161,7 @@ Alpine.data('searchOverlay', () => ({
     this.loading = true
     this.noResults = false
     try {
-      const base = window.themeRestUrl || '/wp-json/theme/v1'
-      const url = `${base}/search?q=${encodeURIComponent(q)}&per_page=6`
+      const url = `${THEME_API_BASE}/search?q=${encodeURIComponent(q)}&per_page=6`
       const res = await fetch(url, { signal: this._abortCtrl.signal })
       if (!res.ok) {
         throw new Error('Network error')
@@ -375,21 +310,78 @@ Alpine.data('recentlyViewed', (excludeId = 0) => ({
 Alpine.data('productsGrid', (config = {}) => ({
   activeCategory: config.activeCategory ?? 'all',
   products: Array.isArray(config.products) ? config.products : [],
+  selectedCats: Array.isArray(config.selectedCats) ? config.selectedCats : [],
   page: 1,
   perPage: Number(config.perPage ?? 12),
   loading: false,
   hasMore: Boolean(config.hasMore),
   statusMsg: '',
-  categoriesUrl: config.categoriesUrl ?? '/wp-json/wc/v3/products/categories',
-  productsUrl: config.productsUrl ?? '/wp-json/wc/v3/products',
-  nonce: config.nonce ?? '',
+  endpoint: config.endpoint ?? `${THEME_API_BASE}/products`,
+  orderby: config.orderby ?? 'date',
+  categoryMap: config.categoryMap ?? {},
+  minPrice: 0,
+  maxPrice: 0,
+  inStockOnly: false,
+  _filtersListener: null,
+  _fetchCtrl: null,
+  _requestSeq: 0,
 
-  async filterByCategory(slug) {
-    this.activeCategory = slug
+  init() {
+    if (this.activeCategory !== 'all') {
+      this.selectedCats = this.resolveCategoryIds(this.activeCategory)
+    }
+
+    this._filtersListener = (event) => {
+      const detail = event.detail ?? {}
+      const cats = Array.isArray(detail.cats)
+        ? detail.cats.map((id) => Number(id)).filter(Number.isFinite)
+        : []
+
+      this.selectedCats = cats
+      this.activeCategory = cats.length === 1 ? cats[0] : 'all'
+      this.minPrice = Number(detail.min_price ?? 0) || 0
+      this.maxPrice = Number(detail.max_price ?? 0) || 0
+      this.inStockOnly = Boolean(detail.in_stock)
+
+      this.page = 1
+      this.fetchProducts(true)
+    }
+
+    window.addEventListener('product-filter-changed', this._filtersListener)
+  },
+
+  destroy() {
+    if (this._filtersListener) {
+      window.removeEventListener('product-filter-changed', this._filtersListener)
+    }
+    this._fetchCtrl?.abort()
+  },
+
+  resolveCategoryIds(category) {
+    if (category === 'all' || category === null || category === undefined) {
+      return []
+    }
+
+    if (Number.isFinite(Number(category)) && Number(category) > 0) {
+      return [Number(category)]
+    }
+
+    const mapped = this.categoryMap?.[String(category)]
+    if (Number.isFinite(Number(mapped)) && Number(mapped) > 0) {
+      return [Number(mapped)]
+    }
+
+    return []
+  },
+
+  async filterByCategory(category) {
+    this.activeCategory = category
+    this.selectedCats = this.resolveCategoryIds(category)
+    this.minPrice = 0
+    this.maxPrice = 0
+    this.inStockOnly = false
     this.page = 1
-    this.loading = true
     await this.fetchProducts(true)
-    this.loading = false
   },
 
   async loadMore() {
@@ -397,61 +389,105 @@ Alpine.data('productsGrid', (config = {}) => ({
       return
     }
 
-    this.page++
-    this.loading = true
-    await this.fetchProducts(false)
-    this.loading = false
+    const nextPage = this.page + 1
+    this.page = nextPage
+    const ok = await this.fetchProducts(false)
+
+    if (!ok) {
+      this.page = nextPage - 1
+    }
   },
 
   async fetchProducts(reset) {
+    const requestSeq = ++this._requestSeq
+    this._fetchCtrl?.abort()
+    this._fetchCtrl = new AbortController()
+
     const params = new URLSearchParams({
       per_page: this.perPage,
       page: this.page,
-      status: 'publish',
-      orderby: 'date',
-      order: 'desc',
+      orderby: this.orderby,
     })
 
-    const headers = this.nonce ? { 'X-WP-Nonce': this.nonce } : {}
+    const categoryIds = this.selectedCats.length
+      ? this.selectedCats
+      : this.resolveCategoryIds(this.activeCategory)
 
-    if (this.activeCategory && this.activeCategory !== 'all') {
-      const catUrl = `${this.categoriesUrl}?slug=${encodeURIComponent(this.activeCategory)}`
-      const catResp = await fetch(catUrl, {
+    categoryIds.forEach((id) => {
+      params.append('cats[]', String(id))
+    })
+
+    if (this.minPrice > 0) {
+      params.set('min_price', String(this.minPrice))
+    }
+
+    if (this.maxPrice > 0) {
+      params.set('max_price', String(this.maxPrice))
+    }
+
+    if (this.inStockOnly) {
+      params.set('in_stock', '1')
+    }
+
+    this.loading = true
+
+    try {
+      const resp = await fetch(`${this.endpoint}?${params.toString()}`, {
         credentials: 'same-origin',
-        headers,
+        signal: this._fetchCtrl.signal,
       })
 
-      if (catResp.ok) {
-        const cats = await catResp.json()
-        if (Array.isArray(cats) && cats.length > 0) {
-          params.append('category', cats[0].id)
-        }
+      if (!resp.ok) {
+        throw new Error('Products fetch failed')
       }
-    }
 
-    const resp = await fetch(`${this.productsUrl}?${params.toString()}`, {
-      credentials: 'same-origin',
-      headers,
-    })
+      const payload = await resp.json()
+      if (requestSeq !== this._requestSeq) {
+        return false
+      }
 
-    if (!resp.ok) {
-      return
-    }
+      const items = Array.isArray(payload?.products) ? payload.products : []
+      const pages = Number(payload?.pages ?? 0)
+      const total = Number(payload?.total ?? 0)
 
-    const data = await resp.json()
-    const ids = Array.isArray(data) ? data.map((p) => p.id) : []
+      if (reset) {
+        this.products = items
+      } else {
+        this.products = [...this.products, ...items]
+      }
 
-    if (reset) {
-      this.products = ids
-    } else {
-      this.products = [...this.products, ...ids]
-    }
+      this.hasMore = pages > 0 && this.page < pages
+      if (total === 0) {
+        this.statusMsg = 'Nessun prodotto trovato'
+      } else if (reset) {
+        this.statusMsg = `${total} prodotti trovati`
+      } else {
+        this.statusMsg = `${this.products.length} di ${total} prodotti caricati`
+      }
 
-    this.hasMore = ids.length >= this.perPage
-    this.statusMsg = ids.length === 0 ? 'Nessun prodotto trovato' : `${ids.length} prodotti caricati`
+      this.$nextTick(() => {
+        if (window.ScrollTrigger) {
+          window.ScrollTrigger.refresh()
+        }
 
-    if (window.ScrollTrigger) {
-      window.ScrollTrigger.refresh()
+        if (typeof window.initWishlistButtons === 'function') {
+          window.initWishlistButtons()
+        }
+      })
+
+      return true
+    } catch (err) {
+      if (requestSeq !== this._requestSeq || err?.name === 'AbortError') {
+        return false
+      }
+
+      this.statusMsg = window.themeI18n?.networkError ?? 'Errore di rete. Riprova.'
+
+      return false
+    } finally {
+      if (requestSeq === this._requestSeq) {
+        this.loading = false
+      }
     }
   },
 }))
@@ -511,15 +547,43 @@ Alpine.data('beforeAfter', () => ({
 window.Alpine = Alpine
 
 // ── Bootstrap ─────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  const needsCarousels = hasAny(
+    '.js-hero-swiper, .js-products-swiper, .js-testimonials-swiper, .js-generic-swiper, .js-logos-swiper, .js-product-gallery, [x-data^="productLightbox"]',
+  )
+
+  let initCarousels = null
+  if (needsCarousels) {
+    const carouselModule = await import('./modules/carousel.js')
+    initCarousels = carouselModule.initCarousels
+  }
+
   Alpine.start()
-  initCarousels()
+
+  if (initCarousels) {
+    initCarousels()
+  }
+
   initQuantitySelectors()
 
   if (!prefersReducedMotion) {
-    initLuxuryAnimations()
-    initScrollEffects()
-    initMagneticHover()
+    if (
+      hasAny(
+        '[data-scroll], [data-parallax], [data-clip-reveal], [data-line-reveal], [data-stagger-grid], [data-counter], .js-marquee-track, [data-h-scroll]',
+      )
+    ) {
+      const [animationsModule, scrollEffectsModule] = await Promise.all([
+        import('./modules/animations.js'),
+        import('./modules/scroll-effects.js'),
+      ])
+      animationsModule.initLuxuryAnimations()
+      scrollEffectsModule.initScrollEffects()
+    }
+
+    if (hasAny('[data-magnetic]')) {
+      const magneticModule = await import('./modules/magnetic-hover.js')
+      magneticModule.initMagneticHover()
+    }
   } else {
     // Run non-animated fallbacks (still register scroll effects as visible)
     document

@@ -1,17 +1,17 @@
 @php
   // Parameters — pass via @include or set from ACF
   $image_position = $image_position ?? 'left'; // 'left' | 'right'
-  $label          = $label          ?? '';
-  $title          = $title          ?? '';
-  $text           = $text           ?? '';
-  $cta_label      = $cta_label      ?? '';
-  $cta_url        = $cta_url        ?? '';
-  $cta2_label     = $cta2_label     ?? '';
-  $cta2_url       = $cta2_url       ?? '';
+  $label          = sanitize_text_field($label ?? '');
+  $title          = wp_kses_post($title ?? '');
+  $text           = wp_kses_post($text ?? '');
+  $cta_label      = sanitize_text_field($cta_label ?? '');
+  $cta_url        = esc_url($cta_url ?? '');
+  $cta2_label     = sanitize_text_field($cta2_label ?? '');
+  $cta2_url       = esc_url($cta2_url ?? '');
   $image          = $image          ?? null;  // WP attachment array ['url', 'alt', 'sizes']
   $image_id       = is_array($image) ? (int) ($image['ID'] ?? $image['id'] ?? 0) : 0;
-  $image_url      = is_array($image) ? ($image['url'] ?? '') : (is_string($image) ? $image : '');
-  $image_alt      = is_array($image) ? ($image['alt'] ?? '') : '';
+  $image_url      = is_array($image) ? esc_url($image['url'] ?? '') : (is_string($image) ? esc_url($image) : '');
+  $image_alt      = is_array($image) ? esc_attr($image['alt'] ?? '') : '';
   $bg             = $bg             ?? 'surface'; // 'surface' | 'cream' | 'ink'
   $accent         = $accent         ?? false;  // show gold accent bar
 
@@ -94,20 +94,20 @@
         @if($cta_label && $cta_url)
           <div class="flex flex-wrap gap-4" data-scroll="slide-up">
             @if($bg === 'ink')
-              <a href="{{ $cta_url }}" class="btn-light">
+              <a href="{{ esc_url($cta_url) }}" class="btn-light">
                 {{ $cta_label }}
               </a>
             @else
-              <a href="{{ $cta_url }}" class="btn-primary">
+              <a href="{{ esc_url($cta_url) }}" class="btn-primary">
                 {{ $cta_label }}
               </a>
             @endif
 
             @if($cta2_label && $cta2_url)
               @if($bg === 'ink')
-                <a href="{{ $cta2_url }}" class="btn-outline-white">{{ $cta2_label }}</a>
+                <a href="{{ esc_url($cta2_url) }}" class="btn-outline-white">{{ $cta2_label }}</a>
               @else
-                <a href="{{ $cta2_url }}" class="btn-ghost">{{ $cta2_label }}</a>
+                <a href="{{ esc_url($cta2_url) }}" class="btn-ghost">{{ $cta2_label }}</a>
               @endif
             @endif
           </div>

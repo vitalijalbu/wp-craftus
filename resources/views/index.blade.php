@@ -24,10 +24,10 @@
         </p>
       @endif
       <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
-        {!! $archive_title !!}
+        {!! wp_kses_post($archive_title) !!}
       </h1>
       @if($archive_desc)
-        <div class="text-sm text-muted mt-3 max-w-2xl">{!! $archive_desc !!}</div>
+        <div class="text-sm text-muted mt-3 max-w-2xl">{!! wp_kses_post($archive_desc) !!}</div>
       @endif
     @else
       {{-- Blog index --}}

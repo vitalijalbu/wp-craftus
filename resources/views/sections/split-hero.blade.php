@@ -1,14 +1,14 @@
 @php
   $image_id    = $image_id    ?? 0;
-  $image_url   = $image_url   ?? ($image_id ? wp_get_attachment_image_url($image_id, 'full') : '');
-  $image_alt   = $image_alt   ?? ($image_id ? esc_attr(get_post_meta($image_id, '_wp_attachment_image_alt', true)) : '');
-  $label       = $label       ?? '';
-  $heading     = $heading     ?? get_bloginfo('name');
-  $subtext     = $subtext     ?? '';
-  $cta_label   = $cta_label   ?? __('Scopri di più', 'sage');
-  $cta_url     = $cta_url     ?? home_url('/');
-  $cta2_label  = $cta2_label  ?? '';
-  $cta2_url    = $cta2_url    ?? '';
+  $image_url   = esc_url($image_url ?? ($image_id ? wp_get_attachment_image_url($image_id, 'full') : ''));
+  $image_alt   = esc_attr($image_alt ?? ($image_id ? get_post_meta($image_id, '_wp_attachment_image_alt', true) : ''));
+  $label       = sanitize_text_field($label ?? '');
+  $heading     = wp_kses_post($heading ?? get_bloginfo('name'));
+  $subtext     = sanitize_text_field($subtext ?? '');
+  $cta_label   = sanitize_text_field($cta_label ?? __('Scopri di più', 'sage'));
+  $cta_url     = esc_url($cta_url ?? home_url('/'));
+  $cta2_label  = sanitize_text_field($cta2_label ?? '');
+  $cta2_url    = esc_url($cta2_url ?? '');
   $image_right = $image_right ?? true; // true = image on right, false = image on left
   $bg          = $bg          ?? 'surface';
   $full_height = $full_height ?? true;
@@ -66,8 +66,8 @@
         />
       @elseif($image_url)
         <img
-          src="{{ esc_url($image_url) }}"
-          alt="{{ esc_attr($image_alt) }}"
+          src="{{ $image_url }}"
+          alt="{{ $image_alt }}"
           class="absolute inset-0 w-full h-full object-cover"
           loading="eager"
           fetchpriority="high"

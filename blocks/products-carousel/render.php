@@ -16,6 +16,7 @@ if (! function_exists('wc_get_product')) {
 $title = esc_html($attributes['title'] ?? '');
 $subtitle = esc_html($attributes['subtitle'] ?? '');
 $limit = max(1, min(24, (int) ($attributes['limit'] ?? 8)));
+$ids = array_values(array_filter(array_map('absint', (array) ($attributes['ids'] ?? []))));
 $categories = array_filter(array_map('sanitize_title', (array) ($attributes['categories'] ?? [])));
 $orderby = sanitize_key($attributes['orderby'] ?? 'date');
 $order = in_array(strtoupper((string) ($attributes['order'] ?? 'DESC')), ['ASC', 'DESC'], true)
@@ -36,7 +37,14 @@ $query_args = [
     'posts_per_page' => $limit,
     'order' => $order,
     'ignore_sticky_posts' => true,
+    'fields' => 'ids',
+    'no_found_rows' => true,
 ];
+
+if (! empty($ids)) {
+    $query_args['post__in'] = $ids;
+    $query_args['orderby'] = 'post__in';
+}
 
 // Orderby mapping (WooCommerce conventions → WP_Query)
 switch ($orderby) {
@@ -77,18 +85,31 @@ if (! empty($categories)) {
     ]];
 }
 
-$query = new WP_Query($query_args);
-$products = [];
+$cache_key = 'theme_products_carousel_'.md5(wp_json_encode([
+    'ids' => $ids,
+    'categories' => $categories,
+    'limit' => $limit,
+    'orderby' => $orderby,
+    'order' => $order,
+]));
 
-if ($query->have_posts()) {
-    while ($query->have_posts()) {
-        $query->the_post();
-        $product = wc_get_product(get_the_ID());
-        if ($product && $product->is_visible()) {
-            $products[] = $product;
-        }
+$product_ids = get_transient($cache_key);
+if (! is_array($product_ids)) {
+    $query = new WP_Query($query_args);
+    $product_ids = array_map('intval', (array) $query->posts);
+    set_transient($cache_key, $product_ids, 5 * MINUTE_IN_SECONDS);
+}
+
+if (! empty($product_ids)) {
+    _prime_post_caches($product_ids, false, true);
+}
+
+$products = [];
+foreach ($product_ids as $product_id) {
+    $product = wc_get_product($product_id);
+    if ($product && $product->is_visible()) {
+        $products[] = $product;
     }
-    wp_reset_postdata();
 }
 
 if (empty($products)) {

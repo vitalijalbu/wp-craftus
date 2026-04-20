@@ -1,6 +1,5 @@
 /* Fonts are loaded asynchronously via wp_head in app/setup.php — no @import here */
 
-@import "./swiper.css";
 @import "tailwindcss" theme(static);
 
 @source "../../app/**/*.php";
@@ -1578,10 +1577,6 @@ select:focus {
 .theme-btn-outline-white .wp-block-button__link:hover {
   background: rgba(255, 255, 255, 0.1) !important;
 }
-
-
-@import './woocommerce.css';
-
 /* ══════════════════════════════════════════════════════════════════════════
    LUXURY COMPONENT SYSTEM
    Gucci / NET-A-PORTER / Mytheresa inspired
@@ -2911,19 +2906,19 @@ textarea.contact-input {
 /* WP genera has-accent-color da slug "accent" rimosso in theme.json.
    Questi alias mantengono funzionante il contenuto creato prima della migrazione. */
 .has-accent-color {
-  color: #0074C7 !important;
+  color: #196EC8 !important;
 }
 
 .has-accent-background-color {
-  background-color: #0074C7 !important;
+  background-color: #196EC8 !important;
 }
 
 .has-accent-light-color {
-  color: #eff6ff !important;
+  color: #e8f2fb !important;
 }
 
 .has-accent-light-background-color {
-  background-color: #eff6ff !important;
+  background-color: #e8f2fb !important;
 }
 
 /* ── Theme form (contact-section pattern) ───────────────────────────────── */

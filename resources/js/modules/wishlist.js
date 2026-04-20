@@ -5,6 +5,7 @@
 
 const KEY = 'theme:wishlist'
 const IS_DEV = import.meta.env.DEV
+const THEME_API_BASE = (window.themeData?.themeApiBase ?? '/wp-json/theme/v1').replace(/\/$/, '')
 
 function getWishlist() {
   return JSON.parse(localStorage.getItem(KEY) || '[]')
@@ -77,7 +78,7 @@ function initWishlistButtons() {
 
 // ── Wishlist page custom element ──────────────────────────────────────────────
 // Usage: <wishlist-products products-limit="12"></wishlist-products>
-// Fetches products via GET /wp-json/theme/v1/wishlist-products?ids=1,2,3 (URL from window.themeRestUrl)
+// Fetches products via GET /wp-json/theme/v1/wishlist-products?ids=1,2,3.
 if (!window.customElements.get('wishlist-products')) {
   class WishlistProducts extends HTMLElement {
     connectedCallback() {
@@ -115,8 +116,7 @@ if (!window.customElements.get('wishlist-products')) {
       const timer = setTimeout(() => ctrl.abort(), 8000)
 
       try {
-        const base = window.themeRestUrl || '/wp-json/theme/v1'
-        const res = await fetch(base + '/wishlist-products?ids=' + ids.join(','), {
+        const res = await fetch(THEME_API_BASE + '/wishlist-products?ids=' + ids.join(','), {
           signal: ctrl.signal,
         })
         clearTimeout(timer)

@@ -65,7 +65,7 @@
             <div class="p-6 flex flex-col flex-1">
               <h2 class="text-xl font-light text-ink group-hover:text-primary transition-colors mb-3 leading-snug">
                 <a href="{{ $perma }}" class="relative after:absolute after:inset-0">
-                  {!! get_the_title() !!}
+                  {{ get_the_title() }}
                 </a>
               </h2>
               @if($excerpt)

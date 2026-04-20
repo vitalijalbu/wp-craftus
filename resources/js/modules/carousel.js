@@ -3,6 +3,8 @@
  * Each selector initializes with luxury defaults.
  */
 
+import '@styles/swiper.css'
+
 // ── Alpine.js ────────────────────────────────────────────────────────────────
 import Alpine from 'alpinejs'
 import Swiper from 'swiper'

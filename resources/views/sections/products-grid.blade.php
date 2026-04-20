@@ -1,7 +1,7 @@
 @php
   // Parameters
   $section_label    = $section_label    ?? '';
-  $section_title    = $section_title    ?? __('Tutti i prodotti', 'sage');
+  $section_title    = wp_kses_post($section_title ?? __('Tutti i prodotti', 'sage'));
   $section_subtitle = $section_subtitle ?? '';
   $category         = $category         ?? '';   // slug or array of slugs
   $per_page         = $per_page         ?? 12;
@@ -21,6 +21,7 @@
     if (!is_wp_error($raw_terms)) {
       foreach ($raw_terms as $term) {
         $cat_tabs[] = [
+          'id'    => (int) $term->term_id,
           'slug'  => $term->slug,
           'name'  => $term->name,
           'count' => $term->count,
@@ -45,6 +46,44 @@
     $initial_products = wc_get_products($q_args);
   }
 
+  $initial_products_data = array_values(array_filter(array_map(function ($product) {
+    if (! ($product instanceof \WC_Product)) {
+      return null;
+    }
+
+    $pid = (int) $product->get_id();
+    $thumb_id = (int) $product->get_image_id();
+    $terms = get_the_terms($pid, 'product_cat');
+    $category_name = ($terms && ! is_wp_error($terms)) ? esc_html($terms[0]->name) : '';
+
+    return [
+      'id' => $pid,
+      'title' => esc_html($product->get_name()),
+      'url' => esc_url(get_permalink($pid)),
+      'thumb' => esc_url(wp_get_attachment_image_url($thumb_id, 'woocommerce_thumbnail') ?: ''),
+      'category' => $category_name,
+      'price_html' => wp_strip_all_tags($product->get_price_html()),
+      'on_sale' => $product->is_on_sale(),
+      'in_stock' => $product->is_in_stock(),
+      'add_to_cart_url' => esc_url($product->add_to_cart_url()),
+      'add_to_cart_text' => esc_html($product->add_to_cart_text()),
+    ];
+  }, $initial_products)));
+
+  $initial_active_category = 'all';
+  if (! empty($category)) {
+    $first_category = is_array($category) ? (string) reset($category) : (string) $category;
+    $term = get_term_by('slug', $first_category, 'product_cat');
+    if ($term && ! is_wp_error($term)) {
+      $initial_active_category = (int) $term->term_id;
+    }
+  }
+
+  $category_map = [];
+  foreach ($cat_tabs as $tab) {
+    $category_map[(string) $tab['slug']] = (int) $tab['id'];
+  }
+
   $cols_class = match((int) $cols) {
     2 => 'grid-cols-1 sm:grid-cols-2',
     4 => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
@@ -59,13 +98,13 @@
   class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
   x-data="productsGrid({{ \Illuminate\Support\Js::from([
-    'activeCategory' => $category ?: 'all',
-    'products' => array_map(fn($p) => (int) $p->get_id(), $initial_products),
+    'activeCategory' => $initial_active_category,
+    'products' => $initial_products_data,
     'perPage' => (int) $per_page,
     'hasMore' => count($initial_products) >= $per_page,
-    'categoriesUrl' => rest_url('wc/v3/products/categories'),
-    'productsUrl' => rest_url('wc/v3/products'),
-    'nonce' => wp_create_nonce('wp_rest'),
+    'endpoint' => rest_url('theme/v1/products'),
+    'orderby' => 'date',
+    'categoryMap' => $category_map,
   ]) }})"
 >
   <div class="container">
@@ -98,10 +137,10 @@
         @foreach($cat_tabs as $tab)
           <button
             type="button"
-            :aria-pressed="activeCategory === '{{ $tab['slug'] }}'"
-            @click="filterByCategory('{{ $tab['slug'] }}')"
+            :aria-pressed="activeCategory === {{ (int) $tab['id'] }}"
+            @click="filterByCategory({{ (int) $tab['id'] }})"
             class="px-5 py-2 text-xs font-500 tracking-wider uppercase transition-all duration-200"
-            :class="activeCategory === '{{ $tab['slug'] }}'
+            :class="activeCategory === {{ (int) $tab['id'] }}
               ? 'bg-ink text-surface border border-ink'
               : 'bg-transparent text-muted border border-border hover:border-ink hover:text-ink'"
           >{{ $tab['name'] }}</button>
@@ -125,11 +164,61 @@
       :class="loading ? 'opacity-50 pointer-events-none' : 'opacity-100'"
       role="list"
     >
-      @foreach($initial_products as $product)
+      <template x-for="product in products" :key="product.id">
         <div data-scroll-item role="listitem">
-          @include('partials.product-card', ['product' => $product])
+          <article class="product-card" :aria-label="product.title">
+            <div class="product-card__image-wrap">
+              <a :href="product.url" tabindex="-1" aria-hidden="true">
+                <img
+                  :src="product.thumb"
+                  :alt="product.title"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </a>
+
+              <div class="product-card__badge flex flex-col gap-1">
+                <span x-show="product.on_sale" class="badge badge-primary">{{ __('Offerta', 'sage') }}</span>
+                <span x-show="!product.in_stock" class="badge bg-muted/80">{{ __('Esaurito', 'sage') }}</span>
+              </div>
+
+              <button
+                type="button"
+                class="product-card__wishlist wishlist-btn"
+                :data-product-id="product.id"
+                aria-label="{{ esc_attr__('Aggiungi alla wishlist', 'sage') }}"
+              >
+                <x-icons.heart class="size-4 text-ink" />
+              </button>
+
+              <div class="product-card__overlay bg-white/95" x-show="product.in_stock && product.add_to_cart_url">
+                <a
+                  :href="product.add_to_cart_url"
+                  :data-product_id="product.id"
+                  class="btn-primary w-full justify-center add_to_cart_button ajax_add_to_cart"
+                  rel="nofollow"
+                  aria-label="{{ esc_attr__('Aggiungi al carrello', 'sage') }}"
+                >
+                  <span class="btn-label" x-text="product.add_to_cart_text"></span>
+                  <x-icons.spinner class="btn-spinner" width="16" height="16" />
+                </a>
+              </div>
+            </div>
+
+            <div class="product-card__body">
+              <p class="product-card__category" x-show="product.category" x-text="product.category"></p>
+
+              <a :href="product.url" class="product-card__title" x-text="product.title"></a>
+
+              <div class="product-card__price mt-auto pt-3">
+                <span x-text="product.price_html"></span>
+              </div>
+            </div>
+          </article>
         </div>
-      @endforeach
+      </template>
     </div>
 
     {{-- Loading spinner (visuale; l'annuncio AT è nella live region sr-only sopra) --}}

@@ -1,6 +1,6 @@
 @php
-  $section_label = $section_label ?? '';
-  $section_title = $section_title ?? '';
+  $section_label = sanitize_text_field($section_label ?? '');
+  $section_title = wp_kses_post($section_title ?? '');
   $bg            = $bg            ?? 'surface';
   $layout        = $layout        ?? 'grid';    // 'grid' | 'masonry' | 'editorial'
   $cols          = $cols          ?? 3;

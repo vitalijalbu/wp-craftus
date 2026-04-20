@@ -13,38 +13,63 @@ add_action('admin_post_theme_contact', __NAMESPACE__.'\\handle_contact_form');
 add_action('admin_post_nopriv_theme_contact', __NAMESPACE__.'\\handle_contact_form');
 
 /**
+ * Detect XML HTTP requests for admin-post handlers.
+ */
+function theme_is_xhr_request(): bool
+{
+    $header = strtolower((string) ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? ''));
+
+    return wp_doing_ajax() || $header === 'xmlhttprequest';
+}
+
+/**
+ * Reply as JSON for AJAX calls, otherwise redirect back.
+ */
+function theme_contact_respond(bool $success, string $message, int $status = 200): void
+{
+    if (theme_is_xhr_request()) {
+        wp_send_json([
+            'success' => $success,
+            'message' => $message,
+        ], $status);
+    }
+
+    $redirect = wp_get_referer() ?: home_url('/');
+    $redirect = add_query_arg('theme_contact', $success ? 'success' : 'error', $redirect);
+    wp_safe_redirect($redirect, $success ? 303 : 302);
+    exit;
+}
+
+/**
  * Process the contact form submission.
  * Validates nonce, honeypot, required fields, then fires wp_mail().
  */
 function handle_contact_form(): void
 {
     // Honeypot check
-    if (! empty($_POST['honeypot'])) {
-        wp_send_json(['success' => false, 'message' => ''], 400);
+    if (! empty($_POST['honeypot']) || ! empty($_POST['website'])) {
+        theme_contact_respond(false, '', 400);
     }
 
     // Nonce verification
+    $nonce = sanitize_text_field(wp_unslash($_POST['_contact_nonce'] ?? $_POST['_wpnonce'] ?? ''));
     if (
-        empty($_POST['_contact_nonce'])
-        || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_contact_nonce'])), 'theme_contact_form')
+        $nonce === ''
+        || ! wp_verify_nonce($nonce, 'theme_contact_form')
     ) {
-        wp_send_json([
-            'success' => false,
-            'message' => __('Verifica di sicurezza fallita. Ricarica la pagina.', 'sage'),
-        ], 403);
+        theme_contact_respond(false, __('Verifica di sicurezza fallita. Ricarica la pagina.', 'sage'), 403);
     }
 
-    $name = sanitize_text_field(wp_unslash($_POST['contact_name'] ?? ''));
-    $email = sanitize_email(wp_unslash($_POST['contact_email'] ?? ''));
-    $subject = sanitize_text_field(wp_unslash($_POST['contact_subject'] ?? __('Nuovo messaggio dal sito', 'sage')));
-    $message = sanitize_textarea_field(wp_unslash($_POST['contact_message'] ?? ''));
-    $privacy = ! empty($_POST['contact_privacy']);
+    $name = sanitize_text_field(wp_unslash($_POST['contact_name'] ?? $_POST['name'] ?? ''));
+    $email = sanitize_email(wp_unslash($_POST['contact_email'] ?? $_POST['email'] ?? ''));
+    $subject = sanitize_text_field(wp_unslash(
+        $_POST['contact_subject'] ?? $_POST['subject'] ?? __('Nuovo messaggio dal sito', 'sage')
+    ));
+    $message = sanitize_textarea_field(wp_unslash($_POST['contact_message'] ?? $_POST['message'] ?? ''));
+    $privacy = ! empty($_POST['contact_privacy']) || ! empty($_POST['privacy']);
 
     if (! $name || ! is_email($email) || ! $message || ! $privacy) {
-        wp_send_json([
-            'success' => false,
-            'message' => __('Compila tutti i campi obbligatori.', 'sage'),
-        ], 422);
+        theme_contact_respond(false, __('Compila tutti i campi obbligatori.', 'sage'), 422);
     }
 
     $to = sanitize_email(get_option('admin_email'));
@@ -70,15 +95,9 @@ function handle_contact_form(): void
 
     if ($sent) {
         do_action('theme_contact_form_sent', compact('name', 'email', 'subject', 'message'));
-        wp_send_json([
-            'success' => true,
-            'message' => __('Messaggio inviato. Ti risponderemo al più presto.', 'sage'),
-        ]);
+        theme_contact_respond(true, __('Messaggio inviato. Ti risponderemo al più presto.', 'sage'));
     } else {
-        wp_send_json([
-            'success' => false,
-            'message' => __('Invio non riuscito. Riprova o contattaci via email.', 'sage'),
-        ], 500);
+        theme_contact_respond(false, __('Invio non riuscito. Riprova o contattaci via email.', 'sage'), 500);
     }
 }
 
@@ -223,7 +242,7 @@ function quick_view(\WP_REST_Request $request): \WP_REST_Response|\WP_Error
 
     // Attributes for variable products
     $attributes = [];
-    if ($product->is_type('variable')) {
+    if ($product instanceof \WC_Product_Variable) {
         foreach ($product->get_variation_attributes() as $attr_name => $options) {
             $label = wc_attribute_label($attr_name, $product);
             $attributes[] = [
@@ -267,7 +286,7 @@ add_action('rest_api_init', function () {
             'in_stock' => ['default' => false, 'type' => 'boolean'],
             'orderby' => ['default' => 'date', 'type' => 'string', 'sanitize_callback' => 'sanitize_key',
                 'validate_callback' => fn ($v) => in_array($v, ['date', 'price', 'price-desc', 'popularity', 'rating', 'title'], true)],
-            'per_page' => ['default' => 12,  'type' => 'integer', 'sanitize_callback' => fn ($v) => min(48, max(1, (int) $v))],
+            'per_page' => ['default' => 12,  'type' => 'integer', 'sanitize_callback' => fn ($v) => min(24, max(1, (int) $v))],
             'page' => ['default' => 1,   'type' => 'integer', 'sanitize_callback' => fn ($v) => max(1, (int) $v)],
         ],
     ]);
@@ -290,11 +309,30 @@ function filtered_products(\WP_REST_Request $request): \WP_REST_Response
     $per_page = (int) $request->get_param('per_page');
     $page = (int) $request->get_param('page');
 
+    $cats = array_values(array_filter(array_map('absint', (array) $cats)));
+    sort($cats);
+
+    $cache_key = 'theme_rest_products_'.md5(wp_json_encode([
+        'cats' => $cats,
+        'min_price' => $min_price,
+        'max_price' => $max_price,
+        'in_stock' => $in_stock,
+        'orderby' => $orderby,
+        'per_page' => $per_page,
+        'page' => $page,
+    ]));
+
+    $cached = get_transient($cache_key);
+    if (is_array($cached)) {
+        return rest_ensure_response($cached);
+    }
+
     $args = [
         'post_type' => 'product',
         'post_status' => 'publish',
         'posts_per_page' => $per_page,
         'paged' => $page,
+        'fields' => 'ids',
         'meta_query' => [],
         'tax_query' => [],
     ];
@@ -337,18 +375,26 @@ function filtered_products(\WP_REST_Request $request): \WP_REST_Response
     $query = new \WP_Query($args);
     $products = [];
 
-    foreach ($query->posts as $post) {
-        $product = wc_get_product($post->ID);
+    $product_ids = array_map('intval', (array) $query->posts);
+    if (! empty($product_ids)) {
+        _prime_post_caches($product_ids, false, true);
+    }
+
+    foreach ($product_ids as $product_id) {
+        $product = wc_get_product($product_id);
         if (! $product) {
             continue;
         }
 
         $thumb_id = $product->get_image_id();
+        $terms = get_the_terms($product_id, 'product_cat');
+        $category = ($terms && ! is_wp_error($terms)) ? esc_html($terms[0]->name) : '';
         $products[] = [
-            'id' => $post->ID,
+            'id' => $product_id,
             'title' => esc_html($product->get_name()),
-            'url' => esc_url(get_permalink($post->ID)),
+            'url' => esc_url(get_permalink($product_id)),
             'thumb' => esc_url(wp_get_attachment_image_url($thumb_id, 'woocommerce_thumbnail') ?: ''),
+            'category' => $category,
             'price_html' => wp_strip_all_tags($product->get_price_html()),
             'price' => (float) $product->get_price(),
             'on_sale' => $product->is_on_sale(),
@@ -359,12 +405,16 @@ function filtered_products(\WP_REST_Request $request): \WP_REST_Response
         ];
     }
 
-    return rest_ensure_response([
+    $response = [
         'products' => $products,
         'total' => (int) $query->found_posts,
         'pages' => (int) $query->max_num_pages,
         'page' => $page,
-    ]);
+    ];
+
+    set_transient($cache_key, $response, MINUTE_IN_SECONDS);
+
+    return rest_ensure_response($response);
 }
 
 // ── Wishlist Products — REST endpoint ────────────────────────────────────────

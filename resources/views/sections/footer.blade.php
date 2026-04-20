@@ -30,6 +30,24 @@
   $footer_tagline       = get_theme_mod('footer_tagline',    __('Il tuo punto di riferimento per la cura e il benessere del tuo animale domestico.', 'sage'));
   $newsletter_heading   = get_theme_mod('newsletter_heading', __('Offerte esclusive, novità e consigli per il tuo animale.', 'sage'));
   $newsletter_active    = get_theme_mod('newsletter_active', false);
+  $newsletter_privacy_url = esc_url(get_privacy_policy_url() ?: home_url('/privacy'));
+  $newsletter_privacy_label = wp_kses(
+    str_replace(
+      '{url}',
+      $newsletter_privacy_url,
+      __('Accetto la <a href="{url}" class="underline">Privacy Policy</a>.', 'sage')
+    ),
+    [
+      'a' => [
+        'href' => [],
+        'class' => [],
+        'target' => [],
+        'rel' => [],
+      ],
+      'strong' => [],
+      'em' => [],
+    ]
+  );
   $cta_url              = function_exists('App\\theme_cta_url') ? \App\theme_cta_url() : esc_url(home_url('/contatti'));
   $custom_logo_id       = (int) get_theme_mod('custom_logo');
 @endphp
@@ -45,59 +63,16 @@
         <p class="text-xl font-light">{{ esc_html($newsletter_heading) }}</p>
       </div>
 
-      {{-- Newsletter form — submits to REST API /wp-json/theme/v1/newsletter --}}
-      <form
-        class="flex w-full max-w-sm gap-0"
-        x-data="{ email: '', state: 'idle', message: '' }"
-        @submit.prevent="
-          if (!email) return;
-          state = 'loading';
-          fetch('{{ esc_url(rest_url('theme/v1/newsletter')) }}', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': '{{ wp_create_nonce('wp_rest') }}' },
-            body: JSON.stringify({ email }),
-          })
-          .then(r => r.json())
-          .then(d => { state = d.success ? 'done' : 'error'; message = d.message || ''; })
-          .catch(() => { state = 'error'; message = '{{ __('Errore. Riprova.', 'sage') }}'; });
-        "
-        novalidate
-      >
-        <template x-if="state !== 'done'">
-          <div class="flex w-full">
-            <label for="footer-newsletter-email" class="sr-only">{{ __('Email', 'sage') }}</label>
-            <input
-              id="footer-newsletter-email"
-              type="email"
-              x-model="email"
-              placeholder="{{ __('La tua email', 'sage') }}"
-              :disabled="state === 'loading'"
-              class="flex-1 bg-white/5 border border-white/15 border-r-0 px-4 py-3 text-sm placeholder-white/30 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
-              required
-            >
-            <button
-              type="submit"
-              :disabled="state === 'loading'"
-              class="btn-primary whitespace-nowrap disabled:opacity-60"
-            >
-              <span x-show="state !== 'loading'">{{ __('Iscriviti', 'sage') }}</span>
-              <span x-show="state === 'loading'" aria-live="polite">…</span>
-            </button>
-          </div>
-        </template>
-        <p
-          x-show="state === 'done'"
-          class="text-sm text-primary py-3"
-          aria-live="polite"
-          x-text="message"
-        ></p>
-        <p
-          x-show="state === 'error'"
-          class="text-sm text-error py-3"
-          aria-live="assertive"
-          x-text="message"
-        ></p>
-      </form>
+      <div class="w-full max-w-sm">
+        @include('partials.newsletter-form', [
+          'bg' => 'surface',
+          'placeholder' => __('La tua email', 'sage'),
+          'btn_label' => __('Iscriviti', 'sage'),
+          'rest_url' => esc_url(rest_url('theme/v1/newsletter')),
+          'nonce' => wp_create_nonce('wp_rest'),
+          'privacy_label' => $newsletter_privacy_label,
+        ])
+      </div>
     </div>
   </div>
   @endif

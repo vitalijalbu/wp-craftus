@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @php(do_action('get_header'))
     @php(wp_head())
+    @php(
+      $isWooPage = function_exists('is_woocommerce')
+        && (is_woocommerce() || is_cart() || is_checkout() || is_account_page())
+    )
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if($isWooPage)
+      @vite('resources/css/woocommerce.css')
+    @endif
   </head>
 
   <body @php(body_class('antialiased'))>

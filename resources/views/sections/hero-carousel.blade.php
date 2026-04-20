@@ -34,15 +34,15 @@
 
       @foreach($slides as $slide)
         @php
-          $img_url = $slide['image']['url'] ?? '';
-          $img_alt = $slide['image']['alt'] ?? '';
-          $label   = $slide['label']   ?? '';
-          $title   = $slide['title']   ?? '';
-          $subtitle = $slide['subtitle'] ?? '';
-          $cta_label  = $slide['cta_label']  ?? '';
-          $cta_url    = $slide['cta_url']    ?? '';
-          $cta2_label = $slide['cta2_label'] ?? '';
-          $cta2_url   = $slide['cta2_url']   ?? '';
+          $img_url = esc_url($slide['image']['url'] ?? '');
+          $img_alt = esc_attr($slide['image']['alt'] ?? '');
+          $label   = sanitize_text_field($slide['label'] ?? '');
+          $title   = wp_kses_post($slide['title'] ?? '');
+          $subtitle = sanitize_text_field($slide['subtitle'] ?? '');
+          $cta_label  = sanitize_text_field($slide['cta_label'] ?? '');
+          $cta_url    = esc_url($slide['cta_url'] ?? '');
+          $cta2_label = sanitize_text_field($slide['cta2_label'] ?? '');
+          $cta2_url   = esc_url($slide['cta2_url'] ?? '');
           $slide_count = count($slides);
         @endphp
         <div
@@ -92,11 +92,11 @@
 
                 @if($cta_label && $cta_url)
                   <div class="flex flex-wrap gap-4">
-                    <a href="{{ $cta_url }}" class="btn-light">
+                    <a href="{{ esc_url($cta_url) }}" class="btn-light">
                       {{ $cta_label }}
                     </a>
                     @if($cta2_label && $cta2_url)
-                      <a href="{{ $cta2_url }}" class="btn-outline-white">
+                      <a href="{{ esc_url($cta2_url) }}" class="btn-outline-white">
                         {{ $cta2_label }}
                       </a>
                     @endif

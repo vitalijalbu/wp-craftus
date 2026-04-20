@@ -259,10 +259,6 @@ add_filter('loop_shop_columns', fn () => 3);
  * preconnect hints reduce DNS + TLS handshake latency.
  */
 add_action('wp_head', function () {
-    echo '<script>window.themeRestUrl='.wp_json_encode(rest_url('theme/v1')).';</script>'."\n";
-}, 1);
-
-add_action('wp_head', function () {
     /**
      * Filter the Google Fonts URL.
      * Override per-project: add_filter('theme_font_url', fn() => 'https://fonts.googleapis.com/...');
@@ -495,10 +491,10 @@ add_filter('block_categories_all', function (array $categories): array {
  * Each block lives in blocks/{name}/ with a block.json + render.php.
  */
 add_action('init', function () {
-    $blocks = ['hero', 'testimonial', 'stat', 'icon-box', 'accordion', 'products-carousel'];
-    foreach ($blocks as $name) {
-        $dir = get_template_directory()."/blocks/{$name}";
-        if (is_dir($dir)) {
+    $dirs = glob(get_template_directory().'/blocks/*', GLOB_ONLYDIR) ?: [];
+
+    foreach ($dirs as $dir) {
+        if (file_exists($dir.'/block.json')) {
             register_block_type($dir);
         }
     }

@@ -34,7 +34,6 @@ $align_class = match ($align) {
   aria-label="<?= esc_attr(wp_strip_all_tags($heading)) ?>"
   <?= get_block_wrapper_attributes($scroll_effect ? ['data-scroll' => $scroll_effect] : []) ?>
 >
-  {{-- Background image --}}
   <?php if ($image_id) { ?>
     <?= wp_get_attachment_image($image_id, 'full', false, [
         'class' => 'absolute inset-0 w-full h-full object-cover',
@@ -55,14 +54,12 @@ $align_class = match ($align) {
     >
   <?php } ?>
 
-  {{-- Overlay --}}
   <div
     class="theme-hero__overlay absolute inset-0 bg-ink"
     style="--hero-overlay:<?= $opacity / 100 ?>"
     aria-hidden="true"
   ></div>
 
-  {{-- Content --}}
   <div class="relative z-10 flex flex-col <?= $align_class ?> px-6 lg:px-16 py-24 max-w-4xl <?= $align === 'center' ? 'mx-auto' : '' ?>">
 
     <?php if ($label) { ?>

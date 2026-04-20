@@ -13,7 +13,7 @@
       <div class="container">
         @include('partials.breadcrumb')
         <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
-          {!! get_the_title() !!}
+          {{ get_the_title() }}
         </h1>
       </div>
     </div>

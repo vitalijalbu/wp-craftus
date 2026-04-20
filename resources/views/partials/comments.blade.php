@@ -2,7 +2,7 @@
   <section id="comments" class="comments">
     @if ($responses())
       <h2>
-        {!! $title !!}
+        {{ $title }}
       </h2>
 
       <ol class="comment-list">
@@ -30,7 +30,7 @@
 
     @if ($closed())
       <x-alert type="warning">
-        {!! __('Comments are closed.', 'sage') !!}
+        {{ __('Comments are closed.', 'sage') }}
       </x-alert>
     @endif
 

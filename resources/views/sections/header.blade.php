@@ -204,7 +204,7 @@
           {{-- CTA --}}
           @if($show_cta)
             <a
-              href="{{ $cta_url }}"
+              href="{{ esc_url($cta_url) }}"
               class="btn-slide"
               :class="hasHero && !scrolled
                 ? 'border-white/40 text-white hover:bg-white hover:text-ink'
@@ -366,7 +366,7 @@
     <div class="px-6 py-8 border-t border-white/8 space-y-4">
       @if($show_cta)
         <a
-          href="{{ $cta_url }}"
+          href="{{ esc_url($cta_url) }}"
           class="block w-full text-center py-4 bg-primary text-white font-semibold tracking-[0.22em] uppercase hover:bg-primary-dark transition-colors"
           @click="closeMobile()"
         >{{ esc_html($cta_label) }}</a>

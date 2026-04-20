@@ -36,7 +36,7 @@
     @endif
 
     <h1 class="p-name text-[clamp(1.75rem,4vw,3rem)] font-light text-ink leading-tight mb-6">
-      {!! $title !!}
+      {{ $title }}
     </h1>
 
     @include('partials.entry-meta')

@@ -132,31 +132,40 @@ if ($contact_address) { ?>
 			<div class="wp-block-group theme-contact-form">
 
 				<!-- wp:html -->
-				<form class="theme-form" id="theme-contact-form" novalidate>
+				<form
+					class="theme-form"
+					id="theme-contact-form"
+					method="post"
+					action="<?php echo esc_url(admin_url('admin-post.php')); ?>"
+					novalidate
+				>
+					<input type="hidden" name="action" value="theme_contact"/>
+					<?php wp_nonce_field('theme_contact_form', '_contact_nonce'); ?>
+					<input type="text" name="honeypot" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true"/>
 					<div class="theme-form__row">
 						<label for="theme-name" class="theme-form__label">Nome e Cognome *</label>
-						<input type="text" id="theme-name" name="name" class="theme-form__input" required placeholder="Mario Rossi"/>
+						<input type="text" id="theme-name" name="contact_name" class="theme-form__input" required placeholder="Mario Rossi"/>
 					</div>
 					<div class="theme-form__row">
 						<label for="theme-email" class="theme-form__label">Email *</label>
-						<input type="email" id="theme-email" name="email" class="theme-form__input" required placeholder="mario@azienda.it"/>
+						<input type="email" id="theme-email" name="contact_email" class="theme-form__input" required placeholder="mario@azienda.it"/>
 					</div>
 					<div class="theme-form__row">
 						<label for="theme-phone" class="theme-form__label">Telefono</label>
-						<input type="tel" id="theme-phone" name="phone" class="theme-form__input" placeholder="+39 030 000 000"/>
+						<input type="tel" id="theme-phone" name="contact_phone" class="theme-form__input" placeholder="+39 030 000 000"/>
 					</div>
 					<div class="theme-form__row">
 						<label for="theme-subject" class="theme-form__label">Oggetto *</label>
-						<input type="text" id="theme-subject" name="subject" class="theme-form__input" required placeholder="Oggetto del messaggio"/>
+						<input type="text" id="theme-subject" name="contact_subject" class="theme-form__input" required placeholder="Oggetto del messaggio"/>
 					</div>
 					<div class="theme-form__row">
 						<label for="theme-message" class="theme-form__label">Messaggio *</label>
-						<textarea id="theme-message" name="message" class="theme-form__textarea" rows="5" required placeholder="Descrivi il tuo progetto o la tua richiesta..."></textarea>
+						<textarea id="theme-message" name="contact_message" class="theme-form__textarea" rows="5" required placeholder="Descrivi il tuo progetto o la tua richiesta..."></textarea>
 					</div>
 					<div class="theme-form__row theme-form__privacy">
 						<label class="theme-form__checkbox-label">
-							<input type="checkbox" name="privacy" required/>
-							Ho letto e accetto la <a href="/privacy-policy" target="_blank">Privacy Policy</a>. *
+							<input type="checkbox" name="contact_privacy" required/>
+							Ho letto e accetto la <a href="<?php echo esc_url(get_privacy_policy_url() ?: home_url('/privacy-policy')); ?>" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. *
 						</label>
 					</div>
 					<div class="theme-form__submit">

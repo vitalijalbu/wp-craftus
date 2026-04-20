@@ -13,6 +13,7 @@ namespace App;
 add_action('wp_enqueue_scripts', function () {
     $data = [
         'restUrl' => esc_url_raw(rest_url()),
+        'themeApiBase' => esc_url_raw(rest_url('theme/v1')),
         'nonce' => wp_create_nonce('wp_rest'),
         'homeUrl' => esc_url_raw(home_url('/')),
         'shopUrl' => function_exists('wc_get_page_permalink') ? esc_url_raw(wc_get_page_permalink('shop')) : '',
@@ -251,7 +252,7 @@ add_filter('woocommerce_product_thumbnails_columns', fn () => 4);
 add_action('woocommerce_after_add_to_cart_form', function () {
     global $product;
 
-    $is_physical = $product instanceof WC_Product
+    $is_physical = $product instanceof \WC_Product
         && ! $product->is_virtual()
         && ! $product->is_downloadable();
 
@@ -440,21 +441,38 @@ function theme_get_client_ip(): string
     return sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
 }
 
-// Rate-limit REST endpoints: newsletter (5/min) and search (30/min per IP).
+// Rate-limit REST endpoints most exposed to abuse.
 // Uses transients as a lightweight counter — no extra plugin needed.
 add_filter('rest_pre_dispatch', function ($result, $server, \WP_REST_Request $request) {
     $route = $request->get_route();
 
-    $limits = [
-        '/theme/v1/newsletter' => ['max' => 5,  'prefix' => 'nl_rl_',     'window' => MINUTE_IN_SECONDS],
-        '/theme/v1/search' => ['max' => 30, 'prefix' => 'srch_rl_',   'window' => MINUTE_IN_SECONDS],
+    $exact_limits = [
+        '/theme/v1/newsletter' => ['max' => 5,  'prefix' => 'nl_rl_',      'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/search' => ['max' => 30, 'prefix' => 'srch_rl_',    'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/products' => ['max' => 45, 'prefix' => 'prod_rl_',    'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/wishlist-products' => ['max' => 40, 'prefix' => 'wlp_rl_',     'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/wishlist' => ['max' => 60, 'prefix' => 'wl_rl_',      'window' => MINUTE_IN_SECONDS],
     ];
 
-    if (! isset($limits[$route])) {
+    $prefix_limits = [
+        '/theme/v1/quick-view/' => ['max' => 90, 'prefix' => 'qv_rl_', 'window' => MINUTE_IN_SECONDS],
+    ];
+
+    $cfg = $exact_limits[$route] ?? null;
+
+    if (! $cfg) {
+        foreach ($prefix_limits as $prefix => $limit) {
+            if (str_starts_with($route, $prefix)) {
+                $cfg = $limit;
+                break;
+            }
+        }
+    }
+
+    if (! $cfg) {
         return $result;
     }
 
-    $cfg = $limits[$route];
     $ip = theme_get_client_ip();
     $key = $cfg['prefix'].md5($ip);
     $hits = (int) get_transient($key);
@@ -517,11 +535,11 @@ add_filter('template_include', function (string $template): string {
 // ── [products_carousel] shortcode ─────────────────────────────────────────────
 // Usage: [products_carousel title="Titolo" subtitle="Label" limit="8" category="" orderby="date" order="DESC" ids=""]
 add_shortcode('products_carousel', function (array $atts): string {
-    if (! function_exists('wc_get_product')) {
+    if (! function_exists('render_block')) {
         return '';
     }
 
-    $atts = shortcode_atts([
+    $raw = shortcode_atts([
         'title' => __('I nostri prodotti', 'sage'),
         'subtitle' => '',
         'limit' => 8,
@@ -531,108 +549,33 @@ add_shortcode('products_carousel', function (array $atts): string {
         'ids' => '',
     ], $atts, 'products_carousel');
 
-    $limit = max(1, min(24, (int) $atts['limit']));
-    $title = sanitize_text_field($atts['title']);
-    $subtitle = sanitize_text_field($atts['subtitle']);
-    $orderby = sanitize_key($atts['orderby']);
-    $order = in_array(strtoupper((string) $atts['order']), ['ASC', 'DESC'], true)
-        ? strtoupper((string) $atts['order'])
+    $limit = max(1, min(24, (int) $raw['limit']));
+    $order = in_array(strtoupper((string) $raw['order']), ['ASC', 'DESC'], true)
+        ? strtoupper((string) $raw['order'])
         : 'DESC';
 
-    $query_args = [
-        'post_type' => 'product',
-        'post_status' => 'publish',
-        'posts_per_page' => $limit,
-        'orderby' => $orderby,
-        'order' => $order,
-        'ignore_sticky_posts' => true,
-    ];
+    $categories = array_values(array_filter(array_map(
+        'sanitize_title',
+        explode(',', (string) $raw['category'])
+    )));
 
-    if (! empty($atts['category'])) {
-        $query_args['tax_query'] = [[
-            'taxonomy' => 'product_cat',
-            'field' => 'slug',
-            'terms' => array_map('sanitize_title', explode(',', (string) $atts['category'])),
-        ]];
-    }
+    $ids = array_values(array_filter(array_map('absint', explode(',', (string) $raw['ids']))));
 
-    if (! empty($atts['ids'])) {
-        $ids = array_values(array_filter(array_map('absint', explode(',', (string) $atts['ids']))));
-        if (! empty($ids)) {
-            $query_args['post__in'] = $ids;
-            $query_args['orderby'] = 'post__in';
-        }
-    }
-
-    $query = new \WP_Query($query_args);
-    $products = [];
-
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $product = wc_get_product(get_the_ID());
-            if ($product && $product->is_visible()) {
-                $products[] = $product;
-            }
-        }
-        wp_reset_postdata();
-    }
-
-    if (empty($products)) {
-        return '';
-    }
-
-    $has_many = count($products) > 1;
-
-    ob_start(); ?>
-    <section
-      class="products-carousel-section py-16 md:py-20"
-      data-products-carousel
-      aria-label="<?php echo esc_attr($title); ?>"
-    >
-        <?php if ($title || $subtitle) { ?>
-            <div class="container mb-8 md:mb-10">
-                <div class="flex items-end justify-between gap-6">
-                    <div>
-                        <?php if ($subtitle) { ?>
-                            <p class="section-label text-muted mb-2"><?php echo esc_html($subtitle); ?></p>
-                        <?php } ?>
-                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-serif font-light text-ink leading-tight m-0">
-                            <?php echo esc_html($title); ?>
-                        </h2>
-                    </div>
-                    <?php if ($has_many) { ?>
-                        <div class="flex items-center gap-2 shrink-0">
-                            <button type="button" class="swiper-button-prev products-carousel__btn" aria-label="<?php esc_attr_e('Prodotto precedente', 'sage'); ?>">
-                                <?php echo \Roots\view('components.icons.chevron-left', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-4', 'stroke-width' => '1.5'])])->render(); ?>
-                            </button>
-                            <button type="button" class="swiper-button-next products-carousel__btn" aria-label="<?php esc_attr_e('Prodotto successivo', 'sage'); ?>">
-                                <?php echo \Roots\view('components.icons.chevron-right', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-4', 'stroke-width' => '1.5'])])->render(); ?>
-                            </button>
-                        </div>
-                    <?php } ?>
-                </div>
-            </div>
-        <?php } ?>
-
-        <div class="products-carousel__outer container">
-
-                <div class="js-products-swiper swiper">
-                    <div class="swiper-wrapper items-stretch">
-                        <?php foreach ($products as $product) { ?>
-                            <div class="swiper-slide h-auto">
-                                <?php echo \Roots\view('partials.product-card', ['product' => $product])->render(); ?>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            
-            <div class="swiper-scrollbar products-carousel__scrollbar"></div>
-        </div>
-
-    </section>
-    <?php
-    return ob_get_clean();
+    return render_block([
+        'blockName' => 'theme/products-carousel',
+        'attrs' => [
+            'title' => sanitize_text_field((string) $raw['title']),
+            'subtitle' => sanitize_text_field((string) $raw['subtitle']),
+            'limit' => $limit,
+            'categories' => $categories,
+            'orderby' => sanitize_key((string) $raw['orderby']),
+            'order' => $order,
+            'ids' => $ids,
+        ],
+        'innerBlocks' => [],
+        'innerHTML' => '',
+        'innerContent' => [],
+    ]);
 });
 
 /**
