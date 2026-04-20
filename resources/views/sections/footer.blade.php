@@ -106,7 +106,7 @@
                 rel="noopener noreferrer"
                 aria-label="{{ esc_attr($social['label']) }}"
                 role="listitem"
-                class="size-8 flex items-center justify-center border border-white/15 hover:text-primary hover:border-primary/60 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary"
+                class="size-8 flex items-center justify-center"
               >
                 <x-dynamic-component :component="'icons.' . $slug" class="w-3.5 h-3.5" />
               </a>
@@ -149,7 +149,7 @@
           @endforeach
           @if(function_exists('wc_get_page_permalink'))
             <li>
-              <a href="{{ esc_url(wc_get_page_permalink('shop')) }}" class="text-primary/70 hover:text-primary transition-colors duration-150">
+              <a href="{{ esc_url(wc_get_page_permalink('shop')) }}" class="text-white/90! hover:text-white!">
                 {{ __('Tutti i prodotti →', 'sage') }}
               </a>
             </li>

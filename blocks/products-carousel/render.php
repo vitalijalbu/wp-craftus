@@ -145,14 +145,14 @@ $wrapper_atts = get_block_wrapper_attributes([
                 <?php if ($has_many) { ?>
                     <div class="flex items-center gap-2 shrink-0">
                         <button type="button"
-                            class="swiper-button-prev products-carousel__btn"
+                            class="swiper-button-prev products-carousel__btn btn-icon"
                             aria-label="<?php esc_attr_e('Prodotto precedente', 'sage'); ?>">
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                             </svg>
                         </button>
                         <button type="button"
-                            class="swiper-button-next products-carousel__btn"
+                            class="swiper-button-next products-carousel__btn btn-icon"
                             aria-label="<?php esc_attr_e('Prodotto successivo', 'sage'); ?>">
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />

@@ -397,7 +397,7 @@ body.has-hero .page-header-offset {
   background: var(--color-ink);
   color: #ffffff;
   border: 0;
-  border-radius: 0;
+  border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
@@ -2311,40 +2311,6 @@ textarea.contact-input {
 .js-products-swiper .product-card {
   height: 100%;
 }
-
-/* Navigation arrows — shown only on md+ */
-.products-carousel__btn {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-ink);
-  cursor: pointer;
-  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
-  flex-shrink: 0;
-}
-
-@media (min-width: 768px) {
-  .products-carousel__btn {
-    display: flex;
-  }
-}
-
-.products-carousel__btn:hover {
-  background: var(--color-ink);
-  color: var(--color-surface);
-  border-color: var(--color-ink);
-}
-
-.products-carousel__btn.swiper-button-disabled {
-  opacity: 0.3;
-  cursor: default;
-  pointer-events: none;
-}
-
 /* Scrollbar strip */
 .products-carousel__scrollbar {
   height: 2px;
