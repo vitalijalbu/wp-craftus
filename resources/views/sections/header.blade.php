@@ -1,6 +1,7 @@
 {{--
   header.blade.php — Luxury e-commerce header
-  Layout:   [Logo ←]  ····················  [Nav | Actions →]
+  Layout:   Riga 1: [Logo ←]  ····················  [Btn custom 1 | Btn custom 2 | Actions →]
+            Riga 2: [Nav links — centrati] (desktop only)
   States:   expanded (top) ↔ scrolled compact (GSAP animated)
   Alpine:   x-data="siteHeader" (registered in app.js)
   GSAP:     $watch('scrolled') drives expand/collapse timeline
@@ -30,6 +31,16 @@
     $cta_raw_label = get_theme_mod('header_cta_label', '');
     $show_cta = !empty($cta_raw_url) || !empty($cta_raw_label);
     $custom_logo_id = (int) get_theme_mod('custom_logo');
+
+    // ── Custom header buttons (Personalizza → Opzioni Tema) ──────────────────
+    $hbtn1_label = get_theme_mod('header_btn1_label', '');
+    $hbtn1_url = get_theme_mod('header_btn1_url', '');
+    $hbtn1_icon = (int) get_theme_mod('header_btn1_icon', 0);
+    $hbtn2_label = get_theme_mod('header_btn2_label', '');
+    $hbtn2_url = get_theme_mod('header_btn2_url', '');
+    $hbtn2_icon = (int) get_theme_mod('header_btn2_icon', 0);
+    $show_hbtn1 = !empty($hbtn1_url) || !empty($hbtn1_label);
+    $show_hbtn2 = !empty($hbtn2_url) || !empty($hbtn2_label);
 @endphp
 
 @include('partials.announcement-bar')
@@ -40,115 +51,60 @@
     {{-- ════════════════════════════════════════════════════════════════════════
        EXPANDED BAR — visible at top of page (collapses on scroll via GSAP)
        ════════════════════════════════════════════════════════════════════════ --}}
-    <div x-ref="expandedWrapper"
-        class="header-expanded border-b border-border transition-colors duration-300 bg-white text-ink">
-        <div class="container-fluid flex items-center justify-between h-16">
+    <div x-ref="expandedWrapper" class="header-expanded transition-colors duration-300 bg-white text-ink">
 
-            {{-- LEFT: Logo ───────────────────────────────────────────────────────── --}}
-            <a href="{{ esc_url(home_url('/')) }}"
-                class="site-logo site-logo--header shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-                aria-label="{{ esc_attr(get_bloginfo('name')) }}">
-                @if ($custom_logo_id)
-                    {!! wp_get_attachment_image($custom_logo_id, 'full', false, [
-                        'class' => 'custom-logo',
-                        'alt' => get_bloginfo('name'),
-                        'decoding' => 'async',
-                        'fetchpriority' => 'high'
-                    ]) !!}
-                @else
-                    <span
-                        class="font-sans text-xl font-light tracking-[0.22em] uppercase text-ink">{{ get_bloginfo('name') }}</span>
-                @endif
-            </a>
+        {{-- ── RIGA 1: Logo + pulsanti custom + azioni ─────────────────────────── --}}
+        <div class="border-b border-border">
+            <div class="container-fluid flex items-center justify-between py-1">
 
-            {{-- RIGHT: Navigation + Actions (desktop) ───────────────────────────── --}}
-            <div class="hidden lg:flex items-center gap-8 h-full">
+                {{-- LEFT: Logo ──────────────────────────────────────────────────────── --}}
+                <a href="{{ esc_url(home_url('/')) }}"
+                    class="site-logo site-logo--header shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                    aria-label="{{ esc_attr(get_bloginfo('name')) }}">
+                    @if ($custom_logo_id)
+                        {!! wp_get_attachment_image($custom_logo_id, 'full', false, [
+                            'class' => 'custom-logo',
+                            'alt' => get_bloginfo('name'),
+                            'decoding' => 'async',
+                            'fetchpriority' => 'high'
+                        ]) !!}
+                    @else
+                        <span
+                            class="font-sans text-xl font-light tracking-[0.22em] uppercase text-ink">{{ get_bloginfo('name') }}</span>
+                    @endif
+                </a>
 
-                {{-- Nav links ─────────────────────────────────────────────────────── --}}
-                <nav aria-label="{{ __('Menu principale', 'sage') }}" class="flex items-stretch gap-7 h-full">
+                {{-- RIGHT: Pulsanti custom + azioni (desktop) ───────────────────────── --}}
+                <div class="hidden lg:flex items-center gap-4">
 
-                    @foreach ($top_items as $item)
-                        @php
-                            $is_mega = get_post_meta($item->ID, '_menu_item_megamenu', true) === '1';
-                            $item_children = $children_map[$item->ID] ?? [];
-                            $mega_id = 'nav-' . $item->ID;
-                            $active_classes = [
-                                'current-menu-item',
-                                'current_page_item',
-                                'current-menu-ancestor',
-                                'current-page-ancestor',
-                                'current-menu-parent',
-                                'current_page_parent'
-                            ];
+                    {{-- Pulsante custom 1 (es. "Adotta un amico") ───────────────────────── --}}
+                    @if ($show_hbtn1)
+                        <a href="{{ esc_url($hbtn1_url ?: home_url('/')) }}"
+                            class="inline-flex items-center gap-2 btn-slide border-ink/25 text-ink hover:bg-ink hover:text-white">
+                            @if ($hbtn1_icon)
+                                {!! wp_get_attachment_image($hbtn1_icon, [20, 20], false, [
+                                    'class' => 'size-5 object-contain',
+                                    'aria-hidden' => 'true'
+                                ]) !!}
+                            @endif
+                            {{ esc_html($hbtn1_label) }}
+                        </a>
+                    @endif
 
-                            $item_classes = (array) ($item->classes ?? []);
-                            $is_current = !empty(array_intersect($active_classes, $item_classes));
+                    {{-- Pulsante custom 2 (es. "Dona ora") ─────────────────────────────── --}}
+                    @if ($show_hbtn2)
+                        <a href="{{ esc_url($hbtn2_url ?: home_url('/')) }}"
+                            class="inline-flex items-center gap-2 btn-slide border-primary/60 text-primary hover:bg-primary hover:text-white">
+                            @if ($hbtn2_icon)
+                                {!! wp_get_attachment_image($hbtn2_icon, [20, 20], false, [
+                                    'class' => 'size-5 object-contain',
+                                    'aria-hidden' => 'true'
+                                ]) !!}
+                            @endif
+                            {{ esc_html($hbtn2_label) }}
+                        </a>
+                    @endif
 
-                            // Fallback: exact URL match (useful when WP doesn't assign current-* classes,
-// e.g. custom links to Shop archive).
-$item_path = untrailingslashit(
-    (string) wp_parse_url((string) ($item->url ?? ''), PHP_URL_PATH)
-);
-$current_path = untrailingslashit(
-    (string) wp_parse_url(
-        (string) home_url(add_query_arg([], $wp->request ?? '')),
-        PHP_URL_PATH
-    )
-);
-if (!$is_current && $item_path && $current_path && $item_path === $current_path) {
-    $is_current = true;
-}
-
-// Front page fallback for custom Home links.
-if (!$is_current && is_front_page()) {
-    $item_url = isset($item->url) ? (string) $item->url : '';
-    $item_url_no_frag = strtok($item_url, '#') ?: '';
-    $item_url_no_qs = strtok($item_url_no_frag, '?') ?: $item_url_no_frag;
-    $home_root = trailingslashit(home_url('/'));
-    $item_root = trailingslashit($item_url_no_qs);
-    if ($item_root && $item_root === $home_root) {
-        $is_current = true;
-    }
-}
-
-// Extra fallback for WooCommerce shop page.
-if (
-    !$is_current &&
-    function_exists('is_shop') &&
-    is_shop() &&
-    function_exists('wc_get_page_permalink')
-) {
-    $shop_path = untrailingslashit(
-        (string) wp_parse_url((string) wc_get_page_permalink('shop'), PHP_URL_PATH)
-                                );
-                                if ($item_path && $shop_path && $item_path === $shop_path) {
-                                    $is_current = true;
-                                }
-                            }
-                        @endphp
-                        @if ($is_mega && !empty($item_children))
-                            <button type="button" id="btn-mega-{{ $mega_id }}"
-                                class="nav-link-t flex items-center gap-1 {{ $is_current ? 'active' : '' }}"
-                                @mouseenter="openMenu('{{ $mega_id }}')" @click="openMenu('{{ $mega_id }}')"
-                                :aria-expanded="(activeMenu === '{{ $mega_id }}').toString()"
-                                aria-controls="mega-{{ $mega_id }}" aria-haspopup="true">
-                                {{ esc_html($item->title) }}
-                                <x-icons.chevron-down class="w-2.5 h-2.5 transition-transform duration-200"
-                                    ::class="activeMenu === '{{ $mega_id }}' ? 'rotate-180' : ''" stroke-width="2.5" />
-                            </button>
-                        @else
-                            <a href="{{ esc_url($item->url) }}" class="nav-link-t {{ $is_current ? 'active' : '' }}"
-                                @if ($is_current) aria-current="page" @endif>{{ esc_html($item->title) }}</a>
-                        @endif
-                    @endforeach
-
-                </nav>
-
-                {{-- Divider ───────────────────────────────────────────────────────── --}}
-                <span class="w-px h-4 bg-current opacity-15" aria-hidden="true"></span>
-
-                {{-- Actions ───────────────────────────────────────────────────────── --}}
-                <div class="flex items-center gap-4">
 
                     {{-- Wishlist --}}
                     <a href="{{ esc_url(home_url('/wishlist')) }}" class="icon-btn relative"
@@ -177,6 +133,10 @@ if (
                         </button>
                     @endif
 
+                    {{-- Divider ──────────────────────────────────────────────────────── --}}
+                    <span class="w-px h-4 bg-current opacity-15" aria-hidden="true"></span>
+
+
                     {{-- CTA --}}
                     @if ($show_cta)
                         <a href="{{ esc_url($cta_url) }}"
@@ -184,36 +144,123 @@ if (
                     @endif
 
                 </div>
-            </div>
 
-            {{-- Mobile toggle (visible only on mobile) ──────────────────────────── --}}
-            <div class="flex lg:hidden items-center gap-3">
-                @if (function_exists('WC'))
-                    <button type="button" @click="$dispatch('open-cart')" class="icon-btn relative text-ink"
-                        aria-label="{{ __('Apri carrello', 'sage') }}">
-                        <x-icons.cart class="size-5" />
-                        <span class="icon-badge cart-count-fragment" data-cart-count="{{ $cart_count }}"
-                            data-count="{{ $cart_count }}"
-                            :class="cartCount === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'"
-                            x-text="cartCount">{{ $cart_count }}</span>
+                {{-- Mobile toggle (visible only on mobile) ──────────────────────────── --}}
+                <div class="flex lg:hidden items-center gap-3">
+                    @if (function_exists('WC'))
+                        <button type="button" @click="$dispatch('open-cart')" class="icon-btn relative text-ink"
+                            aria-label="{{ __('Apri carrello', 'sage') }}">
+                            <x-icons.cart class="size-5" />
+                            <span class="icon-badge cart-count-fragment" data-cart-count="{{ $cart_count }}"
+                                data-count="{{ $cart_count }}"
+                                :class="cartCount === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'"
+                                x-text="cartCount">{{ $cart_count }}</span>
+                        </button>
+                    @endif
+
+                    {{-- Wishlist (mobile) --}}
+                    <a href="{{ esc_url(home_url('/wishlist')) }}" class="icon-btn relative text-ink"
+                        aria-label="{{ __('Wishlist', 'sage') }}">
+                        <x-icons.heart class="size-5" />
+                        <span class="icon-badge wishlist-count-bubble"></span>
+                    </a>
+
+                    <button type="button" class="icon-btn text-ink" @click="toggleMobile()"
+                        :aria-expanded="mobileOpen.toString()" aria-controls="mobile-drawer"
+                        :aria-label="mobileOpen ? '{{ __('Chiudi menu', 'sage') }}' : '{{ __('Apri menu', 'sage') }}'">
+                        <x-icons.menu x-show="!mobileOpen" class="size-6" />
+                        <x-icons.x-mark x-show="mobileOpen" class="size-6" stroke-width="1.5" />
                     </button>
-                @endif
-                {{-- Wishlist (mobile) --}}
-                <a href="{{ esc_url(home_url('/wishlist')) }}" class="icon-btn relative text-ink"
-                    aria-label="{{ __('Wishlist', 'sage') }}">
-                    <x-icons.heart class="size-5" />
-                    <span class="icon-badge wishlist-count-bubble"></span>
-                </a>
+                </div>
 
-                <button type="button" class="icon-btn text-ink" @click="toggleMobile()"
-                    :aria-expanded="mobileOpen.toString()" aria-controls="mobile-drawer"
-                    :aria-label="mobileOpen ? '{{ __('Chiudi menu', 'sage') }}' : '{{ __('Apri menu', 'sage') }}'">
-                    <x-icons.menu x-show="!mobileOpen" class="size-6" />
-                    <x-icons.x-mark x-show="mobileOpen" class="size-6" stroke-width="1.5" />
-                </button>
             </div>
-
         </div>
+
+        {{-- ── RIGA 2: Nav links (desktop only) ────────────────────────────────── --}}
+        <div class="hidden lg:block border-b border-border">
+            <div class="container-fluid">
+                <nav aria-label="{{ __('Menu principale', 'sage') }}"
+                    class="flex items-stretch justify-end gap-8 h-12">
+
+                    @foreach ($top_items as $item)
+                        @php
+                            $is_mega = get_post_meta($item->ID, '_menu_item_megamenu', true) === '1';
+                            $item_children = $children_map[$item->ID] ?? [];
+                            $mega_id = 'nav-' . $item->ID;
+                            $active_classes = [
+                                'current-menu-item',
+                                'current_page_item',
+                                'current-menu-ancestor',
+                                'current-page-ancestor',
+                                'current-menu-parent',
+                                'current_page_parent'
+                            ];
+
+                            $item_classes = (array) ($item->classes ?? []);
+                            $is_current = !empty(array_intersect($active_classes, $item_classes));
+
+                            // Fallback: exact URL match
+                            $item_path = untrailingslashit(
+                                (string) wp_parse_url((string) ($item->url ?? ''), PHP_URL_PATH)
+                            );
+                            $current_path = untrailingslashit(
+                                (string) wp_parse_url(
+                                    (string) home_url(add_query_arg([], $wp->request ?? '')),
+                                    PHP_URL_PATH
+                                )
+                            );
+                            if (!$is_current && $item_path && $current_path && $item_path === $current_path) {
+                                $is_current = true;
+                            }
+
+                            // Front page fallback
+                            if (!$is_current && is_front_page()) {
+                                $item_url = isset($item->url) ? (string) $item->url : '';
+                                $item_url_no_frag = strtok($item_url, '#') ?: '';
+                                $item_url_no_qs = strtok($item_url_no_frag, '?') ?: $item_url_no_frag;
+                                $home_root = trailingslashit(home_url('/'));
+                                $item_root = trailingslashit($item_url_no_qs);
+                                if ($item_root && $item_root === $home_root) {
+                                    $is_current = true;
+                                }
+                            }
+
+                            // WooCommerce shop page fallback
+                            if (
+                                !$is_current &&
+                                function_exists('is_shop') &&
+                                is_shop() &&
+                                function_exists('wc_get_page_permalink')
+                            ) {
+                                $shop_path = untrailingslashit(
+                                    (string) wp_parse_url((string) wc_get_page_permalink('shop'), PHP_URL_PATH)
+                                );
+                                if ($item_path && $shop_path && $item_path === $shop_path) {
+                                    $is_current = true;
+                                }
+                            }
+                        @endphp
+
+                        @if ($is_mega && !empty($item_children))
+                            <button type="button" id="btn-mega-{{ $mega_id }}"
+                                class="nav-link-t flex items-center gap-1 {{ $is_current ? 'active' : '' }}"
+                                @mouseenter="openMenu('{{ $mega_id }}')" @click="openMenu('{{ $mega_id }}')"
+                                :aria-expanded="(activeMenu === '{{ $mega_id }}').toString()"
+                                aria-controls="mega-{{ $mega_id }}" aria-haspopup="true">
+                                {{ esc_html($item->title) }}
+                                <x-icons.chevron-down class="w-2.5 h-2.5 transition-transform duration-200"
+                                    ::class="activeMenu === '{{ $mega_id }}' ? 'rotate-180' : ''" stroke-width="2.5" />
+                            </button>
+                        @else
+                            <a href="{{ esc_url($item->url) }}" class="nav-link-t {{ $is_current ? 'active' : '' }}"
+                                @if ($is_current) aria-current="page" @endif>{{ esc_html($item->title) }}</a>
+                        @endif
+                    @endforeach
+
+                </nav>
+            </div>
+        </div>
+
     </div>
 
     {{-- ════════════════════════════════════════════════════════════════════════
@@ -229,8 +276,7 @@ if (
             <div id="mega-{{ $mega_id }}" role="region" aria-labelledby="btn-mega-{{ $mega_id }}"
                 x-show="activeMenu === '{{ $mega_id }}'" x-cloak @mouseenter="activeMenu = '{{ $mega_id }}'"
                 @mouseleave="closeMenu()"
-                class="absolute top-full left-0 right-0 bg-surface shadow-[0_16px_60px_rgba(0,0,0,0.08)] overflow-hidden border-b border-border mega-clip-enter"
-                x-cloak>
+                class="absolute top-full left-0 right-0 bg-surface shadow-[0_16px_60px_rgba(0,0,0,0.08)] overflow-hidden border-b border-border mega-clip-enter">
                 <div class="max-w-360 mx-auto px-8 lg:px-12 py-6">
                     <ul class="flex flex-wrap gap-x-8 gap-y-1">
                         @foreach ($item_children as $child)
@@ -256,7 +302,6 @@ if (
         aria-modal="true" aria-label="{{ __('Menu di navigazione', 'sage') }}">
         <nav class="flex-1 px-6 py-8 space-y-0.5" aria-label="{{ __('Menu mobile', 'sage') }}">
 
-            {{-- Regular nav items (or dropdown accordions for megamenu items) ──────── --}}
             @foreach ($top_items as $item)
                 @php
                     $is_mega_mob = get_post_meta($item->ID, '_menu_item_megamenu', true) === '1';
@@ -290,9 +335,41 @@ if (
                 @endif
             @endforeach
 
+            {{-- Pulsanti custom nel drawer mobile ─────────────────────────────────── --}}
+            @if ($show_hbtn1 || $show_hbtn2)
+                <div class="pt-4 space-y-3">
+                    @if ($show_hbtn1)
+                        <a href="{{ esc_url($hbtn1_url ?: home_url('/')) }}"
+                            class="flex items-center gap-2 py-5 border-b border-white/8 font-sans text-lg font-medium text-white hover:text-primary transition-colors tracking-wide"
+                            @click="closeMobile()">
+                            @if ($hbtn1_icon)
+                                {!! wp_get_attachment_image($hbtn1_icon, [20, 20], false, [
+                                    'class' => 'size-5 object-contain',
+                                    'aria-hidden' => 'true'
+                                ]) !!}
+                            @endif
+                            {{ esc_html($hbtn1_label) }}
+                        </a>
+                    @endif
+                    @if ($show_hbtn2)
+                        <a href="{{ esc_url($hbtn2_url ?: home_url('/')) }}"
+                            class="flex items-center gap-2 py-5 border-b border-white/8 font-sans text-lg font-medium text-primary hover:text-primary/70 transition-colors tracking-wide"
+                            @click="closeMobile()">
+                            @if ($hbtn2_icon)
+                                {!! wp_get_attachment_image($hbtn2_icon, [20, 20], false, [
+                                    'class' => 'size-5 object-contain',
+                                    'aria-hidden' => 'true'
+                                ]) !!}
+                            @endif
+                            {{ esc_html($hbtn2_label) }}
+                        </a>
+                    @endif
+                </div>
+            @endif
+
         </nav>
 
-        {{-- Drawer footer ────────────────────────────────────────────────────────── --}}
+        {{-- Drawer footer ──────────────────────────────────────────────────────── --}}
         <div class="px-6 py-8 border-t border-white/8 space-y-4">
             @if ($show_cta)
                 <a href="{{ esc_url($cta_url) }}"
@@ -318,20 +395,15 @@ if (
                     @foreach ($mob_socials as $social)
                         <a href="{{ esc_url($social['url']) }}" target="_blank" rel="noopener noreferrer"
                             aria-label="{{ esc_attr($social['label']) }}"
-                            class="font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-primary transition-colors">
-                            {{ $social['label'] }}
-                        </a>
+                            class="font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-primary transition-colors">{{ $social['label'] }}</a>
                     @endforeach
                     @if ($mob_wa_url)
                         <a href="{{ esc_url($mob_wa_url) }}" target="_blank" rel="noopener noreferrer"
                             aria-label="WhatsApp"
-                            class="font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-primary transition-colors">
-                            WhatsApp
-                        </a>
+                            class="font-semibold tracking-[0.15em] uppercase text-white/25 hover:text-primary transition-colors">WhatsApp</a>
                     @endif
                 </div>
             @endif
         </div>
     </div>
-
 </header>

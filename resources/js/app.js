@@ -85,6 +85,20 @@ Alpine.data('siteHeader', () => ({
     this._scrollCtrl = new AbortController()
     this.scrolled = true
 
+    // ── Misura l'altezza reale dell'header e aggiorna --header-height ────────
+    const el = document.getElementById('site-header')
+    const updateHeaderHeight = () => {
+      if (el) {
+        document.documentElement.style.setProperty(
+          '--header-height',
+          el.offsetHeight + 'px',
+        )
+      }
+    }
+    updateHeaderHeight()
+    this._headerRO = new ResizeObserver(updateHeaderHeight)
+    if (el) this._headerRO.observe(el)
+
     // Escape key
     document.addEventListener(
       'keydown',
@@ -103,75 +117,10 @@ Alpine.data('siteHeader', () => ({
 
   destroy() {
     this._scrollCtrl?.abort()
+    this._headerRO?.disconnect()
   },
 }))
 
-// ── Alpine component: search overlay with live results ────────────────────────
-Alpine.data('searchOverlay', () => ({
-  open: false,
-  query: '',
-  results: [],
-  totalCount: 0,
-  loading: false,
-  noResults: false,
-  _abortCtrl: null,
-
-  show() {
-    this.open = true
-    this.$nextTick(() => this.$refs.input?.focus())
-  },
-  hide() {
-    this.open = false
-    this.query = ''
-    this.results = []
-    this.noResults = false
-  },
-  submit() {
-    if (!this.query.trim()) {
-      return
-    }
-    window.location.href = `/?s=${encodeURIComponent(this.query.trim())}`
-  },
-
-  async fetchResults() {
-    const q = this.query.trim()
-    if (q.length < 2) {
-      this.results = []
-      this.noResults = false
-      return
-    }
-    // Cancel any in-flight request
-    if (this._abortCtrl) {
-      this._abortCtrl.abort()
-    }
-    this._abortCtrl = new AbortController()
-
-    this.loading = true
-    this.noResults = false
-    try {
-      const url = `${THEME_API_BASE}/search?q=${encodeURIComponent(q)}&per_page=6`
-      const res = await fetch(url, { signal: this._abortCtrl.signal })
-      if (!res.ok) {
-        throw new Error('Network error')
-      }
-      const data = await res.json()
-      this.results = data.results ?? []
-      this.totalCount = data.count ?? 0
-      this.noResults = this.results.length === 0
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        this.results = []
-        this.noResults = false
-      }
-    } finally {
-      this.loading = false
-    }
-  },
-
-  init() {
-    window.addEventListener('open-search', () => this.show())
-  },
-}))
 
 // ── Alpine component: cart drawer (WooCommerce off-canvas) ────────────────────
 Alpine.data('cartDrawer', () => ({

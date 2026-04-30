@@ -929,7 +929,7 @@ REGOLA: bg-primary e bg-accent sono ENTRAMBI blu. Usare bg-ink per sfondi scuri.
 
 #### 19.6 Linee guida visive (design system)
 
-- **Font size micro**: `.section-label` a 10px e `.btn-slide` a 9.5px sono intentional (stile luxury editorial NET-A-PORTER)
+- **Font size micro**: `.section-label` a 10px sono intentional (stile luxury editorial NET-A-PORTER)
 - **Font-weight 300**: tutti gli h1-h6 sono ultra-light — è il carattere editoriale del tema
 - **Gap sezioni**: `section` usa `clamp(4rem, 8vw, 7rem)` top/bottom — non ridurre
 - **Container max-width**: 90rem (1440px) — non modificare

@@ -44,7 +44,7 @@ $product_title = esc_attr($product->get_name());
   <?php } else { ?>
 
     <!-- Main Swiper -->
-    <div class="js-product-gallery swiper product-gallery__main overflow-hidden" aria-label="<?php esc_attr_e('Galleria immagini prodotto', 'sage'); ?>">
+    <div class="js-product-gallery swiper product-gallery__main overflow-hidden rounded-2xl" aria-label="<?php esc_attr_e('Galleria immagini prodotto', 'sage'); ?>">
       <div class="swiper-wrapper">
         <?php foreach (array_values($all_ids) as $index => $img_id) {
             $full_url = wp_get_attachment_image_url($img_id, 'woocommerce_single');
@@ -85,7 +85,7 @@ $product_title = esc_attr($product->get_name());
                 <img
                   src="<?php echo esc_url($full_url); ?>"
                   alt="<?php echo $alt; ?>"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02] rounded-2xl"
                   <?php echo $index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'; ?>
                   decoding="async"
                 >
@@ -98,10 +98,10 @@ $product_title = esc_attr($product->get_name());
       <?php if ($has_gallery) { ?>
         <!-- Navigation arrows -->
         <button type="button" class="product-gallery__prev" aria-label="<?php esc_attr_e('Immagine precedente', 'sage'); ?>">
-          <?php echo \Roots\view('components.icons.chevron-left', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-5'])])->render(); ?>
+          <?php echo \Roots\view('components.icons.arrow-left', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-5'])])->render(); ?>
         </button>
         <button type="button" class="product-gallery__next" aria-label="<?php esc_attr_e('Immagine successiva', 'sage'); ?>">
-          <?php echo \Roots\view('components.icons.chevron-right', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-5'])])->render(); ?>
+          <?php echo \Roots\view('components.icons.arrow-right', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-5'])])->render(); ?>
         </button>
 
         <!-- Slide counter -->
@@ -120,7 +120,7 @@ $product_title = esc_attr($product->get_name());
               $alt = esc_attr(get_post_meta($img_id, '_wp_attachment_image_alt', true) ?: get_the_title($img_id));
               ?>
             <div class="swiper-slide">
-              <button type="button" class="product-gallery__thumb" aria-label="<?php printf(esc_attr__('Immagine %d', 'sage'), $index + 1); ?>">
+              <button type="button" class="product-gallery__thumb overflow-hidden rounded-xl" aria-label="<?php printf(esc_attr__('Immagine %d', 'sage'), $index + 1); ?>">
                 <img
                   src="<?php echo esc_url($thumb_url); ?>"
                   alt="<?php echo $alt; ?>"
@@ -170,7 +170,7 @@ $product_title = esc_attr($product->get_name());
         aria-label="<?php esc_attr_e('Immagine precedente', 'sage'); ?>"
         x-show="images.length > 1"
       >
-        <?php echo \Roots\view('components.icons.chevron-left', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-5'])])->render(); ?>
+        <?php echo \Roots\view('components.icons.arrow-left', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-5'])])->render(); ?>
       </button>
 
       <!-- Lightbox Swiper -->
@@ -200,7 +200,7 @@ $product_title = esc_attr($product->get_name());
         aria-label="<?php esc_attr_e('Immagine successiva', 'sage'); ?>"
         x-show="images.length > 1"
       >
-        <?php echo \Roots\view('components.icons.chevron-right', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-5'])])->render(); ?>
+        <?php echo \Roots\view('components.icons.arrow-right', ['attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-5'])])->render(); ?>
       </button>
 
       <!-- Counter -->

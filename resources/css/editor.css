@@ -44,7 +44,7 @@ body {
   border-radius: 100px;
   background-color: #196EC8;
   color: #ffffff;
-  padding: 0.875rem 2rem;
+  padding: 0.65rem 2rem;
 }
 
 /* Button — Outline */
@@ -302,7 +302,7 @@ body {
   padding: 1.25rem 0;
   cursor: pointer;
   font-family: var(--ed-font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--ed-ink);
   list-style: none;
@@ -322,7 +322,7 @@ body {
 
 .editor-styles-wrapper .theme-accordion .faq-item__answer {
   padding: 0 0 1.25rem 0;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--ed-muted);
   line-height: 1.7;
 }

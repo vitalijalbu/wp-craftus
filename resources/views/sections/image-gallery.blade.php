@@ -135,10 +135,10 @@
           <x-icons.x-mark class="size-6" stroke-width="1.5" />
         </button>
         <button @click="prev({{ count($images) }})" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" aria-label="{{ __('Precedente', 'sage') }}">
-          <x-icons.chevron-left class="size-8" />
+          <x-icons.arrow-left class="size-8" />
         </button>
         <button @click="next({{ count($images) }})" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" aria-label="{{ __('Successivo', 'sage') }}">
-          <x-icons.chevron-right class="size-8" />
+          <x-icons.arrow-right class="size-8" />
         </button>
 
         <span class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/30" aria-live="polite">

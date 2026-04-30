@@ -118,8 +118,8 @@
         <div class="before-after__handle-line"></div>
         <div class="before-after__handle-btn">
           {{-- Chevrons --}}
-          <x-icons.chevron-left class="size-4 rotate-180" stroke-width="2" />
-          <x-icons.chevron-right class="size-4" stroke-width="2" />
+          <x-icons.arrow-left class="size-4 rotate-180" stroke-width="2" />
+          <x-icons.arrow-right class="size-4" stroke-width="2" />
         </div>
       </div>
     </div>

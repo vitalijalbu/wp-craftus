@@ -23,7 +23,7 @@
     "src": "editor.deps.json"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BYFgXU9r.css",
+    "file": "assets/app-C77lS7IP.css",
     "name": "app",
     "names": [
       "app.css"
@@ -32,7 +32,7 @@
     "isEntry": true
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-C35PGdZ6.css",
+    "file": "assets/editor-D7-MYjlb.css",
     "name": "editor",
     "names": [
       "editor.css"
@@ -41,7 +41,7 @@
     "isEntry": true
   },
   "resources/css/woocommerce.css": {
-    "file": "assets/woocommerce---bf6XRx.css",
+    "file": "assets/woocommerce-CtHuX-Ck.css",
     "name": "woocommerce",
     "names": [
       "woocommerce.css"
@@ -50,7 +50,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-C77bwvyI.js",
+    "file": "assets/app-DR7QGs5E.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,

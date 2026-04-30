@@ -227,7 +227,7 @@
         },
         {
           "slug": "base",
-          "size": "0.9375rem",
+          "size": "1rem",
           "name": "Base"
         },
         {
@@ -458,7 +458,7 @@
         "typography": {
           "fontFamily": "var(--wp--preset--font-family--sans)",
           "fontWeight": "600",
-          "fontSize": "0.9375rem",
+          "fontSize": "1rem",
           "letterSpacing": "0.066em",
           "textTransform": "uppercase",
           "textDecoration": "none"
@@ -537,7 +537,7 @@
         "typography": {
           "fontFamily": "var(--wp--preset--font-family--sans)",
           "fontWeight": "600",
-          "fontSize": "0.9375rem",
+          "fontSize": "1rem",
           "letterSpacing": "0.066em",
           "textTransform": "uppercase"
         },

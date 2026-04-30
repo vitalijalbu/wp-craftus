@@ -231,7 +231,7 @@
       x-cloak
       aria-hidden="true"
     >
-      <div class="size-8 border-2 border-border border-t-primary rounded-full animate-spin"></div>
+      <div class="size-8 border border-border border-t-primary rounded-full animate-spin"></div>
     </div>
 
     {{-- Load more --}}

@@ -116,7 +116,7 @@
       "fontSizes": [
         { "slug": "xs", "size": "0.75rem", "name": "XS" },
         { "slug": "sm", "size": "0.875rem", "name": "SM" },
-        { "slug": "base", "size": "0.9375rem", "name": "Base" },
+        { "slug": "base", "size": "1rem", "name": "Base" },
         { "slug": "lg", "size": "1.125rem", "name": "LG" },
         { "slug": "xl", "size": "1.25rem", "name": "XL" },
         { "slug": "2xl", "size": "1.5rem", "name": "2XL" },
@@ -209,7 +209,7 @@
         "typography": {
           "fontFamily": "var(--wp--preset--font-family--sans)",
           "fontWeight": "600",
-          "fontSize": "0.9375rem",
+          "fontSize": "1rem",
           "letterSpacing": "0.066em",
           "textTransform": "uppercase",
           "textDecoration": "none"
@@ -281,7 +281,7 @@
         "typography": {
           "fontFamily": "var(--wp--preset--font-family--sans)",
           "fontWeight": "600",
-          "fontSize": "0.9375rem",
+          "fontSize": "1rem",
           "letterSpacing": "0.066em",
           "textTransform": "uppercase"
         },

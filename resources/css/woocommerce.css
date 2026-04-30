@@ -6,13 +6,13 @@
 }
 .select2-selection--single{
   height: auto;
-  min-height: calc(0.875rem * 2 + 0.9375rem * 1.5 + 2px); /* match theme inputs */
+  min-height: calc(0.875rem * 2 + 1rem * 1.5 + 2px); /* match theme inputs */
   border: 1px solid var(--color-border) !important;
   border-radius: 0 !important;
   padding: 0.875rem 1rem !important;
   background: #fff !important;
   font-family: var(--font-sans) !important;
-  font-size: 0.9375rem !important;
+  font-size: 1rem !important;
   color: var(--color-ink) !important;
   transition: border-color 200ms ease, box-shadow 200ms ease !important;
   outline: none !important;
@@ -35,7 +35,7 @@
   border: 1px solid var(--color-border) !important;
   border-radius: 0 !important;
   font-family: var(--font-sans) !important;
-  font-size: 0.9375rem !important;
+  font-size: 1rem !important;
 }
 .select2-results__option {
   padding: 0.625rem 1rem !important;
@@ -170,7 +170,7 @@
   color: var(--color-primary) !important;
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   letter-spacing: 0.066em;
   text-transform: uppercase;
   text-align: center;
@@ -280,10 +280,10 @@
   color: var(--color-primary) !important;
   font-family: var(--font-sans) !important;
   font-weight: 600 !important;
-  font-size: 0.9375rem !important;
+  font-size: 1rem !important;
   letter-spacing: 0.066em !important;
   text-transform: uppercase !important;
-  padding: 0.875rem 2rem !important;
+  padding: 0.65rem 2rem !important;
   border-radius: 100px !important;
   border: 1px solid var(--color-primary) !important;
   line-height: 1 !important;
@@ -396,7 +396,7 @@
   border-radius: 0;
   padding: 0.875rem 1rem;
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-ink);
   width: 100%;
   background: #fff;
@@ -617,7 +617,7 @@
   border-bottom: 1px solid var(--color-border);
   color: var(--color-muted);
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 mark.order-status {
@@ -648,7 +648,7 @@ mark.order-status {
   border-right: 1px solid var(--color-border);
   text-align: center;
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--color-ink);
   background: transparent;
@@ -725,7 +725,7 @@ mark.order-status {
 .wc-block-components-textarea textarea,
 .wc-block-components-combobox .wc-block-components-combobox-control input {
   font-family: var(--font-sans) !important;
-  font-size: 0.9375rem !important;
+  font-size: 1rem !important;
   color: var(--color-ink) !important;
   border: 1px solid var(--color-border) !important;
   border-radius: 0 !important;
@@ -760,11 +760,11 @@ mark.order-status {
 .wc-block-cart__submit-button {
   font-family: var(--font-sans) !important;
   font-weight: 600 !important;
-  font-size: 0.9375rem !important;
+  font-size: 1rem !important;
   letter-spacing: 0.066em !important;
   text-transform: uppercase !important;
   border-radius: 100px !important;
-  padding: 0.875rem 2rem !important;
+  padding: 0.65rem 2rem !important;
   background-color: #ffffff !important;
   color: var(--color-primary) !important;
   border: 1px solid var(--color-primary) !important;
@@ -818,7 +818,7 @@ mark.order-status {
 
 .wc-block-components-order-summary-item__name {
   font-family: var(--font-serif);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-ink);
 }
 
@@ -830,7 +830,7 @@ mark.order-status {
 .wc-block-components-totals-item__label,
 .wc-block-components-totals-item__value {
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-muted);
 }
 
@@ -898,7 +898,7 @@ mark.order-status {
   margin: 0.625rem 0 1.5rem;
   font-family: var(--font-sans);
   color: var(--color-muted);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.65;
 }
 
@@ -917,7 +917,6 @@ mark.order-status {
   font-family: var(--font-sans);
   font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
   color: var(--color-ink);
 }
 
@@ -1048,7 +1047,7 @@ mark.order-status {
 /* Account dashboard welcome */
 .woocommerce-account .woocommerce-MyAccount-content p {
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-muted);
   line-height: 1.75;
   margin-bottom: 1rem;
@@ -1081,7 +1080,7 @@ mark.order-status {
 .woocommerce-account table.woocommerce-orders-table td {
   padding: 0.875rem 1rem;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-muted);
   vertical-align: middle;
 }
@@ -1207,7 +1206,7 @@ mark.order-status.status-refunded,
 .woocommerce-account table.woocommerce-table--order-downloads td {
   padding: 0.875rem 1rem;
   text-align: left;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -1238,7 +1237,7 @@ mark.order-status.status-refunded,
   text-align: left;
   border-bottom: 1px solid var(--color-border);
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 .woocommerce-account table.woocommerce-table--payment-methods th {
@@ -1274,7 +1273,7 @@ mark.order-status.status-refunded,
 .woocommerce-table--order-details tfoot td {
   padding: 0.875rem 1rem;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   vertical-align: middle;
 }
 
@@ -1316,7 +1315,7 @@ mark.order-status.status-refunded,
 
 .woocommerce-order address {
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-muted);
   line-height: 1.75;
   border: 1px solid var(--color-border);
@@ -1387,7 +1386,7 @@ mark.order-status.status-refunded,
 .woocommerce-checkout table.woocommerce-checkout-review-order-table td {
   padding: 0.875rem 1rem;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-muted);
 }
 
@@ -1417,7 +1416,7 @@ mark.order-status.status-refunded,
 
 .woocommerce-checkout #payment ul.payment_methods li label {
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--color-ink);
   cursor: pointer;
@@ -1452,7 +1451,7 @@ mark.order-status.status-refunded,
 /* Category description */
 .woocommerce-product-archive-description {
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-muted);
   line-height: 1.75;
   max-width: 60ch;
@@ -1586,7 +1585,7 @@ mark.order-status.status-refunded,
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--color-border);
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 .woocommerce .cart-collaterals .cart_totals table th {
@@ -1631,7 +1630,7 @@ mark.order-status.status-refunded,
 /* Variations select */
 .woocommerce div.product .variations select {
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-ink);
   border: 1px solid var(--color-border);
   border-radius: 0;

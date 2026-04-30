@@ -60,7 +60,7 @@
           {{-- Decorative corner --}}
           @if($accent)
             <div
-              class="absolute -bottom-4 {{ $image_position === 'right' ? '-left-4' : '-right-4' }} w-24 h-24 border-2 border-primary z-10 pointer-events-none"
+              class="absolute -bottom-4 {{ $image_position === 'right' ? '-left-4' : '-right-4' }} w-24 h-24 border border-primary z-10 pointer-events-none"
               aria-hidden="true"
             ></div>
           @endif

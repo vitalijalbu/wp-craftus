@@ -91,7 +91,7 @@
             $prev_icon = \Roots\view('components.icons.chevron-left', [
               'attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-4'])
             ])->render();
-            $next_icon = \Roots\view('components.icons.chevron-right', [
+            $next_icon = \Roots\view('components.icons.arrow-right', [
               'attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-4'])
             ])->render();
           @endphp
