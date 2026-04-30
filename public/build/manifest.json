@@ -7,8 +7,8 @@
     "file": "assets/vendor-alpine-CKmlF1QB.js",
     "name": "vendor-alpine"
   },
-  "_vendor-swiper-COp9XrRL.js": {
-    "file": "assets/vendor-swiper-COp9XrRL.js",
+  "_vendor-swiper-Cf3ui32O.js": {
+    "file": "assets/vendor-swiper-Cf3ui32O.js",
     "name": "vendor-swiper",
     "css": [
       "assets/vendor-swiper-Dw-Lyh-_.css"
@@ -23,7 +23,7 @@
     "src": "editor.deps.json"
   },
   "resources/css/app.css": {
-    "file": "assets/app-C8g0dKzT.css",
+    "file": "assets/app-BYFgXU9r.css",
     "name": "app",
     "names": [
       "app.css"
@@ -32,7 +32,7 @@
     "isEntry": true
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-BeH7EZ6I.css",
+    "file": "assets/editor-C35PGdZ6.css",
     "name": "editor",
     "names": [
       "editor.css"
@@ -41,7 +41,7 @@
     "isEntry": true
   },
   "resources/css/woocommerce.css": {
-    "file": "assets/woocommerce-B3ycL_My.css",
+    "file": "assets/woocommerce---bf6XRx.css",
     "name": "woocommerce",
     "names": [
       "woocommerce.css"
@@ -50,7 +50,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BAifR1u_.js",
+    "file": "assets/app-C77bwvyI.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -63,22 +63,22 @@
     ]
   },
   "resources/js/editor.js": {
-    "file": "assets/editor--TUAUW19.js",
+    "file": "assets/editor-X9SUP7SX.js",
     "name": "editor",
     "src": "resources/js/editor.js",
     "isEntry": true,
     "imports": [
-      "_vendor-swiper-COp9XrRL.js"
+      "_vendor-swiper-Cf3ui32O.js"
     ]
   },
   "resources/js/modules/carousel.js": {
-    "file": "assets/carousel-lPEQq0cY.js",
+    "file": "assets/carousel-DUBR3Uk1.js",
     "name": "carousel",
     "src": "resources/js/modules/carousel.js",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-alpine-CKmlF1QB.js",
-      "_vendor-swiper-COp9XrRL.js"
+      "_vendor-swiper-Cf3ui32O.js"
     ]
   }
 }

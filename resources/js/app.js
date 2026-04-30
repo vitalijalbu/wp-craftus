@@ -42,7 +42,7 @@ Alpine.store('layout', {
 Alpine.data('siteHeader', () => ({
   mobileOpen: false,
   activeMenu: null,
-  scrolled: false,
+  scrolled: true,
 
   get hasHero() {
     return this.$store.layout.hasHero
@@ -81,21 +81,9 @@ Alpine.data('siteHeader', () => ({
 
   // ── Init: scroll + keyboard ─────────────────────────────────────────────────
   init() {
-    // Scroll detection — AbortController enables cleanup if component is destroyed
+    // Header remains in fixed visual state (no scroll collapse behavior).
     this._scrollCtrl = new AbortController()
-    window.addEventListener(
-      'scroll',
-      () => {
-        const sy = window.scrollY
-        if (!this.scrolled && sy > 80) {
-          this.scrolled = true
-        }
-        if (this.scrolled && sy < 35) {
-          this.scrolled = false
-        }
-      },
-      { passive: true, signal: this._scrollCtrl.signal },
-    )
+    this.scrolled = true
 
     // Escape key
     document.addEventListener(

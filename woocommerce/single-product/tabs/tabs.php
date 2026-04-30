@@ -25,10 +25,26 @@ $first = $tab_keys[0];
 
 <section
   class="product-tabs mt-12 lg:mt-16"
-  x-data="{ active: '<?php echo esc_js($first); ?>' }"
+  x-data="{
+    active: <?php echo esc_attr(wp_json_encode($first)); ?>,
+    keys: <?php echo esc_attr(wp_json_encode(array_values($tab_keys))); ?>,
+    move(step) {
+      const idx = this.keys.indexOf(this.active);
+      if (idx === -1) {
+        return;
+      }
+      this.active = this.keys[(idx + step + this.keys.length) % this.keys.length];
+      this.$nextTick(() => {
+        const selected = this.$el.querySelector('[role=tab][aria-selected=true]');
+        if (selected) {
+          selected.focus();
+        }
+      });
+    }
+  }"
   aria-label="<?php esc_attr_e('Informazioni prodotto', 'sage'); ?>">
 
-  {{-- Tab list --}}
+
   <div
     class="flex gap-0 border-b border-border"
     role="tablist"
@@ -42,24 +58,15 @@ $first = $tab_keys[0];
         id="<?php echo $tab_id; ?>"
         role="tab"
         :aria-selected="(active === '<?php echo esc_js($key); ?>').toString()"
+        :tabindex="active === '<?php echo esc_js($key); ?>' ? '0' : '-1'"
         aria-controls="<?php echo $panel_id; ?>"
         class="product-tab-btn"
         :class="active === '<?php echo esc_js($key); ?>'
           ? 'product-tab-btn--active'
           : ''"
         @click="active = '<?php echo esc_js($key); ?>'"
-        @keydown.arrow-right.prevent="
-          const keys = <?php echo json_encode($tab_keys); ?>;
-          const idx = keys.indexOf(active);
-          active = keys[(idx + 1) % keys.length];
-          $nextTick(() => $el.parentElement.querySelector('[aria-selected=true]').focus());
-        "
-        @keydown.arrow-left.prevent="
-          const keys = <?php echo json_encode($tab_keys); ?>;
-          const idx = keys.indexOf(active);
-          active = keys[(idx - 1 + keys.length) % keys.length];
-          $nextTick(() => $el.parentElement.querySelector('[aria-selected=true]').focus());
-        ">
+        @keydown.arrow-right.prevent="move(1)"
+        @keydown.arrow-left.prevent="move(-1)">
         <?php echo wp_kses_post($tab['title']); ?>
       </button>
     <?php } ?>

@@ -93,7 +93,8 @@
       <x-icons.heart class="size-4 text-ink" />
     </button>
 
-    {{-- Add to cart overlay --}}
+    {{-- Add to cart overlay disattivato sulle card shop: lasciamo CTA solo nel single product --}}
+    {{--
     @if($is_purchasable)
       <div class="product-card__overlay bg-white/95">
         <a
@@ -109,6 +110,7 @@
         </a>
       </div>
     @endif
+    --}}
   </div>
 
   {{-- Card body --}}

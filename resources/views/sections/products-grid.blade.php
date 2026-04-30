@@ -128,10 +128,10 @@
           type="button"
           :aria-pressed="activeCategory === 'all'"
           @click="filterByCategory('all')"
-          class="px-5 py-2 text-xs font-500 tracking-wider uppercase transition-all duration-200"
+          class="px-5 py-2 text-[15px] font-semibold tracking-[0.066em] uppercase transition-all duration-200"
           :class="activeCategory === 'all'
-            ? 'bg-ink text-surface border border-ink'
-            : 'bg-transparent text-muted border border-border hover:border-ink hover:text-ink'"
+            ? 'bg-white text-primary border border-primary'
+            : 'bg-transparent text-muted border border-border hover:border-primary hover:text-primary'"
         >{{ __('Tutti', 'sage') }}</button>
 
         @foreach($cat_tabs as $tab)
@@ -139,10 +139,10 @@
             type="button"
             :aria-pressed="activeCategory === {{ (int) $tab['id'] }}"
             @click="filterByCategory({{ (int) $tab['id'] }})"
-            class="px-5 py-2 text-xs font-500 tracking-wider uppercase transition-all duration-200"
+            class="px-5 py-2 text-[15px] font-semibold tracking-[0.066em] uppercase transition-all duration-200"
             :class="activeCategory === {{ (int) $tab['id'] }}
-              ? 'bg-ink text-surface border border-ink'
-              : 'bg-transparent text-muted border border-border hover:border-ink hover:text-ink'"
+              ? 'bg-white text-primary border border-primary'
+              : 'bg-transparent text-muted border border-border hover:border-primary hover:text-primary'"
           >{{ $tab['name'] }}</button>
         @endforeach
       </div>
@@ -193,6 +193,8 @@
                 <x-icons.heart class="size-4 text-ink" />
               </button>
 
+              {{-- Add to cart overlay disattivato sulle card shop: CTA disponibile solo nel single product --}}
+              {{--
               <div class="product-card__overlay bg-white/95" x-show="product.in_stock && product.add_to_cart_url">
                 <a
                   :href="product.add_to_cart_url"
@@ -205,6 +207,7 @@
                   <x-icons.spinner class="btn-spinner" width="16" height="16" />
                 </a>
               </div>
+              --}}
             </div>
 
             <div class="product-card__body">
