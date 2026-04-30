@@ -87,106 +87,106 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
 
     // ── Pulsante custom header 1 (es. "Adotta un amico") ─────────────────────
     $wp_customize->add_setting('header_btn1_label', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control('header_btn1_label', [
-        'label'       => __('Pulsante header 1 — Testo', 'sage'),
+        'label' => __('Pulsante header 1 — Testo', 'sage'),
         'description' => __('Es. «Adotta un amico». Lascia vuoto per nascondere.', 'sage'),
-        'section'     => 'theme_theme',
-        'type'        => 'text',
-        'priority'    => 12,
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 12,
     ]);
 
     $wp_customize->add_setting('header_btn1_url', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'esc_url_raw',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control('header_btn1_url', [
-        'label'    => __('Pulsante header 1 — URL', 'sage'),
-        'section'  => 'theme_theme',
-        'type'     => 'url',
+        'label' => __('Pulsante header 1 — URL', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'url',
         'priority' => 13,
     ]);
 
     $wp_customize->add_setting('header_btn1_icon', [
-        'default'           => 0,
+        'default' => 0,
         'sanitize_callback' => 'absint',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'header_btn1_icon', [
-        'label'     => __('Pulsante header 1 — Icona (immagine)', 'sage'),
-        'section'   => 'theme_theme',
+        'label' => __('Pulsante header 1 — Icona (immagine)', 'sage'),
+        'section' => 'theme_theme',
         'mime_type' => 'image',
-        'priority'  => 14,
+        'priority' => 14,
     ]));
 
     // ── Pulsante custom header 2 (es. "Dona ora") ────────────────────────────
     $wp_customize->add_setting('header_btn2_label', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control('header_btn2_label', [
-        'label'       => __('Pulsante header 2 — Testo', 'sage'),
+        'label' => __('Pulsante header 2 — Testo', 'sage'),
         'description' => __('Es. «Dona ora». Lascia vuoto per nascondere.', 'sage'),
-        'section'     => 'theme_theme',
-        'type'        => 'text',
-        'priority'    => 15,
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 15,
     ]);
 
     $wp_customize->add_setting('header_btn2_url', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'esc_url_raw',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control('header_btn2_url', [
-        'label'    => __('Pulsante header 2 — URL', 'sage'),
-        'section'  => 'theme_theme',
-        'type'     => 'url',
+        'label' => __('Pulsante header 2 — URL', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'url',
         'priority' => 16,
     ]);
 
     $wp_customize->add_setting('header_btn2_icon', [
-        'default'           => 0,
+        'default' => 0,
         'sanitize_callback' => 'absint',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'header_btn2_icon', [
-        'label'     => __('Pulsante header 2 — Icona (immagine)', 'sage'),
-        'section'   => 'theme_theme',
+        'label' => __('Pulsante header 2 — Icona (immagine)', 'sage'),
+        'section' => 'theme_theme',
         'mime_type' => 'image',
-        'priority'  => 17,
+        'priority' => 17,
     ]));
 
     // Footer tagline (richtext — supporta <strong>, <em>, <a>)
     $wp_customize->add_setting('footer_tagline', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'wp_kses_post',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control('footer_tagline', [
-        'label'       => __('Tagline footer', 'sage'),
+        'label' => __('Tagline footer', 'sage'),
         'description' => __('Supporta HTML base: <strong>, <em>, <a href="…">. Lascia vuoto per nascondere.', 'sage'),
-        'section'     => 'theme_theme',
-        'type'        => 'textarea',
-        'priority'    => 20,
+        'section' => 'theme_theme',
+        'type' => 'textarea',
+        'priority' => 20,
     ]);
 
     // Logo footer white edition
     $wp_customize->add_setting('footer_logo', [
-        'default'           => 0,
+        'default' => 0,
         'sanitize_callback' => 'absint',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'footer_logo', [
-        'label'       => __('Logo footer (versione chiara/white)', 'sage'),
+        'label' => __('Logo footer (versione chiara/white)', 'sage'),
         'description' => __('Se impostato, viene usato al posto del logo principale nel footer. Ideale per loghi bianchi su sfondo scuro.', 'sage'),
-        'section'     => 'theme_theme',
-        'mime_type'   => 'image',
-        'priority'    => 21,
+        'section' => 'theme_theme',
+        'mime_type' => 'image',
+        'priority' => 21,
     ]));
 
     // Newsletter heading
@@ -332,23 +332,23 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
     // ── Section: Dati Legali Organizzazione ─────────────────────────────────
     // Obblighi di legge per associazioni non profit / APS / ODV
     $wp_customize->add_section('theme_legal', [
-        'title'       => __('Dati Legali (Footer)', 'sage'),
+        'title' => __('Dati Legali (Footer)', 'sage'),
         'description' => __('Codice fiscale, email e telefono legale dell\'organizzazione. Compaiono nel footer sotto i link legali.', 'sage'),
-        'priority'    => 129,
+        'priority' => 129,
     ]);
 
     // Dati legali come richtext libero (un unico campo textarea HTML)
     $wp_customize->add_setting('org_legal_text', [
-        'default'           => '',
+        'default' => '',
         'sanitize_callback' => 'wp_kses_post',
-        'transport'         => 'refresh',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control('org_legal_text', [
-        'label'       => __('Testo dati legali (HTML)', 'sage'),
+        'label' => __('Testo dati legali (HTML)', 'sage'),
         'description' => __('Testo completo con C.F., indirizzo, email, tel. Supporta <strong>, <em>, <a href="…">, <br>. Appare nel footer sotto i link legali.', 'sage'),
-        'section'     => 'theme_legal',
-        'type'        => 'textarea',
-        'priority'    => 10,
+        'section' => 'theme_legal',
+        'type' => 'textarea',
+        'priority' => 10,
     ]);
 
     // Campi singoli mantenuti per retrocompatibilità
@@ -359,14 +359,14 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
         ['org_address',        __('Sede legale / indirizzo', 'sage'),  'textarea', 'sanitize_textarea_field'],
     ] as [$key, $label, $type, $sanitize]) {
         $wp_customize->add_setting($key, [
-            'default'           => '',
+            'default' => '',
             'sanitize_callback' => $sanitize,
-            'transport'         => 'refresh',
+            'transport' => 'refresh',
         ]);
         $wp_customize->add_control($key, [
-            'label'    => $label . ' ' . __('(legacy)', 'sage'),
-            'section'  => 'theme_legal',
-            'type'     => $type,
+            'label' => $label.' '.__('(legacy)', 'sage'),
+            'section' => 'theme_legal',
+            'type' => $type,
             'priority' => 20,
         ]);
     }

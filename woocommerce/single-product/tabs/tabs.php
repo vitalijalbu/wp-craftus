@@ -16,7 +16,7 @@ defined('ABSPATH') || exit;
 $product_tabs = apply_filters('woocommerce_product_tabs', []);
 
 if (empty($product_tabs)) {
-  return;
+    return;
 }
 
 $tab_keys = array_keys($product_tabs);
@@ -50,9 +50,9 @@ $first = $tab_keys[0];
     role="tablist"
     aria-label="<?php esc_attr_e('Schede informazioni', 'sage'); ?>">
     <?php foreach ($product_tabs as $key => $tab) {
-      $tab_id = 'tab-' . esc_attr($key);
-      $panel_id = 'panel-' . esc_attr($key);
-    ?>
+        $tab_id = 'tab-'.esc_attr($key);
+        $panel_id = 'panel-'.esc_attr($key);
+        ?>
       <button
         type="button"
         id="<?php echo $tab_id; ?>"
@@ -74,9 +74,9 @@ $first = $tab_keys[0];
 
 
   <?php foreach ($product_tabs as $key => $tab) {
-    $panel_id = 'panel-' . esc_attr($key);
-    $tab_id = 'tab-' . esc_attr($key);
-  ?>
+      $panel_id = 'panel-'.esc_attr($key);
+      $tab_id = 'tab-'.esc_attr($key);
+      ?>
     <div
       id="<?php echo $panel_id; ?>"
       role="tabpanel"
@@ -84,9 +84,9 @@ $first = $tab_keys[0];
       :hidden="active !== '<?php echo esc_js($key); ?>'"
       class="product-tab-panel prose max-w-none py-8 lg:py-10">
       <?php
-      if (isset($tab['callback'])) {
-        call_user_func($tab['callback'], $key, $tab);
-      }
+          if (isset($tab['callback'])) {
+              call_user_func($tab['callback'], $key, $tab);
+          }
       ?>
     </div>
   <?php } ?>

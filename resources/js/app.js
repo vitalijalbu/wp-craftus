@@ -89,15 +89,14 @@ Alpine.data('siteHeader', () => ({
     const el = document.getElementById('site-header')
     const updateHeaderHeight = () => {
       if (el) {
-        document.documentElement.style.setProperty(
-          '--header-height',
-          el.offsetHeight + 'px',
-        )
+        document.documentElement.style.setProperty('--header-height', el.offsetHeight + 'px')
       }
     }
     updateHeaderHeight()
     this._headerRO = new ResizeObserver(updateHeaderHeight)
-    if (el) this._headerRO.observe(el)
+    if (el) {
+      this._headerRO.observe(el)
+    }
 
     // Escape key
     document.addEventListener(
@@ -120,7 +119,6 @@ Alpine.data('siteHeader', () => ({
     this._headerRO?.disconnect()
   },
 }))
-
 
 // ── Alpine component: cart drawer (WooCommerce off-canvas) ────────────────────
 Alpine.data('cartDrawer', () => ({

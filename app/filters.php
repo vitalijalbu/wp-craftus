@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use Illuminate\View\ComponentAttributeBag;
+
 // ── Frontend globals: themeData + themeI18n ──────────────────────────────────
 // Injected once via wp_add_inline_script so JS modules don't need inline PHP.
 add_action('wp_enqueue_scripts', function () {
@@ -279,7 +281,7 @@ add_action('woocommerce_after_add_to_cart_form', function () {
 
     $visible = array_values(array_filter(
         $badges,
-        fn ($b) => !empty($b['label']) && (! $b['physical'] || $is_physical)
+        fn ($b) => ! empty($b['label']) && (! $b['physical'] || $is_physical)
     ));
 
     if (empty($visible)) {
@@ -298,7 +300,7 @@ add_action('woocommerce_after_add_to_cart_form', function () {
     foreach ($visible as $b) {
         $icon_html = \Roots\view('components.icons.path', [
             'path' => (string) $b['icon'],
-            'attributes' => new \Illuminate\View\ComponentAttributeBag([
+            'attributes' => new ComponentAttributeBag([
                 'class' => 'size-4 text-primary shrink-0',
                 'stroke-width' => '1.5',
             ]),
