@@ -5,6 +5,9 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+gsap.registerPlugin(ScrollTrigger)
+window.ScrollTrigger = ScrollTrigger
+
 export function initLuxuryAnimations() {
   // ── Parallax images ──────────────────────────────────────────────────────
   gsap.utils.toArray('[data-parallax]').forEach((img) => {

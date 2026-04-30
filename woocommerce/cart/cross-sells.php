@@ -4,7 +4,7 @@
  * Displayed in the cart page below the cart table.
  * Uses the theme's product-card partial for consistent styling.
  *
- * @version 3.0.0 (WC reference version)
+ * @version 9.8.0 (WC reference version)
  */
 defined('ABSPATH') || exit;
 
@@ -14,7 +14,7 @@ if (empty($cross_sells)) {
 ?>
 
 <section
-  class="cross-sells section-luxury bg-surface-alt"
+  class="cross-sells section bg-surface-alt"
   aria-label="<?php esc_attr_e('Completa il tuo ordine', 'sage'); ?>"
 >
   <div class="container">
@@ -30,25 +30,25 @@ if (empty($cross_sells)) {
     >
       <?php
       $cross_sells_limit = apply_filters('woocommerce_cross_sells_total', $cross_sells_columns ?? 4);
-      $shown = 0;
-      foreach ($cross_sells as $cross_sell) {
-          if ($cross_sells_limit > 0 && $shown >= $cross_sells_limit) {
-              break;
-          }
-          $post_object = get_post($cross_sell->get_id());
-          setup_postdata($GLOBALS['post'] = $post_object);
-          $product = wc_get_product($cross_sell->get_id());
-          if (! $product) {
-              continue;
-          }
-          $shown++;
-          ?>
+$shown = 0;
+foreach ($cross_sells as $cross_sell) {
+    if ($cross_sells_limit > 0 && $shown >= $cross_sells_limit) {
+        break;
+    }
+    $post_object = get_post($cross_sell->get_id());
+    setup_postdata($GLOBALS['post'] = $post_object);
+    $product = wc_get_product($cross_sell->get_id());
+    if (! $product) {
+        continue;
+    }
+    $shown++;
+    ?>
         <li>
           <?php
-                echo \Roots\view('partials.product-card', [
-                    'product' => $product,
-                ])->render();
-          ?>
+          echo \Roots\view('partials.product-card', [
+              'product' => $product,
+          ])->render();
+    ?>
         </li>
       <?php } ?>
     </ul>

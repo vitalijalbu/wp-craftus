@@ -1,8 +1,8 @@
 @php
   // Parameters
-  $section_label    = $section_label    ?? __('Esplora', 'sage');
-  $section_title    = $section_title    ?? __('Le nostre categorie', 'sage');
-  $section_subtitle = $section_subtitle ?? '';
+  $section_label    = sanitize_text_field($section_label ?? __('Esplora', 'sage'));
+  $section_title    = wp_kses_post($section_title ?? __('Le nostre categorie', 'sage'));
+  $section_subtitle = sanitize_text_field($section_subtitle ?? '');
   $parent           = $parent           ?? 0;    // 0 = top-level, or parent term ID
   $number           = $number           ?? 8;
   $cols             = $cols             ?? 4;    // 2 | 3 | 4
@@ -35,7 +35,7 @@
 @if(!empty($categories))
 <section
   id="{{ $section_id ?? 'section-categories' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ $section_title }}"
 >
   <div class="container">

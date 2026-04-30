@@ -74,7 +74,7 @@
   @endif
 
   {{-- Titolo --}}
-  <h3 class="font-serif text-xl font-light leading-snug mb-3 {{ $title_class }} transition-colors">
+  <h3 class="text-xl font-light leading-snug mb-3 {{ $title_class }} transition-colors">
     <a href="{{ $perma }}" class="relative after:absolute after:inset-0">
       {!! esc_html(get_the_title($pid)) !!}
     </a>

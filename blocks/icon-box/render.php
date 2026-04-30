@@ -42,7 +42,7 @@ $wrap_flex = $is_horizontal
 
   <div>
     <?php if ($title) { ?>
-      <h3 class="font-serif text-xl font-light <?= $title_class ?> leading-snug"><?= $title ?></h3>
+      <h3 class="text-xl font-light <?= $title_class ?> leading-snug"><?= $title ?></h3>
     <?php } ?>
     <?php if ($text) { ?>
       <p class="text-sm <?= $text_class ?> mt-2 leading-relaxed"><?= $text ?></p>

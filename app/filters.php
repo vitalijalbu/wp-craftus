@@ -1,17 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Theme filters.
  */
 
 namespace App;
 
+use Illuminate\View\ComponentAttributeBag;
+
 // ── Frontend globals: themeData + themeI18n ──────────────────────────────────
 // Injected once via wp_add_inline_script so JS modules don't need inline PHP.
 add_action('wp_enqueue_scripts', function () {
     $data = [
         'restUrl' => esc_url_raw(rest_url()),
-        'nonce'   => wp_create_nonce('wp_rest'),
+        'themeApiBase' => esc_url_raw(rest_url('theme/v1')),
+        'nonce' => wp_create_nonce('wp_rest'),
         'homeUrl' => esc_url_raw(home_url('/')),
         'shopUrl' => function_exists('wc_get_page_permalink') ? esc_url_raw(wc_get_page_permalink('shop')) : '',
     ];
@@ -22,10 +27,32 @@ add_action('wp_enqueue_scripts', function () {
     ];
     wp_add_inline_script(
         'theme/js/app',
-        'window.themeData = ' . wp_json_encode($data) . '; window.themeI18n = ' . wp_json_encode($i18n) . ';',
+        'window.themeData = '.wp_json_encode($data).'; window.themeI18n = '.wp_json_encode($i18n).';',
         'before',
     );
 }, 20);
+
+// ── WooCommerce: always enable registration on My Account frontend ─────────
+// The custom form-login override always shows Login + Register side by side.
+// Keep admin settings untouched.
+add_filter('option_woocommerce_enable_myaccount_registration', function ($value) {
+    if (is_admin()) {
+        return $value;
+    }
+
+    return 'yes';
+});
+
+// ── WooCommerce: move related & upsells outside div.product grid ─────────
+// By default WC renders them inside woocommerce_after_single_product_summary
+// (which lives inside the 2-column product grid). Moving them to
+// woocommerce_after_single_product places them outside, so bg-cream goes full-width.
+remove_action('woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15);
+remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
+remove_action('woocommerce_after_single_product', 'woocommerce_upsell_display', 10);
+remove_action('woocommerce_after_single_product', 'woocommerce_output_related_products', 20);
+add_action('theme_after_woocommerce_container', 'woocommerce_upsell_display', 10);
+add_action('theme_after_woocommerce_container', 'woocommerce_output_related_products', 20);
 
 // ── WooCommerce: cart count fragment ─────────────────────────────────────────
 // Updates `.cart-count-fragment[data-cart-count]` via WC's AJAX fragment system
@@ -159,37 +186,58 @@ add_filter('woocommerce_shortcode_products_query', function (array $query): arra
     return $query;
 });
 
-add_filter('pre_render_block', function ($pre_render, array $block) {
-    $wc_product_blocks = [
-        'woocommerce/all-products',
-        'woocommerce/product-query',
-        'woocommerce/handpicked-products',
-        'woocommerce/product-best-sellers',
-        'woocommerce/product-new',
-        'woocommerce/product-on-sale',
-        'woocommerce/product-top-rated',
-        'woocommerce/products-by-attribute',
-        'woocommerce/product-category',
-    ];
-    if (in_array($block['blockName'] ?? '', $wc_product_blocks, true)) {
-        if (empty($block['attrs']['perPage']) || $block['attrs']['perPage'] > THEME_PRODUCT_QUERY_CAP) {
-            add_filter('posts_per_page', fn () => THEME_PRODUCT_QUERY_CAP);
-        }
+// Safe cap for product queries: avoids leaking a global posts_per_page override.
+add_filter('posts_per_page', function ($posts_per_page, $query) {
+    if (is_admin() || ! $query instanceof \WP_Query) {
+        return $posts_per_page;
     }
 
-    return $pre_render;
-}, 5, 2);
+    $post_type = $query->get('post_type');
+    $is_product_query = $post_type === 'product'
+        || (is_array($post_type) && in_array('product', $post_type, true));
+
+    if (! $is_product_query) {
+        return $posts_per_page;
+    }
+
+    $pp = (int) $posts_per_page;
+    if ($pp <= 0 || $pp > THEME_PRODUCT_QUERY_CAP) {
+        return THEME_PRODUCT_QUERY_CAP;
+    }
+
+    return $pp;
+}, 20, 2);
 
 // ── WooCommerce single product: layout tweaks ────────────────────────────────
 
 // Rimuove il tab recensioni dalla pagina prodotto
 add_filter('woocommerce_product_tabs', function (array $tabs): array {
     unset($tabs['reviews']);
+
     return $tabs;
 });
 
 // Move breadcrumb above the product div (before single-product summary hooks)
 remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+
+// Normalize breadcrumb markup so separators and current item can be styled reliably.
+add_filter('woocommerce_breadcrumb_defaults', function (array $defaults): array {
+    $defaults['delimiter'] = '<span class="breadcrumb-separator" aria-hidden="true">/</span>';
+
+    return $defaults;
+});
+
+add_filter('woocommerce_get_breadcrumb', function (array $crumbs): array {
+    if (empty($crumbs)) {
+        return $crumbs;
+    }
+
+    // Remove link from last crumb (current page).
+    $last = count($crumbs) - 1;
+    $crumbs[$last][1] = '';
+
+    return $crumbs;
+});
 
 // Wrap result-count + ordering in a flex row
 add_action('woocommerce_before_shop_loop', function () {
@@ -202,44 +250,84 @@ add_action('woocommerce_before_shop_loop', function () {
 // Change default columns: 2-col gallery on single product (WC default = 1/2 split via flex)
 add_filter('woocommerce_product_thumbnails_columns', fn () => 4);
 
-// Trust badges below add-to-cart
-add_action('woocommerce_after_add_to_cart_button', function () {
+// Trust badges below add-to-cart form (outside <form class="cart">)
+add_action('woocommerce_after_add_to_cart_form', function () {
     global $product;
 
-    $is_physical = $product instanceof WC_Product
+    $is_physical = $product instanceof \WC_Product
         && ! $product->is_virtual()
         && ! $product->is_downloadable();
 
+    $trust_title = sanitize_text_field(get_theme_mod('single_trust_title', __('Perché scegliere noi', 'sage')));
+
     $badges = [
         ['icon' => 'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
-            'label'    => __('Pagamento sicuro', 'sage'),
+            'label' => sanitize_text_field(get_theme_mod('single_trust_secure', __('Pagamento sicuro', 'sage'))),
             'physical' => false,
         ],
         ['icon' => 'M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12',
-            'label'    => __('Spedizione rapida', 'sage'),
+            'label' => sanitize_text_field(get_theme_mod('single_trust_shipping', __('Spedizione rapida', 'sage'))),
             'physical' => true,
         ],
         ['icon' => 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99',
-            'label'    => __('Resi gratuiti 30gg', 'sage'),
+            'label' => sanitize_text_field(get_theme_mod('single_trust_returns', __('Resi gratuiti 30gg', 'sage'))),
             'physical' => true,
+        ],
+        ['icon' => 'M13.5 4.5c-1.44 0-2.773.62-3.694 1.629A5.003 5.003 0 0 0 6.112 4.5C3.795 4.5 1.875 6.358 1.875 8.7c0 5.25 7.93 9.75 7.93 9.75s7.945-4.5 7.945-9.75c0-2.342-1.92-4.2-4.25-4.2Z',
+            'label' => sanitize_text_field(get_theme_mod('single_trust_happy_pet', __('Il tuo cane sarà felice', 'sage'))),
+            'physical' => false,
         ],
     ];
 
-    $visible = array_filter($badges, fn ($b) => ! $b['physical'] || $is_physical);
+    $visible = array_values(array_filter(
+        $badges,
+        fn ($b) => ! empty($b['label']) && (! $b['physical'] || $is_physical)
+    ));
 
     if (empty($visible)) {
         return;
     }
 
-    echo '<div class="trust-badges flex flex-wrap gap-4 mt-5 text-muted text-xs">';
+    echo '<section class="trust-badges mt-6 pt-5 border-t border-border" aria-label="'.esc_attr__('Vantaggi acquisto', 'sage').'">';
+
+    if (! empty($trust_title)) {
+        echo '<p class="text-[10px] font-semibold tracking-wider uppercase text-muted/60 mb-3">'.esc_html($trust_title).'</p>';
+    }
+
+    echo '<ul class="list-none m-0 p-0 flex flex-col gap-2.5">';
+
+    // Badge items
     foreach ($visible as $b) {
+        $icon_html = \Roots\view('components.icons.path', [
+            'path' => (string) $b['icon'],
+            'attributes' => new ComponentAttributeBag([
+                'class' => 'size-4 text-primary shrink-0',
+                'stroke-width' => '1.5',
+            ]),
+        ])->render();
+
         printf(
-            '<span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="%s"/></svg>%s</span>',
-            esc_attr($b['icon']),
+            '<li class="flex items-center gap-2 text-muted text-xs">%s%s</li>',
+            $icon_html,
             esc_html($b['label'])
         );
     }
-    echo '</div>';
+
+    echo '</ul>';
+
+    // Payment methods
+    $payment_methods_raw = sanitize_text_field(get_theme_mod('single_payment_methods', 'Visa, Mastercard, PayPal, Apple Pay'));
+    $payment_methods = array_values(array_filter(array_map('trim', explode(',', $payment_methods_raw))));
+
+    echo '<div class="flex items-center gap-3 mt-1">';
+    echo '<span class="text-[10px] font-semibold tracking-wider uppercase text-muted/60">'.esc_html__('Accettiamo', 'sage').'</span>';
+    echo '<div class="flex items-center gap-2 text-muted/50 text-[10px] tracking-wide">';
+    foreach ($payment_methods as $method) {
+        echo '<span>'.esc_html($method).'</span>';
+    }
+    echo '</div></div>';
+
+    echo '</section>';
 }, 25);
 
 // ── Performance: rimuovi asset inutili di WordPress ──────────────────────────
@@ -303,8 +391,6 @@ add_filter('script_loader_tag', function (string $tag, string $handle): string {
         'wc-add-to-cart',
         'wc-cart-fragments',
         'jquery-blockui',
-        'woocommerce',
-        'wc-single-product',
     ];
     if (in_array($handle, $defer_handles, true) && ! str_contains($tag, 'defer')) {
         $tag = str_replace(' src=', ' defer src=', $tag);
@@ -357,21 +443,38 @@ function theme_get_client_ip(): string
     return sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
 }
 
-// Rate-limit REST endpoints: newsletter (5/min) and search (30/min per IP).
+// Rate-limit REST endpoints most exposed to abuse.
 // Uses transients as a lightweight counter — no extra plugin needed.
 add_filter('rest_pre_dispatch', function ($result, $server, \WP_REST_Request $request) {
     $route = $request->get_route();
 
-    $limits = [
-        '/theme/v1/newsletter' => ['max' => 5,  'prefix' => 'nl_rl_',     'window' => MINUTE_IN_SECONDS],
-        '/theme/v1/search' => ['max' => 30, 'prefix' => 'srch_rl_',   'window' => MINUTE_IN_SECONDS],
+    $exact_limits = [
+        '/theme/v1/newsletter' => ['max' => 5,  'prefix' => 'nl_rl_',      'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/search' => ['max' => 30, 'prefix' => 'srch_rl_',    'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/products' => ['max' => 45, 'prefix' => 'prod_rl_',    'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/wishlist-products' => ['max' => 40, 'prefix' => 'wlp_rl_',     'window' => MINUTE_IN_SECONDS],
+        '/theme/v1/wishlist' => ['max' => 60, 'prefix' => 'wl_rl_',      'window' => MINUTE_IN_SECONDS],
     ];
 
-    if (! isset($limits[$route])) {
+    $prefix_limits = [
+        '/theme/v1/quick-view/' => ['max' => 90, 'prefix' => 'qv_rl_', 'window' => MINUTE_IN_SECONDS],
+    ];
+
+    $cfg = $exact_limits[$route] ?? null;
+
+    if (! $cfg) {
+        foreach ($prefix_limits as $prefix => $limit) {
+            if (str_starts_with($route, $prefix)) {
+                $cfg = $limit;
+                break;
+            }
+        }
+    }
+
+    if (! $cfg) {
         return $result;
     }
 
-    $cfg = $limits[$route];
     $ip = theme_get_client_ip();
     $key = $cfg['prefix'].md5($ip);
     $hits = (int) get_transient($key);
@@ -434,123 +537,76 @@ add_filter('template_include', function (string $template): string {
 // ── [products_carousel] shortcode ─────────────────────────────────────────────
 // Usage: [products_carousel title="Titolo" subtitle="Label" limit="8" category="" orderby="date" order="DESC" ids=""]
 add_shortcode('products_carousel', function (array $atts): string {
-    if (! function_exists('wc_get_product')) {
+    if (! function_exists('render_block')) {
         return '';
     }
 
-    $atts = shortcode_atts([
-        'title'    => __('I nostri prodotti', 'sage'),
+    $raw = shortcode_atts([
+        'title' => __('I nostri prodotti', 'sage'),
         'subtitle' => '',
-        'limit'    => 8,
+        'limit' => 8,
         'category' => '',
-        'orderby'  => 'date',
-        'order'    => 'DESC',
-        'ids'      => '',
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'ids' => '',
     ], $atts, 'products_carousel');
 
-    $limit    = max(1, min(24, (int) $atts['limit']));
-    $title    = sanitize_text_field($atts['title']);
-    $subtitle = sanitize_text_field($atts['subtitle']);
-    $orderby  = sanitize_key($atts['orderby']);
-    $order    = in_array(strtoupper((string) $atts['order']), ['ASC', 'DESC'], true)
-        ? strtoupper((string) $atts['order'])
+    $limit = max(1, min(24, (int) $raw['limit']));
+    $order = in_array(strtoupper((string) $raw['order']), ['ASC', 'DESC'], true)
+        ? strtoupper((string) $raw['order'])
         : 'DESC';
 
-    $query_args = [
-        'post_type'           => 'product',
-        'post_status'         => 'publish',
-        'posts_per_page'      => $limit,
-        'orderby'             => $orderby,
-        'order'               => $order,
-        'ignore_sticky_posts' => true,
-    ];
+    $categories = array_values(array_filter(array_map(
+        'sanitize_title',
+        explode(',', (string) $raw['category'])
+    )));
 
-    if (! empty($atts['category'])) {
-        $query_args['tax_query'] = [[
-            'taxonomy' => 'product_cat',
-            'field'    => 'slug',
-            'terms'    => array_map('sanitize_title', explode(',', (string) $atts['category'])),
-        ]];
-    }
+    $ids = array_values(array_filter(array_map('absint', explode(',', (string) $raw['ids']))));
 
-    if (! empty($atts['ids'])) {
-        $ids = array_values(array_filter(array_map('absint', explode(',', (string) $atts['ids']))));
-        if (! empty($ids)) {
-            $query_args['post__in'] = $ids;
-            $query_args['orderby']  = 'post__in';
-        }
-    }
-
-    $query    = new \WP_Query($query_args);
-    $products = [];
-
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $product = wc_get_product(get_the_ID());
-            if ($product && $product->is_visible()) {
-                $products[] = $product;
-            }
-        }
-        wp_reset_postdata();
-    }
-
-    if (empty($products)) {
-        return '';
-    }
-
-    $has_many = count($products) > 1;
-
-    ob_start(); ?>
-    <section
-      class="products-carousel-section py-16 md:py-20"
-      data-products-carousel
-      aria-label="<?php echo esc_attr($title); ?>"
-    >
-        <?php if ($title || $subtitle) { ?>
-            <div class="container mb-8 md:mb-10">
-                <div class="flex items-end justify-between gap-6">
-                    <div>
-                        <?php if ($subtitle) { ?>
-                            <p class="section-label text-muted mb-2"><?php echo esc_html($subtitle); ?></p>
-                        <?php } ?>
-                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-serif font-light text-ink leading-tight m-0">
-                            <?php echo esc_html($title); ?>
-                        </h2>
-                    </div>
-                    <?php if ($has_many) { ?>
-                        <div class="flex items-center gap-2 shrink-0">
-                            <button type="button" class="swiper-button-prev products-carousel__btn" aria-label="<?php esc_attr_e('Prodotto precedente', 'sage'); ?>">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
-                            </button>
-                            <button type="button" class="swiper-button-next products-carousel__btn" aria-label="<?php esc_attr_e('Prodotto successivo', 'sage'); ?>">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
-                            </button>
-                        </div>
-                    <?php } ?>
-                </div>
-            </div>
-        <?php } ?>
-
-        <div class="products-carousel__outer">
-            <div class="products-carousel__track">
-                <div class="js-products-swiper swiper">
-                    <div class="swiper-wrapper items-stretch">
-                        <?php foreach ($products as $product) { ?>
-                            <div class="swiper-slide h-auto">
-                                <?php echo \Roots\view('partials.product-card', ['product' => $product])->render(); ?>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-scrollbar products-carousel__scrollbar"></div>
-        </div>
-
-    </section>
-    <?php
-    return ob_get_clean();
+    return render_block([
+        'blockName' => 'theme/products-carousel',
+        'attrs' => [
+            'title' => sanitize_text_field((string) $raw['title']),
+            'subtitle' => sanitize_text_field((string) $raw['subtitle']),
+            'limit' => $limit,
+            'categories' => $categories,
+            'orderby' => sanitize_key((string) $raw['orderby']),
+            'order' => $order,
+            'ids' => $ids,
+        ],
+        'innerBlocks' => [],
+        'innerHTML' => '',
+        'innerContent' => [],
+    ]);
 });
+
+/**
+ * WCAG fix: when a wp:button block uses has-primary-color on a dark background,
+ * remove the inline color style so our CSS !important rule can set white text.
+ * The editor preserves the class; only the inline style (which would override
+ * our CSS) is stripped from the output.
+ */
+add_filter('render_block_core/button', function (string $block_content, array $block): string {
+    // Only target buttons with primary-color text AND a dark/ink background
+    if (
+        str_contains($block_content, 'has-primary-color')
+        && (str_contains($block_content, 'has-dark-background-color') || str_contains($block_content, 'has-ink-background-color'))
+    ) {
+        // Strip standalone 'color:' property from inline style attributes.
+        // Negative lookbehind (?<![a-z-]) ensures we don't remove background-color,
+        // border-color, text-decoration-color, etc. — only the bare 'color:' property.
+        $block_content = preg_replace(
+            '/(?<![a-z-])color:\s*[^;}"]+;?/i',
+            '',
+            $block_content,
+        );
+        // Clean up any empty or whitespace-only style attributes left behind
+        $block_content = preg_replace('/\s+style="\s*;?\s*"/', '', $block_content);
+        $block_content = str_replace(' style=""', '', $block_content);
+    }
+
+    return $block_content;
+}, 10, 2);
 
 /**
  * Recently Viewed — track current product on single product pages.
@@ -568,15 +624,15 @@ add_action('wp_footer', function () {
     }
 
     $thumb_url = get_the_post_thumbnail_url($product->get_id(), 'woocommerce_thumbnail') ?: '';
-    $price     = html_entity_decode(wp_strip_all_tags($product->get_price_html()), ENT_QUOTES, 'UTF-8');
+    $price = html_entity_decode(wp_strip_all_tags($product->get_price_html()), ENT_QUOTES, 'UTF-8');
 
     $data = wp_json_encode([
-        'id'    => $product->get_id(),
-        'url'   => get_permalink($product->get_id()),
+        'id' => $product->get_id(),
+        'url' => get_permalink($product->get_id()),
         'title' => $product->get_name(),
         'thumb' => $thumb_url,
         'price' => $price,
     ]);
 
-    echo '<script>window.trackProductView && window.trackProductView(' . $data . ');</script>' . "\n";
+    echo '<script>window.trackProductView && window.trackProductView('.$data.');</script>'."\n";
 }, 20);

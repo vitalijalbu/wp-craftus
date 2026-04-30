@@ -10,6 +10,9 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+gsap.registerPlugin(ScrollTrigger)
+window.ScrollTrigger = ScrollTrigger
+
 const EFFECTS = {
   'slide-up': (el) =>
     gsap.fromTo(

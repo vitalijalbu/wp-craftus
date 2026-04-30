@@ -4,7 +4,7 @@
  * Rendered below the product summary on single product pages.
  * Uses the theme's product-card partial for consistent styling.
  *
- * @version 3.0.0 (WC reference version)
+ * @version 9.6.0 (WC reference version)
  */
 defined('ABSPATH') || exit;
 
@@ -14,7 +14,7 @@ if (empty($upsells)) {
 ?>
 
 <section
-  class="upsells section-luxury bg-surface"
+  class="upsells section bg-surface"
   aria-label="<?php esc_attr_e('Potresti apprezzare', 'sage'); ?>"
 >
   <div class="container">

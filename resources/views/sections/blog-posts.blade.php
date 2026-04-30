@@ -8,7 +8,7 @@
   $cols             = $cols             ?? 3;   // 2 | 3
   $category         = $category         ?? '';  // category slug
   $cta_label        = $cta_label        ?? __('Tutti gli articoli', 'sage');
-  $cta_url          = $cta_url          ?? get_permalink(get_option('page_for_posts')) ?: '/blog';
+  $cta_url          = esc_url($cta_url ?? get_permalink(get_option('page_for_posts')) ?: '/blog');
 
   // Query posts
   $query_args = [
@@ -43,7 +43,7 @@
 @if(!empty($posts_list))
 <section
   id="{{ $section_id ?? 'section-blog' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
 >
   <div class="container">
@@ -53,12 +53,12 @@
       @include('partials.section-header', ['bg' => $bg])
       @if($cta_label && $cta_url)
         <a
-          href="{{ $cta_url }}"
+          href="{{ esc_url($cta_url) }}"
           class="btn-ghost shrink-0 self-start md:self-auto {{ $bg === 'ink' ? 'text-white/60 border-white/40 hover:text-white hover:border-white' : '' }}"
           data-scroll="fade"
         >
           {{ $cta_label }}
-          <x-icons.arrow-right class="w-4 h-4" />
+          <x-icons.arrow-right class="size-4" />
         </a>
       @endif
     </div>

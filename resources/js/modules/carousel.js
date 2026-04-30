@@ -3,6 +3,10 @@
  * Each selector initializes with luxury defaults.
  */
 
+import '@styles/swiper.css'
+
+// ── Alpine.js ────────────────────────────────────────────────────────────────
+import Alpine from 'alpinejs'
 import Swiper from 'swiper'
 import {
   A11y,
@@ -14,29 +18,120 @@ import {
   Scrollbar,
   Thumbs,
 } from 'swiper/modules'
+import { initHeroSwipers } from './swiper-hero.js'
+
+// ── Alpine component: product lightbox ────────────────────────────────────────
+Alpine.data('productLightbox', (imagesJson) => ({
+  open: false,
+  current: 0,
+  images:
+    typeof imagesJson === 'string'
+      ? (() => {
+          try {
+            return JSON.parse(imagesJson || '[]')
+          } catch (_e) {
+            return []
+          }
+        })()
+      : (imagesJson ?? []),
+  _trigger: null,
+  _lbSwiper: null,
+
+  initLightboxSwiper() {
+    if (this._lbSwiper || !this.$refs.lbSwiper) {
+      return
+    }
+
+    this._lbSwiper = new Swiper(this.$refs.lbSwiper, {
+      modules: [EffectFade, Navigation, A11y],
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      speed: 260,
+      navigation: {
+        prevEl: this.$refs.lbPrev,
+        nextEl: this.$refs.lbNext,
+      },
+      a11y: {
+        prevSlideMessage: 'Immagine precedente',
+        nextSlideMessage: 'Immagine successiva',
+      },
+      on: {
+        slideChange: (swiper) => {
+          this.current = swiper.activeIndex
+        },
+      },
+    })
+  },
+
+  show(i, el) {
+    this._trigger = el ?? null
+    this.current = i
+    this.open = true
+    document.body.style.overflow = 'hidden'
+    this.$nextTick(() => {
+      this.initLightboxSwiper()
+      this._lbSwiper?.slideTo(i, 0, false)
+      this.$refs.lbClose?.focus()
+    })
+  },
+
+  close() {
+    this.open = false
+    document.body.style.overflow = ''
+    this.$nextTick(() => this._trigger?.focus())
+  },
+
+  prev() {
+    if (this._lbSwiper) {
+      this._lbSwiper.slidePrev()
+      return
+    }
+    this.current = (this.current - 1 + this.images.length) % this.images.length
+  },
+
+  next() {
+    if (this._lbSwiper) {
+      this._lbSwiper.slideNext()
+      return
+    }
+    this.current = (this.current + 1) % this.images.length
+  },
+
+  trapFocus(e) {
+    if (!this.open) {
+      return
+    }
+    const el = this.$refs.lbDialog
+    if (!el) {
+      return
+    }
+    const focusable = Array.from(
+      el.querySelectorAll(
+        "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
+      ),
+    ).filter((n) => !n.hasAttribute('disabled'))
+    if (!focusable.length) {
+      return
+    }
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+  },
+}))
 
 export function initCarousels() {
   // ── Hero carousel ─────────────────────────────────────────────────────────
-  document.querySelectorAll('.js-hero-swiper').forEach((el) => {
-    new Swiper(el, {
-      modules: [Navigation, Pagination, Autoplay, EffectFade, A11y],
-      effect: 'fade',
-      fadeEffect: { crossFade: true },
-      autoplay: { delay: 5500, disableOnInteraction: false, pauseOnMouseEnter: true },
-      loop: true,
-      speed: 1000,
-      pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
-      navigation: {
-        nextEl: el.querySelector('.swiper-button-next'),
-        prevEl: el.querySelector('.swiper-button-prev'),
-      },
-      a11y: {
-        prevSlideMessage: 'Slide precedente',
-        nextSlideMessage: 'Slide successiva',
-        paginationBulletMessage: 'Vai alla slide {{index}}',
-      },
-    })
-  })
+  initHeroSwipers(document, { datasetKey: 'swiperInit', pauseOnMouseEnter: true })
 
   // ── Products carousel ─────────────────────────────────────────────────────
   document.querySelectorAll('.js-products-swiper').forEach((el) => {
@@ -55,8 +150,7 @@ export function initCarousels() {
       },
       breakpoints: {
         640: { slidesPerView: 2.2, spaceBetween: 20 },
-        1024: { slidesPerView: 3.2, spaceBetween: 24 },
-        1280: { slidesPerView: 4, spaceBetween: 24 },
+        1024: { slidesPerView: 4, spaceBetween: 24 },
       },
       a11y: {
         prevSlideMessage: 'Prodotto precedente',
@@ -71,10 +165,17 @@ export function initCarousels() {
       modules: [Navigation, Pagination, Autoplay, A11y],
       slidesPerView: 1,
       spaceBetween: 32,
-      autoplay: { delay: 6000, disableOnInteraction: false, pauseOnMouseEnter: true },
+      autoplay: {
+        delay: 6000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
       loop: true,
       speed: 800,
-      pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
+      pagination: {
+        el: el.querySelector('.swiper-pagination'),
+        clickable: true,
+      },
       navigation: {
         nextEl: el.closest('[data-testimonials]')?.querySelector('.swiper-button-next'),
         prevEl: el.closest('[data-testimonials]')?.querySelector('.swiper-button-prev'),
@@ -102,7 +203,10 @@ export function initCarousels() {
       autoplay: opts.autoplay
         ? { delay: opts.autoplayDelay ?? 4000, pauseOnMouseEnter: true }
         : false,
-      pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
+      pagination: {
+        el: el.querySelector('.swiper-pagination'),
+        clickable: true,
+      },
       navigation: {
         nextEl: el.querySelector('.swiper-button-next'),
         prevEl: el.querySelector('.swiper-button-prev'),

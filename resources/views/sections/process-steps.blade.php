@@ -1,8 +1,8 @@
 @php
   // Parameters
-  $section_label    = $section_label    ?? '';
-  $section_title    = $section_title    ?? __('Come funziona', 'sage');
-  $section_subtitle = $section_subtitle ?? '';
+  $section_label    = sanitize_text_field($section_label ?? '');
+  $section_title    = wp_kses_post($section_title ?? __('Come funziona', 'sage'));
+  $section_subtitle = sanitize_text_field($section_subtitle ?? '');
   $bg               = $bg               ?? 'cream'; // 'surface' | 'cream' | 'ink'
   $layout           = $layout           ?? 'horizontal'; // 'horizontal' | 'vertical'
   $numbered         = $numbered         ?? true;   // show step numbers
@@ -51,7 +51,7 @@
 
 <section
   id="{{ $section_id ?? 'section-how-it-works' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
 >
   <div class="container">
@@ -96,16 +96,13 @@
           {{-- Icon / number --}}
           <div class="process-step__icon-wrap {{ $bg === 'ink' ? 'border-white/20' : 'border-border' }}">
             @if($icon_path)
-              <svg
-                class="w-5 h-5 {{ $bg === 'ink' ? 'text-primary' : 'text-primary' }}"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
+              <x-icons.path
+                :path="$icon_path"
+                class="size-5 text-primary"
                 stroke-width="1.5"
-                aria-hidden="true"
-              >{!! $icon_path !!}</svg>
+              />
             @else
-              <span class="process-step__num {{ $bg === 'ink' ? 'text-primary' : 'text-primary' }}"
+              <span class="process-step__num text-primary"
                     aria-hidden="{{ $numbered ? 'false' : 'true' }}">
                 {{ $num }}
               </span>

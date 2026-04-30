@@ -47,7 +47,7 @@
 
 <section
   id="{{ $section_id ?? 'section-size-guide' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($heading) }}"
   @if($accordion && count($tables) > 1) x-data="{ openTab: 0 }" @endif
 >
@@ -83,9 +83,9 @@
               :aria-expanded="openTab === {{ $ti }}"
               aria-controls="sg-table-{{ $ti }}"
             >
-              <span class="font-serif text-base font-light">{{ esc_html($table['title'] ?? '') }}</span>
+              <span class="text-base font-light">{{ esc_html($table['title'] ?? '') }}</span>
               <x-icons.chevron-down
-                class="w-4 h-4 transition-transform duration-300 shrink-0"
+                class="size-4 transition-transform duration-300 shrink-0"
                 ::class="openTab === {{ $ti }} ? 'rotate-180' : ''"
               />
             </button>
@@ -104,7 +104,7 @@
       {{-- Single table or non-accordion layout --}}
       @foreach($tables as $table)
         @if(count($tables) > 1 && !empty($table['title']))
-          <h3 class="font-serif text-xl font-light mb-4 {{ $title_class }}">{{ esc_html($table['title']) }}</h3>
+          <h3 class="text-xl font-light mb-4 {{ $title_class }}">{{ esc_html($table['title']) }}</h3>
         @endif
         <div class="size-guide-table-wrap mb-8" data-scroll="fade">
           <table class="size-guide-table {{ $bg === 'ink' ? 'size-guide-table--dark' : '' }}">

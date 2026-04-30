@@ -1,8 +1,8 @@
 @php
   // Parameters
-  $section_label    = $section_label    ?? '';
-  $section_title    = $section_title    ?? __('Perché sceglierci', 'sage');
-  $section_subtitle = $section_subtitle ?? '';
+  $section_label    = sanitize_text_field($section_label ?? '');
+  $section_title    = wp_kses_post($section_title ?? __('Perché sceglierci', 'sage'));
+  $section_subtitle = sanitize_text_field($section_subtitle ?? '');
   $cols             = $cols             ?? 3; // 2 | 3 | 4
   $bg               = $bg               ?? 'surface'; // 'surface' | 'cream' | 'ink'
   $style            = $style            ?? 'boxed'; // 'boxed' | 'minimal'
@@ -47,7 +47,7 @@
   };
 @endphp
 
-<section id="{{ $section_id ?? 'section-features' }}" class="section-luxury {{ $bg_class }}" aria-label="{{ $section_title }}">
+<section id="{{ $section_id ?? 'section-features' }}" class="section {{ $bg_class }}" aria-label="{{ $section_title }}">
   <div class="container">
 
     {{-- Header --}}
@@ -69,6 +69,7 @@
       data-scroll="stagger"
     >
       @foreach($features as $feature)
+        @php($feature_cta_url = esc_url($feature['cta_url'] ?? ''))
         <div
           class="{{ $style === 'boxed' ? 'feature-item' : 'py-8' }} {{ $bg === 'ink' ? 'border-white/10' : '' }}"
           data-scroll-item
@@ -85,13 +86,13 @@
           <p class="feature-item__desc {{ $desc_class }}">{{ $feature['desc'] ?? '' }}</p>
 
           {{-- Optional CTA --}}
-          @if(!empty($feature['cta_label']) && !empty($feature['cta_url']))
+          @if(!empty($feature['cta_label']) && $feature_cta_url)
             <a
-              href="{{ $feature['cta_url'] }}"
+              href="{{ $feature_cta_url }}"
               class="btn-ghost mt-4 {{ $bg === 'ink' ? 'text-white/60 border-white/40 hover:text-white hover:border-white' : '' }}"
             >
               {{ $feature['cta_label'] }}
-              <x-icons.arrow-right class="w-4 h-4" />
+              <x-icons.arrow-right class="size-4" />
             </a>
           @endif
         </div>

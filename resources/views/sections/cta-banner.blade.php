@@ -1,16 +1,16 @@
 @php
   // Parameters
   $style        = $style        ?? 'dark'; // 'dark' | 'cream' | 'image' | 'primary'
-  $label        = $label        ?? '';
-  $title        = $title        ?? __('Cosa possiamo fare per te?', 'sage');
-  $subtitle     = $subtitle     ?? __('Scopri la nostra selezione di prodotti e servizi premium.', 'sage');
-  $cta_label    = $cta_label    ?? __('Scopri i prodotti', 'sage');
-  $cta_url      = $cta_url      ?? '/shop';
-  $cta2_label   = $cta2_label   ?? __('Contattaci', 'sage');
-  $cta2_url     = $cta2_url     ?? '/contatti';
+  $label        = sanitize_text_field($label ?? '');
+  $title        = wp_kses_post($title ?? __('Cosa possiamo fare per te?', 'sage'));
+  $subtitle     = sanitize_text_field($subtitle ?? __('Scopri la nostra selezione di prodotti e servizi premium.', 'sage'));
+  $cta_label    = sanitize_text_field($cta_label ?? __('Scopri i prodotti', 'sage'));
+  $cta_url      = esc_url($cta_url ?? '/shop');
+  $cta2_label   = sanitize_text_field($cta2_label ?? __('Contattaci', 'sage'));
+  $cta2_url     = esc_url($cta2_url ?? '/contatti');
   $image        = $image        ?? null;
-  $image_url    = is_array($image) ? ($image['url'] ?? '') : (is_string($image) ? $image : '');
-  $image_alt    = is_array($image) ? ($image['alt'] ?? '') : '';
+  $image_url    = is_array($image) ? esc_url($image['url'] ?? '') : (is_string($image) ? esc_url($image) : '');
+  $image_alt    = is_array($image) ? esc_attr($image['alt'] ?? '') : '';
   $align        = $align        ?? 'center'; // 'center' | 'left'
 
   // Style classes
@@ -39,7 +39,7 @@
 
 <section
   id="{{ $section_id ?? 'section-cta' }}"
-  class="section-luxury {{ $section_classes }}"
+  class="section {{ $section_classes }}"
   aria-label="{{ strip_tags($title) }}"
 >
   {{-- Background image (style='image') --}}
@@ -82,11 +82,11 @@
           class="flex flex-wrap gap-4 {{ $align === 'center' ? 'justify-center' : '' }}"
           data-scroll="slide-up"
         >
-          <a href="{{ $cta_url }}" class="{{ $btn_class }}">
+          <a href="{{ esc_url($cta_url) }}" class="{{ $btn_class }}">
             {{ $cta_label }}
           </a>
           @if($cta2_label && $cta2_url)
-            <a href="{{ $cta2_url }}" class="{{ $btn2_class }}">
+            <a href="{{ esc_url($cta2_url) }}" class="{{ $btn2_class }}">
               {{ $cta2_label }}
             </a>
           @endif

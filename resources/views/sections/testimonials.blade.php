@@ -1,8 +1,8 @@
 @php
   // Parameters
-  $section_label    = $section_label    ?? __('Testimonianze', 'sage');
-  $section_title    = $section_title    ?? __('Cosa dicono di noi', 'sage');
-  $section_subtitle = $section_subtitle ?? '';
+  $section_label    = sanitize_text_field($section_label ?? __('Testimonianze', 'sage'));
+  $section_title    = wp_kses_post($section_title ?? __('Cosa dicono di noi', 'sage'));
+  $section_subtitle = sanitize_text_field($section_subtitle ?? '');
   $bg               = $bg               ?? 'cream'; // 'surface' | 'cream' | 'ink'
 
   // Default testimonials — override via $testimonials parameter
@@ -44,7 +44,7 @@
 
 <section
   id="{{ $section_id ?? 'section-testimonials' }}"
-  class="section-luxury {{ $bg_class }} overflow-hidden"
+  class="section {{ $bg_class }} overflow-hidden"
   aria-roledescription="{{ __('carosello', 'sage') }}"
   aria-label="{{ strip_tags($section_title) }}"
   data-testimonials
@@ -70,14 +70,14 @@
           aria-label="{{ __('Recensione precedente', 'sage') }}"
           type="button"
         >
-          <x-icons.chevron-left class="w-4 h-4" stroke-width="2" />
+          <x-icons.arrow-left class="size-4" />
         </button>
         <button
           class="swiper-button-next btn-nav static {{ $bg === 'ink' ? 'btn-nav--light' : '' }}"
           aria-label="{{ __('Recensione successiva', 'sage') }}"
           type="button"
         >
-          <x-icons.chevron-right class="w-4 h-4" stroke-width="2" />
+          <x-icons.arrow-right class="size-4" />
         </button>
       </div>
     </div>
@@ -105,7 +105,7 @@
                   role="img"
                 >
                   @for($i = 0; $i < 5; $i++)
-                    <x-icons.star class="w-4 h-4 {{ $i < $t['rating'] ? 'text-primary fill-primary' : 'text-border fill-border' }}" />
+                    <x-icons.star class="size-4 {{ $i < $t['rating'] ? 'text-primary fill-primary' : 'text-border fill-border' }}" />
                   @endfor
                 </div>
               @endif
@@ -135,7 +135,7 @@
                     class="testimonial-card__avatar bg-cream flex items-center justify-center shrink-0"
                     aria-hidden="true"
                   >
-                    <span class="font-serif text-primary text-sm font-medium">
+                    <span class="text-primary text-sm font-medium">
                       {{ mb_substr($t['name'] ?? 'A', 0, 1) }}
                     </span>
                   </div>

@@ -22,13 +22,13 @@ $line_class = $bg === 'ink' ? 'bg-white/10' : 'bg-border';
   <?= get_block_wrapper_attributes($scroll_effect ? ['data-scroll' => $scroll_effect] : []) ?>
 >
   <?php if ($prefix) { ?>
-    <span class="font-serif text-2xl font-light <?= $value_class ?> opacity-60"><?= $prefix ?></span>
+    <span class="text-2xl font-light <?= $value_class ?> opacity-60"><?= $prefix ?></span>
   <?php } ?>
-  <span class="font-serif font-light <?= $value_class ?> leading-none text-stat-display">
+  <span class="font-light <?= $value_class ?> leading-none text-stat-display">
     <?= $value ?>
   </span>
   <?php if ($suffix) { ?>
-    <span class="font-serif text-2xl font-light <?= $value_class ?>"><?= $suffix ?></span>
+    <span class="text-2xl font-light <?= $value_class ?>"><?= $suffix ?></span>
   <?php } ?>
 
   <?php if ($label) { ?>

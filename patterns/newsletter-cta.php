@@ -27,9 +27,12 @@
   @submit.prevent="
     if (!email) return;
     state = 'loading';
-    fetch('/wp-json/theme/v1/newsletter', {
+    fetch((window.themeData?.themeApiBase || '/wp-json/theme/v1').replace(/\/$/, '') + '/newsletter', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.themeData?.nonce || '',
+      },
       body: JSON.stringify({ email }),
     })
     .then(r => r.json())

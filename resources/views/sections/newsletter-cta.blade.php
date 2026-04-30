@@ -1,14 +1,24 @@
 @php
-  $section_label = $section_label ?? '';
-  $section_title = $section_title ?? get_theme_mod('newsletter_heading', __('Resta aggiornato', 'sage'));
-  $section_sub   = $section_sub   ?? __('Iscriviti e ricevi offerte esclusive, novità e contenuti riservati agli abbonati.', 'sage');
+  $section_label = sanitize_text_field($section_label ?? '');
+  $section_title = wp_kses_post($section_title ?? get_theme_mod('newsletter_heading', __('Resta aggiornato', 'sage')));
+  $section_sub   = sanitize_text_field($section_sub ?? __('Iscriviti e ricevi offerte esclusive, novità e contenuti riservati agli abbonati.', 'sage'));
   $bg            = $bg            ?? 'ink';   // 'surface' | 'cream' | 'ink'
   $layout        = $layout        ?? 'split'; // 'split' | 'centered'
-  $placeholder   = $placeholder   ?? __('La tua email', 'sage');
-  $btn_label     = $btn_label     ?? __('Iscriviti', 'sage');
+  $placeholder   = sanitize_text_field($placeholder ?? __('La tua email', 'sage'));
+  $btn_label     = sanitize_text_field($btn_label ?? __('Iscriviti', 'sage'));
   $privacy_label = $privacy_label ?? __('Accetto la <a href="{url}" class="underline">Privacy Policy</a>.', 'sage');
   $privacy_url   = esc_url(get_privacy_policy_url() ?: home_url('/privacy'));
   $privacy_label = str_replace('{url}', $privacy_url, $privacy_label);
+  $privacy_label = wp_kses($privacy_label, [
+    'a' => [
+      'href' => [],
+      'class' => [],
+      'target' => [],
+      'rel' => [],
+    ],
+    'strong' => [],
+    'em' => [],
+  ]);
 
   $bg_class    = match($bg) { 'cream' => 'bg-cream', 'surface' => 'bg-surface', default => 'bg-ink' };
   $title_class = $bg === 'ink' ? 'text-white'   : 'text-ink';
@@ -20,7 +30,7 @@
 
 <section
   id="{{ $section_id ?? 'section-newsletter' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
 >
   <div class="container">

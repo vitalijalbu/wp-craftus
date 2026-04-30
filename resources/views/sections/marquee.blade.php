@@ -46,10 +46,10 @@
     <div class="js-marquee-track flex items-center gap-10 whitespace-nowrap" style="--marquee-speed: {{ $speed }}s">
       @foreach($items as $item)
         <span class="js-marquee-item flex items-center gap-10">
-          <span class="font-serif font-light tracking-widest uppercase {{ $font_size }} {{ $text_class }}">
+          <span class="font-light tracking-widest uppercase {{ $font_size }} {{ $text_class }}">
             {{ $item }}
           </span>
-          <x-icons.dot class="w-2 h-2 fill-primary shrink-0" />
+          <x-icons.dot class="size-2 fill-primary shrink-0" />
         </span>
       @endforeach
     </div>

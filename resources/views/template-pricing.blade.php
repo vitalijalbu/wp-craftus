@@ -86,7 +86,7 @@ $faqs = [
   <div class="bg-cream border-b border-border pt-20 pb-14">
     <div class="max-w-2xl mx-auto px-6 text-center">
       <p class="section-label text-primary">{{ __('Prezzi', 'sage') }}</p>
-      <h1 class="font-serif text-[clamp(2rem,4vw,3rem)] font-light text-ink leading-tight mb-4">
+      <h1 class="text-[clamp(2rem,4vw,3rem)] font-light text-ink leading-tight mb-4">
         {{ get_the_title() ?: __('Piani semplici, prezzi trasparenti', 'sage') }}
       </h1>
       @php the_excerpt() @endphp
@@ -103,7 +103,7 @@ $faqs = [
           aria-label="{{ __('Passa a fatturazione annuale', 'sage') }}"
         >
           <span
-            class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"
+            class="absolute top-0.5 left-0.5 size-5 bg-white rounded-full shadow transition-transform duration-200"
             :class="annual ? 'translate-x-5' : 'translate-x-0'"
           ></span>
         </button>
@@ -130,7 +130,7 @@ $faqs = [
               {{ esc_html($plan['name']) }}
             </p>
             <div class="flex items-baseline gap-1 mb-3">
-              <span class="font-serif text-[clamp(2rem,4vw,2.75rem)] font-light {{ $plan['featured'] ? 'text-white' : 'text-ink' }}">
+              <span class="text-[clamp(2rem,4vw,2.75rem)] font-light {{ $plan['featured'] ? 'text-white' : 'text-ink' }}">
                 {{ esc_html($plan['price']) }}
               </span>
               @if($plan['period'])
@@ -146,10 +146,10 @@ $faqs = [
             @foreach($plan['features'] as $feature)
               <li class="flex items-start gap-2.5 py-2 border-b {{ $plan['featured'] ? 'border-white/10' : 'border-border' }} last:border-0">
                 @if($feature['active'])
-                  <x-icons.check class="w-4 h-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white' : 'text-success' }}" />
+                  <x-icons.check class="size-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white' : 'text-success' }}" />
                   <span class="text-sm {{ $plan['featured'] ? 'text-white/80' : 'text-ink' }}">{{ esc_html($feature['text']) }}</span>
                 @else
-                  <x-icons.x-mark class="w-4 h-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white/20' : 'text-border' }}" />
+                  <x-icons.x-mark class="size-4 mt-0.5 shrink-0 {{ $plan['featured'] ? 'text-white/20' : 'text-border' }}" />
                   <span class="text-sm {{ $plan['featured'] ? 'text-white/30' : 'text-muted/50' }} line-through">{{ esc_html($feature['text']) }}</span>
                 @endif
               </li>
@@ -170,7 +170,7 @@ $faqs = [
     {{-- Enterprise CTA band --}}
     <div class="mt-12 bg-cream border border-border px-8 py-7 flex flex-col md:flex-row items-center justify-between gap-5">
       <div>
-        <p class="font-serif text-lg font-light text-ink mb-1">{{ __('Hai esigenze particolari?', 'sage') }}</p>
+        <p class="text-lg font-light text-ink mb-1">{{ __('Hai esigenze particolari?', 'sage') }}</p>
         <p class="text-sm text-muted">{{ __('Il piano Enterprise si adatta completamente al tuo business. Parla con il nostro team.', 'sage') }}</p>
       </div>
       <a href="{{ esc_url(home_url('/contatti')) }}" class="btn-primary shrink-0">{{ __('Richiedi un preventivo', 'sage') }}</a>
@@ -179,7 +179,7 @@ $faqs = [
 
   {{-- FAQ --}}
   <div class="max-w-2xl mx-auto px-6 pb-20">
-    <h2 class="font-serif text-[clamp(1.5rem,3vw,2rem)] font-light text-ink text-center mb-10">
+    <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-light text-ink text-center mb-10">
       {{ __('Domande frequenti', 'sage') }}
     </h2>
     <div class="space-y-0">
@@ -193,7 +193,7 @@ $faqs = [
             aria-controls="faq-pricing-{{ $i }}"
           >
             <span>{{ esc_html($faq['q']) }}</span>
-            <x-icons.plus class="w-5 h-5 text-muted shrink-0 transition-transform duration-200" ::class="open ? 'rotate-45' : ''" />
+            <x-icons.chevron-down class="size-5 text-muted shrink-0 transition-transform duration-200" ::class="open ? 'rotate-180' : ''" stroke-width="2" />
           </button>
           <div
             id="faq-pricing-{{ $i }}"

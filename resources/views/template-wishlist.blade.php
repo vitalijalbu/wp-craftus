@@ -12,10 +12,10 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 @section('content')
 
   {{-- Page header --}}
-  <div class="bg-cream border-b border-border pt-16 pb-10">
+  <div class="bg-cream border-b border-border page-header-offset pb-10">
     <div class="container">
       @include('partials.breadcrumb')
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight">
         {{ __('La mia wishlist', 'sage') }}
       </h1>
     </div>
@@ -28,8 +28,12 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
     {{-- Empty state (no JS / truly empty) --}}
     <noscript>
       <div class="text-center py-20">
-        <p class="font-serif text-2xl font-light text-ink mb-3">{{ __('La tua wishlist è vuota', 'sage') }}</p>
-        <a href="{{ esc_url($shop_url) }}" class="btn-primary">{{ __('Sfoglia i prodotti', 'sage') }}</a>
+        <p class="text-2xl font-light text-ink mb-3">{{ __('La tua wishlist è vuota', 'sage') }}</p>
+        <p class="text-muted mb-6">{{ __('Sfoglia i prodotti e aggiungi i tuoi preferiti!', 'sage') }}</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="{{ esc_url(home_url('/')) }}" class="btn-primary">{{ __('Vai alla Home', 'sage') }}</a>
+          <a href="{{ esc_url($shop_url) }}" class="btn-outline">{{ __('Sfoglia i prodotti', 'sage') }}</a>
+        </div>
       </div>
     </noscript>
 
@@ -43,7 +47,7 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
 
       {{-- Actions bar --}}
       <div class="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border pt-6">
-        <a href="{{ esc_url($shop_url) }}" class="btn-outline btn-sm">
+        <a href="{{ esc_url($shop_url) }}" class="btn-outline">
           {{ __('← Continua lo shopping', 'sage') }}
         </a>
         <button
@@ -57,11 +61,16 @@ $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('sh
     </div>
 
     {{-- Alpine empty state --}}
-    <div x-show="!hasItems" class="text-center py-20" x-cloak>
-      <x-icons.heart class="w-16 h-16 text-border mx-auto mb-5" stroke-width="1" />
-      <p class="font-serif text-2xl font-light text-ink mb-2">{{ __('La tua wishlist è vuota', 'sage') }}</p>
-      <p class="text-muted mb-8">{{ __('Salva i prodotti che ami per ritrovarli facilmente.', 'sage') }}</p>
-      <a href="{{ esc_url($shop_url) }}" class="btn-primary">{{ __('Sfoglia i prodotti', 'sage') }}</a>
+    <div x-show="!hasItems" x-cloak>
+      <x-empty-state
+        icon="icons.heart"
+        :title="__('La tua wishlist è vuota', 'sage')"
+        :message="__('Sfoglia i prodotti e aggiungi i tuoi preferiti!', 'sage')"
+        :buttons="[
+          ['url' => home_url('/'), 'label' => __('Vai alla Home', 'sage'), 'style' => 'primary'],
+          ['url' => $shop_url, 'label' => __('Sfoglia i prodotti', 'sage'), 'style' => 'outline'],
+        ]"
+      />
     </div>
 
   </div>

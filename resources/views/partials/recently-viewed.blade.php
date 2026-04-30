@@ -15,7 +15,7 @@
 >
   <div class="container">
     <div class="flex items-center justify-between mb-8">
-      <h2 class="font-serif text-2xl font-light text-ink">{{ __('Visti di recente', 'sage') }}</h2>
+      <h2 class="text-2xl font-light text-ink">{{ __('Visti di recente', 'sage') }}</h2>
       <button
         type="button"
         @click="clear()"
@@ -37,7 +37,7 @@
               x-show="item.thumb"
             >
             <div x-show="!item.thumb" class="w-full h-full flex items-center justify-center text-border">
-              <x-icons.image-placeholder x-show="!item.thumb" class="w-8 h-8" stroke-width="1" />
+              <x-icons.image-placeholder x-show="!item.thumb" class="size-8" stroke-width="1" />
             </div>
           </a>
           <a :href="item.url" class="block text-xs font-medium text-ink hover:text-primary transition-colors leading-snug line-clamp-2 mb-1" x-text="item.title"></a>

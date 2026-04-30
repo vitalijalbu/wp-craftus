@@ -86,32 +86,31 @@
     {{-- Wishlist button (placeholder — activate with YITH Wishlist) --}}
     <button
       type="button"
-      class="product-card__wishlist"
+      class="product-card__wishlist wishlist-btn"
       aria-label="{{ sprintf(__('Aggiungi %s alla wishlist', 'sage'), esc_attr($product_name)) }}"
       data-product-id="{{ $product_id }}"
     >
-      <x-icons.heart class="w-4 h-4 text-ink" />
+      <x-icons.heart class="size-4 text-ink" />
     </button>
 
-    {{-- Add to cart overlay --}}
+    {{-- Add to cart overlay disattivato sulle card shop: lasciamo CTA solo nel single product --}}
+    {{--
     @if($is_purchasable)
       <div class="product-card__overlay bg-white/95">
         <a
           href="{{ $add_to_cart_url }}"
           data-product_id="{{ $product_id }}"
           data-product_sku="{{ $product_sku }}"
-          class="btn-primary btn-sm w-full justify-center add_to_cart_button ajax_add_to_cart"
+          class="btn-primary w-full justify-center add_to_cart_button ajax_add_to_cart"
           rel="nofollow"
           aria-label="{{ sprintf(__('Aggiungi %s al carrello', 'sage'), esc_attr($product_name)) }}"
         >
           <span class="btn-label">{{ $add_to_cart_text }}</span>
-          <svg class="btn-spinner" fill="none" viewBox="0 0 24 24" aria-hidden="true" width="16" height="16">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
-          </svg>
+          <x-icons.spinner class="btn-spinner" width="16" height="16" />
         </a>
       </div>
     @endif
+    --}}
   </div>
 
   {{-- Card body --}}
@@ -135,7 +134,7 @@
       >
         @php $rating = round($product->get_average_rating()); @endphp
         @for($i = 0; $i < 5; $i++)
-          <x-icons.star class="w-3 h-3 {{ $i < $rating ? 'fill-primary text-primary' : 'fill-border text-border' }}" />
+          <x-icons.star class="size-3 {{ $i < $rating ? 'fill-primary text-primary' : 'fill-border text-border' }}" />
         @endfor
         <span class="text-muted">({{ $product->get_rating_count() }})</span>
       </div>

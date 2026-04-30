@@ -21,11 +21,11 @@
   @endphp
 
   {{-- Page header --}}
-  <div class="bg-cream border-b border-border pt-16 pb-10">
+  <div class="bg-cream border-b border-border page-header-offset pb-10">
     <div class="container">
       @include('partials.breadcrumb')
-      <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
-        {!! get_the_title() !!}
+      <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
+        {{ get_the_title() }}
       </h1>
       @php $intro = get_the_excerpt(); @endphp
       @if($intro)
@@ -123,7 +123,7 @@
                   type="checkbox"
                   name="contact_privacy"
                   required
-                  class="mt-1 w-4 h-4 border-border accent-primary"
+                  class="mt-1 size-4 border-border accent-primary"
                   x-model="fields.privacy"
                 >
                 <label for="contact-privacy" class="text-sm text-muted leading-relaxed">
@@ -163,14 +163,14 @@
         {{-- RIGHT: Info sidebar --}}
         <aside>
           <span class="section-label text-muted">{{ __('Dove siamo', 'sage') }}</span>
-          <h2 class="font-serif text-2xl font-light text-ink mb-8">{{ __('Informazioni di contatto', 'sage') }}</h2>
+          <h2 class="text-2xl font-light text-ink mb-8">{{ __('Informazioni di contatto', 'sage') }}</h2>
 
           <dl class="space-y-7">
 
             @if($address)
               <div class="flex gap-4">
                 <dt class="shrink-0 mt-0.5">
-                  <x-icons.map-pin class="w-5 h-5 text-primary" aria-label="{{ __('Indirizzo', 'sage') }}" />
+                  <x-icons.map-pin class="size-5 text-primary" aria-label="{{ __('Indirizzo', 'sage') }}" />
                 </dt>
                 <dd class="text-sm text-muted leading-relaxed">{!! nl2br(esc_html($address)) !!}</dd>
               </div>
@@ -179,7 +179,7 @@
             @if($phone)
               <div class="flex gap-4">
                 <dt class="shrink-0 mt-0.5">
-                  <x-icons.phone class="w-5 h-5 text-primary" aria-label="{{ __('Telefono', 'sage') }}" />
+                  <x-icons.phone class="size-5 text-primary" aria-label="{{ __('Telefono', 'sage') }}" />
                 </dt>
                 <dd>
                   <a href="tel:{{ preg_replace('/\s+/', '', $phone) }}" class="text-sm text-muted hover:text-ink transition-colors">
@@ -192,7 +192,7 @@
             @if($email)
               <div class="flex gap-4">
                 <dt class="shrink-0 mt-0.5">
-                  <x-icons.envelope class="w-5 h-5 text-primary" aria-label="{{ __('Email', 'sage') }}" />
+                  <x-icons.envelope class="size-5 text-primary" aria-label="{{ __('Email', 'sage') }}" />
                 </dt>
                 <dd>
                   <a href="mailto:{{ esc_attr($email) }}" class="text-sm text-muted hover:text-ink transition-colors">
@@ -205,7 +205,7 @@
             @if($hours)
               <div class="flex gap-4">
                 <dt class="shrink-0 mt-0.5">
-                  <x-icons.clock class="w-5 h-5 text-primary" aria-label="{{ __('Orari', 'sage') }}" />
+                  <x-icons.clock class="size-5 text-primary" aria-label="{{ __('Orari', 'sage') }}" />
                 </dt>
                 <dd class="text-sm text-muted leading-relaxed">{!! nl2br(esc_html($hours)) !!}</dd>
               </div>

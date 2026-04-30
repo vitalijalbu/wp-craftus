@@ -3,7 +3,7 @@
 ## Installazione
 
 ```bash
-# 1. Copia il tema in wp-content/themes/sage-theme
+# 1. Copia il tema in wp-content/themes/wp-craft
 # 2. Installa dipendenze PHP
 composer install
 
@@ -54,7 +54,7 @@ Il fallback di default è `http://example.test`.
 ## Struttura directory
 
 ```
-sage-theme/
+wp-craft/
 │
 ├── app/                          # PHP backend (namespace App\)
 │   ├── setup.php                 # theme supports, menu, font, registrazione blocchi

@@ -10,9 +10,9 @@
    * @param string $bg               'surface' | 'cream' | 'ink' (default: 'surface')
    * @param string $align            'left' | 'center' (default: 'left')
    */
-  $section_label    = $section_label    ?? '';
-  $section_title    = $section_title    ?? '';
-  $section_subtitle = $section_subtitle ?? '';
+  $section_label    = sanitize_text_field($section_label ?? '');
+  $section_title    = wp_kses_post($section_title ?? '');
+  $section_subtitle = sanitize_text_field($section_subtitle ?? '');
   $bg               = $bg               ?? 'surface';
   $align            = $align            ?? 'left';
 

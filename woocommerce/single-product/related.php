@@ -3,7 +3,7 @@
  * Related Products — overrides WooCommerce default.
  * Uses the theme's product-card partial for consistent styling.
  *
- * @version 3.9.0 (WC reference version)
+ * @version 10.3.0 (WC reference version)
  */
 defined('ABSPATH') || exit;
 
@@ -13,7 +13,7 @@ if (empty($related_products)) {
 ?>
 
 <section
-  class="related-products section-luxury bg-cream"
+  class="related-products section bg-cream"
   aria-label="<?php esc_attr_e('Prodotti correlati', 'sage'); ?>"
 >
   <div class="container">
@@ -36,7 +36,7 @@ if (empty($related_products)) {
               continue;
           }
           ?>
-        <li data-scroll-item>
+        <li data-scroll-item class="flex flex-col">
           <?php
                 echo \Roots\view('partials.product-card', [
                     'product' => $product,

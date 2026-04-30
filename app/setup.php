@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Theme setup.
  */
@@ -42,7 +44,7 @@ add_action('admin_head', function () {
     }
 
     // Load Google Fonts for the block editor via <link> (avoids CSS @import order warnings).
-    $font_url = esc_url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+    $font_url = esc_url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">'."\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'."\n";
     echo '<link rel="stylesheet" href="'.$font_url.'">'."\n";
@@ -206,6 +208,20 @@ add_action('after_setup_theme', function () {
     ]);
 
     /**
+     * Enable custom logo support.
+     *
+     * @link https://developer.wordpress.org/themes/functionality/custom-logo/
+     */
+    add_theme_support('custom-logo', [
+        'height' => 80,
+        'width' => 250,
+        'flex-height' => true,
+        'flex-width' => true,
+        'header-text' => ['site-title', 'site-description'],
+        'unlink-homepage-logo' => false,
+    ]);
+
+    /**
      * Enable selective refresh for widgets in customizer.
      *
      * @link https://developer.wordpress.org/reference/functions/add_theme_support/#customize-selective-refresh-widgets
@@ -243,18 +259,17 @@ add_filter('loop_shop_columns', fn () => 3);
  * preconnect hints reduce DNS + TLS handshake latency.
  */
 add_action('wp_head', function () {
-    echo '<script>window.themeRestUrl=' . wp_json_encode(rest_url('theme/v1')) . ';</script>' . "\n";
-}, 1);
-
-add_action('wp_head', function () {
     /**
      * Filter the Google Fonts URL.
      * Override per-project: add_filter('theme_font_url', fn() => 'https://fonts.googleapis.com/...');
      * Return empty string to disable Google Fonts entirely (self-hosted fonts).
+     *
+     * Font loaded: Poppins (body, headings, UI).
+     * Poppins weights: 400 (body), 500 (labels), 600 (buttons/nav), 700 (prices).
      */
     $font_url = apply_filters(
         'theme_font_url',
-        'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap'
+        'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'
     );
 
     if (! $font_url) {
@@ -262,10 +277,11 @@ add_action('wp_head', function () {
     }
 
     $url = esc_url($font_url);
+    // Preconnect: first two reduce DNS + TLS handshake to Google Fonts CDN.
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">'."\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'."\n";
-    echo '<link rel="preload" as="style" href="'.$url.'">'."\n";
-    echo '<link rel="stylesheet" media="print" onload="this.media=\'all\'" href="'.$url.'">'."\n";
+    // Non-render-blocking: browser loads as print stylesheet, promotes to all on load.
+    echo '<link rel="preload" as="style" href="'.$url.'" onload="this.onload=null;this.rel=\'stylesheet\'">'."\n";
     echo '<noscript><link rel="stylesheet" href="'.$url.'"></noscript>'."\n";
 }, 1);
 
@@ -298,25 +314,25 @@ add_action('wp_head', function () {
         $product = wc_get_product($post->ID);
         if ($product) {
             $thumb_id = get_post_thumbnail_id($post);
-            $img_url  = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : '';
+            $img_url = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : '';
 
             $offer = [
-                '@type'         => 'Offer',
-                'price'         => $product->get_price(),
+                '@type' => 'Offer',
+                'price' => $product->get_price(),
                 'priceCurrency' => get_woocommerce_currency(),
-                'availability'  => $product->is_in_stock()
+                'availability' => $product->is_in_stock()
                     ? 'https://schema.org/InStock'
                     : 'https://schema.org/OutOfStock',
-                'url'           => get_permalink($post),
+                'url' => get_permalink($post),
             ];
 
             $product_data = [
-                '@context'    => 'https://schema.org',
-                '@type'       => 'Product',
-                'name'        => get_the_title($post),
-                'url'         => get_permalink($post),
+                '@context' => 'https://schema.org',
+                '@type' => 'Product',
+                'name' => get_the_title($post),
+                'url' => get_permalink($post),
                 'description' => has_excerpt($post) ? wp_strip_all_tags(get_the_excerpt($post)) : '',
-                'offers'      => $offer,
+                'offers' => $offer,
             ];
 
             if ($img_url) {
@@ -326,7 +342,7 @@ add_action('wp_head', function () {
             $rating_count = (int) $product->get_rating_count();
             if ($rating_count > 0) {
                 $product_data['aggregateRating'] = [
-                    '@type'       => 'AggregateRating',
+                    '@type' => 'AggregateRating',
                     'ratingValue' => (float) $product->get_average_rating(),
                     'reviewCount' => $rating_count,
                 ];
@@ -473,10 +489,10 @@ add_filter('block_categories_all', function (array $categories): array {
  * Each block lives in blocks/{name}/ with a block.json + render.php.
  */
 add_action('init', function () {
-    $blocks = ['hero', 'testimonial', 'stat', 'icon-box', 'accordion', 'products-carousel'];
-    foreach ($blocks as $name) {
-        $dir = get_template_directory()."/blocks/{$name}";
-        if (is_dir($dir)) {
+    $dirs = glob(get_template_directory().'/blocks/*', GLOB_ONLYDIR) ?: [];
+
+    foreach ($dirs as $dir) {
+        if (file_exists($dir.'/block.json')) {
             register_block_type($dir);
         }
     }

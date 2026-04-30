@@ -8,12 +8,13 @@ if (!process.env.APP_URL) {
 }
 
 export default defineConfig({
-  base: '/app/themes/sage-theme/public/build/',
+  base: '/wp-content/themes/wp-craft/public/build/',
   plugins: [
     tailwindcss(),
     laravel({
       input: [
         'resources/css/app.css',
+        'resources/css/woocommerce.css',
         'resources/js/app.js',
         'resources/css/editor.css',
         'resources/js/editor.js',
@@ -41,6 +42,16 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // Group motion-related dynamic modules into one lazy chunk.
+          if (
+            id.includes('/resources/js/modules/animations.js')
+            || id.includes('/resources/js/modules/scroll-effects.js')
+            || id.includes('/resources/js/modules/magnetic-hover.js')
+          ) {
+            return 'motion'
+          }
+
+          // Keep vendor bundles split by usage profile.
           if (id.includes('alpinejs') || id.includes('@alpinejs/')) return 'vendor-alpine'
           if (id.includes('gsap')) return 'vendor-gsap'
           if (id.includes('swiper')) return 'vendor-swiper'

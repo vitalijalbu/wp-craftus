@@ -48,7 +48,7 @@
 
     {{-- Header --}}
     <div class="flex items-center justify-between px-6 py-5 border-b border-border shrink-0">
-      <h2 class="font-serif text-lg font-light text-ink">
+      <h2 class="text-lg font-light text-ink">
         {{ __('Carrello', 'sage') }}
         <span x-text="'(' + count + ')'" class="text-sm text-muted ml-1"></span>
       </h2>

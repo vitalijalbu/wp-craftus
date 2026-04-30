@@ -12,6 +12,16 @@
     ? 'btn-light'
     : 'btn-secondary';
   $meta_class  = $bg === 'ink' ? 'text-white/30' : 'text-muted/60';
+  $privacy_label = wp_kses($privacy_label ?? '', [
+    'a' => [
+      'href' => [],
+      'class' => [],
+      'target' => [],
+      'rel' => [],
+    ],
+    'strong' => [],
+    'em' => [],
+  ]);
 @endphp
 
 <div
@@ -39,7 +49,7 @@
       >
       <button
         type="submit"
-        class="shrink-0 btn-sm {{ $btn_class }}"
+        class="shrink-0 {{ $btn_class }}"
         :disabled="loading"
         :class="loading ? 'opacity-60 cursor-wait' : ''"
       >
@@ -71,7 +81,7 @@
 
   {{-- Privacy note --}}
   <p class="mt-3 leading-relaxed {{ $meta_class }}">
-    {!! $privacy_label ?? '' !!}
+    {!! $privacy_label !!}
   </p>
 </div>
 

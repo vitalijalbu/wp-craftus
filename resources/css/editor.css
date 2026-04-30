@@ -13,9 +13,10 @@ body {
 .editor-styles-wrapper h4,
 .editor-styles-wrapper h5,
 .editor-styles-wrapper h6 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", system-ui, sans-serif;
   color: #0a0a0a;
-  line-height: 1.2;
+  font-weight: 500;
+  line-height: 1.15;
 }
 
 .editor-styles-wrapper a {
@@ -24,7 +25,7 @@ body {
 }
 
 .editor-styles-wrapper a:hover {
-  color: #0074C7;
+  color: #196EC8;
 }
 
 .editor-styles-wrapper .wp-block-cover {
@@ -35,36 +36,38 @@ body {
 
 .editor-styles-wrapper .wp-block-button__link {
   font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  font-size: 0.8125rem;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  border-radius: 0;
-  background-color: #0074C7;
+  border-radius: 100px;
+  background-color: #196EC8;
   color: #ffffff;
-  padding: 0.875rem 2rem;
+  padding: 0.65rem 2rem;
 }
 
 /* Button — Outline */
 .editor-styles-wrapper .wp-block-button.is-style-outline .wp-block-button__link {
   background-color: transparent;
-  color: #0074C7;
-  border: 1px solid #0074C7;
+  color: #196EC8;
+  border: 1px solid #196EC8;
+  border-radius: 100px;
   box-shadow: none;
 }
 
 /* Button — Accent */
 .editor-styles-wrapper .wp-block-button.is-style-accent .wp-block-button__link {
-  background-color: #0074C7;
+  background-color: #196EC8;
   color: #ffffff;
+  border-radius: 100px;
   border: none;
 }
 
 /* Button — Ghost */
 .editor-styles-wrapper .wp-block-button.is-style-ghost .wp-block-button__link {
   background-color: transparent;
-  color: #0074C7;
+  color: #196EC8;
   border: none;
   padding-left: 0;
   padding-right: 0;
@@ -88,7 +91,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #0074C7;
+  color: #196EC8;
 }
 
 /* ── core/separator — Style Variations ──────────────────────────────────────── */
@@ -107,15 +110,15 @@ body {
 /* Separator — Accent */
 .editor-styles-wrapper .wp-block-separator.is-style-accent {
   border-width: 2px;
-  border-color: #0074C7;
+  border-color: #196EC8;
 }
 
 /* ── core/quote — Style Variations ──────────────────────────────────────────── */
 
 .editor-styles-wrapper .wp-block-quote {
-  border-left: 3px solid #0074C7;
+  border-left: 3px solid #196EC8;
   padding-left: 1.5rem;
-  font-family: "Poppins", serif;
+  font-family: "Poppins", system-ui, sans-serif;
   font-style: italic;
   font-size: 1.25rem;
   line-height: 1.5;
@@ -176,7 +179,7 @@ body {
 
 /* ── Design system tokens (mirrored from app.css @theme) ──────────────────── */
 .editor-styles-wrapper {
-  --ed-primary:     #0074C7;
+  --ed-primary:     #196EC8;
   --ed-ink:         #0a0a0a;
   --ed-muted:       #6b6b6b;
   --ed-border:      #e0e0e0;
@@ -192,9 +195,9 @@ body {
 .editor-styles-wrapper .theme-section-label {
   display: block;
   font-family: var(--ed-font-sans);
-  font-size: 0.625rem !important;
-  font-weight: 600;
-  letter-spacing: 0.25em;
+  font-size: 0.75rem !important;
+  font-weight: 400;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   margin-bottom: 1rem;
 }
@@ -203,9 +206,9 @@ body {
 .editor-styles-wrapper .theme-section-title {
   font-family: var(--ed-font-serif) !important;
   font-size: clamp(1.75rem, 3.5vw, 2.75rem) !important;
-  font-weight: 300 !important;
-  line-height: 1.1 !important;
-  letter-spacing: -0.01em !important;
+  font-weight: 500 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
 }
 
 /* ── theme/hero ────────────────────────────────────────────────────────────── */
@@ -299,7 +302,7 @@ body {
   padding: 1.25rem 0;
   cursor: pointer;
   font-family: var(--ed-font-sans);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--ed-ink);
   list-style: none;
@@ -319,7 +322,7 @@ body {
 
 .editor-styles-wrapper .theme-accordion .faq-item__answer {
   padding: 0 0 1.25rem 0;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--ed-muted);
   line-height: 1.7;
 }
@@ -495,4 +498,109 @@ body {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.04em;
+}
+
+/* ── theme/slideshow (editor preview) ────────────────────────────────────── */
+.editor-styles-wrapper .theme-slideshow-wrapper {
+  position: relative;
+  min-height: 520px;
+  background: #111;
+  overflow: hidden;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .js-hero-swiper,
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper,
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper-wrapper,
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper-slide {
+  height: 100%;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .js-hero-swiper,
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper {
+  position: relative;
+  min-height: 520px;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper-wrapper {
+  display: flex;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .swiper-slide {
+  position: relative;
+  min-width: 100%;
+  min-height: 520px;
+  overflow: hidden;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .absolute {
+  position: absolute;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .relative {
+  position: relative;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .inset-0 {
+  inset: 0;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .w-full {
+  width: 100%;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .h-full {
+  height: 100%;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .object-cover {
+  object-fit: cover;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .items-end {
+  align-items: flex-end;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .flex {
+  display: flex;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .hero-title {
+  font-family: var(--ed-font-serif);
+  font-size: clamp(2.2rem, 4.6vw, 4rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: #fff;
+  margin: 0 0 1rem;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .hero-subtitle {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 52ch;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .container {
+  width: min(100%, 1280px);
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .max-w-2xl {
+  max-width: 42rem;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .z-10 {
+  z-index: 10;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .z-20 {
+  z-index: 20;
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .bg-linear-to-t {
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.72), rgba(10, 10, 10, 0.28), rgba(10, 10, 10, 0.08));
+}
+
+.editor-styles-wrapper .theme-slideshow-wrapper .text-primary {
+  color: var(--ed-primary);
 }

@@ -136,10 +136,10 @@
           ])
 
         @elseif($layout === 'wysiwyg')
-          <section class="section-luxury bg-surface">
+          <section class="section bg-surface">
             <div class="container">
               <div class="prose max-w-3xl mx-auto">
-                {!! $section['content'] ?? '' !!}
+                {!! wp_kses_post($section['content'] ?? '') !!}
               </div>
             </div>
           </section>
@@ -149,12 +149,12 @@
 
     @else
       {{-- ── Fallback: standard page content ── --}}
-      <div class="section-luxury bg-surface">
+      <div class="section bg-surface">
         <div class="container">
           <div class="max-w-4xl mx-auto">
 
             <h1
-              class="font-serif text-[clamp(2.5rem,5vw,4rem)] font-light text-ink leading-tight mb-8"
+              class="text-[clamp(2.5rem,5vw,4rem)] font-light text-ink leading-tight mb-8"
               data-scroll="text-reveal"
             >{{ get_the_title() }}</h1>
 

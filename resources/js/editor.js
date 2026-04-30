@@ -32,6 +32,7 @@ import { useSelect } from '@wordpress/data'
 import { createElement as el, Fragment } from '@wordpress/element'
 import { __ } from '@wordpress/i18n'
 import ServerSideRender from '@wordpress/server-side-render'
+import { initHeroSwipers } from './modules/swiper-hero.js'
 
 // ── Block Style Variations ─────────────────────────────────────────────────────
 // Registrate dopo il caricamento dei blocchi per evitare race conditions.
@@ -197,6 +198,30 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 })
 
+window.addEventListener('DOMContentLoaded', () => {
+  initHeroSwipers(document, {
+    datasetKey: 'editorSwiperInit',
+    pauseOnMouseEnter: false,
+  })
+
+  if (window.wp?.data?.subscribe) {
+    let rafId = 0
+    window.wp.data.subscribe(() => {
+      if (rafId) {
+        return
+      }
+
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0
+        initHeroSwipers(document, {
+          datasetKey: 'editorSwiperInit',
+          pauseOnMouseEnter: false,
+        })
+      })
+    })
+  }
+})
+
 // ── Shared helpers ────────────────────────────────────────────────────────────
 
 const bgOptions = [
@@ -245,7 +270,12 @@ function MediaPanel({ imageId, imageUrl, onSelect, onRemove }) {
             el('img', {
               src: imageUrl,
               alt: '',
-              style: { maxWidth: '100%', height: 'auto', marginBottom: '8px', borderRadius: '4px' },
+              style: {
+                maxWidth: '100%',
+                height: 'auto',
+                marginBottom: '8px',
+                borderRadius: '4px',
+              },
             }),
           imageId &&
             el(
@@ -453,7 +483,10 @@ registerBlockType('theme/testimonial', {
             imageId: authorImageId,
             imageUrl: authorImageUrl,
             onSelect: (media) =>
-              setAttributes({ authorImageId: media.id, authorImageUrl: media.url }),
+              setAttributes({
+                authorImageId: media.id,
+                authorImageUrl: media.url,
+              }),
             onRemove: () => setAttributes({ authorImageId: 0, authorImageUrl: '' }),
           }),
         ),
@@ -697,7 +730,10 @@ registerBlockType('theme/accordion', {
       setAttributes({
         items: [
           ...items,
-          { question: __('Nuova domanda?', 'sage'), answer: __('Risposta...', 'sage') },
+          {
+            question: __('Nuova domanda?', 'sage'),
+            answer: __('Risposta...', 'sage'),
+          },
         ],
       })
     }
@@ -755,7 +791,11 @@ registerBlockType('theme/accordion', {
               items.length > 1 &&
                 el(
                   Button,
-                  { variant: 'link', isDestructive: true, onClick: () => removeItem(index) },
+                  {
+                    variant: 'link',
+                    isDestructive: true,
+                    onClick: () => removeItem(index),
+                  },
                   __('Rimuovi', 'sage'),
                 ),
             ),

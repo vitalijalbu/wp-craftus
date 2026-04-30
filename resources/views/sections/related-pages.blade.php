@@ -60,7 +60,7 @@
 @if(!empty($pages))
 <section
   id="{{ $section_id ?? 'section-related' }}"
-  class="section-luxury {{ $bg_class }}"
+  class="section {{ $bg_class }}"
   aria-label="{{ strip_tags($section_title) }}"
 >
   <div class="container">
@@ -125,7 +125,7 @@
               </span>
             @endif
 
-            <h3 class="font-serif text-xl font-light leading-snug mb-3 {{ $bg === 'ink' ? 'text-white group-hover:text-primary' : 'text-ink group-hover:text-primary' }} transition-colors">
+            <h3 class="text-xl font-light leading-snug mb-3 {{ $bg === 'ink' ? 'text-white group-hover:text-primary' : 'text-ink group-hover:text-primary' }} transition-colors">
               <a href="{{ $perma }}" class="relative after:absolute after:inset-0">
                 {!! esc_html(get_the_title($pid)) !!}
               </a>

@@ -34,15 +34,15 @@
 
       @foreach($slides as $slide)
         @php
-          $img_url = $slide['image']['url'] ?? '';
-          $img_alt = $slide['image']['alt'] ?? '';
-          $label   = $slide['label']   ?? '';
-          $title   = $slide['title']   ?? '';
-          $subtitle = $slide['subtitle'] ?? '';
-          $cta_label  = $slide['cta_label']  ?? '';
-          $cta_url    = $slide['cta_url']    ?? '';
-          $cta2_label = $slide['cta2_label'] ?? '';
-          $cta2_url   = $slide['cta2_url']   ?? '';
+          $img_url = esc_url($slide['image']['url'] ?? '');
+          $img_alt = esc_attr($slide['image']['alt'] ?? '');
+          $label   = sanitize_text_field($slide['label'] ?? '');
+          $title   = wp_kses_post($slide['title'] ?? '');
+          $subtitle = sanitize_text_field($slide['subtitle'] ?? '');
+          $cta_label  = sanitize_text_field($slide['cta_label'] ?? '');
+          $cta_url    = esc_url($slide['cta_url'] ?? '');
+          $cta2_label = sanitize_text_field($slide['cta2_label'] ?? '');
+          $cta2_url   = esc_url($slide['cta2_url'] ?? '');
           $slide_count = count($slides);
         @endphp
         <div
@@ -92,11 +92,11 @@
 
                 @if($cta_label && $cta_url)
                   <div class="flex flex-wrap gap-4">
-                    <a href="{{ $cta_url }}" class="btn-light">
+                    <a href="{{ esc_url($cta_url) }}" class="btn-light">
                       {{ $cta_label }}
                     </a>
                     @if($cta2_label && $cta2_url)
-                      <a href="{{ $cta2_url }}" class="btn-outline-white">
+                      <a href="{{ esc_url($cta2_url) }}" class="btn-outline-white">
                         {{ $cta2_label }}
                       </a>
                     @endif
@@ -123,17 +123,15 @@
     <button
       class="swiper-button-prev swiper-dark absolute left-6 lg:left-10 top-1/2 -translate-y-1/2 z-20"
       aria-label="{{ __('Slide precedente', 'sage') }}"
-    ></button>
+    >
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="size-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
+    </button>
     <button
       class="swiper-button-next swiper-dark absolute right-6 lg:right-10 top-1/2 -translate-y-1/2 z-20"
       aria-label="{{ __('Slide successiva', 'sage') }}"
-    ></button>
-  </div>
-
-  {{-- Scroll indicator --}}
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 scroll-indicator" aria-hidden="true">
-    <div class="scroll-indicator-line"></div>
-    <span class="mt-2">scroll</span>
+    >
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="size-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+    </button>
   </div>
 
 </section>

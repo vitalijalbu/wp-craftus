@@ -11,10 +11,10 @@
 @endphp
 
 {{-- Page header --}}
-<div class="bg-cream border-b border-border pt-16 pb-10">
+<div class="bg-cream border-b border-border page-header-offset pb-10">
   <div class="container">
     @include('partials.breadcrumb')
-    <h1 class="font-serif text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
+    <h1 class="text-[clamp(1.75rem,3.5vw,3rem)] font-light text-ink leading-tight mt-4">
       {!! wp_kses_post($archive_title) !!}
     </h1>
     @if($archive_desc)
@@ -63,9 +63,9 @@
             @endif
 
             <div class="p-6 flex flex-col flex-1">
-              <h2 class="font-serif text-xl font-light text-ink group-hover:text-primary transition-colors mb-3 leading-snug">
+              <h2 class="text-xl font-light text-ink group-hover:text-primary transition-colors mb-3 leading-snug">
                 <a href="{{ $perma }}" class="relative after:absolute after:inset-0">
-                  {!! get_the_title() !!}
+                  {{ get_the_title() }}
                 </a>
               </h2>
               @if($excerpt)
@@ -87,10 +87,18 @@
       {{-- Pagination --}}
       <div class="mt-14 flex justify-center">
         <nav aria-label="{{ __('Navigazione archivio', 'sage') }}">
+          @php
+            $prev_icon = \Roots\view('components.icons.chevron-left', [
+              'attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-4'])
+            ])->render();
+            $next_icon = \Roots\view('components.icons.arrow-right', [
+              'attributes' => new \Illuminate\View\ComponentAttributeBag(['class' => 'size-4'])
+            ])->render();
+          @endphp
           {!! get_the_posts_pagination([
             'mid_size'  => 2,
-            'prev_text' => '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg><span class="sr-only">' . __('Precedente', 'sage') . '</span>',
-            'next_text' => '<span class="sr-only">' . __('Successivo', 'sage') . '</span><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>',
+            'prev_text' => $prev_icon . '<span class="sr-only">' . esc_html__('Precedente', 'sage') . '</span>',
+            'next_text' => '<span class="sr-only">' . esc_html__('Successivo', 'sage') . '</span>' . $next_icon,
             'class'     => 'pagination flex items-center gap-2',
           ]) !!}
         </nav>

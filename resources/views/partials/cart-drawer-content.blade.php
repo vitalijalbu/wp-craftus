@@ -13,10 +13,10 @@
     @if(empty($cart_items))
       <div class="flex flex-col items-center justify-center h-full text-center py-12">
         <x-icons.cart class="w-12 h-12 text-border mb-4" stroke-width="1" />
-        <p class="font-serif text-lg font-light text-ink mb-1">{{ __('Il carrello è vuoto', 'sage') }}</p>
+        <p class="text-lg font-light text-ink mb-1">{{ __('Il carrello è vuoto', 'sage') }}</p>
         <p class="text-sm text-muted mb-6">{{ __('Aggiungi qualcosa di bello!', 'sage') }}</p>
         <a href="{{ esc_url(wc_get_page_permalink('shop')) }}"
-           class="btn-primary btn-sm">{{ __('Vai allo shop', 'sage') }}</a>
+           class="btn-primary">{{ __('Vai allo shop', 'sage') }}</a>
       </div>
     @else
       <ul class="space-y-5" aria-label="{{ __('Prodotti nel carrello', 'sage') }}">

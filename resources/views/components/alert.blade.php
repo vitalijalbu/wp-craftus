@@ -9,7 +9,8 @@
   'warning' => 'text-white bg-error',
   default => 'text-white bg-primary',
 })
+@php($safeMessage = isset($message) ? wp_kses_post((string) $message) : null)
 
 <div {{ $attributes->merge(['class' => "px-2 py-1 {$class}"]) }}>
-  {!! $message ?? $slot !!}
+  {!! $safeMessage ?? $slot !!}
 </div>

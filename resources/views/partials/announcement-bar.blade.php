@@ -33,7 +33,7 @@
     <p class="text-xs font-medium tracking-wide inline">
       {!! wp_kses_post($text) !!}
       @if($cta_text && $cta_url)
-        <a href="{{ $cta_url }}"
+        <a href="{{ esc_url($cta_url) }}"
            class="ml-3 font-semibold underline underline-offset-2 hover:text-primary transition-colors">
           {{ esc_html($cta_text) }}
         </a>

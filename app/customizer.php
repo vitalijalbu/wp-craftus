@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * WordPress Customizer options for Sage theme.
  *
@@ -21,25 +23,32 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
     ]);
 
     $social_networks = [
-        'instagram' => ['label' => 'Instagram', 'priority' => 10],
-        'facebook' => ['label' => 'Facebook',  'priority' => 20],
-        'tiktok' => ['label' => 'TikTok',    'priority' => 30],
-        'youtube' => ['label' => 'YouTube',   'priority' => 40],
-        'whatsapp' => ['label' => 'WhatsApp (numero con prefisso, es. +393401234567)', 'priority' => 50],
+        'instagram' => ['label' => 'Instagram',   'priority' => 10],
+        'facebook' => ['label' => 'Facebook',    'priority' => 20],
+        'tiktok' => ['label' => 'TikTok',      'priority' => 30],
+        'youtube' => ['label' => 'YouTube',     'priority' => 40],
+        'twitter' => ['label' => 'X (Twitter)', 'priority' => 45],
+        'whatsapp' => [
+            'label' => 'WhatsApp (numero con prefisso, es. +393401234567)',
+            'priority' => 50,
+            'sanitize' => 'sanitize_text_field',
+            'type' => 'text',
+            'placeholder' => '+393401234567',
+        ],
     ];
 
     foreach ($social_networks as $slug => $config) {
         $wp_customize->add_setting("social_{$slug}", [
             'default' => '',
-            'sanitize_callback' => 'esc_url_raw',
+            'sanitize_callback' => $config['sanitize'] ?? 'esc_url_raw',
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control("social_{$slug}", [
             'label' => $config['label'],
             'section' => 'theme_social',
-            'type' => 'url',
+            'type' => $config['type'] ?? 'url',
             'priority' => $config['priority'],
-            'input_attrs' => ['placeholder' => "https://www.{$slug}.com/nomepagina"],
+            'input_attrs' => ['placeholder' => $config['placeholder'] ?? "https://www.{$slug}.com/nomepagina"],
         ]);
     }
 
@@ -76,19 +85,109 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
         'priority' => 11,
     ]);
 
-    // Footer tagline
-    $wp_customize->add_setting('footer_tagline', [
+    // ── Pulsante custom header 1 (es. "Adotta un amico") ─────────────────────
+    $wp_customize->add_setting('header_btn1_label', [
         'default' => '',
         'sanitize_callback' => 'sanitize_text_field',
-        'transport' => 'postMessage',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control('header_btn1_label', [
+        'label' => __('Pulsante header 1 — Testo', 'sage'),
+        'description' => __('Es. «Adotta un amico». Lascia vuoto per nascondere.', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 12,
+    ]);
+
+    $wp_customize->add_setting('header_btn1_url', [
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control('header_btn1_url', [
+        'label' => __('Pulsante header 1 — URL', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'url',
+        'priority' => 13,
+    ]);
+
+    $wp_customize->add_setting('header_btn1_icon', [
+        'default' => 0,
+        'sanitize_callback' => 'absint',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'header_btn1_icon', [
+        'label' => __('Pulsante header 1 — Icona (immagine)', 'sage'),
+        'section' => 'theme_theme',
+        'mime_type' => 'image',
+        'priority' => 14,
+    ]));
+
+    // ── Pulsante custom header 2 (es. "Dona ora") ────────────────────────────
+    $wp_customize->add_setting('header_btn2_label', [
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control('header_btn2_label', [
+        'label' => __('Pulsante header 2 — Testo', 'sage'),
+        'description' => __('Es. «Dona ora». Lascia vuoto per nascondere.', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 15,
+    ]);
+
+    $wp_customize->add_setting('header_btn2_url', [
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control('header_btn2_url', [
+        'label' => __('Pulsante header 2 — URL', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'url',
+        'priority' => 16,
+    ]);
+
+    $wp_customize->add_setting('header_btn2_icon', [
+        'default' => 0,
+        'sanitize_callback' => 'absint',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'header_btn2_icon', [
+        'label' => __('Pulsante header 2 — Icona (immagine)', 'sage'),
+        'section' => 'theme_theme',
+        'mime_type' => 'image',
+        'priority' => 17,
+    ]));
+
+    // Footer tagline (richtext — supporta <strong>, <em>, <a>)
+    $wp_customize->add_setting('footer_tagline', [
+        'default' => '',
+        'sanitize_callback' => 'wp_kses_post',
+        'transport' => 'refresh',
     ]);
     $wp_customize->add_control('footer_tagline', [
         'label' => __('Tagline footer', 'sage'),
-        'description' => __('Lascia vuoto per nascondere.', 'sage'),
+        'description' => __('Supporta HTML base: <strong>, <em>, <a href="…">. Lascia vuoto per nascondere.', 'sage'),
         'section' => 'theme_theme',
         'type' => 'textarea',
         'priority' => 20,
     ]);
+
+    // Logo footer white edition
+    $wp_customize->add_setting('footer_logo', [
+        'default' => 0,
+        'sanitize_callback' => 'absint',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control(new \WP_Customize_Media_Control($wp_customize, 'footer_logo', [
+        'label' => __('Logo footer (versione chiara/white)', 'sage'),
+        'description' => __('Se impostato, viene usato al posto del logo principale nel footer. Ideale per loghi bianchi su sfondo scuro.', 'sage'),
+        'section' => 'theme_theme',
+        'mime_type' => 'image',
+        'priority' => 21,
+    ]));
 
     // Newsletter heading
     $wp_customize->add_setting('newsletter_heading', [
@@ -131,6 +230,80 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
         'priority' => 25,
     ]);
 
+    // Single product trust badges
+    $wp_customize->add_setting('single_trust_title', [
+        'default' => __('Perché scegliere noi', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_title', [
+        'label' => __('Titolo badge fiducia (prodotto)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 40,
+    ]);
+
+    $wp_customize->add_setting('single_trust_secure', [
+        'default' => __('Pagamento sicuro', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_secure', [
+        'label' => __('Badge 1 (sempre visibile)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 41,
+    ]);
+
+    $wp_customize->add_setting('single_trust_shipping', [
+        'default' => __('Spedizione rapida', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_shipping', [
+        'label' => __('Badge 2 (solo prodotti fisici)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 42,
+    ]);
+
+    $wp_customize->add_setting('single_trust_returns', [
+        'default' => __('Resi gratuiti 30gg', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_returns', [
+        'label' => __('Badge 3 (solo prodotti fisici)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 43,
+    ]);
+
+    $wp_customize->add_setting('single_trust_happy_pet', [
+        'default' => __('Il tuo cane sarà felice', 'sage'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_trust_happy_pet', [
+        'label' => __('Badge 4 (sempre visibile)', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 44,
+    ]);
+
+    $wp_customize->add_setting('single_payment_methods', [
+        'default' => 'Visa, Mastercard, PayPal, Apple Pay',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'postMessage',
+    ]);
+    $wp_customize->add_control('single_payment_methods', [
+        'label' => __('Metodi pagamento (separati da virgola)', 'sage'),
+        'description' => __('Esempio: Visa, Mastercard, PayPal, Apple Pay', 'sage'),
+        'section' => 'theme_theme',
+        'type' => 'text',
+        'priority' => 45,
+    ]);
+
     // ── Section: Contatti ────────────────────────────────────────────────────
     $wp_customize->add_section('theme_contact', [
         'title' => __('Informazioni di contatto', 'sage'),
@@ -153,6 +326,48 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize):
             'label' => $label,
             'section' => 'theme_contact',
             'type' => $type,
+        ]);
+    }
+
+    // ── Section: Dati Legali Organizzazione ─────────────────────────────────
+    // Obblighi di legge per associazioni non profit / APS / ODV
+    $wp_customize->add_section('theme_legal', [
+        'title' => __('Dati Legali (Footer)', 'sage'),
+        'description' => __('Codice fiscale, email e telefono legale dell\'organizzazione. Compaiono nel footer sotto i link legali.', 'sage'),
+        'priority' => 129,
+    ]);
+
+    // Dati legali come richtext libero (un unico campo textarea HTML)
+    $wp_customize->add_setting('org_legal_text', [
+        'default' => '',
+        'sanitize_callback' => 'wp_kses_post',
+        'transport' => 'refresh',
+    ]);
+    $wp_customize->add_control('org_legal_text', [
+        'label' => __('Testo dati legali (HTML)', 'sage'),
+        'description' => __('Testo completo con C.F., indirizzo, email, tel. Supporta <strong>, <em>, <a href="…">, <br>. Appare nel footer sotto i link legali.', 'sage'),
+        'section' => 'theme_legal',
+        'type' => 'textarea',
+        'priority' => 10,
+    ]);
+
+    // Campi singoli mantenuti per retrocompatibilità
+    foreach ([
+        ['org_codice_fiscale', __('Codice Fiscale', 'sage'),          'text',     'sanitize_text_field'],
+        ['org_email',          __('Email contatti', 'sage'),           'email',    'sanitize_email'],
+        ['org_phone',          __('Telefono contatti', 'sage'),        'text',     'sanitize_text_field'],
+        ['org_address',        __('Sede legale / indirizzo', 'sage'),  'textarea', 'sanitize_textarea_field'],
+    ] as [$key, $label, $type, $sanitize]) {
+        $wp_customize->add_setting($key, [
+            'default' => '',
+            'sanitize_callback' => $sanitize,
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control($key, [
+            'label' => $label.' '.__('(legacy)', 'sage'),
+            'section' => 'theme_legal',
+            'type' => $type,
+            'priority' => 20,
         ]);
     }
 
